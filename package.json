@@ -17,9 +17,12 @@
   },
   "homepage": "https://github.com/analog-aardvarks/thesis#readme",
   "dependencies": {
+    "bookshelf": "^0.10.3",
     "express": "^4.15.3",
     "express-session": "^1.15.2",
+    "knex": "^0.13.0",
     "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
     "passport": "^0.3.2",
     "passport-spotify": "^0.3.1"
   },
