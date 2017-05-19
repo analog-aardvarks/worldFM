@@ -3,6 +3,7 @@ const app = new express();
 const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
+const path = require('path');
 
 const config = require('../../config');
 const auth = require('./auth');
@@ -12,6 +13,7 @@ app.use(morgan('dev'));
 app.use(session({ secret: config.seshSecret }))
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
 
 // app.get('/', (req, res) => res.send('Sup, World'));
