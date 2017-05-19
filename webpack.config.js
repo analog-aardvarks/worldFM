@@ -1,9 +1,10 @@
+
 const webpack = require('webpack');
 
 module.exports = {
   entry: `${__dirname}/src/public/app.jsx`,
   output: {
-    path: `${__dirname}/src/dist/`,
+    path: `${__dirname}/src/public/dist`,
     filename: 'bundle.js',
   },
   module: {
@@ -19,11 +20,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
   ],
