@@ -19,8 +19,8 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-  ],
+  // plugins: [
+  //   new webpack.optimize.UglifyJsPlugin(),
+  //   new webpack.optimize.AggressiveMergingPlugin(),
+  // ],
 };
