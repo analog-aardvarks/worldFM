@@ -1,0 +1,32 @@
+body {
+  background-color: #151515;
+}
+
+.Playlist {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.Song {
+  background-color: black;
+  background-size: cover;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-top: 2px;
+  margin-right: 2px;
+  border: 2px solid #151515;
+  padding: 15px;
+}
+
+.Song:hover {
+  border: 2px solid #FFF;
+}
+
+.Song__name,
+.Song__artist, {
+  display: block;
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+}
