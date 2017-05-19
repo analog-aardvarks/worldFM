@@ -20,8 +20,7 @@ const Song = props => {
           <span
             className="Song__name"
             style={{
-              fontFamily: '\'Roboto\', sans-serif',
-              fontWeight: '900',
+              fontFamily: '\'Archivo Black\', sans-serif',
               fontSize: '15px',
               color: 'white',
               backgroundColor: 'rgba(15, 15, 15, 0.35)',
@@ -32,8 +31,7 @@ const Song = props => {
           <span
             className="Song__artist"
             style={{
-              fontFamily: '\'PT Sans Caption\', sans-serif',
-              fontWeight: '700',
+              fontFamily: '\'Archivo Black\', sans-serif',
               fontSize: '15px',
               color: 'white',
               display: 'block',
@@ -45,7 +43,7 @@ const Song = props => {
         <span
           className="Song__artist"
           style={{
-            fontFamily: '\'Roboto\', sans-serif',
+            fontFamily: '\'Archivo Black\', sans-serif',
             fontWeight: '900',
             fontSize: '30px',
             color: 'white',
