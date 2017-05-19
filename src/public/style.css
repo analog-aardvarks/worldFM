@@ -26,7 +26,21 @@ body {
   border: 2px solid #FFF;
 }
 
-.Song .Song__name,
-.Song .Song__artist, {
+.Song__info,
+.Song__ranking {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 15px;
+  color: white;
+  background-color: rgba(15, 15, 15, 0.35);
+}
 
+.Song__name,
+.Song__artist {
+  display: block;
+}
+
+.Song__ranking {
+    color: white;
+  font-size: 30px;
+  align-self: flex-end;
 }
