@@ -17,16 +17,16 @@ body {
   margin-right: 2px;
   border: 2px solid #151515;
   padding: 15px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
 }
 
 .Song:hover {
   border: 2px solid #FFF;
 }
 
-.Song__name,
-.Song__artist, {
-  display: block;
-  color: red;
-  font-size: 20px;
-  font-weight: bold;
+.Song .Song__name,
+.Song .Song__artist, {
+
 }

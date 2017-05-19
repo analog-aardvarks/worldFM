@@ -15,10 +15,11 @@ class Playlist extends React.Component {
           height: PLAYLIST_HEIGHT
         }}
       >
-        {samplePlaylist && samplePlaylist.items.map((listItem) => {
+        {samplePlaylist && samplePlaylist.items.map((listItem, idx) => {
           return (
             <Song
               key={listItem.track.id}
+              ranking={idx + 1}
               name={listItem.track.name}
               artists={listItem.track.artists}
               album={listItem.track.album}

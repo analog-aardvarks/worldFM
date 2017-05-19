@@ -16,8 +16,43 @@ const Song = props => {
           maxHeight: size
         }}
       >
-        <span className="Song__name">{props.name}</span>
-        <span className="Song__artist">{props.artists[0].name}</span>
+        <div className="Song__info">
+          <span
+            className="Song__name"
+            style={{
+              fontFamily: '\'Roboto\', sans-serif',
+              fontWeight: '900',
+              fontSize: '15px',
+              color: 'white',
+              backgroundColor: 'rgba(15, 15, 15, 0.35)',
+              display: 'block',
+            }}>
+            {props.name}
+          </span>
+          <span
+            className="Song__artist"
+            style={{
+              fontFamily: '\'PT Sans Caption\', sans-serif',
+              fontWeight: '700',
+              fontSize: '15px',
+              color: 'white',
+              display: 'block',
+              backgroundColor: 'rgba(15, 15, 15, 0.35)',
+            }}>
+            {props.artists[0].name}
+          </span>
+        </div>
+        <span
+          className="Song__artist"
+          style={{
+            fontFamily: '\'Roboto\', sans-serif',
+            fontWeight: '900',
+            fontSize: '30px',
+            color: 'white',
+            alignSelf: 'flex-end',
+          }}>
+          {props.ranking}
+        </span>
       </div>
     );
 }
