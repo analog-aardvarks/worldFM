@@ -82,7 +82,7 @@ const workerInit = function() {
 }
 
 // WARNING! only run when needed, hundreds of API calls in here!
-workerInit();
+// workerInit();
 
 // TESTS
 // getPlaylist('thesoundsofspotify', '0fk9bF0uBAigYUih89Ye30'); // the needle - emerging
