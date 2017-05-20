@@ -2,7 +2,7 @@ import React from 'react';
 import Song from './Song.jsx';
 import Player from './Player.jsx';
 import Menu from './Menu.jsx';
-import samplePlaylist from './../config/samplePlaylist.jsx';
+import samplePlaylist from './../config/samplePlaylist';
 
 const NAVBAR_HEIGHT = 60; // px
 const PLAYER_HEIGHT = 0; // px
