@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import Playlist from './../components/Playlist.jsx'
+import App from '../components/App.jsx'
 
 const Landing = () => (
   <div>
@@ -14,7 +14,7 @@ const Landing = () => (
 const routes = (
   <div>
     <Route exact path="/" component={Landing} />
-    <Route exact path="/playlist" component={Playlist} />
+    <Route exact path="/playlist" component={App} />
   </div>
 );
 

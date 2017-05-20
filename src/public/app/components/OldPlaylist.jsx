@@ -1,8 +1,9 @@
 import React from 'react';
-import Song from './Song.jsx';
+import Song from '../components/Song.jsx';
 import Player from './Player.jsx';
-import Menu from './Menu.jsx';
+import Menu from '../components/Menu.jsx';
 import samplePlaylist from './../config/samplePlaylist';
+
 
 const NAVBAR_HEIGHT = 60; // px
 const PLAYER_HEIGHT = 0; // px
@@ -18,7 +19,7 @@ class Playlist extends React.Component {
   }
 
   setCurrentSong(song) {
-    this.setState({currentSong: song})
+    this.setState({ currentSong: song });
   }
 
   render() {

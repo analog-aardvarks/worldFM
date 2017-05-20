@@ -1,7 +1,7 @@
-export function setCurrentSong(song) {
+export function setCurrentSong(previewUrl) {
   return {
     type: 'SET_CURRENT_SONG',
-    song,
+    previewUrl,
   };
 }
 

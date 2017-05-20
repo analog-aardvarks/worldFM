@@ -1,10 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter as Router } from 'react-router-dom';
+import Menu from './Menu.jsx';
+import CurrentPlaylist from '../containers/CurrentPlaylist.jsx';
+import Player from '../containers/Player.jsx';
 
-import routes from '../config/routes.jsx';
-
-ReactDOM.render(
-  <Router>{routes}</Router>,
-  document.getElementById('app')
+const App = () => (
+  <div>
+    <Menu />
+    <CurrentPlaylist />
+    <Player />
+  </div>
 );
+
+export default App;

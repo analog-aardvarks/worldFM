@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import samplePlaylist from '../config/samplePlaylist';
 
-function playlist(state = samplePlaylist, action) {
+function playlist(state = samplePlaylist.items, action) {
   switch (action.type) {
     case 'SET_PLAYLIST':
       return action.playlist;
@@ -20,9 +20,9 @@ function currentSong(state = {}, action) {
 }
 
 
-const worldFM = combineReducers({
+const reducer = combineReducers({
   playlist,
   currentSong,
 });
 
-export default worldFM;
+export default reducer;
