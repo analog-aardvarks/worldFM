@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/analog-aardvarks/thesis#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "bookshelf": "^0.10.3",
     "express": "^4.15.3",
     "express-session": "^1.15.2",
@@ -29,6 +30,7 @@
     "passport-spotify": "^0.3.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-audio-player": "^0.5.0",
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1"
