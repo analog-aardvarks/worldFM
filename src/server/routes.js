@@ -13,15 +13,14 @@ routes.get('/auth/logout', (req, res) => {
   res.redirect('/');
 });
 
-routes.get('/', (req, res) => res.send('<a href="/auth/spotify">Log in with Spotify</a>'));
+// routes.get('/', (req, res) => res.send(''<a href="/auth/spotify">Log in with Spotify</a>''));
 
 routes.get('/loggedIn', checkAuth, (req, res) => {
   res.send(`<p>Logged in! User info:</p>
     <a href="/auth/logout">Log out</a>
-    <pre>${JSON.stringify(req.user, null, 4)}</pre>`)
-  }
-);
+    <pre>${JSON.stringify(req.user, null, 4)}</pre>`);
+});
 
-routes.get('/playlist', getPlaylist)
+routes.get('/playlist', getPlaylist);
 
 module.exports = routes;
