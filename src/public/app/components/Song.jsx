@@ -9,6 +9,7 @@ const Song = props => {
     return (
       <div>
         <div
+          onClick={() => props.setCurrentSong(props.preview_url)}
           className="Song"
           style={{
             backgroundImage: `url(${props.album.images[0].url})`,
