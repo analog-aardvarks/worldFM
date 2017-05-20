@@ -21,7 +21,7 @@ const Song = props => {
         >
           <SongHover />
           <div className="Song__container">
-            <span className="Song__ranking">{props.ranking}</span>
+            <span className="Song__ranking">{props.ranking < 10 ? `0${props.ranking}` : props.ranking}</span>
             <div className="Song__info">
               <span className="Song__name">{props.name}</span>
               <span className="Song__artist">{props.artists[0].name}</span>
