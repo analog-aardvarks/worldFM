@@ -22,10 +22,10 @@ const getPlaylist = function(owner, id, playlist_id) {
           track_id: item.track.id,
           track_name: item.track.name,
           track_preview_url: item.track.preview_url,
-          track_album_url: item.track.album.images[0].url,
+          track_album_id: item.track.album.id,
+          track_album_image: item.track.album.images[0].url,
+          track_artists_name: item.track.artists[0].name,
           track_playlist_id: playlist_id,
-          // TODO, artists is an array, map name of all artists
-          track_artist_name: item.track.artists[0].name,
         }
       });
     })
