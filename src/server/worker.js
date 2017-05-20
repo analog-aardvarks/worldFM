@@ -74,8 +74,8 @@ const getUserPlaylists = function(user, limit, offset) {
 }
 
 const workerInit = function() {
-  getUserPlaylists('thesoundsofspotify', 50,  0);
-  getUserPlaylists('thesoundsofspotify', 50, 50);
+  getUserPlaylists('thesoundsofspotify', 50,   0);
+  getUserPlaylists('thesoundsofspotify', 50,  50);
   getUserPlaylists('thesoundsofspotify', 50, 100);
   getUserPlaylists('thesoundsofspotify', 50, 150);
   getUserPlaylists('thesoundsofspotify',  2, 200);
