@@ -1,9 +1,10 @@
 import React from 'react';
 import Song from './Song.jsx';
-import Player from './Player.jsx'
+import Player from './Player.jsx';
+import Menu from './Menu.jsx';
 import samplePlaylist from './../config/samplePlaylist.jsx';
 
-const NAVBAR_HEIGHT = 0; // px
+const NAVBAR_HEIGHT = 60; // px
 const PLAYER_HEIGHT = 0; // px
 const PLAYLIST_HEIGHT = window.innerHeight - NAVBAR_HEIGHT - PLAYER_HEIGHT;
 
@@ -11,7 +12,7 @@ class Playlist extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentSong: ''
+      currentSong: '',
     }
     this.setCurrentSong=this.setCurrentSong.bind(this);
   }
@@ -23,6 +24,7 @@ class Playlist extends React.Component {
   render() {
     return (
       <div>
+        <Menu />
         <Player currentSong={this.state.currentSong} />
         <div
           className="Playlist"
