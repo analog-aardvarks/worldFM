@@ -3,6 +3,9 @@ const passport = require('passport');
 const checkAuth = require('./auth').checkAuth;
 const getPlaylist = require('./api').getPlaylist;
 
+let Song = require('./db/models/song.js');
+let Playlist = require('./db/models/playlist.js');
+
 // Auth routes
 routes.get('/auth/spotify', passport.authenticate('spotify'));
 routes.get('/auth/spotify/callback',
@@ -20,5 +23,11 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
 });
 
 routes.get('/playlist', getPlaylist);
+
+//db testing
+routes.post('/songs', Song.addNewSong);
+routes.get('/songs', Song.getAllSongs);
+routes.post('/playlists', Playlist.addNewPlaylist);
+routes.get('/playlists', Playlist.getAllPlaylists);
 
 module.exports = routes;
