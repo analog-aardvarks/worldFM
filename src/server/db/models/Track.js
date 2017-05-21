@@ -1,6 +1,10 @@
 const knex = require('../db.js');
 const Track = {};
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// API Endpoint
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 // GET /track?id=3zT1inKSRDpJvkAXGV7fBd
 Track.getTrack = function(req, res) {
   const id = req.query.id;
@@ -18,6 +22,10 @@ Track.getTrack = function(req, res) {
       .catch(err => console.log(err));
   }
 };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Database
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Track.postTrack = function(track) {
   // console.log(track);
