@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('playlists', function(table) {
       table.string( 'playlist_id');
       table.string( 'playlist_name');
-      table.string( 'playlist_tracks');
+      table.string( 'playlist_tracks', 10000);
       table.integer('playlist_tracks_total');
     })
     .then(function () {
