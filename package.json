@@ -35,8 +35,9 @@
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "spotify-web-api-node": "^2.4.0",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "shuffle-array": "^1.0.1",
+    "spotify-web-api-node": "^2.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

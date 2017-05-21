@@ -44,14 +44,15 @@ routes.get('/tracks', Track.getTrack);
 // gets information about a playlist tracks
 // expects: country, trend, random, limit
 // defaults:
-// if country is not defined, will return global playlist (accepts an array)
-// if trend is not defined, will return a mix all trends (accepts an array)
-// if random is not defined, will return an ordered list
+// if country is not defined, will return global playlist (accepts multiple arguments separated by a comma and no spaces)
+// if trend is not defined, will return a mix all trends (accepts multiple arguments separated by a comma and no spaces)
+// if random is not defined, will return an ordered list (queries with multiple countries or trends will always be random)
 // if limit is not defined, will return 100 tracks
+// example http://localhost:8080/playlist?country=Mexico,Argentina,Colombia,United+States&trend=current,underground&limit=35
 // example http://localhost:8080/playlist?country=Mexico&trend=current&random=true
 // example http://localhost:8080/playlist?trend=underground&limit=50
 // example http://localhost:8080/playlist
-// routes.get('/playlist', Playlist.getPlaylist);
+routes.get('/playlist', Playlist.getPlaylist);
 
 // gets information about a playlist
 // expects a playlist id, if no id is passed it will return an array of all playlists

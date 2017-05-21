@@ -112,4 +112,4 @@ const runWorkers = function() {
 // spotifyWorker('thesoundsofspotify', 1, 0);
 
 // WARNING! Hundreds of API calls, run with caution!
-runWorkers();
+// runWorkers();
