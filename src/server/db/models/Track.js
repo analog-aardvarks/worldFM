@@ -20,7 +20,7 @@ Track.getTrack = function(req, res) {
 };
 
 Track.postTrack = function(track) {
-
+  // console.log(track);
   knex('tracks').where('track_id', track.track_id)
     .then(data => {
       if(data.length > 0) {

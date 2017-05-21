@@ -3,80 +3,113 @@ const Track = require('./db/models/Track.js');
 const Playlist = require('./db/models/Playlist.js');
 const config = require('../../config');
 
-var spotifyApi = new SpotifyWebApi({
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Auth
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const spotifyApi = new SpotifyWebApi({
   clientId : config.clientId,
   clientSecret : config.clientSecret,
 });
 spotifyApi.setAccessToken(config.token);
 
-console.log('Starting Worker...\n');
-console.log(`Spotify OAuth Token: ${config.token}`);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Helpers
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const getPlaylist = function(owner, id, playlist_id) {
-
-  spotifyApi.getPlaylist(owner, id)
-    .then(function(data) {
-
-      return data.body.tracks.items.map(item => {
-        return {
-          track_id: item.track.id,
-          track_name: item.track.name,
-          track_preview_url: item.track.preview_url,
-          track_album_id: item.track.album.id,
-          track_album_image: item.track.album.images[0].url,
-          track_artist_name: item.track.artists[0].name,
-        }
+const promisifyGetPlaylist = function(owner, id) {
+  return new Promise((resolve, reject) => {
+    spotifyApi.getPlaylist(owner, id)
+      .then(function(data) {
+        resolve(data.body.tracks.items);
+      })
+      .catch(function(err) {
+        reject(err);
       });
-    })
-    .then(function(data) {
-      data.forEach(track => {
-        Track.postTrack(track);
-      });
-    })
-    .catch(function(err) {
-      console.log('Something went wrong!', err);
-    });
+  });
 }
 
-const getUserPlaylists = function(user, limit, offset) {
-
-  spotifyApi.getUserPlaylists(user, { limit: limit, offset: offset })
-    .then(function(data) {
-      return data.body.items.map(item => {
-        return {
-          playlist_id: item.id,
-          playlist_name: item.name,
-          playlist_tracks_total: item.tracks.total,
-        }
-      });
-    })
-    .then(function(data) {
-      data.forEach(playlist => {
-        Playlist.postPlaylist(playlist);
-      });
-      return data;
-    })
-    .then(function(data) {
-      data.forEach(playlist => {
-        getPlaylist(user, playlist.playlist_id);
-      });
-    })
-    .catch(function(err) {
-      console.log('Something went wrong!', err);
-    });
+const parseTrackData = function(trackData) {
+  return {
+    track_id: trackData.track.id,
+    track_name: trackData.track.name,
+    track_preview_url: trackData.track.preview_url,
+    track_album_id: trackData.track.album.id,
+    track_album_image: trackData.track.album.images[0].url,
+    track_artist_name: trackData.track.artists[0].name,
+  }
 }
 
-const workerInit = function() {
-  getUserPlaylists('thesoundsofspotify', 50,   0);
-  getUserPlaylists('thesoundsofspotify', 50,  50);
-  getUserPlaylists('thesoundsofspotify', 50, 100);
-  getUserPlaylists('thesoundsofspotify', 50, 150);
-  getUserPlaylists('thesoundsofspotify',  2, 200);
+const parsePlaylistData = function(playlistData, tracksArray) {
+  return {
+    playlist_id: playlistData.id,
+    playlist_name: playlistData.name,
+    playlist_tracks: JSON.stringify(tracksArray),
+    playlist_tracks_total: tracksArray.length,
+  }
 }
 
-// WARNING! only run when needed, hundreds of API calls in here!
-// workerInit();
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Worker
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const spotifyWorker = function(owner, limit, offset) {
+  spotifyApi.getUserPlaylists(owner, { limit: limit, offset: offset })
+    .then(data => {
+      data.body.items.forEach(playlistData => {
+
+        const p = promisifyGetPlaylist(owner, playlistData.id);
+        p.then(tracksData => {
+
+          const tracksArray = [];
+          tracksData.forEach(singleTrackData => {
+
+            tracksArray.push(singleTrackData.track.id);
+            const parsedTrackData = parseTrackData(singleTrackData);
+            // save data!
+            // console.log(parsedTrackData)
+            Track.postTrack(parsedTrackData);
+          })
+          return tracksArray;
+        })
+        .then(tracksArray => {
+           const parsedPlaylistData = parsePlaylistData(playlistData, tracksArray);
+           // console.log(parsedPlaylistData);
+           // save data!
+           Playlist.postPlaylist(parsedPlaylistData);
+        })
+        .catch(err => console.log(err));
+      });
+    })
+    .catch(err => console.log(err));
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Main
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const runWorkers = function() {
+  // attemps to get relevant playlists!
+  spotifyWorker('thesoundsofspotify', 50,   0);
+  spotifyWorker('thesoundsofspotify', 50,  50);
+  spotifyWorker('thesoundsofspotify', 50, 100);
+  spotifyWorker('thesoundsofspotify', 50, 150);
+  spotifyWorker('thesoundsofspotify',  2, 200);
+
+  // EXPERIMENTAL, attemps to get all 9000+ playlists!
+
+  // for(var i = 0; i <= 10000; i += 50) {
+  //   spotifyWorker('thesoundsofspotify', 50,   i);
+  // }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Run!
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // TESTS
-// getPlaylist('thesoundsofspotify', '0fk9bF0uBAigYUih89Ye30'); // the needle - emerging
-getUserPlaylists('thesoundsofspotify', 10, 10); // some playlists
+// uncomment and include id, limit, offset
+// spotifyWorker('thesoundsofspotify', 1, 0);
+
+// WARNING! Hundreds of API calls, run with caution!
+runWorkers();
