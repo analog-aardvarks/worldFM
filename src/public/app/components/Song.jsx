@@ -4,35 +4,35 @@ import SongHover from './SongHover.jsx'
 
 const TOTAL_MARGINS = 2; // px
 
-const Song = props => {
-    const size = props.size - TOTAL_MARGINS;
-    return (
-      <div>
-        <div
-          onClick={() => props.setCurrentSong(props.preview_url)}
-          className="Song"
-          style={{
-            backgroundImage: `url(${props.album.images[0].url})`,
-            minWidth: size,
-            maxWidth: size,
-            minHeight: size,
-            maxHeight: size
-          }}
-        >
-          <SongHover />
-          <div className="Song__container">
-            <span className="Song__ranking">{props.ranking < 10 ? `0${props.ranking}` : props.ranking}</span>
-            <div className="Song__info">
-              <span className="Song__name">{props.name}</span>
-              <span className="Song__artist">{props.artists[0].name}</span>
-            </div>
-            <span className="Song__expand">
-              <i className="fa fa-chevron-circle-up fa-2x fa-fw"></i>
-            </span>
+const Song = ({ size, track, onClick }) => {
+  const netSize = size - TOTAL_MARGINS;
+  return (
+    <div>
+      <div
+        onClick={() => onClick(track.preview_url)}
+        className="Song"
+        style={{
+          backgroundImage: `url(${track.album.images[0].url})`,
+          minWidth: netSize,
+          maxWidth: netSize,
+          minHeight: netSize,
+          maxHeight: netSize
+        }}
+      >
+        <SongHover />
+        <div className="Song__container">
+          <span className="Song__ranking">{track.ranking < 10 ? `0${track.ranking}` : track.ranking}</span>
+          <div className="Song__info">
+            <span className="Song__name">{track.name}</span>
+            <span className="Song__artist">{track.artists[0].name}</span>
           </div>
+          <span className="Song__expand">
+            <i className="fa fa-chevron-circle-up fa-2x fa-fw" />
+          </span>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default Song;
