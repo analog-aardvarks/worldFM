@@ -1,6 +1,6 @@
 export function setCurrentSong(previewUrl) {
   return {
-    type: 'SET_CURRENT_SONG',
+    type: 'PLAY_PREVIEW',
     previewUrl,
   };
 }

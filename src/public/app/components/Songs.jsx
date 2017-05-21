@@ -1,7 +1,7 @@
 import React from 'react';
 import Song from './Song.jsx';
 import Menu from './Menu.jsx';
-import PLAYLIST_HEIGHT from '../config/dimensions';
+import { PLAYLIST_HEIGHT } from '../config/dimensions';
 
 const Songs = ({ playlist, onClick }) => (
   <div

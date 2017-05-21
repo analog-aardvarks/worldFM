@@ -12,8 +12,8 @@ function playlist(state = samplePlaylist.items, action) {
 
 function currentSong(state = {}, action) {
   switch (action.type) {
-    case 'SET_CURRENT_SONG':
-      return action.song;
+    case 'PLAY_PREVIEW':
+      return action.previewUrl;
     default:
       return state;
   }
