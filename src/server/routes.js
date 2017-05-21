@@ -3,7 +3,7 @@ const passport = require('passport');
 const checkAuth = require('./auth').checkAuth;
 const getPlaylist = require('./api').getPlaylist;
 
-const Song = require('./db/models/song.js');
+const Track = require('./db/models/track.js');
 const Playlist = require('./db/models/playlist.js');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,24 +28,33 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
 routes.get('/playlist', getPlaylist);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Songs
+// Tracks
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// gets information about a song
-// expects a song id, if no id is passed it will return an array of all songs
-// example http://localhost:8080/song
-// example http://localhost:8080/song?id=3zT1inKSRDpJvkAXGV7fBd
-routes.get('/song', Song.getSong);
+// gets information about a track
+// expects a track id, if no id is passed it will return an array of all tracks
+// example http://localhost:8080/track
+// example http://localhost:8080/track?id=3zT1inKSRDpJvkAXGV7fBd
+routes.get('/track', Track.getSong);
+
+// save a track in the database
+// input is a track object
+routes.post('/track', Track.postSong);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Playlists
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// get /playlist () the needle world mix
-//routes.get('/playlists', Playlist.getAllPlaylists);
+// gets information about a playlist
+// expects a playlist id, if no id is passed it will return an array of all playlists
+// example http://localhost:8080/playlist/info
+// example http://localhost:8080/playlist/info?id=4LbFHmTvu6bQldLAiCQ8KG
+routes.get('/playlist/info', Playlist.getPlaylistInfo);
 
-// post /playlist ({ playlist })
-//routes.post('/playlists', Playlist.addNewPlaylist);
+// get /playlist () the needle world mix
+//routes.get('/playlists', Playlist.getPlaylist);
+
+// get /playlist/info
 
 // get /playlist/current () the needle world mix current
 

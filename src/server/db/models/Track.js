@@ -19,7 +19,7 @@ Song.getSong = function(req, res) {
   }
 };
 
-Song.addNewSong = function(song) {
+Song.postSong = function(song) {
 
   knex('songs').where('track_id', song.track_id)
     .then(data => {
