@@ -27,7 +27,7 @@ Playlist.postPlaylist = function(playlist) {
         console.log('Playlist already exists!');
       } else {
         knex('playlists').insert(playlist)
-          .then(() => console.log(`Playlist ${playlist.playlist_id} successfully added!`))
+          .then(() => console.log(`Playlist ${playlist.playlist_name} successfully added!`))
           .catch(err => console.log(err));
       }
     })

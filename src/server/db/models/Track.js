@@ -1,40 +1,40 @@
 const knex = require('../db.js');
-const Song = {};
+const Track = {};
 
-// GET /song?id=3zT1inKSRDpJvkAXGV7fBd
-Song.getSong = function(req, res) {
+// GET /track?id=3zT1inKSRDpJvkAXGV7fBd
+Track.getTrack = function(req, res) {
   const id = req.query.id;
 
   if(!id) {
-    // return all songs
-    knex('songs').select('*')
-      .then(songs => res.status(200).send(songs))
+    // return all tracks
+    knex('tracks').select('*')
+      .then(tracks => res.status(200).send(tracks))
       .catch(err => console.log(err));
   } else {
 
-    // return one song
-    knex('songs').where('track_id', id)
-      .then(song => res.status(200).send(song))
+    // return one track
+    knex('tracks').where('track_id', id)
+      .then(track => res.status(200).send(track))
       .catch(err => console.log(err));
   }
 };
 
-Song.postSong = function(song) {
+Track.postTrack = function(track) {
 
-  knex('songs').where('track_id', song.track_id)
+  knex('tracks').where('track_id', track.track_id)
     .then(data => {
       if(data.length > 0) {
-        console.log('Song already exists!');
+        console.log('Track already exists!');
       } else {
-        knex('songs').insert(song)
-          .then(() => console.log(`Song ${song.track_id} successfully added!`))
+        knex('tracks').insert(track)
+          .then(() => console.log(`Track ${track.track_name} successfully added!`))
           .catch(err => console.log(err));
       }
     })
     .catch(err => console.log(err));
 };
 
-module.exports = Song;
+module.exports = Track;
 
 // const sample = {
 //   track_id: '3zT1inKSRDpJvkAXGV7fB7',
