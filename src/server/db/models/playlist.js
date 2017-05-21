@@ -103,11 +103,20 @@ Playlist.getPlaylist = function(req, res) {
       console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
 
       // query database for curatedTracks
-      res.status(200).send(curatedTracks);
+      knex('tracks')
+        .groupBy('track_id') // removes duplicate id's (not necessary in theory but still...)
+        .whereIn('track_id', curatedTracks)
+        .then(data => {
+          res.status(200).send(data);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(404).send('Something went wrong!', err);
+        });
     })
     .catch(err => {
       console.log(err);
-      res.status(404).send('Something went wrong!');
+      res.status(404).send('Something went wrong!', err);
     });
 }
 
