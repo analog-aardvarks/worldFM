@@ -1,15 +1,16 @@
-module.exports = {
+var config = require('../../../config.js');
 
-  development: {client: 'mysql',
+// database now deployed!
+// if you want to experiment and add experimental features
+// please use a local version of the database
+module.exports = {
+  development: {
+    client: 'mysql',
     connection: {
-      host : '127.0.0.1',
-      user : 'root',
-      password : '',
-      database : 'worldfm'
+      host : config.db_host,
+      user : config.db_username,
+      password : config.db_password,
+      database : config.db_name,
     },
   },
-  production: {
-    client: 'mysql',
-    connection: process.env.DATABASE_URL
-  }
 };

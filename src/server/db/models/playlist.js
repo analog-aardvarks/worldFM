@@ -1,33 +1,44 @@
-let db = require('./db.js');
+const knex = require('../db.js');
+const Playlist = {};
 
-let Playlist = {};
+// GET /playlist?id=3zT1inKSRDpJvkAXGV7fBd
+Playlist.getPlaylistInfo = function(req, res) {
+  const id = req.query.id;
 
-Playlist.addNewPlaylist = function(req, res) {
-  let name = 'test1';        //test data
-  let playlistId = '123';      //test data
-  let tracks = 4;            //test data
-  return db('playlists').insert({
-      name: name,
-      playlistId: playlistId,
-      tracks: tracks
-    })
-    .then(() => {
-      res.status(201).send('playlist added!');
-    })
-    .catch((err) => {
-      console.log('error adding playlist to db: ', err);
-    });
+  if(!id) {
+    // return all playlists
+    knex('playlists').select('*')
+      .then(playlists => res.status(200).send(playlists))
+      .catch(err => console.log(err));
+  } else {
+
+    // return one playlist
+    knex('playlists').where('playlist_id', id)
+      .then(playlist => res.status(200).send(playlist))
+      .catch(err => console.log(err));
+  }
 };
 
-Playlist.getAllPlaylists = (req, res) => {
-  return db('playlists').select('*')
-    .then((playlists) => {
-      res.status(200).send(playlists);
-    })
-    .catch((err) => {
-      console.log('error getting playlists from db: ', err);
-    });
-}
+Playlist.postPlaylist = function(playlist) {
 
+  knex('playlists').where('playlist_id', playlist.playlist_id)
+    .then(data => {
+      if(data.length > 0) {
+        console.log('Playlist already exists!');
+      } else {
+        knex('playlists').insert(playlist)
+          .then(() => console.log(`Playlist ${playlist.playlist_name} successfully added!`))
+          .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
+};
 
 module.exports = Playlist;
+
+// const sample = {
+//   playlist_id: '4LbFHmTvu6bQldLAiCQ8KG',
+//   playlist_name: 'The Needle 20170518',
+//   playlist_tracks_total: 300,
+// }
+// Playlist.postPlaylist(sample);
