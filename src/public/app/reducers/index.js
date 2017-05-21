@@ -10,7 +10,7 @@ function playlist(state = samplePlaylist.items, action) {
   }
 }
 
-function currentSong(state = {}, action) {
+function currentSong(state = '', action) {
   switch (action.type) {
     case 'PLAY_PREVIEW':
       return action.previewUrl;
