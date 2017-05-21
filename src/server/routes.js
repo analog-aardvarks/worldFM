@@ -3,10 +3,13 @@ const passport = require('passport');
 const checkAuth = require('./auth').checkAuth;
 const getPlaylist = require('./api').getPlaylist;
 
-let Song = require('./db/models/song.js');
-let Playlist = require('./db/models/playlist.js');
+const Song = require('./db/models/song.js');
+const Playlist = require('./db/models/playlist.js');
 
-// Auth routes
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Auth
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 routes.get('/auth/spotify', passport.authenticate('spotify'));
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
@@ -24,10 +27,38 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
 
 routes.get('/playlist', getPlaylist);
 
-//db testing
-routes.post('/songs', Song.addNewSong);
-routes.get('/songs', Song.getAllSongs);
-routes.post('/playlists', Playlist.addNewPlaylist);
-routes.get('/playlists', Playlist.getAllPlaylists);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Songs
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// gets information about a song
+// expects a song id, if no id is passed it will return an array of all songs
+// example http://localhost:8080/song
+// example http://localhost:8080/song?id=3zT1inKSRDpJvkAXGV7fBd
+routes.get('/song', Song.getSong);
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Playlists
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// get /playlist () the needle world mix
+//routes.get('/playlists', Playlist.getAllPlaylists);
+
+// post /playlist ({ playlist })
+//routes.post('/playlists', Playlist.addNewPlaylist);
+
+// get /playlist/current () the needle world mix current
+
+// get /playlist/emerging () the needle world mix current
+
+// get /playlist/underground () the needle world mix current
+
+// get /playlist/:country () playlist mix for that country
+
+// get /playlist/:country/current () playlist mix for that country
+
+// get /playlist/:country/emerging () playlist mix for that country
+
+// get /playlist/:country/underground () playlist mix for that country
 
 module.exports = routes;
