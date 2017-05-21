@@ -1,33 +1,31 @@
-let db = require('./db.js');
-
-let Playlist = {};
-
+const knex = require('../db.js');
+const Playlist = {};
 Playlist.addNewPlaylist = function(req, res) {
-  let name = 'test1';        //test data
-  let playlistId = '123';      //test data
-  let tracks = 4;            //test data
-  return db('playlists').insert({
-      name: name,
-      playlistId: playlistId,
-      tracks: tracks
-    })
+
+  const sample = {
+    playlist_id: '4LbFHmTvu6bQldLAiCQ8KF',
+    playlist_name: 'The Needle 20170518',
+    playlist_tracks_total: 300,
+  }
+
+  return knex('playlists').insert(sample)
     .then(() => {
-      res.status(201).send('playlist added!');
+      console.log(`Playlist ${sample.playlist_id} successfully added!`);
+      res.status(300).send();
     })
-    .catch((err) => {
-      console.log('error adding playlist to db: ', err);
+    .catch(err => {
+      console.log('Something went wrong!', err);
     });
 };
 
 Playlist.getAllPlaylists = (req, res) => {
-  return db('playlists').select('*')
-    .then((playlists) => {
+  return knex('playlists').select('*')
+    .then(playlists => {
       res.status(200).send(playlists);
     })
-    .catch((err) => {
-      console.log('error getting playlists from db: ', err);
+    .catch(err => {
+      console.log('Something went wrong!', err);
     });
 }
-
 
 module.exports = Playlist;
