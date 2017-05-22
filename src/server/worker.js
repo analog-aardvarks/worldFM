@@ -40,7 +40,7 @@ const parseTrackData = trackData => ({
   track_preview_url: trackData.track.preview_url,
   track_album_id: trackData.track.album.id,
   track_album_image: trackData.track.album.images[0].url,
-  track_artist_name: trackData.track.artists[0].name,
+  track_artist_name: JSON.stringify(trackData.track.artists.map(artist => artist.name)),
 });
 
 // Parse raw data to be in line with schema structure

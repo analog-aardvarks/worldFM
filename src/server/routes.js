@@ -37,6 +37,9 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
 // http://localhost:8080/track?id=3zT1inKSRDpJvkAXGV7fBd
 routes.get('/tracks', Track.getTrack);
 
+// Returns the number of available tracks
+routes.get('/tracks/length', Track.getTrackLength);
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Playlists
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,5 +70,8 @@ routes.get('/playlist', Playlist.getPlaylist);
 // http://localhost:8080/playlist
 // http://localhost:8080/playlist?id=3zT1inKSRDpJvkAXGV7fBd
 routes.get('/playlist/info', Playlist.getPlaylistInfo);
+
+// Returns the number of available playlist
+routes.get('/playlist/length', Playlist.getPlaylistLength);
 
 module.exports = routes;
