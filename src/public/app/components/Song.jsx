@@ -4,8 +4,9 @@ import SongHover from './SongHover.jsx'
 
 const TOTAL_MARGINS = 2; // px
 
-const Song = ({ size, track, onClick }) => {
+const Song = ({ size, track, onClick, ranking }) => {
   const netSize = size - TOTAL_MARGINS;
+  console.log(track);
   return (
     <div>
       <div
@@ -21,7 +22,7 @@ const Song = ({ size, track, onClick }) => {
       >
         <SongHover />
         <div className="Song__container">
-          <span className="Song__ranking">{track.ranking < 10 ? `0${track.ranking}` : track.ranking}</span>
+          <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
             <span className="Song__name">{track.name}</span>
             <span className="Song__artist">{track.artists[0].name}</span>
