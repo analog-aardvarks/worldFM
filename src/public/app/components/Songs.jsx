@@ -15,11 +15,7 @@ const Songs = ({ playlist, onClick }) => (
         key={listItem.track.id}
         ranking={idx + 1}
         track={listItem.track}
-        name={listItem.track.name}
-        artists={listItem.track.artists}
-        album={listItem.track.album}
         size={PLAYLIST_HEIGHT / 3}
-        preview_url={listItem.track.preview_url}
         onClick={onClick}
       />
     ))}
