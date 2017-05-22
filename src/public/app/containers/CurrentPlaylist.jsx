@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     onClick: previewUrl =>
-      dispatch(setCurrentSong(previewUrl)),
+      dispatch(setCurrentSong(previewUrl))
   };
 }
 

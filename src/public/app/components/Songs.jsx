@@ -10,15 +10,17 @@ const Songs = ({ playlist, onClick }) => (
       height: PLAYLIST_HEIGHT,
     }}
   >
-    {playlist.map((listItem, idx) => (
+    {
+      playlist.map((listItem, idx) => (
       <Song
-        key={listItem.track.id}
+        key={listItem.track_id}
         ranking={idx + 1}
-        track={listItem.track}
+        track={listItem}
         size={PLAYLIST_HEIGHT / 3}
         onClick={onClick}
       />
     ))}
+
   </div>
 );
 
