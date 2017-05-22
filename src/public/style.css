@@ -20,6 +20,10 @@ body {
   user-select: none;
 }
 
+.DropDown {
+  background-color: black;
+}
+
 .Login {
   align-items: flex-start;
   color: white;

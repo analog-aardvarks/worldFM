@@ -91,9 +91,9 @@ const spotifyWorker = (owner, limit, offset) => {
 
 const runWorkers = () => {
   // spotifyWorker('thesoundsofspotify', 50, 0);
-  spotifyWorker('thesoundsofspotify', 50, 50);
+  // spotifyWorker('thesoundsofspotify', 50, 50);
   // spotifyWorker('thesoundsofspotify', 50, 100);
-  // spotifyWorker('thesoundsofspotify', 50, 150);
+  spotifyWorker('thesoundsofspotify', 50, 150);
   // spotifyWorker('thesoundsofspotify', 2, 200);
 
   // EXPERIMENTAL! (not tested)

@@ -6,14 +6,14 @@ const TOTAL_MARGINS = 2; // px
 
 const Song = ({ size, track, onClick, ranking }) => {
   const netSize = size - TOTAL_MARGINS;
-  console.log(track);
+  // console.log(track);
   return (
     <div>
       <div
-        onClick={() => onClick(track.preview_url)}
+        onClick={() => onClick(track.track_preview_url)}
         className="Song"
         style={{
-          backgroundImage: `url(${track.album.images[0].url})`,
+          backgroundImage: `url(${track.track_album_image})`,
           minWidth: netSize,
           maxWidth: netSize,
           minHeight: netSize,
@@ -24,8 +24,8 @@ const Song = ({ size, track, onClick, ranking }) => {
         <div className="Song__container">
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
-            <span className="Song__name">{track.name}</span>
-            <span className="Song__artist">{track.artists[0].name}</span>
+            <span className="Song__name">{track.track_name}</span>
+            <span className="Song__artist">{JSON.parse(track.track_artist_name).join(', ')}</span>
           </div>
           <span className="Song__expand">
             <i className="fa fa-chevron-circle-up fa-2x fa-fw" />
