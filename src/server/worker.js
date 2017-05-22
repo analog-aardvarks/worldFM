@@ -42,7 +42,7 @@ const parseTrackData = function(trackData) {
     track_preview_url: trackData.track.preview_url,
     track_album_id: trackData.track.album.id,
     track_album_image: trackData.track.album.images[0].url,
-    track_artist_name: trackData.track.artists[0].name,
+    track_artist_name: JSON.stringify(trackData.track.artists.map(artist => artist.name)),
   }
 }
 
@@ -128,4 +128,4 @@ const runWorkers = function() {
 // Attemps to get the first 202 playlists from user 'thesoundsofspotify'
 // WARNING! Hundreds of API calls, run with caution as call limit can be reached fast
 
-// runWorkers();
+runWorkers();

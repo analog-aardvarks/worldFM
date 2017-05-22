@@ -23,6 +23,13 @@ Track.getTrack = function(req, res) {
   }
 };
 
+// GET /track/length
+Track.getTrackLength = function(req, res) {
+  knex('tracks').select('*')
+    .then(tracks => res.status(200).send([tracks.length]))
+    .catch(err => console.log(err));
+};
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Database
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,6 +57,5 @@ module.exports = Track;
 //   track_preview_url: 'https://p.scdn.co/mp3-preview/f1c38fd4fa160a628ecebb2446be9aef18280bd0?cid=8897482848704f2a8f8d7c79726a70d4',
 //   track_album_id: '0GfYO21pue5u0sVEYk9HZO',
 //   track_album_image: 'https://i.scdn.co/image/957ffcfe80acb7ff395fe5ce9cc42ad3be184d47',
-//   track_artist_name: '["Salvador Sobral", "Leonidas Gómez"]',
-//   track_playlist_id: '4LbFHmTvu6bQldLAiCQ8KF'
+//   track_artist_name: '["Salvador Sobral", "Leonidas Gómez"]'
 // }

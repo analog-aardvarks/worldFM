@@ -1,5 +1,4 @@
 const knex = require('../db.js');
-const shuffle = require('shuffle-array');
 const Playlist = {};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,10 +55,20 @@ const filterPlaylistsByTrends = function(playlists, trends) {
   return curatedPlaylists;
 }
 
-// makes use of 'shuffle-array' npm module
+// Using Durstenfeld shuffle algorithm.
+const shuffleArray = function(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
 const randomizeTracks = function(tracks, randomizeTracks) {
-  if(!randomizeTracks) return tracks;
-  return shuffle(tracks);
+  if(randomizeTracks === false) return tracks;
+  return shuffleArray(tracks);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,7 +101,6 @@ Playlist.getPlaylist = function(req, res) {
         return acc.concat(JSON.parse(playlist.playlist_tracks));
       }, []);
       curatedTracks = Array.from(new Set(curatedTracks));
-      curatedTracks = randomizeTracks(curatedTracks, randomize);
       // TODO! check lower limit
       if(curatedTracks.length + 1 > props.limit) curatedTracks = curatedTracks.slice(0, props.limit);
       console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
@@ -102,6 +110,7 @@ Playlist.getPlaylist = function(req, res) {
         .groupBy('track_id') // removes duplicate id's (not necessary in theory but still...)
         .whereIn('track_id', curatedTracks)
         .then(data => {
+          data = randomizeTracks(data, randomize);
           res.status(200).send(data);
         })
         .catch(err => {
@@ -129,6 +138,13 @@ Playlist.getPlaylistInfo = function(req, res) {
       .then(playlist => res.status(200).send(playlist))
       .catch(err => console.log(err));
   }
+};
+
+// GET /playlist/length
+Playlist.getPlaylistLength = function(req, res) {
+  knex('playlists').select('*')
+    .then(playlist => res.status(200).send([playlist.length]))
+    .catch(err => console.log(err));
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
