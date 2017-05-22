@@ -1,6 +1,7 @@
 body {
   /*background-color: rgb(230, 230, 230);*/
   background-color: #171717;
+  padding-top: 60px;
 }
 
 .Menu {
@@ -18,10 +19,20 @@ body {
   -moz-user-select: none;     /* Firefox all */
   -ms-user-select: none;      /* IE 10+ */
   user-select: none;
+  position: fixed;
+  width: 100%;
+  margin-top: -60px;
+}
+
+.Menue--DropDowns {
+  display: flex;
+  justify-content: space-around;
+  min-width: 100%;
 }
 
 .DropDown {
-  background-color: black;
+  background-color: #171717;
+  margin-right: 40px;
 }
 
 .Login {
