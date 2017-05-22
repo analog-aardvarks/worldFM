@@ -1,8 +1,8 @@
 var config = require('../../../config.js');
 
-// database now deployed!
-// if you want to experiment and add experimental features
-// please use a local version of the database
+// Database is currently deployed, ask scrum master for credentials
+// If you want to make experimental changes or drop the database
+// please use a local version
 module.exports = {
   development: {
     client: 'mysql',
