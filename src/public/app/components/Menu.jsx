@@ -27,16 +27,22 @@ class Menu extends React.Component {
   }
 
   handleCountryChange(event) {
-    this.setState({country: event.target.value});
+    console.log('this is the target value for country', event.target.value)
+    this.state.country = event.target.value;
+    this.handleSubmit();
   }
 
   handleCategoryChange(event) {
-    this.setState({category: event.target.value})
+    console.log('this is the target value for category', event.target.value)
+    this.state.category = event.target.value;
+    this.handleSubmit();
   }
 
   handleSubmit(event) {
+    console.log(`http://localhost:8080/playlist?country=${this.state.country}&trend=${this.state.category}`);
     fetch(`http://localhost:8080/playlist?country=${this.state.country}&trend=${this.state.category}`)
     .then(res => {
+      this.forceUpdate();
       return res.json();
     })
     .then(res => {
@@ -48,23 +54,18 @@ class Menu extends React.Component {
     return (
       <div className="Menu">
           <h1>world.fm</h1>
-          <form onSubmit={this.handleSubmit}>
+          <div>
             <label>
               Pick your country!
-              <select className="DropDown"  value={this.state.country} onChange={this.handleCountryChange}>
+              <select className="DropDown" value={this.state.country} onChange={this.handleCountryChange}>
                 {this.state.countries.map((playlist, idx) => <option key={idx}>{playlist}</option>)}
               </select>
             </label>
-            <input className="DropDown" type="submit" value="Submit" />
-          </form>
-          <form onSubmit={this.handleSubmit}>
             Pick your category!
             <select className="DropDown" value={this.state.category} onChange={this.handleCategoryChange}>
               {this.state.categories.map((category, idx) => <option key={idx}>{category}</option>)}
             </select>
-            <input className="DropDown" type="submit" value="Submit" />
-          </form>
-
+          </div>
           <a className="Login" href="/auth/spotify">Login</a>
       </div>
     );
