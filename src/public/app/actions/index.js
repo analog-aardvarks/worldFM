@@ -25,3 +25,10 @@ export function setCurrentTrend(trend) {
     trend,
   };
 }
+
+export function setWindowWidth(newSize) {
+  return {
+    type: 'WINDOW_RESIZE',
+    newSize,
+  };
+}
