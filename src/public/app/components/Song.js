@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SongHover from './SongHover.jsx'
+import SongHover from './SongHover'
 
 const TOTAL_MARGINS = 2; // px
 

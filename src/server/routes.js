@@ -2,8 +2,8 @@ const routes = require('express').Router();
 const passport = require('passport');
 const checkAuth = require('./auth').checkAuth;
 
-const Track = require('./db/models/Track.js');
-const Playlist = require('./db/models/playlist.js');
+const Track = require('./helpers/Track');
+const Playlist = require('./helpers/Playlist');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth

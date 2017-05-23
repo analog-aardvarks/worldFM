@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
-import samplePlaylist from '../config/samplePlaylist';
-import {reducer as burgerMenu} from 'redux-burger-menu';
+// import {reducer as burgerMenu} from 'redux-burger-menu';
 
-function playlist(state = samplePlaylist, action) {
+function playlist(state = [], action) {
   switch (action.type) {
     case 'SET_PLAYLIST':
       return action.playlist;
@@ -20,14 +19,18 @@ function currentSong(state = '', action) {
   }
 }
 
-function burgerMenu(state = '', action) {
-  
-}
-
 const reducer = combineReducers({
   playlist,
   currentSong,
-  burgerMenu
+  // burgerMenu,
 });
 
 export default reducer;
+
+// const state = {
+//   playlist: [], // SET_PLAYLIST
+//   currentSong: '', // SET_CURRENT_SONG
+//   isPlaying: false, // PLAY_PLAYER, PAUSE_PLAYER
+//   windowSize: { w: 100, h: 100 }, // RESIZE_WINDOW
+//   // flags: bool and/or {}, (for animations)
+// }

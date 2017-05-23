@@ -1,8 +1,8 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 const config = require('../../config');
 
-const Track = require('./db/models/Track');
-const Playlist = require('./db/models/playlist');
+const Track = require('./helpers/Track');
+const Playlist = require('./helpers/Playlist');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth

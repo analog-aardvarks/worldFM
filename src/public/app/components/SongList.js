@@ -1,8 +1,11 @@
 import React from 'react';
-import Song from './Song.jsx';
-import Menu from './Menu.jsx';
-import { PLAYLIST_HEIGHT } from '../config/dimensions';
-import { PLAYLIST_WIDTH } from '../config/dimensions';
+import Song from './Song';
+import Menu from './Menu';
+
+const NAVBAR_HEIGHT = 60; // px
+const PLAYER_HEIGHT = 0; // px
+const PLAYLIST_HEIGHT = window.innerHeight - NAVBAR_HEIGHT - PLAYER_HEIGHT;
+const PLAYLIST_WIDTH = window.innerWidth;
 
 const Songs = ({ playlist, onClick }) => {
   let width = 0;

@@ -11,7 +11,8 @@ body {
   background-color: #171717;
   height: 60px;
   color: white;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Roboto', cursive;
+  font-weight: 400;
   padding-left: 40px;
   padding-right: 40px;
   cursor: default;
@@ -22,15 +23,27 @@ body {
   position: fixed;
   width: 100%;
   margin-top: -60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.Menue--DropDowns {
+.Menu--logo {
+  font-family: 'Permanent Marker', cursive;
+  margin: 0;
+}
+
+.Menu--DropDowns {
+  font-family: 'Roboto', cursive;
+  font-weight: 400;
   display: flex;
   justify-content: space-around;
   min-width: 100%;
 }
 
 .DropDown {
+  font-family: 'Roboto', cursive;
+  font-weight: 400;
   background-color: #171717;
   margin-right: 40px;
 }
@@ -41,6 +54,7 @@ body {
   cursor: pointer;
   font-size: 18pt;
   text-decoration: none;
+  font-family: 'Permanent Marker', cursive;
 }
 
 .Login:hover {
@@ -86,7 +100,8 @@ body {
   max-width: 100%;
   align-items: center;
   justify-content: space-between;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Roboto', cursive;
+  font-weight: 400;
   font-size: 15px;
   color: rgb(230, 230, 230);
   padding: 5px;
@@ -107,10 +122,12 @@ body {
 }
 
 .Song__ranking {
+  font-family: 'Permanent Marker', cursive;
   color: rgb(230, 230, 230);
   font-size: 24px;
   min-width: 42px;
   padding-right: 10px;
+  display: none;
 }
 
 .Song__expand {

@@ -5,9 +5,16 @@ import ReactAudioPlayer from 'react-audio-player';
 
 const mapStateToProps = state => ({
   currentSong: state.currentSong,
+  // isPLaying
 });
 
+//
+
 let Player = ({ currentSong }) => {
+
+  // element.pause()
+  // element.play()
+
   return (
     <div>
       <ReactAudioPlayer

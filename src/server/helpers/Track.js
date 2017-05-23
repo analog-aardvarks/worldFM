@@ -1,4 +1,4 @@
-const knex = require('../db.js');
+const knex = require('../db/db');
 const Track = {};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
