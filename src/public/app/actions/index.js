@@ -11,3 +11,17 @@ export function setPlaylist(playlist) {
     playlist,
   };
 }
+
+export function setCurrentCountry(country) {
+  return {
+    type: 'SET_CURRENT_COUNTRY',
+    country,
+  };
+}
+
+export function setCurrentTrend(trend) {
+  return {
+    type: 'SET_CURRENT_TREND',
+    trend,
+  };
+}

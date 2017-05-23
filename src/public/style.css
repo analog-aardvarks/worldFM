@@ -33,22 +33,14 @@ body {
   margin: 0;
 }
 
-.Menu--DropDowns {
-  font-family: 'Roboto', cursive;
-  font-weight: 400;
-  display: flex;
-  justify-content: space-around;
-  min-width: 100%;
-}
-
-.DropDown {
+.Menu--dropdown {
   font-family: 'Roboto', cursive;
   font-weight: 400;
   background-color: #171717;
   margin-right: 40px;
 }
 
-.Login {
+.Menu--login {
   align-items: flex-start;
   color: white;
   cursor: pointer;
@@ -57,13 +49,13 @@ body {
   font-family: 'Permanent Marker', cursive;
 }
 
-.Login:hover {
+.Menu--login:hover {
   color: white;
   opacity: 0.75;
   text-decoration: none;
 }
 
-.Login:active {
+.Menu--login:active {
   opacity: 1;
   color: rgb(30, 215, 96);
 }

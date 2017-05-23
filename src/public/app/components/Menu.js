@@ -1,94 +1,86 @@
-// REFACTOR
-//
-// INTO NAVBAR AND SIDEBAR
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { setPlaylist } from '../actions';
+import { setPlaylist, setCurrentCountry, setCurrentTrend } from '../actions';
+
+// I'll leave this here for now...
+const availableTrends = 'Mix,Current,Emerging,Underground'.split(',');
+const AsiaPacific = 'Australia,Japan,Hong Kong,Indonesia,Malaysia,New Zealand,Philippines,Singapore,Taiwan'.split(',');
+const Europe = 'Andorra,Austria,Belgium,Bulgaria,Cyprus,Czech Republic,Denmark,Estonia,Finland,France,Germany,Greece,Hungary,Iceland,Ireland,Italy,Latvia,Liechtenstein,Lithuania,Luxembourg,Malta,Monaco,Netherlands,Norway,Poland,Portugal,Slovakia,Spain,Sweden,Switzerland,Turkey,UK'.split(',');
+const America = 'Argentina,Bolivia,Brazil,Canada,Chile,Colombia,Costa Rica,Dominican Republic,Ecuador,El Salvador,Guatemala,Honduras,Mexico,Nicaragua,Panama,Paraguay,Peru,Uruguay,USA'.split(',');
+const availableCountries = AsiaPacific.concat(Europe.concat(America)).sort();
+availableCountries.unshift('World');
+
+const mapStateToProps = (state) => ({
+  currentCountry: state.currentCountry,
+  currentTrend: state.currentTrend,
+});
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentCountry: (country) => dispatch(setCurrentCountry(country)),
+  setCurrentTrend: (trend) => dispatch(setCurrentTrend(trend)),
+  setPlaylist: (playlist) => dispatch(setPlaylist(playlist)),
+});
 
 class Menu extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-      // TODO MOVE TO store
-      country: 'Andorra',
-      countries: ['Andorra', 'Argentina', 'Australia', 'Austria', 'Belgium', 'Bolivia',
-          'Brazil', 'Bulgaria', 'Canada', 'Chile', 'Costa Rica', 'Cyprus', 'Czech Republic',
-          'Denmark','Dominican Republic', 'Ecuador', 'El Salvador', 'Estonia', 'Finland', 'France',
-          'Germany', 'Greece',  'Guatemala', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland',
-          'Indonesia', 'Ireland', 'Italy', 'Japan', 'Latvia', 'Liechtenstein', 'Lithuania',
-          'Luxembourg', 'Malaysia', 'Malta', 'Mexico',  'Monaco', 'Netherlands', 'New Zealand',
-          'Nicaragua', 'Norway', 'Panama',  'Paraguay', 'Peru', 'Philippines', 'Poland',
-          'Portugal', 'Singapore',  'Slovakia', 'Spain', 'Sweden', 'Switzerland',
-          'Taiwan', 'Turkey', 'United Kingdom', 'USA', 'Uruguay'],
-        category: 'Mix',
-        categories: ['Mix', 'Current', 'Emerging', 'Underground']
-    }
 
-    // dispatch actions
-    // SET_COUNTRY
-    // SET_TREND
     this.handleCountryChange = this.handleCountryChange.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTrendChange = this.handleTrendChange.bind(this);
   }
 
-  handleCountryChange(event) {
-    console.log('this is the target value for country', event.target.value)
-    this.state.country = event.target.value;
-    this.handleSubmit();
+  componentDidMount() {
+    this.getPlaylist();
   }
 
-  handleCategoryChange(event) {
-    console.log('this is the target value for category', event.target.value)
-    this.state.category = event.target.value;
-    this.handleSubmit();
+  componentDidUpdate() {
+    this.getPlaylist();
   }
 
-  handleSubmit(event) {
-    console.log(`http://localhost:8080/playlist?country=${this.state.country}&trend=${this.state.category}`);
-    fetch(`http://localhost:8080/playlist?country=${this.state.country}&trend=${this.state.category}`)
-    .then(res => {
-      this.forceUpdate();
-      return res.json();
-    })
-    .then(res => {
-      this.props.setPlaylist(res);
-    });
+  handleCountryChange(e) {
+    this.props.setCurrentCountry(e.target.value);
+  }
+
+  handleTrendChange(e) {
+    this.props.setCurrentTrend(e.target.value);
+  }
+
+  getPlaylist(e) {
+    // TODO use axios
+    fetch(`http://localhost:8080/playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
+      .then(res => {
+        return res.json();
+      })
+      .then(res => {
+        this.props.setPlaylist(res);
+      });
   }
 
   render() {
     return (
       <div className="Menu">
         <h1 className='Menu--logo'>world.fm</h1>
+        <label>Pick a country!</label>
+        <select
+          className="Menu--dropdown"
+          value={this.props.currentCountry}
+          onChange={this.handleCountryChange}
+        >
+          {availableCountries.map((country, idx) => <option key={idx}>{country}</option>)}
+        </select>
 
-            <label>
-              Pick your country!
-            </label>
-            <select className="DropDown" value={this.state.country} onChange={this.handleCountryChange}>
-              {this.state.countries.map((playlist, idx) => <option key={idx}>{playlist}</option>)}
-            </select>
-
-            <label>
-              Pick your category!
-            </label>
-            <select
-              className="DropDown"
-              value={this.state.category}
-              onChange={this.handleCategoryChange}
-            >
-              {this.state.categories.map((category, idx) => <option key={idx}>{category}</option>)}
-            </select>
-
-          <a className="Login" href="/auth/spotify">Login</a>
+        <label>Pick a category!</label>
+        <select
+          className="Menu--dropdown"
+          value={this.props.currentTrend}
+          onChange={this.handleTrendChange}
+        >
+          {availableTrends.map((trend, idx) => <option key={idx}>{trend}</option>)}
+        </select>
+        <a className="Menu--login" href="/auth/spotify">Login</a>
       </div>
     );
   }
 }
 
-const mapStateToProps = () => ({
-
-})
-
-export default connect(mapStateToProps, {setPlaylist})(Menu);
+Menu = connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default Menu;
