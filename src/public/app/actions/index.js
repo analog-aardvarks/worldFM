@@ -11,3 +11,10 @@ export function setPlaylist(playlist) {
     playlist,
   };
 }
+
+export function setWindowWidth(newSize) {
+  return {
+    type: 'WINDOW_RESIZE',
+    newSize,
+  };
+}

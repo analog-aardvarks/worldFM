@@ -19,9 +19,19 @@ function currentSong(state = '', action) {
   }
 }
 
+function windowWidth(state = window.innerWidth, action) {
+  switch (action.type) {
+    case 'WINDOW_RESIZE':
+      return action.newSize;
+    default:
+      return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
+  windowWidth,
   // burgerMenu,
 });
 
