@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import samplePlaylist from '../config/samplePlaylist';
+import {reducer as burgerMenu} from 'redux-burger-menu';
 
 function playlist(state = samplePlaylist, action) {
   switch (action.type) {
@@ -19,9 +20,14 @@ function currentSong(state = '', action) {
   }
 }
 
+function burgerMenu(state = '', action) {
+  
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
+  burgerMenu
 });
 
 export default reducer;
