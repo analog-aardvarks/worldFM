@@ -4,6 +4,30 @@ body {
   padding-top: 60px;
 }
 
+.Desktop {
+  display: block;
+}
+
+.Mobile--icon {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 18px;
+  margin-left: 18px;
+}
+
+.Mobile--icon:hover {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.Mobile--icon:active {
+  opacity: 1;
+  color: rgb(30, 215, 96);
+}
+
 .Menu {
   display: flex;
   justify-content: space-between;
@@ -58,6 +82,15 @@ body {
 .Menu--login:active {
   opacity: 1;
   color: rgb(30, 215, 96);
+}
+
+@media (max-width: 900px) {
+  .Desktop {
+    display: none;
+  }
+  .Mobile--icon {
+    display: block;
+  }
 }
 
 .Playlist {

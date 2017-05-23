@@ -58,25 +58,28 @@ class Menu extends React.Component {
   render() {
     return (
       <div className="Menu">
+        <i className="Mobile--icon fa fa-bars fa-2x fa-fw"></i>
         <h1 className='Menu--logo'>world.fm</h1>
-        <label>Pick a country!</label>
-        <select
-          className="Menu--dropdown"
-          value={this.props.currentCountry}
-          onChange={this.handleCountryChange}
-        >
-          {availableCountries.map((country, idx) => <option key={idx}>{country}</option>)}
-        </select>
+        <div className="Desktop">
+          <label>Pick a country!</label>
+          <select
+            className="Menu--dropdown"
+            value={this.props.currentCountry}
+            onChange={this.handleCountryChange}
+          >
+            {availableCountries.map((country, idx) => <option key={idx}>{country}</option>)}
+          </select>
 
-        <label>Pick a category!</label>
-        <select
-          className="Menu--dropdown"
-          value={this.props.currentTrend}
-          onChange={this.handleTrendChange}
-        >
-          {availableTrends.map((trend, idx) => <option key={idx}>{trend}</option>)}
-        </select>
-        <a className="Menu--login" href="/auth/spotify">Login</a>
+          <label>Pick a category!</label>
+          <select
+            className="Menu--dropdown"
+            value={this.props.currentTrend}
+            onChange={this.handleTrendChange}
+          >
+            {availableTrends.map((trend, idx) => <option key={idx}>{trend}</option>)}
+          </select>
+          <a className="Menu--login" href="/auth/spotify">Login</a>
+        </div>
       </div>
     );
   }
