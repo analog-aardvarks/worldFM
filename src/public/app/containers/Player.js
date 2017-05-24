@@ -1,24 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { togglePlay } from '../actions';
 
 const mapStateToProps = state => ({
   currentSong: state.currentSong,
-  // isPLaying
 });
 
-//
+const mapDispatchToProps = dispatch => ({
+  onEnded: src => dispatch(togglePlay(src)),
+});
 
-class Player extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class Audio extends React.Component {
   componentDidUpdate() {
     if (this.props.currentSong.isPlaying) {
-      this.refs.playElement.play();
+      this.audioEl.play();
     } else {
-      this.refs.playElement.pause();
+      this.audioEl.pause();
     }
   }
 
@@ -28,7 +25,8 @@ class Player extends React.Component {
     return (
       <div>
         <audio
-          ref='playElement'
+          ref={(el) => { this.audioEl = el; }}
+          onEnded={this.props.onEnded}
           src={this.props.currentSong.src}
         />
       </div>
@@ -36,6 +34,9 @@ class Player extends React.Component {
   }
 }
 
-Player = connect(mapStateToProps)(Player)
+const Player = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Audio);
 
 export default Player;

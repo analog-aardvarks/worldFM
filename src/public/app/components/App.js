@@ -5,9 +5,9 @@ import Player from '../containers/Player';
 
 const App = () => (
   <div>
+    <Player />
     <Menu />
     <Playlist />
-    <Player />
   </div>
 );
 
