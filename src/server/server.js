@@ -13,7 +13,11 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({ secret: config.seshSecret }));
+app.use(session({
+  secret: config.seshSecret,
+  resave: false,
+  saveUninitialized: false,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../public')));
@@ -21,6 +25,5 @@ app.use(routes);
 
 
 const port = process.env.port || 8080;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`)
-});
+app.listen(port, () =>
+  console.log(`Listening on port ${port}`));
