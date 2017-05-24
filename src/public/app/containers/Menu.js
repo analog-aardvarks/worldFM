@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
   showTrackInfo: state.showTrackInfo,
   availableCountries: availableCountries,
   availableTrends: availableTrends,
+  showSpotifyPlaylist: state.showSpotifyPlaylist,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -19,6 +20,8 @@ const mapDispatchToProps = dispatch => ({
   setPlaylist: (playlist) => dispatch(setPlaylist(playlist)),
   showTrackInfoEvent: () => dispatch({ type: 'SHOW_TRACK_INFO' }),
   hideTrackInfoEvent: () => dispatch({ type: 'HIDE_TRACK_INFO' }),
+  showSpotifyPlaylistEvent: () => dispatch({ type: 'SHOW_SPOTIFY_PLAYLIST' }),
+  hideSpotifyPlaylistEvent: () => dispatch({ type: 'HIDE_SPOTIFY_PLAYLIST' }),
 });
 
 class Menu extends React.Component {
@@ -27,6 +30,7 @@ class Menu extends React.Component {
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.handleTrendChange = this.handleTrendChange.bind(this);
     this.toggleTrackInfo = this.toggleTrackInfo.bind(this);
+    this.toggleSpotifyPlaylist = this.toggleSpotifyPlaylist.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +39,9 @@ class Menu extends React.Component {
 
   componentDidUpdate(prev) {
     // only getPlaylist if necessary
-    if (prev.showTrackInfo === this.props.showTrackInfo) {
+    if (prev.currentCountry !== this.props.currentCountry) {
+      this.getPlaylist();
+    } else if(prev.currentTrend !== this.props.currentTrend) {
       this.getPlaylist();
     }
   }
@@ -62,6 +68,12 @@ class Menu extends React.Component {
     if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
 
+  toggleSpotifyPlaylist() {
+    console.log(this.props.showSpotifyPlaylist)
+    if(this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
+    if(!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
+  }
+
   render() {
     return (
       <TopMenu
@@ -69,6 +81,7 @@ class Menu extends React.Component {
         handleTrendChange={this.handleTrendChange}
         getPlaylist={this.getPlaylist}
         toggleTrackInfo={this.toggleTrackInfo}
+        toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
         currentCountry={this.props.currentCountry}
         currentTrend={this.props.currentTrend}
         availableCountries={this.props.availableCountries}
