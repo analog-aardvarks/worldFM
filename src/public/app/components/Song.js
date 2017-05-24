@@ -4,7 +4,7 @@ import SongHover from './SongHover'
 
 const TOTAL_MARGINS = 2; // px
 
-const Song = ({ size, track, onClick, ranking, currentSong }) => {
+const Song = ({ size, track, onClick, ranking, currentSong, showTrackInfo }) => {
   const netSize = size - TOTAL_MARGINS;
   // console.log(track);
   return (
@@ -24,6 +24,7 @@ const Song = ({ size, track, onClick, ranking, currentSong }) => {
           currentSong={currentSong}
           track={track}
         />
+        { showTrackInfo &&
         <div className="Song__container">
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
@@ -34,6 +35,7 @@ const Song = ({ size, track, onClick, ranking, currentSong }) => {
             <i className="fa fa-chevron-circle-up fa-2x fa-fw" />
           </span>
         </div>
+        }
       </div>
     </div>
   );

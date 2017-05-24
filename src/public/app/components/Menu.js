@@ -13,27 +13,33 @@ availableCountries.unshift('World');
 const mapStateToProps = (state) => ({
   currentCountry: state.currentCountry,
   currentTrend: state.currentTrend,
+  showTrackInfo: state.showTrackInfo,
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentCountry: (country) => dispatch(setCurrentCountry(country)),
   setCurrentTrend: (trend) => dispatch(setCurrentTrend(trend)),
   setPlaylist: (playlist) => dispatch(setPlaylist(playlist)),
+  showTrackInfoEvent: () => dispatch({ type: 'SHOW_TRACK_INFO' }),
+  hideTrackInfoEvent: () => dispatch({ type: 'HIDE_TRACK_INFO' }),
 });
 
 class Menu extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.handleTrendChange = this.handleTrendChange.bind(this);
+    this.toggleTrackInfo = this.toggleTrackInfo.bind(this);
   }
 
   componentDidMount() {
     this.getPlaylist();
   }
 
-  componentDidUpdate() {
-    this.getPlaylist();
+  componentDidUpdate(prev) {
+    // only getPlaylist if necessary
+    if (prev.showTrackInfo === this.props.showTrackInfo) {
+      this.getPlaylist();
+    }
   }
 
   handleCountryChange(e) {
@@ -45,14 +51,16 @@ class Menu extends React.Component {
   }
 
   getPlaylist(e) {
-    // TODO use axios
     fetch(`http://localhost:8080/playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
-      .then(res => {
-        return res.json();
-      })
-      .then(res => {
-        this.props.setPlaylist(res);
-      });
+      .then(res => res.json())
+      .then(res => this.props.setPlaylist(res))
+      .catch(err => console.log(err));
+  }
+
+  toggleTrackInfo() {
+    console.log(this.props.showTrackInfo)
+    if(this.props.showTrackInfo) this.props.hideTrackInfoEvent();
+    if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
 
   render() {
@@ -78,7 +86,8 @@ class Menu extends React.Component {
           >
             {availableTrends.map((trend, idx) => <option key={idx}>{trend}</option>)}
           </select>
-          <a className="Menu--login" href="/auth/spotify">Login</a>
+          <span className="Menu--login" href="/auth/spotify">Login</span>
+          <span onClick={this.toggleTrackInfo}>Toggle Info</span>
         </div>
       </div>
     );

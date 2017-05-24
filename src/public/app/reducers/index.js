@@ -49,12 +49,21 @@ function windowWidth(state = window.innerWidth, action) {
   }
 }
 
+function showTrackInfo(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_TRACK_INFO': return true;
+    case 'HIDE_TRACK_INFO': return false;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
   currentCountry,
   currentTrend,
   windowWidth,
+  showTrackInfo,
 });
 
 export default reducer;
