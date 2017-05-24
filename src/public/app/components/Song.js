@@ -45,22 +45,4 @@ const Song = ({ size, track, onClick, ranking, currentSong, showTrackInfo }) => 
   );
 }
 
-/*
-<div
-  className="Song--wrapper"
-  style={{ bottom: netSize - (2 * borderWidth) }}
->
-  <div className="Song__container">
-    <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
-    <div className="Song__info">
-      <span className="Song__name">{track.track_name}</span>
-      <span className="Song__artist">{JSON.parse(track.track_artist_name).join(', ')}</span>
-    </div>
-    <span className="Song__expand">
-      <i className="fa fa-chevron-circle-up fa-2x fa-fw" />
-    </span>
-  </div>
-</div>
-*/
-
 export default Song;
