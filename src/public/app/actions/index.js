@@ -32,3 +32,16 @@ export function setWindowWidth(newSize) {
     newSize,
   };
 }
+
+export function openSongMenu(index) {
+  return {
+    type: 'OPEN_SONG_MENU',
+    index,
+  };
+}
+
+export function closeSongMenu() {
+  return {
+    type: 'CLOSE_SONG_MENU',
+  };
+}
