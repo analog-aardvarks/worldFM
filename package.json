@@ -30,7 +30,6 @@
     "passport-spotify": "^0.3.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "react-audio-player": "^0.5.0",
     "react-burger-menu": "^2.0.2",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",

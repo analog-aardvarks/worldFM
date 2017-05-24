@@ -62,7 +62,7 @@ export default reducer;
 // STATE TREE:
 // {
 //   playlist: [], SET_PLAYLIST
-//   currentSong: '', SET_CURRENT_SONG
+//   currentSong: { src: URL, isPlaying: bool }, SET_CURRENT_SONG
 //   isPlaying: false, PLAY_PLAYER, PAUSE_PLAYER
 //   windowSize: { w: 100, h: 100 }, RESIZE_WINDOW
 //   currentCountry: 'World', SET_CURRENT_COUNTRY

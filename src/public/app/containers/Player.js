@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import ReactAudioPlayer from 'react-audio-player';
 
 const mapStateToProps = state => ({
   currentSong: state.currentSong,
@@ -17,9 +16,9 @@ class Player extends React.Component {
 
   componentDidUpdate() {
     if (this.props.currentSong.isPlaying) {
-      this.playElement.play();
+      this.refs.playElement.play();
     } else {
-      this.playElement.pause();
+      this.refs.playElement.pause();
     }
   }
 
@@ -29,9 +28,8 @@ class Player extends React.Component {
     return (
       <div>
         <audio
-          ref={el => this.playElement = el}
+          ref='playElement'
           src={this.props.currentSong.src}
-          controls
         />
       </div>
     );
