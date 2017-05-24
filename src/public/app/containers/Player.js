@@ -10,19 +10,32 @@ const mapStateToProps = state => ({
 
 //
 
-let Player = ({ currentSong }) => {
+class Player extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  // element.pause()
-  // element.play()
+  componentDidUpdate() {
+    if (this.props.currentSong.isPlaying) {
+      this.playElement.play();
+    } else {
+      this.playElement.pause();
+    }
+  }
 
-  return (
-    <div>
-      <ReactAudioPlayer
-        autoPlay
-        src={currentSong}
-      />
-    </div>
-  );
+  // const playStatus = currentSong.isPlaying ? 'autoplay' : null;
+
+  render() {
+    return (
+      <div>
+        <audio
+          ref={el => this.playElement = el}
+          src={this.props.currentSong.src}
+          controls
+        />
+      </div>
+    );
+  }
 }
 
 Player = connect(mapStateToProps)(Player)

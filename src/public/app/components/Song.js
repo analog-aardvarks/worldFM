@@ -4,7 +4,7 @@ import SongHover from './SongHover'
 
 const TOTAL_MARGINS = 2; // px
 
-const Song = ({ size, track, onClick, ranking }) => {
+const Song = ({ size, track, onClick, ranking, currentSong }) => {
   const netSize = size - TOTAL_MARGINS;
   // console.log(track);
   return (
@@ -20,7 +20,10 @@ const Song = ({ size, track, onClick, ranking }) => {
           maxHeight: netSize
         }}
       >
-        <SongHover />
+        <SongHover
+          currentSong={currentSong}
+          track={track}
+        />
         <div className="Song__container">
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">

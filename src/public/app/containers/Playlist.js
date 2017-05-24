@@ -2,14 +2,15 @@ import { connect } from 'react-redux';
 import { setCurrentSong, setWindowWidth } from '../actions';
 import SongList from '../components/SongList';
 
-const mapStateToProps = ({ playlist, windowWidth }) => ({
+const mapStateToProps = ({ playlist, windowWidth, currentSong }) => ({
   playlist,
   windowWidth,
+  currentSong,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClick: previewUrl =>
-    dispatch(setCurrentSong(previewUrl)),
+  onClick: src =>
+    dispatch(setCurrentSong(src)),
   onWindowResize: newSize =>
     dispatch(setWindowWidth(newSize)),
 });

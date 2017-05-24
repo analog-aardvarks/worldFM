@@ -10,10 +10,13 @@ function playlist(state = [], action) {
   }
 }
 
-function currentSong(state = '', action) {
+function currentSong(state = {}, action) {
   switch (action.type) {
-    case 'PLAY_PREVIEW':
-      return action.previewUrl;
+    case 'TOGGLE_PLAY':
+      if (state.src === action.src) {
+        return Object.assign({}, state, { isPlaying: !state.isPlaying });
+      }
+      return { src: action.src, isPlaying: true };
     default:
       return state;
   }
