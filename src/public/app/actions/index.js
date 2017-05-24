@@ -1,7 +1,7 @@
-export function setCurrentSong(previewUrl) {
+export function setCurrentSong(src) {
   return {
-    type: 'PLAY_PREVIEW',
-    previewUrl,
+    type: 'TOGGLE_PLAY',
+    src,
   };
 }
 

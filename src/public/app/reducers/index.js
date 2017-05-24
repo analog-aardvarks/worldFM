@@ -10,10 +10,13 @@ function playlist(state = [], action) {
   }
 }
 
-function currentSong(state = '', action) {
+function currentSong(state = {}, action) {
   switch (action.type) {
-    case 'PLAY_PREVIEW':
-      return action.previewUrl;
+    case 'TOGGLE_PLAY':
+      if (state.src === action.src) {
+        return Object.assign({}, state, { isPlaying: !state.isPlaying });
+      }
+      return { src: action.src, isPlaying: true };
     default:
       return state;
   }
@@ -59,7 +62,7 @@ export default reducer;
 // STATE TREE:
 // {
 //   playlist: [], SET_PLAYLIST
-//   currentSong: '', SET_CURRENT_SONG
+//   currentSong: { src: URL, isPlaying: bool }, SET_CURRENT_SONG
 //   isPlaying: false, PLAY_PLAYER, PAUSE_PLAYER
 //   windowSize: { w: 100, h: 100 }, RESIZE_WINDOW
 //   currentCountry: 'World', SET_CURRENT_COUNTRY

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import ReactAudioPlayer from 'react-audio-player';
 
 const mapStateToProps = state => ({
   currentSong: state.currentSong,
@@ -10,19 +9,31 @@ const mapStateToProps = state => ({
 
 //
 
-let Player = ({ currentSong }) => {
+class Player extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  // element.pause()
-  // element.play()
+  componentDidUpdate() {
+    if (this.props.currentSong.isPlaying) {
+      this.refs.playElement.play();
+    } else {
+      this.refs.playElement.pause();
+    }
+  }
 
-  return (
-    <div>
-      <ReactAudioPlayer
-        autoPlay
-        src={currentSong}
-      />
-    </div>
-  );
+  // const playStatus = currentSong.isPlaying ? 'autoplay' : null;
+
+  render() {
+    return (
+      <div>
+        <audio
+          ref='playElement'
+          src={this.props.currentSong.src}
+        />
+      </div>
+    );
+  }
 }
 
 Player = connect(mapStateToProps)(Player)
