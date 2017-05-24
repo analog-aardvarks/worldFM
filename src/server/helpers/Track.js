@@ -1,16 +1,17 @@
 const knex = require('../db/db');
+
 const Track = {};
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // API Endpoint
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Read file 'routes.js' for details on how to use
 
 // GET /track
-Track.getTrack = function(req, res) {
+Track.getTrack = (req, res) => {
   const id = req.query.id;
-  if(!id) {
+  if (!id) {
     // return all tracks
     knex('tracks').select('*')
       .then(tracks => res.status(200).send(tracks))
@@ -24,20 +25,20 @@ Track.getTrack = function(req, res) {
 };
 
 // GET /track/length
-Track.getTrackLength = function(req, res) {
+Track.getTrackLength = (req, res) => {
   knex('tracks').select('*')
     .then(tracks => res.status(200).send([tracks.length]))
     .catch(err => console.log(err));
 };
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Database
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Track.postTrack = function(track) {
+Track.postTrack = (track) => {
   knex('tracks').where('track_id', track.track_id)
-    .then(data => {
-      if(data.length > 0) {
+    .then((data) => {
+      if (data.length > 0) {
         console.log('Track already exists!');
       } else {
         knex('tracks').insert(track)

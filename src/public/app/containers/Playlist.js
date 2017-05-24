@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { setCurrentSong, setWindowWidth, openSongMenu, closeSongMenu } from '../actions';
+import { togglePlay, setWindowWidth, openSongMenu, closeSongMenu } from '../actions';
 import SongList from '../components/SongList';
 
 const mapStateToProps = ({ playlist, windowWidth, currentSong, showTrackInfo, songMenu }) => ({
@@ -11,8 +11,9 @@ const mapStateToProps = ({ playlist, windowWidth, currentSong, showTrackInfo, so
 });
 
 const mapDispatchToProps = dispatch => ({
+
   onClick: src => {
-    dispatch(setCurrentSong(src));
+    dispatch(togglePlay(src));
     dispatch(closeSongMenu());
   },
   onWindowResize: newSize =>

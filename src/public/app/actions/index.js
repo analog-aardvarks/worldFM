@@ -1,4 +1,4 @@
-export function setCurrentSong(src) {
+export function togglePlay(src = '') {
   return {
     type: 'TOGGLE_PLAY',
     src,

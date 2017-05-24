@@ -47,9 +47,12 @@ routes.get('/tracks/length', Track.getTrackLength);
 // Gets a curated list of tracks based on the parameters given
 // Params: country, trend, random, limit
 // Defaults:
-//  country -> If undefined, will return a world mix (accepts multiple arguments separated by a comma and no whitespace)
-//  trend   -> If undefined, will return a mix of trends (accepts multiple arguments separated by a comma and no whitespace)
-//  random   -> If undefined or false, will return an ordered list (queries containing a mix of multiple countries or trends will always be randomized)
+//  country -> If undefined, will return a world mix
+//             (accepts multiple arguments separated by a comma and no whitespace)
+//  trend   -> If undefined, will return a mix of trends
+//             (accepts multiple arguments separated by a comma and no whitespace)
+//  random  -> If undefined or false, will return an ordered list
+//             (queries containing a mix of multiple countries or trends will always be randomized)
 //  limit   -> If undefined will return 100 tracks
 // Examples (try them in Postman):
 // http://localhost:8080/playlist?country=Mexico,Argentina,Colombia,USA&trend=Current,Underground&limit=35
