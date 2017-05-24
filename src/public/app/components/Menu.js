@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setPlaylist, setCurrentCountry, setCurrentTrend } from '../actions';
+import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu } from '../actions';
 
 // I'll leave this here for now...
 const availableTrends = 'Mix,Current,Emerging,Underground'.split(',');
@@ -21,6 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   setPlaylist: (playlist) => dispatch(setPlaylist(playlist)),
   showTrackInfoEvent: () => dispatch({ type: 'SHOW_TRACK_INFO' }),
   hideTrackInfoEvent: () => dispatch({ type: 'HIDE_TRACK_INFO' }),
+  closeSongMenu: () => dispatch(closeSongMenu()),
 });
 
 class Menu extends React.Component {
@@ -40,6 +41,7 @@ class Menu extends React.Component {
     if (prev.showTrackInfo === this.props.showTrackInfo) {
       this.getPlaylist();
     }
+    this.props.closeSongMenu();
   }
 
   handleCountryChange(e) {
@@ -58,7 +60,6 @@ class Menu extends React.Component {
   }
 
   toggleTrackInfo() {
-    console.log(this.props.showTrackInfo)
     if(this.props.showTrackInfo) this.props.hideTrackInfoEvent();
     if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
@@ -87,7 +88,13 @@ class Menu extends React.Component {
             {availableTrends.map((trend, idx) => <option key={idx}>{trend}</option>)}
           </select>
           <span className="Menu--login" href="/auth/spotify">Login</span>
-          <span onClick={this.toggleTrackInfo}>Toggle Info</span>
+          <span onClick={() => {
+            this.props.closeSongMenu();
+            this.toggleTrackInfo();
+          }}
+          >
+            Toggle Info
+          </span>
         </div>
       </div>
     );

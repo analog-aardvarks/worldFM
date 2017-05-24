@@ -49,10 +49,18 @@ function windowWidth(state = window.innerWidth, action) {
   }
 }
 
-function showTrackInfo(state = false, action) {
+function showTrackInfo(state = true, action) {
   switch (action.type) {
     case 'SHOW_TRACK_INFO': return true;
     case 'HIDE_TRACK_INFO': return false;
+    default: return state;
+  }
+}
+
+function songMenu(state = null, action) {
+  switch (action.type) {
+    case 'OPEN_SONG_MENU': return action.index;
+    case 'CLOSE_SONG_MENU': return null;
     default: return state;
   }
 }
@@ -64,6 +72,7 @@ const reducer = combineReducers({
   currentTrend,
   windowWidth,
   showTrackInfo,
+  songMenu,
 });
 
 export default reducer;

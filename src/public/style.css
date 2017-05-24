@@ -95,6 +95,12 @@ body {
   color: rgb(230, 230, 230);
   border: 3px solid #171717;
   cursor: default;
+
+  -webkit-transition: border 0.25s ease;
+  -moz-transition: border 0.25s ease;
+  -o-transition: border 0.25s ease;
+  -ms-transition: border 0.25s ease;
+  transition: border 0.25s ease;
 }
 
 .Song:hover {
@@ -120,7 +126,7 @@ body {
   opacity: 0.75;
 }
 
-.Song--wrapper {
+.Song__wrapper {
   width: 100%;
   height: 100%;
   font-family: 'Roboto';
@@ -128,7 +134,40 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: rbga(0, 255, 0 ,0.4)
+  z-index: 2;
+}
+
+.Song__wrapper:hover {
+  opacity: 1;
+}
+
+.Song__more-info-wrapper {
+  background-color: rgba(0, 0, 0, 0.50);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 2;
+  z-index: 2;
+}
+
+.Song__more-info {
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: rgba(30, 215, 96, 0.85);
+  z-index: 3;
+}
+
+.Song__more-info-option {
+  margin-bottom: 10px;
+}
+
+.Song__more-info-option:hover {
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.Song__more-info-option i {
+  padding-right: 10px;
 }
 
 .Song__container {
@@ -139,7 +178,7 @@ body {
   justify-content: space-between;
   color: rgb(230, 230, 230);
   padding: 5px 10px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .Song__info {
