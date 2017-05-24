@@ -1,7 +1,5 @@
 body {
-  /*background-color: rgb(230, 230, 230);*/
   background-color: #171717;
-  padding-top: 60px;
 }
 
 .Desktop {
@@ -30,7 +28,7 @@ body {
 
 .Menu {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   background-color: #171717;
   height: 60px;
@@ -44,12 +42,6 @@ body {
   -moz-user-select: none;     /* Firefox all */
   -ms-user-select: none;      /* IE 10+ */
   user-select: none;
-  position: fixed;
-  width: 100%;
-  margin-top: -60px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .Menu--logo {
@@ -58,8 +50,6 @@ body {
 }
 
 .Menu--dropdown {
-  font-family: 'Roboto', cursive;
-  font-weight: 400;
   background-color: #171717;
   margin-right: 40px;
 }
@@ -95,23 +85,15 @@ body {
 
 .Playlist {
   display: flex;
-  /*flex-direction: column;*/
   flex-wrap: wrap;
 }
 
 .Song {
-  background-color: black;
+  background-color: #171717;
   background-size: cover;
-  display: inline-block;
   box-sizing: border-box;
-  margin-top: 2px;
-  margin-right: 2px;
-  /*border: 2px solid rgb(230, 230, 230);*/
+  color: rgb(230, 230, 230);
   border: 3px solid #171717;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
   cursor: default;
 }
 
@@ -119,17 +101,45 @@ body {
   border: 3px solid rgb(30, 215, 96);
 }
 
+.SongHover {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.SongHover:hover {
+  opacity: 1;
+}
+
+.SongHover__play-button:hover {
+  opacity: 0.75;
+}
+
+.Song--wrapper {
+  width: 100%;
+  height: 100%;
+  font-family: 'Roboto';
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: rbga(0, 255, 0 ,0.4)
+}
+
 .Song__container {
-  background-color: rgba(0, 0, 0, 0.60);
+  background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   max-width: 100%;
   align-items: center;
   justify-content: space-between;
-  font-family: 'Roboto', cursive;
-  font-weight: 400;
-  font-size: 15px;
   color: rgb(230, 230, 230);
-  padding: 5px;
+  padding: 5px 10px;
+  z-index: 2;
 }
 
 .Song__info {
@@ -144,6 +154,11 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-size: 16px;
+}
+
+.Song__artist {
+  font-family: 'Permanent Marker', cursive;
 }
 
 .Song__ranking {
@@ -151,7 +166,7 @@ body {
   color: rgb(230, 230, 230);
   font-size: 24px;
   min-width: 42px;
-  padding-right: 10px;
+  padding-right: 15px;
 }
 
 .Song__expand {
@@ -161,25 +176,6 @@ body {
 .Song__expand:hover {
   opacity: 0.75;
   cursor: pointer;
-}
-
-.SongHover {
-  display: flex;
-  color: rgb(230, 230, 230);
-  flex-grow: 4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-}
-
-.SongHover:hover {
-  background-color: rgba(0,0,0,0.30);
-  opacity: 1;
-}
-
-.SongHover__play-button:hover {
-  opacity: 0.75;
 }
 
 /* Position and sizing of burger button */
