@@ -1,6 +1,6 @@
 import React from 'react';
 import Song from './Song';
-import Menu from './Menu';
+import Menu from '../containers/Menu';
 
 const Songs = ({ playlist, onClick, windowWidth, onWindowResize, currentSong, showTrackInfo }) => {
   window.onresize = () => onWindowResize(window.innerWidth);
