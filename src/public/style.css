@@ -1,5 +1,5 @@
 body {
-  background-color: #171717;
+  /*background-color: #171717;*/
 }
 
 .Desktop {
@@ -250,7 +250,6 @@ select {
   padding: 3px;
   box-shadow: inset 1px 1px 2px #ddd8dc;
 }
-
 .countryTooltip {
   position: absolute;
   display: none;

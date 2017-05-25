@@ -4,6 +4,7 @@ const checkAuth = require('./auth').checkAuth;
 
 const Track = require('./helpers/Track');
 const Playlist = require('./helpers/Playlist');
+const MapData = require('./helpers/MapData');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
@@ -76,5 +77,9 @@ routes.get('/playlist/info', Playlist.getPlaylistInfo);
 
 // Returns the number of available playlist
 routes.get('/playlist/length', Playlist.getPlaylistLength);
+
+// Serve data to d3 for asnyc loading
+routes.get('/data/world-110m.json', MapData.getWorldJson);
+routes.get('/data/world-110m-country-names.tsv', MapData.getCountryNames);
 
 module.exports = routes;
