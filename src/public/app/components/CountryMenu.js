@@ -1,8 +1,9 @@
 import React from 'react';
 
-const CountryMenu = ({ availableCountries, availableTrends, currentCountry, currentTrend, handleCountryChange, handleTrendChange, showCountryMenu }) => {
+const CountryMenu = ({ availableCountries, availableTrends, currentCountry, currentTrend, handleCountryChange, handleTrendChange, showCountryMenu, toggleTrackInfo }) => {
   return (
-    <div className="CountryMenu" style={{ opacity:  showCountryMenu ? 1 : 0 }}>
+    <div className="CountryMenu" style={{ display:  showCountryMenu ? "block" : "none" }}>
+      <span className="Menu--toggle" onClick={toggleTrackInfo}>Info</span>
       <div className="CountryList">
         <label>Pick a country!</label>
         <select

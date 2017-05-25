@@ -3,7 +3,7 @@ body {
 }
 
 .Lightbox {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -81,7 +81,7 @@ body {
   font-size: 18pt;
   text-decoration: none;
   font-family: 'Permanent Marker', cursive;
-  margin-left: 15px;
+  margin-left: 20px;
 }
 
 .Menu--login:hover,
@@ -115,7 +115,7 @@ body {
   opacity: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 540px) {
   .Desktop {
     display: none;
   }
@@ -128,10 +128,36 @@ body {
     top: 22%;
     left: 22%;
   }
+  .Menu {
+    justify-content: center;
+  }
+  .CurrentSongInfo {
+    display: none !important;
+  }
+  .CurrentSongPic {
+    right: 10px;
+  }
+  .Player {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .RandomButton {
+    position: fixed !important;
+    left: -3% !important;
+  }
+  .PlayerControls {
+    margin-left: 0 !important;
+    position: absolute !important;
+  }
+  .CurrentSongPic {
+    position: absolute !important;
+    right: 9px !important;
+    bottom: 9px !important;
+  }
 }
 
 .CountryMenu {
-  z-index: 12;
+  z-index: 15;
   padding: 20px;
   position: fixed;
   top: 60px;
@@ -216,7 +242,6 @@ body {
   flex-direction: column;
   justify-content: flex-end;
   flex-grow: 2;
-
 }
 
 .Song__more-info {
@@ -240,6 +265,7 @@ body {
 }
 
 .Song__container {
+  opacity; 0;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   max-width: 100%;
@@ -332,4 +358,79 @@ body {
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.Player {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.85);
+  border: 20px;
+  bottom: 0px;
+  height: 64px;
+  position: fixed;
+  width: 100%;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PlayerControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 160px;
+  margin-left: 60px;
+}
+
+.PlayerControlsPlay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.fa-step-backwards,
+.fa-play,
+.fa-step-forward {
+  margin-left: 16px;
+}
+
+.fa-step-backwards:hover,
+.fa-play:hover,
+.fa-step-forward:hover,
+.fa-random:hover  {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.fa-step-backward:active,
+.fa-play:active,
+.fa-step-forward:active,
+.fa-random:active{
+  opacity: 1;
+  color: rgb(30, 215, 96);
+}
+
+.RandomButton {
+  margin-left: 40px;
+}
+
+.CurrentSong {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 80px;
+}
+
+.CurrentSongInfo {
+  font-family: 'Permanent Marker', cursive;
+  margin: 4px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.CurrentSongPic {
+
 }
