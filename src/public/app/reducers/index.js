@@ -65,6 +65,14 @@ function showSpotifyPlaylist(state = false, action) {
   }
 }
 
+function songMenu(state = null, action) {
+  switch (action.type) {
+    case 'OPEN_SONG_MENU': return action.index;
+    case 'CLOSE_SONG_MENU': return null;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -73,6 +81,7 @@ const reducer = combineReducers({
   windowWidth,
   showTrackInfo,
   showSpotifyPlaylist,
+  songMenu,
 });
 
 export default reducer;

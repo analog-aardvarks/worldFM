@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setPlaylist, setCurrentCountry, setCurrentTrend } from '../actions';
+import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu } from '../actions';
 import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
   hideTrackInfoEvent: () => dispatch({ type: 'HIDE_TRACK_INFO' }),
   showSpotifyPlaylistEvent: () => dispatch({ type: 'SHOW_SPOTIFY_PLAYLIST' }),
   hideSpotifyPlaylistEvent: () => dispatch({ type: 'HIDE_SPOTIFY_PLAYLIST' }),
+  closeSongMenu: () => dispatch(closeSongMenu()),
 });
 
 class Menu extends React.Component {
@@ -41,8 +42,10 @@ class Menu extends React.Component {
     // only getPlaylist if necessary
     if (prev.currentCountry !== this.props.currentCountry) {
       this.getPlaylist();
+      this.props.closeSongMenu();
     } else if(prev.currentTrend !== this.props.currentTrend) {
       this.getPlaylist();
+      this.props.closeSongMenu();
     }
   }
 
@@ -52,7 +55,7 @@ class Menu extends React.Component {
 
   handleTrendChange(e) {
     this.props.setCurrentTrend(e.target.value);
-    console.log(e)
+    //console.log(e)
   }
 
   getPlaylist(e) {
@@ -63,13 +66,13 @@ class Menu extends React.Component {
   }
 
   toggleTrackInfo() {
-    console.log(this.props.showTrackInfo)
+    //console.log(this.props.showTrackInfo)
     if(this.props.showTrackInfo) this.props.hideTrackInfoEvent();
     if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
 
   toggleSpotifyPlaylist() {
-    console.log(this.props.showSpotifyPlaylist)
+    //console.log(this.props.showSpotifyPlaylist)
     if(this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
     if(!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
   }
