@@ -9,7 +9,7 @@ const Playlist = require('./helpers/Playlist');
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-routes.get('/auth/spotify', passport.authenticate('spotify'));
+routes.get('/auth/spotify', passport.authenticate('spotify', { scope: ['user-modify-playback-state'] }));
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   (req, res) => res.redirect('/loggedIn'));

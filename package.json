@@ -18,6 +18,8 @@
   "homepage": "https://github.com/analog-aardvarks/thesis#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "d3": "^4.9.1",
+    "d3-queue": "^3.0.7",
     "express": "^4.15.3",
     "express-session": "^1.15.2",
     "knex": "^0.13.0",
@@ -37,7 +39,8 @@
     "redux": "^3.6.0",
     "redux-burger-menu": "^0.2.0",
     "shuffle-array": "^1.0.1",
-    "spotify-web-api-node": "^2.4.0"
+    "spotify-web-api-node": "^2.4.0",
+    "topojson": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

@@ -13,6 +13,7 @@ passport.use(new SpotifyStrategy({
   callbackURL: `${baseURL}/auth/spotify/callback`,
 },
 (accessToken, refreshToken, profile, done) => {
+  console.log(profile)
   done(null, profile);
 }));
 
