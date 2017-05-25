@@ -92,18 +92,19 @@ class Menu extends React.Component {
     return (
       <div>
         <TopMenu
-          handleCountryChange={this.handleCountryChange}
-          handleTrendChange={this.handleTrendChange}
-          getPlaylist={this.getPlaylist}
-          toggleTrackInfo={this.toggleTrackInfo}
-          toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleCountryMenu={this.toggleCountryMenu}
-          currentCountry={this.props.currentCountry}
-          currentTrend={this.props.currentTrend}
+          toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
+          toggleTrackInfo={this.toggleTrackInfo}
+        />
+        <CountryMenu
           availableCountries={this.props.availableCountries}
           availableTrends={this.props.availableTrends}
+          currentCountry={this.props.currentCountry}
+          currentTrend={this.props.currentTrend}
+          handleCountryChange={this.handleCountryChange}
+          handleTrendChange={this.handleTrendChange}
+          showCountryMenu={this.props.showCountryMenu}
         />
-        <CountryMenu />
       </div>
     );
   }

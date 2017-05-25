@@ -1,28 +1,27 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-const mapStateToProps = state => ({
-  showCountryMenu: state.showCountryMenu,
-})
-
-const mapDispatchToProps = dispatch => ({
-  hideCountryMenuEvent: () => dispatch({ type: 'HIDE_COUNTRY_MENU' }),
-})
-
-const CountryMenu = ({ showCountryMenu, hideCountryMenuEvent}) => {
-  console.log(hideCountryMenuEvent)
+const CountryMenu = ({ availableCountries, availableTrends, currentCountry, currentTrend, handleCountryChange, handleTrendChange, showCountryMenu }) => {
   return (
     <div className="CountryMenu" style={{ opacity:  showCountryMenu ? 1 : 0 }}>
-      <h1>Country List!</h1>
       <div className="CountryList">
-        <li>test</li>
-        <li>test</li>
-        <li>test</li>
-        <li>test</li>
-        <li>test</li>
+        <label>Pick a country!</label>
+        <select
+          className="Menu--dropdown"
+          value={currentCountry}
+          onChange={handleCountryChange}
+        >
+          {availableCountries.map((country, idx) => <option key={idx}>{country}</option>)}
+        </select>
+        <label>Pick a category!</label>
+        <select
+          className="Menu--dropdown"
+          value ={currentTrend}
+          onChange={handleTrendChange}
+        >
+          {availableTrends.map((trend, idx) => <option key={idx}>{trend}</option>)}
+        </select>
       </div>
     </div>
   )
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(CountryMenu);
+export default CountryMenu;
