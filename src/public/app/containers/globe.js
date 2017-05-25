@@ -29,25 +29,24 @@ class Globe extends Component {
       .projection(projection);
 
     // SVG container
-    const svg = d3.select('.globe').append('svg')
+    const svg = d3.select('#globe').append('svg')
       .attr('width', width)
       .attr('height', height);
 
+    // Add water
     svg.append('path')
       .datum({ type: 'Shere' })
       .attr('class', 'water')
       .attr('d', path);
 
-    // Add water
-
-    const countryTooltip = d3.select('.tooltip')
+    const countryTooltip = d3.select('body')
       .append('div')
       .attr('class', 'countryTooltip');
-    const countryList = d3.select('.tooltip')
+    const countryList = d3.select('body')
       .append('select')
-      .attr('name, countries');
+      .attr('class', 'globeSelect')
+      .attr('name', 'countries');
 
-    // const q = d3.queue();
     queue()
       .defer(d3.json, '/data/world-110m.json')
       .defer(d3.tsv, '/data/world-110m-country-names.tsv')
@@ -107,7 +106,47 @@ class Globe extends Component {
             .style('top', `${d3.event.pageY - 15} px`);
         });
 
-        // Country focus on option select
+      // Country focus on option select
+
+      d3.select('body').select('select.globeSelect')
+        .on('change', function() {
+          const rotate = projection.rotate();
+          const focusedCountry = country(countries, this);
+          const p = d3.geo.centroid(focusedCountry);
+
+          svg.selectAll('.focused').classed('focused', focused = false);
+        })
+
+    d3.select("select").on("change", function() {
+      const rotate = projection.rotate();
+      const focusedCountry = country(countries, this);
+      const p = d3.geo.centroid(focusedCountry);
+
+      svg.selectAll(".focused").classed("focused", focused = false);
+
+      // Globe rotating
+
+      (function transition() {
+        console.log('transitioning')
+        d3.transition()
+          .duration(2500)
+          .tween('rotate', () => {
+            const r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+            return (t) => {
+              projection.rotate(r(t));
+              svg.selectAll('path').attr('d', path)
+              .classed('focused', (d,i) =>
+                d.id === focusedCountry.id ? focused = d : false);
+            };
+          })
+      })();
+    });
+
+    function country(cnt, sel) {
+      for (let i = 0, l = cnt.length; i < l; i++) {
+        if (cnt[i].id === sel.value) return cnt[i];
+      }
+    }
     }
   }
 
@@ -116,7 +155,7 @@ class Globe extends Component {
       <div>
         <div className="tooltip" />
         <div
-          className='globe'
+          className="globe"
           ref={(el) => { this.svg = el; }}
           width={600}
           height={500}

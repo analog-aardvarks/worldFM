@@ -1,5 +1,5 @@
 body {
-  /*background-color: #171717;*/
+  background-color: #171717;
 }
 
 .Desktop {
@@ -231,8 +231,8 @@ body {
   fill: #00248F;
 }
 .land {
-  fill: #A98B6F;
-  stroke: #FFF;
+  fill: #FFF;
+  stroke: #A98B6F;
   stroke-width: 0.7px;
 }
 .land:hover {
@@ -242,7 +242,7 @@ body {
 .focused {
   fill: #33CC33;
 }
-select {
+.globeSelect {
   position: absolute;
   top: 20px;
   left: 580px;

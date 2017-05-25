@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
 class Audio extends React.Component {
   componentDidUpdate() {
     if (this.props.currentSong.isPlaying) {
-      this.audioEl.volume = .5;
+      this.audioEl.volume = 0.5;
       this.audioEl.play();
     } else {
       this.audioEl.pause();
