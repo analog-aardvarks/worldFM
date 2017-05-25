@@ -4,14 +4,16 @@ import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu } from '
 import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
+import CountryMenu from '../components/CountryMenu';
 
 const mapStateToProps = state => ({
   currentCountry: state.currentCountry,
   currentTrend: state.currentTrend,
-  showTrackInfo: state.showTrackInfo,
   availableCountries: availableCountries,
   availableTrends: availableTrends,
+  showTrackInfo: state.showTrackInfo,
   showSpotifyPlaylist: state.showSpotifyPlaylist,
+  showCountryMenu: state.showCountryMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -22,6 +24,8 @@ const mapDispatchToProps = dispatch => ({
   hideTrackInfoEvent: () => dispatch({ type: 'HIDE_TRACK_INFO' }),
   showSpotifyPlaylistEvent: () => dispatch({ type: 'SHOW_SPOTIFY_PLAYLIST' }),
   hideSpotifyPlaylistEvent: () => dispatch({ type: 'HIDE_SPOTIFY_PLAYLIST' }),
+  showCountryMenuEvent: () => dispatch({ type: 'SHOW_COUNTRY_MENU' }),
+  hideCountryMenuEvent: () =>  dispatch({ type: 'HIDE_COUNTRY_MENU' }),
   closeSongMenu: () => dispatch(closeSongMenu()),
 });
 
@@ -32,6 +36,7 @@ class Menu extends React.Component {
     this.handleTrendChange = this.handleTrendChange.bind(this);
     this.toggleTrackInfo = this.toggleTrackInfo.bind(this);
     this.toggleSpotifyPlaylist = this.toggleSpotifyPlaylist.bind(this);
+    this.toggleCountryMenu = this.toggleCountryMenu.bind(this)
   }
 
   componentDidMount() {
@@ -77,19 +82,29 @@ class Menu extends React.Component {
     if(!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
   }
 
+  toggleCountryMenu() {
+    console.log(this.props.showCountryMenu)
+    if(this.props.showCountryMenu) this.props.hideCountryMenuEvent();
+    if(!this.props.showCountryMenu) this.props.showCountryMenuEvent();
+  }
+
   render() {
     return (
-      <TopMenu
-        handleCountryChange={this.handleCountryChange}
-        handleTrendChange={this.handleTrendChange}
-        getPlaylist={this.getPlaylist}
-        toggleTrackInfo={this.toggleTrackInfo}
-        toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
-        currentCountry={this.props.currentCountry}
-        currentTrend={this.props.currentTrend}
-        availableCountries={this.props.availableCountries}
-        availableTrends={this.props.availableTrends}
-      />
+      <div>
+        <TopMenu
+          handleCountryChange={this.handleCountryChange}
+          handleTrendChange={this.handleTrendChange}
+          getPlaylist={this.getPlaylist}
+          toggleTrackInfo={this.toggleTrackInfo}
+          toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
+          toggleCountryMenu={this.toggleCountryMenu}
+          currentCountry={this.props.currentCountry}
+          currentTrend={this.props.currentTrend}
+          availableCountries={this.props.availableCountries}
+          availableTrends={this.props.availableTrends}
+        />
+        <CountryMenu />
+      </div>
     );
   }
 }

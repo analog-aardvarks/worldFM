@@ -65,6 +65,14 @@ function showSpotifyPlaylist(state = false, action) {
   }
 }
 
+function showCountryMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_COUNTRY_MENU': return true;
+    case 'HIDE_COUNTRY_MENU': return false;
+    default: return state;
+  }
+}
+
 function songMenu(state = null, action) {
   switch (action.type) {
     case 'OPEN_SONG_MENU': return action.index;
@@ -81,6 +89,7 @@ const reducer = combineReducers({
   windowWidth,
   showTrackInfo,
   showSpotifyPlaylist,
+  showCountryMenu,
   songMenu,
 });
 

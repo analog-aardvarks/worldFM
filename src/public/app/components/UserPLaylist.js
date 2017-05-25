@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   showSpotifyPlaylist: state.showSpotifyPlaylist,
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   hideSpotifyPlaylistEvent: () => dispatch({ type: 'HIDE_SPOTIFY_PLAYLIST' }),
 })
 
@@ -14,7 +14,7 @@ const UserPlayList = ({ showSpotifyPlaylist, hideSpotifyPlaylistEvent }) => {
   return (
     <div>
       <div
-        className={`SpotifyPlaylist ${showSpotifyPlaylist ? '' : 'SpotifyPlaylist--clear'}`} 
+        className={`SpotifyPlaylist ${showSpotifyPlaylist ? '' : 'SpotifyPlaylist--clear'}`}
         style={{ zIndex: showSpotifyPlaylist ? 15 : -10 }}
       >
         <iframe

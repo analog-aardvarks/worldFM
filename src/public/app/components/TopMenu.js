@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TopMenu = ({handleCountryChange, handleTrendChange, getPlaylist, toggleTrackInfo, toggleSpotifyPlaylist, currentCountry, currentTrend, availableCountries, availableTrends}) => {
+const TopMenu = ({handleCountryChange, handleTrendChange, getPlaylist, toggleTrackInfo, toggleSpotifyPlaylist, toggleCountryMenu, currentCountry, currentTrend, availableCountries, availableTrends}) => {
   return (
     <div className="Menu">
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw"></i>
@@ -24,6 +24,7 @@ const TopMenu = ({handleCountryChange, handleTrendChange, getPlaylist, toggleTra
         </select>
         <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span>
         <span className="Menu--toggle" onClick={toggleTrackInfo}>Info</span>
+        <span className="CountryMenu--toggle" onClick={toggleCountryMenu}>Countries</span>
         <span className="Menu--login" href="/auth/spotify">Login</span>
       </div>
     </div>
