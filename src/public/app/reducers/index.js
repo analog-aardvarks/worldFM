@@ -57,6 +57,14 @@ function showTrackInfo(state = false, action) {
   }
 }
 
+function showSpotifyPlaylist(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_SPOTIFY_PLAYLIST': return true;
+    case 'HIDE_SPOTIFY_PLAYLIST': return false;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -64,6 +72,7 @@ const reducer = combineReducers({
   currentTrend,
   windowWidth,
   showTrackInfo,
+  showSpotifyPlaylist,
 });
 
 export default reducer;
