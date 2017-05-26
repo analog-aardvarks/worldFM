@@ -57,6 +57,30 @@ function showTrackInfo(state = false, action) {
   }
 }
 
+function showSpotifyPlaylist(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_SPOTIFY_PLAYLIST': return true;
+    case 'HIDE_SPOTIFY_PLAYLIST': return false;
+    default: return state;
+  }
+}
+
+function showCountryMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_COUNTRY_MENU': return true;
+    case 'HIDE_COUNTRY_MENU': return false;
+    default: return state;
+  }
+}
+
+function songMenu(state = null, action) {
+  switch (action.type) {
+    case 'OPEN_SONG_MENU': return action.index;
+    case 'CLOSE_SONG_MENU': return null;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -64,6 +88,9 @@ const reducer = combineReducers({
   currentTrend,
   windowWidth,
   showTrackInfo,
+  showSpotifyPlaylist,
+  showCountryMenu,
+  songMenu,
 });
 
 export default reducer;

@@ -35,9 +35,9 @@ class Audio extends React.Component {
   }
 }
 
-const Player = connect(
+const HiddenPlayer = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Audio);
 
-export default Player;
+export default HiddenPlayer;
