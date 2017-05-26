@@ -4,6 +4,7 @@ const checkAuth = require('./auth').checkAuth;
 
 const Track = require('./helpers/Track');
 const Playlist = require('./helpers/Playlist');
+const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
 
@@ -11,7 +12,7 @@ const Devices = require('./helpers/Devices');
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-routes.get('/auth/spotify', passport.authenticate('spotify'));
+routes.get('/auth/spotify', passport.authenticate('spotify', { scope: ['user-modify-playback-state'] }));
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   (req, res) => res.redirect('/loggedIn'));
@@ -66,6 +67,10 @@ routes.get('/playlist/info', Playlist.getPlaylistInfo);
 
 // Gets the number of available playlists stored in the database
 routes.get('/playlist/length', Playlist.getPlaylistLength);
+
+// Serve data to d3 for asnyc loading
+routes.get('/data/world-110m.json', MapData.getWorldJson);
+routes.get('/data/world-110m-country-names.tsv', MapData.getCountryNames);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Devices

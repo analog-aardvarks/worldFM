@@ -4,10 +4,12 @@ import Playlist from '../containers/Playlist';
 import HiddenPlayer from '../containers/HiddenPlayer';
 import UserPlayList from './UserPlayList';
 import Player from './Player';
+import GlobeMenu from '../containers/GlobeMenu';
 
 const App = () => (
   <div>
     <HiddenPlayer />
+    <GlobeMenu show />
     <Menu />
     <UserPlayList />
     <Playlist />
