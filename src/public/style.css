@@ -228,7 +228,8 @@ body {
 
 /* Globe syles */
 .water {
-  fill: #00248F;
+  fill: rgba(50,167,224,0.4);
+  /*fill: #171717;*/
 }
 .land {
   fill: #FFF;
@@ -236,11 +237,11 @@ body {
   stroke-width: 0.7px;
 }
 .land:hover {
-  fill:#33CC33;
+  fill: rgb(30, 215, 96);
   stroke-width: 1px;
 }
 .focused {
-  fill: #33CC33;
+  fill: rgb(30, 215, 96);
 }
 .globeSelect {
   position: absolute;
@@ -261,4 +262,10 @@ body {
   color: #666;
   font-size: 14px;
   font-family: sans-serif;
+}
+.globeContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 100px;
 }

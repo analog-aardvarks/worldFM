@@ -2,12 +2,12 @@ import React from 'react';
 import Menu from '../containers/Menu';
 import Playlist from '../containers/Playlist';
 import Player from '../containers/Player';
-import Globe from '../containers/Globe';
+import GlobeMenu from '../containers/GlobeMenu';
 
 const App = () => (
   <div>
     <Player />
-    <Globe />
+    <GlobeMenu />
     <Menu />
     <Playlist />
   </div>
