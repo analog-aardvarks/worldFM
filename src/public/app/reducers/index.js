@@ -10,10 +10,13 @@ function playlist(state = [], action) {
   }
 }
 
-function currentSong(state = '', action) {
+function currentSong(state = {}, action) {
   switch (action.type) {
-    case 'PLAY_PREVIEW':
-      return action.previewUrl;
+    case 'TOGGLE_PLAY':
+      if (state.src === action.src) {
+        return Object.assign({}, state, { isPlaying: !state.isPlaying });
+      }
+      return { src: action.src, isPlaying: true };
     default:
       return state;
   }
@@ -46,12 +49,48 @@ function windowWidth(state = window.innerWidth, action) {
   }
 }
 
+function showTrackInfo(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_TRACK_INFO': return true;
+    case 'HIDE_TRACK_INFO': return false;
+    default: return state;
+  }
+}
+
+function showSpotifyPlaylist(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_SPOTIFY_PLAYLIST': return true;
+    case 'HIDE_SPOTIFY_PLAYLIST': return false;
+    default: return state;
+  }
+}
+
+function showCountryMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_COUNTRY_MENU': return true;
+    case 'HIDE_COUNTRY_MENU': return false;
+    default: return state;
+  }
+}
+
+function songMenu(state = null, action) {
+  switch (action.type) {
+    case 'OPEN_SONG_MENU': return action.index;
+    case 'CLOSE_SONG_MENU': return null;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
   currentCountry,
   currentTrend,
   windowWidth,
+  showTrackInfo,
+  showSpotifyPlaylist,
+  showCountryMenu,
+  songMenu,
 });
 
 export default reducer;
@@ -59,7 +98,7 @@ export default reducer;
 // STATE TREE:
 // {
 //   playlist: [], SET_PLAYLIST
-//   currentSong: '', SET_CURRENT_SONG
+//   currentSong: { src: URL, isPlaying: bool }, SET_CURRENT_SONG
 //   isPlaying: false, PLAY_PLAYER, PAUSE_PLAYER
 //   windowSize: { w: 100, h: 100 }, RESIZE_WINDOW
 //   currentCountry: 'World', SET_CURRENT_COUNTRY

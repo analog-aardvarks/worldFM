@@ -1,7 +1,7 @@
-export function setCurrentSong(previewUrl) {
+export function togglePlay(src = '') {
   return {
-    type: 'PLAY_PREVIEW',
-    previewUrl,
+    type: 'TOGGLE_PLAY',
+    src,
   };
 }
 
@@ -30,5 +30,18 @@ export function setWindowWidth(newSize) {
   return {
     type: 'WINDOW_RESIZE',
     newSize,
+  };
+}
+
+export function openSongMenu(index) {
+  return {
+    type: 'OPEN_SONG_MENU',
+    index,
+  };
+}
+
+export function closeSongMenu() {
+  return {
+    type: 'CLOSE_SONG_MENU',
   };
 }

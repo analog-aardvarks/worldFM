@@ -1,11 +1,15 @@
 import React from 'react';
-import Menu from './Menu';
+import Menu from '../containers/Menu';
 import Playlist from '../containers/Playlist';
-import Player from '../containers/Player';
+import HiddenPlayer from '../containers/HiddenPlayer';
+import UserPlayList from './UserPlayList';
+import Player from './Player';
 
 const App = () => (
   <div>
+    <HiddenPlayer />
     <Menu />
+    <UserPlayList />
     <Playlist />
     <Player />
   </div>

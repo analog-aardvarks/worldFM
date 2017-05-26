@@ -1,8 +1,8 @@
 import React from 'react';
 import Song from './Song';
-import Menu from './Menu';
+import Menu from '../containers/Menu';
 
-const Songs = ({ playlist, onClick, windowWidth, onWindowResize}) => {
+const Songs = ({ playlist, onClick, windowWidth, onWindowResize, currentSong, showTrackInfo, songMenu, openSongMenu, closeSongMenu }) => {
   window.onresize = () => onWindowResize(window.innerWidth);
   let width = 0;
   if (windowWidth < 500) {
@@ -35,6 +35,11 @@ const Songs = ({ playlist, onClick, windowWidth, onWindowResize}) => {
           track={listItem}
           size={width}
           onClick={onClick}
+          currentSong={currentSong}
+          showTrackInfo={showTrackInfo}
+          songMenu={songMenu}
+          openSongMenu={openSongMenu}
+          closeSongMenu={closeSongMenu}
         />
       ))}
 
