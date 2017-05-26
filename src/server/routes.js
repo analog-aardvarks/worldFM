@@ -12,7 +12,9 @@ const Devices = require('./helpers/Devices');
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-routes.get('/auth/spotify', passport.authenticate('spotify', { scope: ['user-modify-playback-state'] }));
+routes.get('/auth/spotify', passport.authenticate('spotify',
+  { scope: ['user-read-playback-state', 'user-modify-playback-state'] }));
+
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   (req, res) => res.redirect('/loggedIn'));
