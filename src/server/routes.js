@@ -7,6 +7,7 @@ const Playlist = require('./helpers/Playlist');
 const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
+const UserPlaylist = require('./helpers/UserPlaylist');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
@@ -168,5 +169,12 @@ routes.get('/player/repeat', Player.repeat);
 // http://localhost:8080/player/info?device=${device_id}&volume=50
 // http://localhost:8080/player/info?device=${device_id}&volume=0
 routes.get('/player/volume', Player.volume);
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// User Playlists
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// routes.get('/userplaylist/info', UserPlaylist.getInfo);
+// routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
 
 module.exports = routes;
