@@ -6,12 +6,13 @@ const renderGlobe = (element) => {
   const width = 600;
   const height = 500;
   const sens = 0.25;
+  const globeSize = 200;
   let focused;
 
   // Set projection
 
   const projection = d3.geo.orthographic()
-    .scale(200)
+    .scale(globeSize)
     .rotate([0, 0])
     .translate([width / 2, height / 2])
     .clipAngle(90);
@@ -20,7 +21,6 @@ const renderGlobe = (element) => {
     .projection(projection);
 
   // SVG container
-  console.log('before selecting element');
   const svg = d3.select(element).append('svg')
     .attr('width', width)
     .attr('height', height);
@@ -53,13 +53,11 @@ const renderGlobe = (element) => {
     // Adding countries to select
 
     countryData.forEach((d) => {
-      console.log(d);
       countryById[d.id] = d.name;
       const option = countryList.append('option');
       option.text(d.name);
       option.property('value', d.id);
     });
-    console.log(countries);
     world = svg.selectAll('path.land')
       .data(countries)
       .enter().append('path')
@@ -82,21 +80,21 @@ const renderGlobe = (element) => {
 
       // Mouse events
 
-      .on('mouseover', (d) => {
-        countryTooltip.text(countryById[d.id])
-          .style('left', `${(d3.event.pageX + 7)} px`)
-          .style('top', `${(d3.event.pageY - 15)} px`)
-          .style('display', 'block')
-          .style('opacity', 1);
-      })
-      .on('mouseout', (d) => {
-        countryTooltip.style('opacity', 0)
-          .style('display', 'none');
-      })
-      .on('mousemove', (d) => {
-        countryTooltip.style('left', `${d3.event.pageX + 7} px`)
-          .style('top', `${d3.event.pageY - 15} px`);
-      });
+      // .on('mouseover', (d) => {
+      //   countryTooltip.text(countryById[d.id])
+      //     .style('left', `${(d3.event.pageX + 7)} px`)
+      //     .style('top', `${(d3.event.pageY - 15)} px`)
+      //     .style('display', 'block')
+      //     .style('opacity', 1);
+      // })
+      // .on('mouseout', (d) => {
+      //   countryTooltip.style('opacity', 0)
+      //     .style('display', 'none');
+      // })
+      // .on('mousemove', (d) => {
+      //   countryTooltip.style('left', `${d3.event.pageX + 7} px`)
+      //     .style('top', `${d3.event.pageY - 15} px`);
+      // });
 
     // Country focus on option select
 
@@ -119,7 +117,6 @@ const renderGlobe = (element) => {
     // Globe rotating
 
     (function transition() {
-      console.log('transitioning')
       d3.transition()
         .duration(2500)
         .tween('rotate', () => {
