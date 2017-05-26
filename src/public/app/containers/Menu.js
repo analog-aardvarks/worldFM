@@ -69,7 +69,7 @@ class Menu extends React.Component {
   }
 
   getPlaylist(e) {
-    fetch(`http://localhost:8080/playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
+    fetch(`playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
       .then(res => res.json())
       .then(res => this.props.setPlaylist(res))
       .catch(err => console.log(err));
@@ -106,8 +106,11 @@ class Menu extends React.Component {
         <TopMenu
           toggleCountryMenu={this.toggleCountryMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
+<<<<<<< HEAD
           toggleTrackInfo={this.toggleTrackInfo}
           toggleSideMenu={this.toggleSideMenu}
+=======
+>>>>>>> 06b5da2cb13376f8a73292d8f1af0d81a3f886bc
         />
         <CountryMenu
           availableCountries={this.props.availableCountries}
@@ -117,6 +120,7 @@ class Menu extends React.Component {
           handleCountryChange={this.handleCountryChange}
           handleTrendChange={this.handleTrendChange}
           showCountryMenu={this.props.showCountryMenu}
+          toggleTrackInfo={this.toggleTrackInfo}
         />
         {sideMenu}
       </div>
