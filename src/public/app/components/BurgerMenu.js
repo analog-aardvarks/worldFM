@@ -1,16 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { slide as Menu } from 'react-burger-menu'
+// import ReactDOM from 'react-dom';
+// import { slide as Menu } from 'react-burger-menu'
 
-const BurgerMenu = () => {
+const BurgerMenu = ({toggleCountryMenu}, {toggleSpotifyPlaylist}) => {
   return (
     <div className="SideMenu">
-      <span href="/">Home</span>
       <span href="/about">About</span>
-      <span href="/country">Country</span>
-      <span href="/genre">Genre</span>
-      <span href="/categories">Categories</span>
-      <span href="/about">Settings</span>
+      <span href="/country" className="CountryMenu--toggle" onClick={toggleCountryMenu}>Countries</span>
+      <span href="/playlist" className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span>
+      <span href="/queue">Queue</span>
       <span href="/login">Login</span>
     </div>
   );
