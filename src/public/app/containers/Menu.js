@@ -106,11 +106,8 @@ class Menu extends React.Component {
         <TopMenu
           toggleCountryMenu={this.toggleCountryMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
-<<<<<<< HEAD
           toggleTrackInfo={this.toggleTrackInfo}
           toggleSideMenu={this.toggleSideMenu}
-=======
->>>>>>> 06b5da2cb13376f8a73292d8f1af0d81a3f886bc
         />
         <CountryMenu
           availableCountries={this.props.availableCountries}
