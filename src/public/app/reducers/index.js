@@ -81,6 +81,14 @@ function songMenu(state = null, action) {
   }
 }
 
+function showSideMenu(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_SIDE_MENU': return true;
+    case 'HIDE_SIDE_MENU': return false;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -91,6 +99,7 @@ const reducer = combineReducers({
   showSpotifyPlaylist,
   showCountryMenu,
   songMenu,
+  showSideMenu,
 });
 
 export default reducer;

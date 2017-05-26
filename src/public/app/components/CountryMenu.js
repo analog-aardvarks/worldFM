@@ -1,6 +1,9 @@
 import React from 'react';
 
-const CountryMenu = ({ availableCountries, availableTrends, currentCountry, currentTrend, handleCountryChange, handleTrendChange, showCountryMenu }) => {
+const CountryMenu = ({ availableCountries, 
+  availableTrends,
+  currentCountry,
+  currentTrend, handleCountryChange, handleTrendChange, showCountryMenu }) => {
   return (
     <div className="CountryMenu" style={{ opacity:  showCountryMenu ? 1 : 0 }}>
       <div className="CountryList">
