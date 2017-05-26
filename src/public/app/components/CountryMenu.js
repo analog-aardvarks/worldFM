@@ -1,6 +1,7 @@
 import React from 'react';
 
 const CountryMenu = ({ availableCountries, availableTrends, currentCountry, currentTrend, handleCountryChange, handleTrendChange, showCountryMenu, toggleTrackInfo }) => {
+
   return (
     <div className="CountryMenu" style={{ display:  showCountryMenu ? "block" : "none" }}>
       <span className="Menu--toggle" onClick={toggleTrackInfo}>Info</span>
