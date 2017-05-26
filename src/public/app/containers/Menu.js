@@ -5,6 +5,7 @@ import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
+import QueMenu from '../components/QueMenu';
 
 const mapStateToProps = state => ({
   currentCountry: state.currentCountry,
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
   showTrackInfo: state.showTrackInfo,
   showSpotifyPlaylist: state.showSpotifyPlaylist,
   showCountryMenu: state.showCountryMenu,
+  showQueMenu: state.showQueMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
   hideSpotifyPlaylistEvent: () => dispatch({ type: 'HIDE_SPOTIFY_PLAYLIST' }),
   showCountryMenuEvent: () => dispatch({ type: 'SHOW_COUNTRY_MENU' }),
   hideCountryMenuEvent: () =>  dispatch({ type: 'HIDE_COUNTRY_MENU' }),
+  showQueMenuEvent: () => dispatch({ type: 'SHOW_QUE_MENU' }),
+  hideQueMenuEvent: () => dispatch({ type: 'HIDE_QUE_MENU' }),
   closeSongMenu: () => dispatch(closeSongMenu()),
 });
 
@@ -36,7 +40,8 @@ class Menu extends React.Component {
     this.handleTrendChange = this.handleTrendChange.bind(this);
     this.toggleTrackInfo = this.toggleTrackInfo.bind(this);
     this.toggleSpotifyPlaylist = this.toggleSpotifyPlaylist.bind(this);
-    this.toggleCountryMenu = this.toggleCountryMenu.bind(this)
+    this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
+    this.toggleQueMenu = this.toggleQueMenu.bind(this);
   }
 
   componentDidMount() {
@@ -71,21 +76,23 @@ class Menu extends React.Component {
   }
 
   toggleTrackInfo() {
-    //console.log(this.props.showTrackInfo)
     if(this.props.showTrackInfo) this.props.hideTrackInfoEvent();
     if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
 
   toggleSpotifyPlaylist() {
-    //console.log(this.props.showSpotifyPlaylist)
     if(this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
     if(!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
   }
 
   toggleCountryMenu() {
-    console.log(this.props.showCountryMenu)
     if(this.props.showCountryMenu) this.props.hideCountryMenuEvent();
     if(!this.props.showCountryMenu) this.props.showCountryMenuEvent();
+  }
+
+  toggleQueMenu() {
+    if(this.props.showQueMenu) this.props.hideQueMenuEvent();
+    if(!this.props.showQueMenu) this.props.showQueMenuEvent();
   }
 
   render() {
@@ -93,7 +100,9 @@ class Menu extends React.Component {
       <div>
         <TopMenu
           toggleCountryMenu={this.toggleCountryMenu}
+          toggleQueMenu={this.toggleQueMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
+          toggleQueMenu={this.toggleQueMenu}
         />
         <CountryMenu
           availableCountries={this.props.availableCountries}
@@ -105,6 +114,7 @@ class Menu extends React.Component {
           showCountryMenu={this.props.showCountryMenu}
           toggleTrackInfo={this.toggleTrackInfo}
         />
+        <QueMenu />
       </div>
     );
   }
