@@ -1,6 +1,7 @@
 import React from 'react';
 
-const TopMenu = ({ toggleCountryMenu, toggleSpotifyPlaylist, toggleSideMenu }) => {
+const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, toggleSideMenu }) => {
+
   return (
     <div className="Menu">
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
@@ -8,6 +9,7 @@ const TopMenu = ({ toggleCountryMenu, toggleSpotifyPlaylist, toggleSideMenu }) =
       <div className="Desktop">
         <span className="CountryMenu--toggle" onClick={toggleCountryMenu}>Countries</span>
         <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span>
+        <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span>
         <span className="Menu--login" href="/auth/spotify">Login</span>
       </div>
     </div>

@@ -74,7 +74,8 @@ body {
 .Menu--login,
 .Menu--toggle,
 .SpotifyPlaylist--toggle,
-.CountryMenu--toggle {
+.CountryMenu--toggle,
+.QueueMenu--toggle {
   align-items: flex-start;
   color: white;
   cursor: pointer;
@@ -87,7 +88,8 @@ body {
 .Menu--login:hover,
 .Menu--toggle:hover,
 .SpotifyPlaylist--toggle:hover,
-.CountryMenu--toggle:hover {
+.CountryMenu--toggle:hover,
+.QueueMenu--toggle:hover {
   color: white;
   opacity: 0.75;
   text-decoration: none;
@@ -96,7 +98,8 @@ body {
 .Menu--login:active,
 .Menu--toggle:active,
 .SpotifyPlaylist--toggle:active,
-.CountryMenu--toggle:active {
+.CountryMenu--toggle:active,
+.QueueMenu--toggle:active {
   opacity: 1;
   color: rgb(30, 215, 96);
 }
@@ -115,7 +118,7 @@ body {
   opacity: 0;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 620px) {
   .Desktop {
     display: none;
   }
@@ -492,4 +495,32 @@ body {
 
 .CurrentSongPic {
 
+}
+
+.QueueMenu {
+  /*display: flex;
+  flex-direction: row;*/
+  z-index: 15;
+  padding: 20px;
+  position: fixed;
+  top: 60px;
+  right: 0%;
+  width: 300px;
+  height: 100%;
+  font-family: 'Permanent Marker', cursive;
+  color: white;
+  background-color: rgba(0,0,0,0.75);
+}
+
+.IndividualSong {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 14pt;
+  width: 260px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  border-color: #636343;
 }
