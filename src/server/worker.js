@@ -36,11 +36,17 @@ const promisifyGetPlaylist = (owner, id) =>
 // Parse raw data to be in line with schema structure
 const parseTrackData = trackData => ({
   track_id: trackData.track.id,
+  track_artist_id: JSON.stringify(trackData.track.artists.map(artist => artist.id)),
+  track_artist_name: JSON.stringify(trackData.track.artists.map(artist => artist.name)),
   track_name: trackData.track.name,
   track_preview_url: trackData.track.preview_url,
   track_album_id: trackData.track.album.id,
+  track_album_type: trackData.track.album.album_typse,
   track_album_image: trackData.track.album.images[0].url,
-  track_artist_name: JSON.stringify(trackData.track.artists.map(artist => artist.name)),
+  track_available_markets: JSON.stringify(trackData.track.available_markets),
+  track_popularity: trackData.track.popularity,
+  track_length: trackData.track.duration_ms,
+  track_position: trackData.track.disc_number,
 });
 
 // Parse raw data to be in line with schema structure
@@ -93,7 +99,7 @@ const runWorkers = () => {
   // spotifyWorker('thesoundsofspotify', 50, 0);
   // spotifyWorker('thesoundsofspotify', 50, 50);
   // spotifyWorker('thesoundsofspotify', 50, 100);
-  spotifyWorker('thesoundsofspotify', 50, 150);
+  // spotifyWorker('thesoundsofspotify', 50, 150);
   // spotifyWorker('thesoundsofspotify', 2, 200);
 
   // EXPERIMENTAL! (not tested)
