@@ -10,7 +10,7 @@ Player.info = (req, res) => {
     url: `https://api.spotify.com/v1/me/player?device_id=${device}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -33,7 +33,7 @@ Player.play = (req, res) => {
   options.body = JSON.stringify(options.body);
 
   rpn(options)
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -44,7 +44,7 @@ Player.pause = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -56,7 +56,7 @@ Player.seek = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/seek?device_id=${device}&position_ms=${ms}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -67,7 +67,7 @@ Player.next = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/next?device_id=${device}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -78,7 +78,7 @@ Player.prev = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/previous?device_id=${device}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -90,7 +90,7 @@ Player.shuffle = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/shuffle?device_id=${device}&state=${shuffle}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -102,7 +102,7 @@ Player.repeat = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/repeat?device_id=${device}&state=${repeat}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
@@ -114,7 +114,7 @@ Player.volume = (req, res) => {
     url: `https://api.spotify.com/v1/me/player/volume?device_id=${device}&volume_percent=${volume}`,
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(200).send('Success!', response))
+    .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
