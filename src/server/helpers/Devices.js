@@ -9,7 +9,7 @@ Devices.info = (req, res) => {
     url: 'https://api.spotify.com/v1/me/player/devices',
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then(response => res.status(300).send('Success!', response))
+    .then(response => res.status(300).send(response))
     .catch(err => res.status(404).send(err));
 };
 
