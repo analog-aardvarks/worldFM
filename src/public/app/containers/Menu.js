@@ -110,7 +110,6 @@ class Menu extends React.Component {
   }
 
   render() {
-    const sideMenu = this.props.showSideMenu ? <BurgerMenu toggleCountryMenu={this.toggleCountryMenu}/> : null;
     return (
       <div>
         <TopMenu
@@ -131,7 +130,11 @@ class Menu extends React.Component {
           toggleTrackInfo={this.toggleTrackInfo}
         />
         <QueueMenu />
-        {sideMenu}
+        {this.props.showSideMenu ? <BurgerMenu
+          toggleCountryMenu={this.toggleCountryMenu}
+          toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
+          toggleQueueMenu={this.toggleQueueMenu}
+        /> : null}
       </div>
     );
   }

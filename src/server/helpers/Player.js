@@ -1,21 +1,20 @@
 const rpn = require('request-promise-native');
 
-const token = '';
 const Player = {};
 
 Player.info = (req, res) => {
-  const device = req.body.device;
+  const deviceID = req.user.activeDevice.id;
   rpn({
     method: 'GET',
-    url: `https://api.spotify.com/v1/me/player?device_id=${device}`,
-    headers: { Authorization: `Bearer ${token}` },
+    url: `https://api.spotify.com/v1/me/player?device_id=${deviceID}`,
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
 };
 
 Player.play = (req, res) => {
-  const device = req.body.device;
+  const deviceID = req.user.activeDevice.id;
   const type = req.query.type;
   const id = req.query.id;
   // only for type playlist
@@ -24,8 +23,8 @@ Player.play = (req, res) => {
 
   const options = {
     method: 'PUT',
-    url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
-    headers: { Authorization: `Bearer ${token}` },
+    url: `https://api.spotify.com/v1/me/player/play?device_id=${deviceID}`,
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
     body: {},
   };
   options.body = { context_uri: `spotify:${user ? `user:${user}:` : ''}${type}:${id}` };
@@ -38,13 +37,13 @@ Player.play = (req, res) => {
 };
 
 Player.pause = (req, res) => {
-  const device = req.body.device;
+  const device = req.user.activeDevice.id;
   rpn({
     method: 'PUT',
     url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
-    .then(response => res.status(200).send(response))
+    .then(response => res.status(200).send())
     .catch(err => res.status(400).send(err));
 };
 
@@ -54,7 +53,7 @@ Player.seek = (req, res) => {
   rpn({
     method: 'PUT',
     url: `https://api.spotify.com/v1/me/player/seek?device_id=${device}&position_ms=${ms}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
@@ -65,7 +64,7 @@ Player.next = (req, res) => {
   rpn({
     method: 'POST',
     url: `https://api.spotify.com/v1/me/player/next?device_id=${device}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
@@ -76,7 +75,7 @@ Player.prev = (req, res) => {
   rpn({
     method: 'POST',
     url: `https://api.spotify.com/v1/me/player/previous?device_id=${device}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
@@ -88,7 +87,7 @@ Player.shuffle = (req, res) => {
   rpn({
     method: 'PUT',
     url: `https://api.spotify.com/v1/me/player/shuffle?device_id=${device}&state=${shuffle}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
@@ -100,7 +99,7 @@ Player.repeat = (req, res) => {
   rpn({
     method: 'PUT',
     url: `https://api.spotify.com/v1/me/player/repeat?device_id=${device}&state=${repeat}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
@@ -112,7 +111,7 @@ Player.volume = (req, res) => {
   rpn({
     method: 'PUT',
     url: `https://api.spotify.com/v1/me/player/volume?device_id=${device}&volume_percent=${volume}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
     .catch(err => res.status(400).send(err));
