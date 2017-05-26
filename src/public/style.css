@@ -360,7 +360,6 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 
-<<<<<<< HEAD
 /* Globe syles */
 .water {
   fill: rgba(50,167,224,0.4);
@@ -403,7 +402,8 @@ body {
   display: flex;
   justify-content: center;
   padding: 100px;
-=======
+}
+
 .Player {
   color: white;
   background-color: rgba(0, 0, 0, 0.85);
@@ -477,5 +477,4 @@ body {
 
 .CurrentSongPic {
 
->>>>>>> dev
 }
