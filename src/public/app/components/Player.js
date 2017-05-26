@@ -6,7 +6,7 @@ const Player = () => {
     <div className="PlayerControls">
       <div className="PlayerControlsPlay">
         <i className="fa fa fa-step-backward fa-lg fa-fw" />
-        <i className="fa fa-play fa-2x fa-fw" />
+        <a href="/player/pause" className="fa fa-play fa-2x fa-fw" />
         <i className="fa fa-step-forward fa-lg fa-fw" />
       </div>
       <i className="fa fa-random fa-1x fa-lg RandomButton" />
