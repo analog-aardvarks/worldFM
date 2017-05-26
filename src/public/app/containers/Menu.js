@@ -5,6 +5,7 @@ import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
+import BurgerMenu from '../components/BurgerMenu';
 
 const mapStateToProps = state => ({
   currentCountry: state.currentCountry,
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
   showTrackInfo: state.showTrackInfo,
   showSpotifyPlaylist: state.showSpotifyPlaylist,
   showCountryMenu: state.showCountryMenu,
+  showSideMenu: state.showSideMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -27,6 +29,8 @@ const mapDispatchToProps = dispatch => ({
   showCountryMenuEvent: () => dispatch({ type: 'SHOW_COUNTRY_MENU' }),
   hideCountryMenuEvent: () =>  dispatch({ type: 'HIDE_COUNTRY_MENU' }),
   closeSongMenu: () => dispatch(closeSongMenu()),
+  showSideMenuEvent: () => dispatch({ type: 'SHOW_SIDE_MENU' }),
+  hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
 });
 
 class Menu extends React.Component {
@@ -36,7 +40,8 @@ class Menu extends React.Component {
     this.handleTrendChange = this.handleTrendChange.bind(this);
     this.toggleTrackInfo = this.toggleTrackInfo.bind(this);
     this.toggleSpotifyPlaylist = this.toggleSpotifyPlaylist.bind(this);
-    this.toggleCountryMenu = this.toggleCountryMenu.bind(this)
+    this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
+    this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
 
   componentDidMount() {
@@ -88,13 +93,21 @@ class Menu extends React.Component {
     if(!this.props.showCountryMenu) this.props.showCountryMenuEvent();
   }
 
+  toggleSideMenu() {
+    console.log(this.props.showSideMenu)
+    if(this.props.showSideMenu) this.props.hideSideMenuEvent();
+    if(!this.props.showSideMenu) this.props.showSideMenuEvent();
+  }
+
   render() {
+    const sideMenu = this.props.showSideMenu ? <BurgerMenu /> : null;
     return (
       <div>
         <TopMenu
           toggleCountryMenu={this.toggleCountryMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleTrackInfo={this.toggleTrackInfo}
+          toggleSideMenu={this.toggleSideMenu}
         />
         <CountryMenu
           availableCountries={this.props.availableCountries}
@@ -105,6 +118,7 @@ class Menu extends React.Component {
           handleTrendChange={this.handleTrendChange}
           showCountryMenu={this.props.showCountryMenu}
         />
+        {sideMenu}
       </div>
     );
   }
