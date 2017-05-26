@@ -1,5 +1,7 @@
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
+
+const Devices = require('./helpers/Devices');
 const config = process.env.SPOTIFYID ? {
   clientID: process.env.SPOTIFYID,
   clientSecret: process.env.SPOTIFYSECRET,
@@ -14,7 +16,8 @@ passport.use(new SpotifyStrategy({
 },
 (accessToken, refreshToken, profile, done) => {
   profile.accessToken = accessToken;
-  done(null, profile);
+  Devices.getDevices(profile)
+    .then(profile => done(null, profile))
 }));
 
 passport.serializeUser((user, done) => done(null, user));

@@ -17,7 +17,11 @@ routes.get('/auth/spotify', passport.authenticate('spotify',
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  (req, res) => res.redirect('/loggedIn'));
+  // (req, res) => res.redirect('/loggedIn'));
+  (req, res) => {
+    Devices.getDevices(req).then(res.redirect('/'));
+  });
+
 routes.get('/auth/logout', (req, res) => {
   req.logout();
   res.redirect('/');
