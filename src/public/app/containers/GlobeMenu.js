@@ -11,11 +11,14 @@ export default class GlobeMenu extends Component {
   }
 
   render() {
-    return (
-      <div
+    if (this.props.show) {
+      return (
+        <div
         ref={(el) => { this.container = el; }}
         className="globeContainer"
-      />
-    )
+        />
+      )
+    }
+    return null;
   }
 }

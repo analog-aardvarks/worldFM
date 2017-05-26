@@ -9,7 +9,7 @@ import GlobeMenu from '../containers/GlobeMenu';
 const App = () => (
   <div>
     <HiddenPlayer />
-    <GlobeMenu />
+    <GlobeMenu show />
     <Menu />
     <UserPlayList />
     <Playlist />
