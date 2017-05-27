@@ -6,7 +6,7 @@ import UserPlayList from './UserPlayList';
 import Player from './Player';
 import GlobeMenu from '../containers/GlobeMenu';
 
-const showGlobe = true;
+const showGlobe = false;
 
 const App = () => (
   <div>

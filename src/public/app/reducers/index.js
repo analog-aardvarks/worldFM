@@ -97,6 +97,33 @@ function showSideMenu(state = false, action) {
   }
 }
 
+// function previewPlayer(state = {}, action) {
+//
+// };
+
+function spotifyPlayer(state = {
+  queue: [],
+  currentTrack: 0,
+  isPaused: false,
+  volume: 0,
+  repeat: false,
+  shuffle: false,
+  mute: false,
+}, action) {
+  switch (action.type) {
+    case 'PAUSE_SPOTIFY_PLAYER': return Object.assign({}, state, { isPaused: true });
+    case 'SET_SPOTIFY_PLAYER_VOLUME': return Object.assign({}, state, { volume: action.volume });
+    default: return state;
+  }
+}
+
+function auth(state = false, action) {
+  switch (action.type) {
+    case 'AUTHENTICATE_USER': return true;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -109,6 +136,9 @@ const reducer = combineReducers({
   showQueueMenu,
   songMenu,
   showSideMenu,
+  auth,
+  // previewPlayer,
+  spotifyPlayer,
 });
 
 export default reducer;

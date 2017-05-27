@@ -20,6 +20,7 @@ routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   // (req, res) => res.redirect('/loggedIn'));
   (req, res) => {
+    res.cookie('auth', 'true');
     Devices.getDevices(req).then(res.redirect('/'));
   });
 
@@ -175,6 +176,8 @@ routes.get('/player/repeat', Player.repeat);
 // http://localhost:8080/player/info?device=${device_id}&volume=50
 // http://localhost:8080/player/info?device=${device_id}&volume=0
 routes.get('/player/volume', Player.volume);
+
+routes.get('/player/auth', Player.isAuth);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // User Playlists

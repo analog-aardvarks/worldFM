@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
   showSpotifyPlaylistEvent: () => dispatch({ type: 'SHOW_SPOTIFY_PLAYLIST' }),
   hideSpotifyPlaylistEvent: () => dispatch({ type: 'HIDE_SPOTIFY_PLAYLIST' }),
   showCountryMenuEvent: () => dispatch({ type: 'SHOW_COUNTRY_MENU' }),
-  hideCountryMenuEvent: () =>  dispatch({ type: 'HIDE_COUNTRY_MENU' }),
+  hideCountryMenuEvent: () => dispatch({ type: 'HIDE_COUNTRY_MENU' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   closeSongMenu: () => dispatch(closeSongMenu()),
@@ -95,7 +95,6 @@ class Menu extends React.Component {
     if(this.props.showCountryMenu) this.props.hideCountryMenuEvent();
     if(!this.props.showCountryMenu) this.props.showCountryMenuEvent();
   }
-
 
   toggleSideMenu() {
     console.log(this.props.showSideMenu)

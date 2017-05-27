@@ -3,10 +3,9 @@ const rpn = require('request-promise-native');
 const Player = {};
 
 Player.info = (req, res) => {
-  const deviceID = req.user.activeDevice.id;
   rpn({
     method: 'GET',
-    url: `https://api.spotify.com/v1/me/player?device_id=${deviceID}`,
+    url: `https://api.spotify.com/v1/me/player?device_id=${req.user.activeDevice.id}`,
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
@@ -36,15 +35,21 @@ Player.play = (req, res) => {
     .catch(err => res.status(400).send(err));
 };
 
+Player.isAuth = (req, res) => {
+  if (req.user !== undefined) res.status(200).send();
+  else res.status(201).send();
+};
+
 Player.pause = (req, res) => {
-  const device = req.user.activeDevice.id;
-  rpn({
-    method: 'PUT',
-    url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
-    headers: { Authorization: `Bearer ${req.user.accessToken}` },
-  })
-    .then(response => res.status(200).send())
-    .catch(err => res.status(400).send(err));
+  if (req.user) {
+    rpn({
+      method: 'PUT',
+      url: `https://api.spotify.com/v1/me/player/pause?device_id=${req.user.activeDevice.id}`,
+      headers: { Authorization: `Bearer ${req.user.accessToken}` },
+    })
+      .then(response => res.status(200).send(response))
+      .catch(err => res.status(400).send(err));
+  }
 };
 
 Player.seek = (req, res) => {
@@ -106,15 +111,15 @@ Player.repeat = (req, res) => {
 };
 
 Player.volume = (req, res) => {
-  const device = req.body.device;
-  const volume = req.query.volume;
-  rpn({
-    method: 'PUT',
-    url: `https://api.spotify.com/v1/me/player/volume?device_id=${device}&volume_percent=${volume}`,
-    headers: { Authorization: `Bearer ${req.user.accessToken}` },
-  })
-    .then(response => res.status(200).send(response))
-    .catch(err => res.status(400).send(err));
+  if (req.user) {
+    rpn({
+      method: 'PUT',
+      url: `https://api.spotify.com/v1/me/player/volume?device_id=${req.user.activeDevice.id}&volume_percent=${req.query.volume}`,
+      headers: { Authorization: `Bearer ${req.user.accessToken}` },
+    })
+      .then(response => res.status(200).send(response))
+      .catch(err => res.status(400).send(err));
+  }
 };
 
 module.exports = Player;

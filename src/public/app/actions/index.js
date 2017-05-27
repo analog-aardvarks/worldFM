@@ -45,3 +45,10 @@ export function closeSongMenu() {
     type: 'CLOSE_SONG_MENU',
   };
 }
+
+export function setSpotifyPlayerVolume(v) {
+  return {
+    type: 'SET_SPOTIFY_PLAYER_VOLUME',
+    volume: v,
+  };
+}
