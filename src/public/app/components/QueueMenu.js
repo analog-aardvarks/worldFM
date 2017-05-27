@@ -9,7 +9,7 @@ const mapDispatchToProps = dispatch => ({
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
 })
 
-const QueueMenu = ({ showQueueMenu }) => {
+const QueueMenu = ({ showQueueMenu, toggleQueueMenu }) => {
   let songTestList = [
     {
       Artist: 'Bob',
@@ -33,6 +33,7 @@ const QueueMenu = ({ showQueueMenu }) => {
   ];
   return (
     <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }}>
+      <i className="fa fa fa-times fa-lg fa-fw" onClick={toggleQueueMenu} />
       {songTestList.map((song, idx) => (
         <div className="IndividualSong" key={song.key}>
           <span>{idx+1}</span>

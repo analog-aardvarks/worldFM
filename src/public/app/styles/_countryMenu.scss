@@ -5,7 +5,7 @@
   top: 60px;
   right: 0%;
   width: 300px;
-  height: 100%;
+  height: calc(100% - 124px);
   font-family: 'Permanent Marker', cursive;
   color: white;
   background-color: rgba(0,0,0,0.75);
@@ -13,4 +13,23 @@
 
 .CountryList {
   z-index: 12;
+}
+
+.Country--dropdown,
+.Trend--dropdown  {
+  width: 260px;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+
+.CountryMenu--Section {
+  margin-top: 7px;
+  border-top: 2px rgba(192,192,192,0.2) solid;
 }
