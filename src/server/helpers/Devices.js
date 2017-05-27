@@ -1,10 +1,10 @@
-const rpn = require('request-promise-native');
+const request = require('request-promise-native');
 
 const token = '';
 const Devices = {};
 
 Devices.info = (req, res) => {
-  rpn({
+  request({
     method: 'GET',
     url: 'https://api.spotify.com/v1/me/player/devices',
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
@@ -16,7 +16,7 @@ Devices.info = (req, res) => {
 
 Devices.getDevices = profile =>
   new Promise((resolve, reject) => {
-    rpn({
+    request({
       method: 'GET',
       url: 'https://api.spotify.com/v1/me/player/devices',
       headers: { Authorization: `Bearer ${profile.accessToken}` },

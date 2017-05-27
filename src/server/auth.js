@@ -17,7 +17,7 @@ passport.use(new SpotifyStrategy({
 (accessToken, refreshToken, profile, done) => {
   profile.accessToken = accessToken;
   Devices.getDevices(profile)
-    .then(profile => done(null, profile))
+    .then(userInfo => done(null, userInfo));
 }));
 
 passport.serializeUser((user, done) => done(null, user));

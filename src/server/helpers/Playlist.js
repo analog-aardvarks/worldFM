@@ -80,6 +80,7 @@ const randomizeTracks = (tracks, shouldRandomize) => {
 
 // GET /playlist/info
 Playlist.getPlaylist = (req, res) => {
+  console.log('REQ.USER: ', req.user);
   const max = 200;
   const min = 0; // not being used currently
   // parse query string
