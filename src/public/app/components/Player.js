@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
-import { setSpotifyPlayerVolume } from '../actions';
+import { setSpotifyPlayerVolume, playSpotifyPlayer } from '../actions';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -10,8 +10,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
-  removeAuthHandler: () => dispatch({ type: 'REMOVE_AUTH' }),
-  pauseSpotifyPlayer: () => dispatch({ type: 'PAUSE_PLAYER' }),
+  playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
+  pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_PLAYER' }),
   setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
 });
 
@@ -28,7 +28,7 @@ class Player extends React.Component {
     fetch('/player/auth', { credentials: 'include' })
       .then((res) => {
         const auth = res.status === 200;
-        if(auth) {
+        if (auth) {
           this.props.authUserHandler();
           this.changePlayerVolume({ target: { value: 50 } });
         } else {
@@ -41,7 +41,7 @@ class Player extends React.Component {
   pausePlayer() {
     if (this.props.auth) {
       fetch('/player/pause', { credentials: 'include' })
-        .then(res => this.props.pauseSpotifyPlayer())
+        .then(res => this.props.pauseSpotifyPlayerHandler())
         .catch(err => console.log(err));
     }
   }

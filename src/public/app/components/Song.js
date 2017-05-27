@@ -1,7 +1,20 @@
 import React from 'react';
 
-const Song = ({ size, track, onClick, ranking, currentSong, showTrackInfo, songMenu, openSongMenu, closeSongMenu }) => {
-
+const Song = ({ size,
+  track,
+  ranking,
+  currentSong,
+  howTrackInfo,
+  songMenu,
+  openSongMenu,
+  closeSongMenu,
+  showTrackInfo,
+  auth,
+  spotifyPlayer,
+  playSpotifyPlayer,
+  pauseSpotifyPlayer,
+  togglePreview,
+}) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
   const icon = currentSong.isPlaying && track.track_preview_url === currentSong.src ? 'fa-pause-circle-o' : 'fa-play-circle-o';
@@ -10,6 +23,18 @@ const Song = ({ size, track, onClick, ranking, currentSong, showTrackInfo, songM
       closeSongMenu();
     } else {
       openSongMenu(ranking);
+    }
+  }
+  const togglePlay = () => {
+    console.log(spotifyPlayer.currentTrack.track_id, track.track_id)
+    if (auth) {
+      if (!spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
+        pauseSpotifyPlayer();
+      } else {
+        playSpotifyPlayer(track);
+      }
+    } else {
+      togglePreview(track.track_preview_url);
     }
   }
   return (
@@ -79,7 +104,7 @@ const Song = ({ size, track, onClick, ranking, currentSong, showTrackInfo, songM
       >
         <i
           className={`SongHover__play-button fa ${icon} fa-5x fa-fw`}
-          onClick={() => onClick(track.track_preview_url)}
+          onClick={() => togglePlay()}
         />
       </div>
       }

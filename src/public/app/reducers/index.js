@@ -14,7 +14,7 @@ function currentSong(state = {}, action) {
   switch (action.type) {
     case 'TOGGLE_PLAY':
       if (state.src === action.src) {
-        return Object.assign({}, state, { isPlaying: !state.isPlaying });
+        return { ...state, isPlaying: !state.isPlaying };
       }
       return { src: action.src, isPlaying: true };
     default:
@@ -103,16 +103,26 @@ function showSideMenu(state = false, action) {
 
 function spotifyPlayer(state = {
   queue: [],
-  currentTrack: 0,
-  isPaused: false,
+  currentTrack: {},
+  isPaused: true,
   volume: 0,
   repeat: false,
   shuffle: false,
   mute: false,
 }, action) {
   switch (action.type) {
-    case 'PAUSE_SPOTIFY_PLAYER': return Object.assign({}, state, { isPaused: true });
-    case 'SET_SPOTIFY_PLAYER_VOLUME': return Object.assign({}, state, { volume: action.volume });
+    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: true };
+    case 'PLAY_SPOTIFY_PLAYER':
+      return {
+        ...state,
+        isPaused: false,
+        currentTrack: action.currentTrack || state.currentTrack,
+      };
+    case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
+    case 'ADD_SONG_TO_SPOTIFY_QUEUE':
+      return { ...state, queue: [...state.queue].push(action.track) };
+    case 'REMOVE_FROM_SPOTIFY_QUEUE':
+      return { ...state, queue: [...state.queue].splice(action.idx, 1) };
     default: return state;
   }
 }

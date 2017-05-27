@@ -52,3 +52,16 @@ export function setSpotifyPlayerVolume(v) {
     volume: v,
   };
 }
+
+export function playSpotifyPlayer(currentTrack) {
+  return {
+    type: 'PLAY_SPOTIFY_PLAYER',
+    currentTrack,
+  };
+}
+
+export function pauseSpotifyPlayer(track) {
+  return {
+    type: 'PAUSE_SPOTIFY_PLAYER',
+  };
+}
