@@ -16,32 +16,29 @@ const Player = {};
 // };
 
 Player.play = (req, res) => {
-  const deviceID = req.user.activeDevice.id;
-  const type = req.query.type;
-  const id = req.query.id;
-  // only for type playlist
-  const offset = req.body.user;
+  const track = req.body;
+  const position = track.track_number;
+  const url = 'https://api.spotify.com/v1/me/player/play';// ?device_id=${deviceID}`;
 
   const options = {
-    method: 'PUT',
-    url: `https://api.spotify.com/v1/me/player/play?device_id=${deviceID}`,
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-    body: {},
+    body: {
+      context_uri: track.album.uri,
+    },
   };
-  options.body = { context_uri: `spotify:${user ? `user:${user}:` : ''}${type}:${id}` };
-  if (type === 'playlist') options.body.offset = { position: offset ? parseInt(offset, 10) : 1 };
+  if (track.album.albumType === 'album') {
+    options.body.offset = { position };
+  }
   options.body = JSON.stringify(options.body);
 
-  request(options)
-    .then(response => res.status(200).send(response))
+  request.put('https://api.spotify.com/v1/me/player/play', options)
+    .then(response => res.send(response))
     .catch(err => res.status(400).send(err));
 };
 
 Player.pause = (req, res) => {
   const device = req.user.activeDevice.id;
-  request({
-    method: 'PUT',
-    url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
+  request.put('https://api.spotify.com/v1/me/player/pause', {
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send())
@@ -59,66 +56,5 @@ Player.volume = (req, res) => {
   .then(response => res.status(200).send(response))
   .catch(err => res.status(400).send(err));
 };
-
-// Deprecated, maybe useful later
-
-// Player.seek = (req, res) => {
-//   const device = req.user.activeDevice.id;
-//   const ms = req.query.ms;
-//   request({
-//     method: 'PUT',
-//     url: `https://api.spotify.com/v1/me/player/seek?device_id=${device}&position_ms=${ms}`,
-//     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-//   })
-//     .then(response => res.status(200).send(response))
-//     .catch(err => res.status(400).send(err));
-// };
-//
-// Player.next = (req, res) => {
-//   const device = req.body.device;
-//   request({
-//     method: 'POST',
-//     url: `https://api.spotify.com/v1/me/player/next?device_id=${device}`,
-//     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-//   })
-//     .then(response => res.status(200).send(response))
-//     .catch(err => res.status(400).send(err));
-// };
-//
-// Player.prev = (req, res) => {
-//   const device = req.body.device;
-//   request({
-//     method: 'POST',
-//     url: `https://api.spotify.com/v1/me/player/previous?device_id=${device}`,
-//     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-//   })
-//     .then(response => res.status(200).send(response))
-//     .catch(err => res.status(400).send(err));
-// };
-//
-// Player.shuffle = (req, res) => {
-//   const device = req.body.device;
-//   const shuffle = req.query.shuffle;
-//   request({
-//     method: 'PUT',
-//     url: `https://api.spotify.com/v1/me/player/shuffle?device_id=${device}&state=${shuffle}`,
-//     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-//   })
-//     .then(response => res.status(200).send(response))
-//     .catch(err => res.status(400).send(err));
-// };
-
-// Player.repeat = (req, res) => {
-//   const device = req.user.activeDevice.id;
-//   const repeat = req.query.repeat;
-//   request({
-//     method: 'PUT',
-//     url: `https://api.spotify.com/v1/me/player/repeat?device_id=${device}&state=${repeat}`,
-//     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-//   })
-//     .then(response => res.status(200).send(response))
-//     .catch(err => res.status(400).send(err));
-// };
-
 
 module.exports = Player;

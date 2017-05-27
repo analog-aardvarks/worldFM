@@ -22,6 +22,7 @@ Devices.getDevices = profile =>
       headers: { Authorization: `Bearer ${profile.accessToken}` },
     })
     .then((response) => {
+      console.log('ACCESS TOKEN========= ', profile.accessToken);
       profile.devices = JSON.parse(response).devices;
       profile.activeDevice = profile.devices.filter(d => d.is_active)[0];
       resolve(profile);
