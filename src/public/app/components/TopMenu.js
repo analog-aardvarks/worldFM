@@ -6,7 +6,7 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, to
     <div className="Menu">
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
       <h1 className='Menu--logo'>world.fm</h1>
-      <div className="Desktop">
+      <div className="TopMenu">
         <span className="CountryMenu--toggle" onClick={toggleCountryMenu}>Countries</span>
         <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span>
         <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span>

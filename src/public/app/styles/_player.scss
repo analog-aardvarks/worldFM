@@ -1,0 +1,74 @@
+.Player {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.85);
+  border: 20px;
+  bottom: 0px;
+  height: 64px;
+  position: fixed;
+  width: 100%;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PlayerControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 160px;
+  margin-left: 60px;
+}
+
+.PlayerControlsPlay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.fa-step-backwards,
+.fa-play,
+.fa-step-forward {
+  margin-left: 16px;
+}
+
+.fa-step-backwards:hover,
+.fa-play:hover,
+.fa-step-forward:hover,
+.fa-random:hover  {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.fa-step-backward:active,
+.fa-play:active,
+.fa-step-forward:active,
+.fa-random:active{
+  opacity: 1;
+  color: rgb(30, 215, 96);
+}
+
+.RandomButton {
+  margin-left: 40px;
+}
+
+.CurrentSong {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 80px;
+}
+
+.CurrentSongInfo {
+  font-family: 'Permanent Marker', cursive;
+  margin: 4px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.CurrentSongPic {
+
+}
