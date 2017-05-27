@@ -2,7 +2,21 @@ import React from 'react';
 import Song from './Song';
 import Menu from '../containers/Menu';
 
-const Songs = ({ playlist, onClick, windowWidth, onWindowResize, currentSong, showTrackInfo, songMenu, openSongMenu, closeSongMenu }) => {
+const Songs = ({
+  playlist,
+  togglePreview,
+  windowWidth,
+  onWindowResize,
+  currentSong,
+  showTrackInfo,
+  songMenu,
+  openSongMenu,
+  closeSongMenu,
+  playSpotifyPlayer,
+  pauseSpotifyPlayer,
+  auth,
+  spotifyPlayer,
+}) => {
   window.onresize = () => onWindowResize(window.innerWidth);
   let width = 0;
   if (windowWidth < 500) {
@@ -20,6 +34,7 @@ const Songs = ({ playlist, onClick, windowWidth, onWindowResize, currentSong, sh
   else  {
     width = windowWidth / 6;
   }
+
   return (
     <div
       className="Playlist"
@@ -29,18 +44,22 @@ const Songs = ({ playlist, onClick, windowWidth, onWindowResize, currentSong, sh
     >
       {
         playlist.map((listItem, idx) => (
-        <Song
-          key={listItem.track_id}
-          ranking={idx + 1}
-          track={listItem}
-          size={width}
-          onClick={onClick}
-          currentSong={currentSong}
-          showTrackInfo={showTrackInfo}
-          songMenu={songMenu}
-          openSongMenu={openSongMenu}
-          closeSongMenu={closeSongMenu}
-        />
+          <Song
+            key={listItem.track_id}
+            ranking={idx + 1}
+            track={listItem}
+            size={width}
+            currentSong={currentSong}
+            showTrackInfo={showTrackInfo}
+            songMenu={songMenu}
+            openSongMenu={openSongMenu}
+            closeSongMenu={closeSongMenu}
+            auth={auth}
+            spotifyPlayer={spotifyPlayer}
+            playSpotifyPlayer={playSpotifyPlayer}
+            pauseSpotifyPlayer={pauseSpotifyPlayer}
+            togglePreview={togglePreview}
+          />
       ))}
 
     </div>

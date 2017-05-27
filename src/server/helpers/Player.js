@@ -15,21 +15,25 @@ const Player = {};
 // };
 
 Player.play = (req, res) => {
+  // console.log('WHOLE FRICKIN THING: ', req);
+  // console.log('REQ.BODY ON PLAY: ', req.body);
+  // console.log('REQ.USER ON PLAY:', req.user);
+  // console.log('REQ.PARAMS: ', req.params);
   const track = req.body;
-  const position = track.track_number;
+  const position = track.track_position - 1;
   const url = 'https://api.spotify.com/v1/me/player/play';// ?device_id=${deviceID}`;
 
   const options = {
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
     body: {
-      context_uri: track.album.uri,
+      context_uri: `spotify:album:${track.track_album_id}`,
     },
   };
-  if (track.album.albumType === 'album') {
+  if (track.track_album_type === 'album') {
     options.body.offset = { position };
   }
   options.body = JSON.stringify(options.body);
-
+  console.log(options.body);
   request.put('https://api.spotify.com/v1/me/player/play', options)
     .then(response => res.send(response))
     .catch(err => res.status(400).send(err));
@@ -44,7 +48,7 @@ Player.pause = (req, res) => {
   if (req.user) {
     request({
       method: 'PUT',
-      url: `https://api.spotify.com/v1/me/player/pause?device_id=${req.user.activeDevice.id}`,
+      url: `https://api.spotify.com/v1/me/player/pause`,
       headers: { Authorization: `Bearer ${req.user.accessToken}` },
     })
       .then(response => res.status(200).send(response))
@@ -56,7 +60,7 @@ Player.volume = (req, res) => {
   if (req.user) {
     request({
       method: 'PUT',
-      url: `https://api.spotify.com/v1/me/player/volume?device_id=${req.user.activeDevice.id}&volume_percent=${req.query.volume}`,
+      url: `https://api.spotify.com/v1/me/player/volume?volume_percent=${req.query.volume}`,
       headers: { Authorization: `Bearer ${req.user.accessToken}` },
     })
       .then(response => res.status(200).send(response))
