@@ -19,7 +19,7 @@ exports.up = (knex, Promise) =>
       table.string('track_album_id');
       table.string('track_album_type');
       table.string('track_album_image');
-      table.string('track_available_markets');
+      table.string('track_available_markets', 350);
       table.integer('track_popularity');
       table.integer('track_length');
       table.integer('track_position');
