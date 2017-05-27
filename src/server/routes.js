@@ -118,56 +118,21 @@ routes.get('/devices', Devices.info);
 //   "repeat_state" : "track",
 //   "shuffle_state" : true
 // }
-routes.get('/player/info', Player.info);
+// routes.get('/player/info', Player.info);
 
 // Start a User's Playback
-// Params: device, type, id, user, offset
-// Examples:
+// Request body contains song object with optional millisecond start point
+// Deprecated examples:
 // http://localhost:8080/player/play?device=${device_id}&type=artist&id={artist_id}
 // http://localhost:8080/player/play?device=${device_id}&type=album&id={album_id}
 // http://localhost:8080/player/play?device=${device_id}&type=album&id={album_id}&offset=5
 // http://localhost:8080/player/play?device=${device_id}&type=playlist&id={playlist_id}&user=${playlist_owner}
 // http://localhost:8080/player/play?device=${device_id}&type=playlist&id={playlist_id}&user=${playlist_owner}&offset=10
-routes.get('/player/play', Player.play);
+routes.put('/player/play', Player.play);
 
 // Start a User's Playback
-// Params: device
-// Examples:
-// http://localhost:8080/player/pause?device=${device_id}
+// Uses user's active device at time of login
 routes.get('/player/pause', Player.pause);
-
-// Seek To Position In Currently Playing Track
-// Params: device, ms
-// Examples:
-// http://localhost:8080/player/seek?device=${device_id}&ms=15000
-routes.get('/player/seek', Player.seek);
-
-// Skip User's Playback To Next Track
-// Params: device
-// Examples:
-// http://localhost:8080/player/next?device=${device_id}
-routes.get('/player/next', Player.next);
-
-// Skip User's Playback To Previous Track
-// Params: device
-// Examples:
-// http://localhost:8080/player/prev?device=${device_id}
-routes.get('/player/prev', Player.prev);
-
-// Toggle Shuffle For User's Playback
-// Params: device, shuffle
-// Examples:
-// http://localhost:8080/player/shuffle?device=${device_id}&shuffle=true
-// http://localhost:8080/player/shuffle?device=${device_id}&shuffle=false
-routes.get('/player/shuffle', Player.shuffle);
-
-// Toggle Repeat For User's Playback
-// Params: device, repeat
-// Examples:
-// http://localhost:8080/player/repeat?device=${device_id}&repeat=track
-// http://localhost:8080/player/repeat?device=${device_id}&repeat=context
-// http://localhost:8080/player/repeat?device=${device_id}&repeat=off
-routes.get('/player/repeat', Player.repeat);
 
 // Set Volume For User's Playback
 // Params: device, volume

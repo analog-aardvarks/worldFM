@@ -1,0 +1,40 @@
+@media (max-width: 620px) {
+  .TopMenu {
+    display: none;
+  }
+  .Mobile--icon {
+    display: block;
+  }
+  .SpotifyPlaylist {
+    width: 80vw;
+    height: 50vh;
+    top: 22%;
+    left: 22%;
+  }
+  .Menu {
+    justify-content: center;
+  }
+  .CurrentSongInfo {
+    display: none;
+  }
+  .CurrentSongPic {
+    right: 10px;
+  }
+  .Player {
+    justify-content: center;
+    align-items: center;
+  }
+  .RandomButton {
+    position: fixed;
+    left: -3%;
+  }
+  .PlayerControls {
+    margin-left: 0;
+    position: absolute;
+  }
+  .CurrentSongPic {
+    position: absolute;
+    right: 9px;
+    bottom: 9px;
+  }
+}

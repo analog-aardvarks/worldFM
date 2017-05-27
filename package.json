@@ -19,6 +19,7 @@
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
+    "css-loader": "^0.28.3",
     "d3": "^4.9.1",
     "d3-queue": "^3.0.7",
     "express": "^4.15.3",
@@ -27,6 +28,7 @@
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "node-fetch": "^1.6.3",
+    "node-sass": "^4.5.3",
     "npm": "^4.6.1",
     "passport": "^0.3.2",
     "passport-spotify": "^0.3.1",
@@ -41,8 +43,10 @@
     "redux-burger-menu": "^0.2.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
+    "sass-loader": "^6.0.5",
     "shuffle-array": "^1.0.1",
     "spotify-web-api-node": "^2.4.0",
+    "style-loader": "^0.18.1",
     "topojson": "^3.0.0",
     "topojson-client": "^3.0.0",
     "underscore": "^1.8.3"
