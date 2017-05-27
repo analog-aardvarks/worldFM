@@ -41,7 +41,7 @@ const parseTrackData = trackData => ({
   track_name: trackData.track.name,
   track_preview_url: trackData.track.preview_url,
   track_album_id: trackData.track.album.id,
-  track_album_type: trackData.track.album.album_typse,
+  track_album_type: trackData.track.album.album_type,
   track_album_image: trackData.track.album.images[0].url,
   track_available_markets: JSON.stringify(trackData.track.available_markets),
   track_popularity: trackData.track.popularity,
