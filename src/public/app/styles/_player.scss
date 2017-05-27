@@ -13,17 +13,28 @@
 }
 
 .PlayerControls {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 160px;
-  margin-left: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
+    margin-left: 40px;
 }
 
 .PlayerControlsPlay {
   display: flex;
-  flex-direction: row;
   align-items: center;
+}
+
+.PlayerControls {
+  input {
+    width: 60px;
+  }
+}
+
+.Player__volume {
+  display: flex;
+  align-items: center;
+  width: 200px;
 }
 
 .fa-step-backwards,
@@ -49,9 +60,9 @@
   color: rgb(30, 215, 96);
 }
 
-.RandomButton {
-  margin-left: 40px;
-}
+// .RandomButton {
+//   margin-left: 40px;
+// }
 
 .CurrentSong {
   display: flex;
