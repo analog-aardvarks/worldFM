@@ -63,7 +63,7 @@ class Player extends React.Component {
           <i onClick={this.pausePlayer} className="fa fa-pause fa-2x fa-fw" />
           <i className="fa fa-step-forward fa-lg fa-fw" />
         </div>
-        <div style={{ minWidth: '200px' }}>
+        <div className="Player__volume">
           <i className="fa fa-volume-up fa-lg fa-fw" />
           <input
             onChange={(e) => {
@@ -79,7 +79,7 @@ class Player extends React.Component {
             max="100"
           />
         </div>
-        <i className="fa fa-random fa-1x fa-lg RandomButton" />
+        {/* <i className="fa fa-random fa-1x fa-lg RandomButton" /> */}
       </div>
         <div className="CurrentSong">
           <img className="CurrentSongPic" src="https://i.scdn.co/image/2b61b1d9bb5d2dadfe782cfcf1f6f0db840a5973" width = "46" height="46" />
