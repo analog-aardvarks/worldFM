@@ -127,8 +127,11 @@ class Menu extends React.Component {
           handleTrendChange={this.handleTrendChange}
           showCountryMenu={this.props.showCountryMenu}
           toggleTrackInfo={this.toggleTrackInfo}
+          toggleCountryMenu={this.toggleCountryMenu}
         />
-        <QueueMenu />
+        <QueueMenu
+          toggleQueueMenu={this.toggleQueueMenu}
+        />
         {this.props.showSideMenu ? <BurgerMenu
           toggleCountryMenu={this.toggleCountryMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}

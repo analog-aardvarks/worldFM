@@ -1,4 +1,4 @@
-@media (max-width: 620px) {
+@media (max-width: 400px) {
   .TopMenu {
     display: none;
   }
@@ -36,5 +36,8 @@
     position: absolute;
     right: 9px;
     bottom: 9px;
+  }
+  .SideMenu {
+    display: flex;
   }
 }

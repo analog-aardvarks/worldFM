@@ -11,19 +11,9 @@
   color: rgb(230, 230, 230);
   border: 3px solid #171717;
   cursor: default;
-/*
-  -webkit-transition: border 0.25s ease;
-  -moz-transition: border 0.25s ease;
-  -o-transition: border 0.25s ease;
-  -ms-transition: border 0.25s ease;
-  transition: border 0.25s ease;*/
 }
 
 .Song:hover {
-  border: 3px solid rgb(30, 215, 96);
-}
-
-.Song--green-border {
   border: 3px solid rgb(30, 215, 96);
 }
 
@@ -90,7 +80,7 @@
 }
 
 .Song__container {
-  opacity: 0;
+  opacity: 1;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   max-width: 100%;
