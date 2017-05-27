@@ -1,4 +1,3 @@
-
 const webpack = require('webpack');
 
 module.exports = {
@@ -16,6 +15,10 @@ module.exports = {
         query: {
           presets: ['react', 'es2015'],
         },
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader',
       },
     ],
   },
