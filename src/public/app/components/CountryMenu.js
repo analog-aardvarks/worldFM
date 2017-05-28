@@ -5,7 +5,10 @@ const CountryMenu = ({ availableCountries, availableTrends, currentCountry, curr
   return (
     <div className="CountryMenu" style={{ display:  showCountryMenu ? "block" : "none" }}>
 
-      <i className="fa fa fa-times fa-lg fa-fw" onClick={toggleCountryMenu} />
+      <div className="CountryMenu-TopSection">
+        <i className="fa fa fa-times fa-lg fa-fw" onClick={toggleCountryMenu} />
+        <i className="a fa fa-info-circle fa-lg fa-fw" onClick={toggleTrackInfo} />
+      </div>
 
       <div className="CountryMenu--Section">
         <select
@@ -28,8 +31,6 @@ const CountryMenu = ({ availableCountries, availableTrends, currentCountry, curr
           {availableCountries.map((country, idx) => <option key={idx}>{country}</option>)}
         </select>
       </div>
-
-      <span className="Menu--toggle" onClick={toggleTrackInfo}>Info</span>
 
     </div>
   )
