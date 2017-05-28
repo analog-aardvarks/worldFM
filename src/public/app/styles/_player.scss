@@ -16,13 +16,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 180px;
+    width: 240px;
     margin-left: 40px;
 }
 
 .PlayerControlsPlay {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 110px;
 }
 
 .PlayerControls {
@@ -32,16 +34,17 @@
 }
 
 .Player__volume {
-  display: flex;
-  align-items: center;
-  width: 200px;
+    display: flex;
+    align-items: center;
+    width: 100px;
+    justify-content: space-around;
 }
 
-.fa-step-backwards,
-.fa-play,
-.fa-step-forward {
-  margin-left: 16px;
-}
+// .fa-step-backwards,
+// .fa-play,
+// .fa-step-forward {
+//   margin-left: 0px;
+// }
 
 .fa-step-backwards:hover,
 .fa-play:hover,
