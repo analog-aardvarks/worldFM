@@ -66,7 +66,7 @@ class Menu extends React.Component {
   }
 
   handleCountryChange(e) {
-    this.props.setCurrentCountry(e.target.value);
+    this.props.setCurrentCountry(e.value);
   }
 
   handleTrendChange(e) {
@@ -117,6 +117,9 @@ class Menu extends React.Component {
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleTrackInfo={this.toggleTrackInfo}
           toggleSideMenu={this.toggleSideMenu}
+          availableCountries={this.props.availableCountries}
+          handleCountryChange={this.handleCountryChange}
+          currentCountry={this.props.currentCountry}
         />
         <CountryMenu
           availableCountries={this.props.availableCountries}
