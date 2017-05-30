@@ -32,7 +32,7 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu }) => {
 
   ];
   return (
-    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }}>
+    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }} onMouseLeave={toggleQueueMenu}>
 
       <div className="QueueMenu--TopBar">
         <i className="fa fa fa-times fa-1 fa-fw" onClick={toggleQueueMenu} />
