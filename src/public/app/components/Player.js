@@ -66,7 +66,18 @@ class Player extends React.Component {
         const auth = res.status === 200;
         if (auth) {
           this.props.authUserHandler();
-          this.changePlayerVolume({ target: { value: 50 } });
+          // get and set spotify volume
+          fetch('/devices', { credentials: 'include' })
+          .then(devicesRes => devicesRes.json())
+          .then((devicesRes) => {
+            devicesRes.devices.forEach((device) => {
+              // console.log(device);
+              if (device.is_active) {
+                this.changePlayerVolume({ target: { value: device.volume_percent } });
+              }
+            });
+          })
+          .catch(err => console.log(err));
         } else {
           console.log('NO_AUTH');
         }
@@ -119,7 +130,10 @@ class Player extends React.Component {
   changePlayerVolume(e) {
     if (this.props.auth) {
       fetch(`/player/volume?volume=${e.target.value}`, { credentials: 'include' })
-        .then(res => this.props.setSpotifyPlayerVolumeHandler(e.target.value))
+        .then((res) => {
+          this.$volumeInput.value = e.target.value;
+          this.props.setSpotifyPlayerVolumeHandler(e.target.value);
+        })
         .catch(err => console.log(err));
     }
   }
