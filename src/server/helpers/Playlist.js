@@ -139,15 +139,12 @@ Playlist.getPlaylist = (req, res) => {
         .groupBy('track_id') // removes duplicate id's (not necessary in theory but still...)
         .whereIn('track_id', curatedTracks)
         .then((data) => {
-
           /* */ /* */ /* */ /* */ /* */
-          data = makeSureWeCanPlayTheTracks(data);
+          // data = makeSureWeCanPlayTheTracks(data);
           /* */ /* */ /* */ /* */ /* */
           // data = randomizeTracks(data, randomize);
           data = _.shuffle(data);
-          if (data.length + 1 > props.limit) {
-            data = data.slice(0, props.limit);
-          }
+          data = data.slice(0, 100);
           res.status(200).send(data);
         })
         .catch((err) => {
