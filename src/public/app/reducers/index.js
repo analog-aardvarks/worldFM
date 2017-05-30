@@ -103,7 +103,7 @@ function showSideMenu(state = false, action) {
 
 function spotifyPlayer(state = {
   queue: [],
-  currentTrack: {},
+  currentTrack: null,
   isPaused: true,
   volume: 0,
   repeat: false,
