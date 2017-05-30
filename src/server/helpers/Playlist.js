@@ -1,4 +1,5 @@
 const knex = require('../db/db');
+const _ = require('underscore');
 
 const Playlist = {};
 
@@ -37,6 +38,10 @@ const filterPlaylistsByCountries = (playlists, countries) => {
   if (curatedPlaylists.length === 0) {
     curatedPlaylists = filterPlaylistsWorldMix(playlists);
   }
+
+  // log the names
+  curatedPlaylists.forEach(playlist => console.log('<42> : ', playlist.playlist_name));
+
   return curatedPlaylists;
 };
 
@@ -57,19 +62,31 @@ const filterPlaylistsByTrends = (playlists, trends) => {
 };
 
 // Using Durstenfeld shuffle algorithm.
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-};
+// const shuffleArray = (array) => {
+//   for (let i = array.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     const temp = array[i];
+//     array[i] = array[j];
+//     array[j] = temp;
+//   }
+//   return array;
+// };
 
 const randomizeTracks = (tracks, shouldRandomize) => {
   if (shouldRandomize === false) return tracks;
-  return shuffleArray(tracks);
+  return _.shuffle(tracks);
+};
+
+const makeSureWeCanPlayTheTracks = (tracks) => {
+  const original = tracks.length;
+  console.log('<82> ORIGINAL -> ', tracks.length);
+  let curatedTracks = _.filter(tracks, (track) => {
+    const hasPreviewURL = track.track_preview_url !== null;
+    const isAvailableInTheUS = JSON.parse(track.track_available_markets).includes('US');
+    return hasPreviewURL && isAvailableInTheUS;
+  });
+  console.log('<88> FILTER -> ', curatedTracks.length);
+  return curatedTracks;
 };
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,7 +103,7 @@ Playlist.getPlaylist = (req, res) => {
   const props = parseGetPlaylistReq(req, min, max);
   let randomize = false;
   if (props.random === true) randomize = true;
-  console.log(props);
+  console.log(`Country: ${props.country}, Trend: ${props.trend}, Limit: ${props.limit}, Random: ${props.random}`);
 
   // get all playlists from the database
   knex('playlists').select('*')
@@ -96,15 +113,18 @@ Playlist.getPlaylist = (req, res) => {
       let curatedPlaylists = playlists;
       curatedPlaylists = filterPlaylistsByCountries(curatedPlaylists, props.country);
       curatedPlaylists = filterPlaylistsByTrends(curatedPlaylists, props.trend);
+
       if (curatedPlaylists.length > 1) randomize = true;
       // create an array of tracks ids with no duplicates
       let curatedTracks = curatedPlaylists.reduce((acc, playlist) =>
          acc.concat(JSON.parse(playlist.playlist_tracks)), []);
       curatedTracks = Array.from(new Set(curatedTracks));
+      // curatedTracks = makeSureWeCanPlayTheTracks(curatedTracks);
       // TODO! check lower limit
-      if (curatedTracks.length + 1 > props.limit) {
-        curatedTracks = curatedTracks.slice(0, props.limit);
-      }
+      // console.log(curatedTracks.length, _.uniq(curatedTracks).length)
+      // if (curatedTracks.length + 1 > props.limit) {
+      //   curatedTracks = curatedTracks.slice(0, props.limit);
+      // }
       console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
 
       // get all tracks from the database included in the tracks array
@@ -112,7 +132,12 @@ Playlist.getPlaylist = (req, res) => {
         .groupBy('track_id') // removes duplicate id's (not necessary in theory but still...)
         .whereIn('track_id', curatedTracks)
         .then((data) => {
-          data = randomizeTracks(data, randomize);
+
+          /* */ /* */ /* */ /* */ /* */
+          data = makeSureWeCanPlayTheTracks(data);
+          /* */ /* */ /* */ /* */ /* */
+          // data = randomizeTracks(data, randomize);
+          data = _.shuffle(data);
           res.status(200).send(data);
         })
         .catch((err) => {
@@ -146,6 +171,19 @@ Playlist.getPlaylistInfo = (req, res) => {
 Playlist.getPlaylistLength = (req, res) => {
   knex('playlists').select('*')
     .then(playlist => res.status(200).send([playlist.length]))
+    .catch(err => console.log(err));
+};
+
+Playlist.getPlaylistNames = (req, res) => {
+  knex('playlists').select('*')
+    .then((playlist) => {
+      let s = '';
+      _.each(playlist, (p) => {
+        s += p.playlist_name;
+        s += '\n';
+      });
+      res.status(200).send(s);
+    })
     .catch(err => console.log(err));
 };
 

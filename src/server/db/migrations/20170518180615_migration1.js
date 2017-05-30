@@ -3,7 +3,7 @@ exports.up = (knex, Promise) =>
     knex.schema.createTableIfNotExists('playlists', (table) => {
       table.string('playlist_id');
       table.string('playlist_name');
-      table.string('playlist_tracks', 3000);
+      table.string('playlist_tracks', 5000);
       table.integer('playlist_tracks_total');
     })
     .then(() => {
@@ -13,8 +13,8 @@ exports.up = (knex, Promise) =>
     knex.schema.createTableIfNotExists('tracks', (table) => {
       table.string('track_id');
       table.string('track_artist_id');
-      table.string('track_artist_name', 500).collate('utf8_general_ci');
-      table.string('track_name').collate('utf8_general_ci');
+      table.string('track_artist_name', 1000).collate('utf8_general_ci');
+      table.string('track_name', 500).collate('utf8_general_ci');
       table.string('track_preview_url');
       table.string('track_album_id');
       table.string('track_album_type');
@@ -33,6 +33,7 @@ exports.up = (knex, Promise) =>
       table.string('user_name');
       table.string('user_url');
       table.string('user_image');
+      table.string('user_favorites', 7500);
     })
     .then(() => {
       console.log('table \'users\' successfully created!');

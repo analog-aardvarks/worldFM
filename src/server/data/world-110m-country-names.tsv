@@ -16,7 +16,7 @@ id	name
 84	Belize
 204	Benin
 64	Bhutan
-68	Bolivia, Plurinational State of
+68	Bolivia
 70	Bosnia and Herzegovina
 72	Botswana
 76	Brazil
@@ -72,7 +72,7 @@ id	name
 352	Iceland
 356	India
 360	Indonesia
-364	Iran, Islamic Republic of
+364	Iran
 368	Iraq
 372	Ireland
 376	Israel
@@ -82,8 +82,8 @@ id	name
 400	Jordan
 398	Kazakhstan
 404	Kenya
-408	Korea, Democratic People's Republic of
-410	Korea, Republic of
+408	North Korea
+410	South Korea
 414	Kuwait
 417	Kyrgyzstan
 418	Lao People's Democratic Republic
@@ -129,7 +129,7 @@ id	name
 630	Puerto Rico
 634	Qatar
 642	Romania
-643	Russian Federation
+643	Russia
 646	Rwanda
 682	Saudi Arabia
 686	Senegal
@@ -149,25 +149,25 @@ id	name
 752	Sweden
 756	Switzerland
 760	Syrian Arab Republic
-158	Taiwan, Province of China
+158	Taiwan
 762	Tajikistan
 834	Tanzania, United Republic of
 764	Thailand
 626	Timor-Leste
 768	Togo
-780	Trinidad and Tobago
+780	Trinidad & Tobago
 788	Tunisia
 792	Turkey
 795	Turkmenistan
 800	Uganda
 804	Ukraine
 784	United Arab Emirates
-826	United Kingdom
-840	United States
+826	UK
+840	USA
 858	Uruguay
 860	Uzbekistan
 548	Vanuatu
-862	Venezuela, Bolivarian Republic of
+862	Venezuela
 704	Viet Nam
 732	Western Sahara
 887	Yemen
