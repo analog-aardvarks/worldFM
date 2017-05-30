@@ -90,12 +90,13 @@ class Player extends React.Component {
   }
 
   handleVolumeClick() {
-    console.log(this.props.spotifyPlayer.volume, this.props.spotifyPlayer.mute, this.$volumeInput);
-    if (this.props.spotifyPlayer.volume > 0) {
+    console.log(this.props.spotifyPlayer.volume, this.props.spotifyPlayer.mute, this.$volumeInput.value);
+    if (parseInt(this.props.spotifyPlayer.volume, 10) > 0) {
       const currentVolume = this.props.spotifyPlayer.volume;
       // mute player
       fetch('/player/volume?volume=0', { credentials: 'include' })
         .then((res) => {
+          this.$volumeInput.value = '0';
           this.props.setSpotifyPlayerVolumeHandler(0);
           this.props.setSpotifyPlayerMute(currentVolume);
         })
@@ -104,9 +105,13 @@ class Player extends React.Component {
       // volume is 0
       if (this.props.spotifyPlayer.mute) {
         // restore volume
-        console.log('RESTORING_VOLUME', this.props.mute);
-        this.props.setSpotifyPlayerVolumeHandler(this.props.mute);
-        this.props.setSpotifyPlayerMute(false);
+        fetch(`/player/volume?volume=${this.props.spotifyPlayer.mute}`, { credentials: 'include' })
+          .then((res) => {
+            this.$volumeInput.value = this.props.spotifyPlayer.mute;
+            this.props.setSpotifyPlayerVolumeHandler(this.props.spotifyPlayer.mute);
+            this.props.setSpotifyPlayerMute(false);
+          })
+          .catch(err => console.log(err));
       }
     }
   }

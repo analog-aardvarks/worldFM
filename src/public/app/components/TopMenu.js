@@ -6,7 +6,7 @@ const TopMenu = ({
   toggleQueueMenu,
   toggleSpotifyPlaylist,
   toggleSideMenu }) => {
-    console.log(auth)
+  // console.log(auth)
   return (
     <div className="Menu">
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu} />
