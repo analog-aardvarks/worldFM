@@ -123,6 +123,7 @@ function spotifyPlayer(state = {
       return { ...state, queue: [...state.queue].push(action.track) };
     case 'REMOVE_FROM_SPOTIFY_QUEUE':
       return { ...state, queue: [...state.queue].splice(action.idx, 1) };
+    case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
     default: return state;
   }
 }

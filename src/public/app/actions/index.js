@@ -67,3 +67,10 @@ export function pauseSpotifyPlayer(track) {
     type: 'PAUSE_SPOTIFY_PLAYER',
   };
 }
+
+export function setSpotifyPlayerMute(mute) {
+  return {
+    type: 'SET_SPOTIFY_PLAYER_MUTE',
+    mute,
+  };
+}

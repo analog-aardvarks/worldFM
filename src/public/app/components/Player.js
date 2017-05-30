@@ -1,7 +1,10 @@
 import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
-import { setSpotifyPlayerVolume, playSpotifyPlayer } from '../actions';
+import {
+  setSpotifyPlayerVolume,
+  playSpotifyPlayer,
+  setSpotifyPlayerMute } from '../actions';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -24,6 +27,7 @@ const mapDispatchToProps = dispatch => ({
     .then(() => dispatch(playSpotifyPlayer(track)))
     .catch(err => console.log(err));
   },
+  setSpotifyPlayerMute: mute => dispatch(setSpotifyPlayerMute(mute)),
 });
 
 class Player extends React.Component {
@@ -33,6 +37,7 @@ class Player extends React.Component {
     this.changePlayerVolume = this.changePlayerVolume.bind(this);
     this.changePlayerVolumeWithThrottle = _.throttle(this.changePlayerVolume, 350);
     this.handlePlayClick = this.handlePlayClick.bind(this);
+    this.handleVolumeClick = this.handleVolumeClick.bind(this);
   }
 
   // check for auth
@@ -84,11 +89,34 @@ class Player extends React.Component {
     }
   }
 
+  handleVolumeClick() {
+    console.log(this.props.spotifyPlayer.volume, this.props.spotifyPlayer.mute, this.$volumeInput);
+    if (this.props.spotifyPlayer.volume > 0) {
+      const currentVolume = this.props.spotifyPlayer.volume;
+      // mute player
+      fetch('/player/volume?volume=0', { credentials: 'include' })
+        .then((res) => {
+          this.props.setSpotifyPlayerVolumeHandler(0);
+          this.props.setSpotifyPlayerMute(currentVolume);
+        })
+        .catch(err => console.log(err));
+    } else {
+      // volume is 0
+      if (this.props.spotifyPlayer.mute) {
+        // restore volume
+        console.log('RESTORING_VOLUME', this.props.mute);
+        this.props.setSpotifyPlayerVolumeHandler(this.props.mute);
+        this.props.setSpotifyPlayerMute(false);
+      }
+    }
+  }
+
   render() {
     // play/pause icon for spotify player
     // console.log(this.props.spotifyPlayer.isPaused)
     const playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
-    // const volumeIcon = this.p
+    // sorry!
+    const volumeIcon = this.props.spotifyPlayer.volume >= 70 ? 'up' : (this.props.spotifyPlayer.volume <= 10 ? 'off' : 'down');
 
     return (
       <div className="Player">
@@ -102,8 +130,12 @@ class Player extends React.Component {
           <i className="fa fa-step-forward fa-lg fa-fw" />
         </div>
         <div className="Player__volume">
-          <i className="fa fa-volume-up fa-lg fa-fw" />
+          <i
+            className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
+            onClick={this.handleVolumeClick}
+          />
           <input
+            ref={(el) => { this.$volumeInput = el; }}
             onChange={(e) => {
               e.persist();
               this.changePlayerVolumeWithThrottle(e);
