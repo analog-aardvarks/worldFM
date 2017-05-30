@@ -2,7 +2,7 @@ const extraPlaylists = {
   Nigeria: ['spotify:user:1229255324:playlist:23fCAKOF4pG6E0baakihsK', 'spotify:user:mfonumo:playlist:1dY58Ar9Dvlx1Le3AUAv3n'],
   Ethiopia: ['spotify:user:1237887860:playlist:7z5AOkgPtgxFMAoYax7tJX', 'spotify:user:birukgirma11:playlist:44zjKdGl628Rc1xYQB7gZ2'],
   Congo: ['spotify:user:1123550439:playlist:3MRxL25q4UxtK4Me4abyRQ', 'spotify:album:2iszP9onGYOHVGQoEjHirE'],
-  'South Africa': ['spotify:user:filtr.za:playlist:0hCbLT00O6Ck3O706GbNje', 'spotify:user:1230048443:playlist:1sxY6Hy6YlVvNcmSaW7pHy' ],
+  'South Africa': ['spotify:user:filtr.za:playlist:0hCbLT00O6Ck3O706GbNje', 'spotify:user:1230048443:playlist:1sxY6Hy6YlVvNcmSaW7pHy'],
   Tanzania: ['spotify:user:michi3792:playlist:3hiMm1Lv17MAGNMulOyWk0', 'spotify:user:115512586:playlist:3fLy38VEuYnvnpkjroiAJt'],
   Kenya: ['spotify:user:126152614:playlist:1mprLvJeiYDAENPOMNYl6Z'],
   Algeria: ['spotify:user:naninouni:playlist:3Wldc7HcACr5V8MsMCIuSF', 'spotify:user:naninouni:playlist:3Wldc7HcACr5V8MsMCIuSF', 'spotify:user:chompchomp:playlist:38UTmiKdrpgrD0HL02sk5p'],
@@ -34,4 +34,4 @@ const extraPlaylists = {
   Ukraine: ['spotify:user:oleh_the_great:playlist:0K7LWA7DVr4Yw0jhDngCI6', 'spotify:user:1225037656:playlist:4B24ETLEWtVLHNCuHJaJa1'],
 };
 
-export default extraPlaylists;
+module.exports = extraPlaylists;
