@@ -14,7 +14,6 @@ const App = () => (
     <HiddenPlayer />
     {showGlobe ? <ConnectedGlobe /> : null}
     <Menu />
-    <UserPlayList />
     <Playlist />
     <Player />
   </div>
