@@ -1,8 +1,26 @@
 import React from 'react';
 import Song from './Song';
-import Menu from './Menu';
+import Menu from '../containers/Menu';
 
-const Songs = ({ playlist, onClick, windowWidth, onWindowResize}) => {
+const Songs = ({
+  playlist,
+  togglePreview,
+  windowWidth,
+  onWindowResize,
+  currentSong,
+  showTrackInfo,
+  songMenu,
+  openSongMenu,
+  closeSongMenu,
+  playSpotifyPlayer,
+  pauseSpotifyPlayer,
+  auth,
+  spotifyPlayer,
+  clearSpotifyPlayerIntervalHandler,
+  resumeSpotifyPlayerHandler,
+  setSpotifyPlayerIntervalHandler,
+  setSpotifyPlayerEllapsedHandler,
+}) => {
   window.onresize = () => onWindowResize(window.innerWidth);
   let width = 0;
   if (windowWidth < 500) {
@@ -20,6 +38,7 @@ const Songs = ({ playlist, onClick, windowWidth, onWindowResize}) => {
   else  {
     width = windowWidth / 6;
   }
+
   return (
     <div
       className="Playlist"
@@ -29,13 +48,26 @@ const Songs = ({ playlist, onClick, windowWidth, onWindowResize}) => {
     >
       {
         playlist.map((listItem, idx) => (
-        <Song
-          key={listItem.track_id}
-          ranking={idx + 1}
-          track={listItem}
-          size={width}
-          onClick={onClick}
-        />
+          <Song
+            key={listItem.track_id}
+            ranking={idx + 1}
+            track={listItem}
+            size={width}
+            currentSong={currentSong}
+            showTrackInfo={showTrackInfo}
+            songMenu={songMenu}
+            openSongMenu={openSongMenu}
+            closeSongMenu={closeSongMenu}
+            auth={auth}
+            spotifyPlayer={spotifyPlayer}
+            playSpotifyPlayer={playSpotifyPlayer}
+            pauseSpotifyPlayer={pauseSpotifyPlayer}
+            togglePreview={togglePreview}
+            clearSpotifyPlayerIntervalHandler={clearSpotifyPlayerIntervalHandler}
+            resumeSpotifyPlayerHandler={resumeSpotifyPlayerHandler}
+            setSpotifyPlayerIntervalHandler={setSpotifyPlayerIntervalHandler}
+            setSpotifyPlayerEllapsedHandler={setSpotifyPlayerEllapsedHandler}
+          />
       ))}
 
     </div>

@@ -1,0 +1,51 @@
+/* Globe syles */
+.water {
+  /*fill: rgba(50,167,224,0.4);*/
+  fill: rgba(0,0,0,0.75)
+}
+.land {
+  fill: #ccc;
+  stroke: rgba(0,0,0,0.75);
+  stroke-width: 0.7px;
+}
+.available {
+  /*fill: #3c763d;*/
+  fill: rgb(30, 215, 96);
+}
+.available:hover {
+  fill: #3c763d;
+  stroke-width: 1px;
+}
+.focused {
+  fill: rgb(30, 215, 96);
+}
+.globeSelect {
+  margin-top: 60px;
+  position: absolute;
+  top: 20px;
+  left: 580px;
+  border: solid #ccc 1px;
+  padding: 3px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  display: none;
+}
+div.countryTooltip {
+  position: absolute !important;
+  display: none;
+  pointer-events: none;
+  background: #fff;
+  padding: 5px;
+  text-align: left;
+  border: solid #ccc 1px;
+  color: #666;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+.globeContainer {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  background-image: url("http://wallpapercave.com/wp/xX2GRj6.gif");
+}

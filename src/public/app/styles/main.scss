@@ -1,0 +1,19 @@
+$mainColor: #171717;
+$fontColor: rgb(230, 230, 230);
+$fontOnHoverColor: rgb(30, 215, 96);
+$fontOnClickColor: rgb(30, 215, 96);
+
+body {
+  background-color: $mainColor;
+}
+
+@import "menu";
+@import "topMenu";
+@import "globeMenu";
+@import "playlist";
+@import "spotifyPlaylist";
+@import "countryMenu";
+@import "queueMenu";
+@import "sideMenu";
+@import "player";
+@import "mobile";

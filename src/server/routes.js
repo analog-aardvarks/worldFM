@@ -4,15 +4,26 @@ const checkAuth = require('./auth').checkAuth;
 
 const Track = require('./helpers/Track');
 const Playlist = require('./helpers/Playlist');
+const MapData = require('./helpers/MapData');
+const Player = require('./helpers/Player');
+const Devices = require('./helpers/Devices');
+const UserPlaylist = require('./helpers/UserPlaylist');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-routes.get('/auth/spotify', passport.authenticate('spotify'));
+routes.get('/auth/spotify', passport.authenticate('spotify',
+  { scope: ['user-read-playback-state', 'user-modify-playback-state'] }));
+
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  (req, res) => res.redirect('/loggedIn'));
+  // (req, res) => res.redirect('/loggedIn'));
+  (req, res) => {
+    res.cookie('auth', 'true');
+    Devices.getDevices(req).then(res.redirect('/'));
+  });
+
 routes.get('/auth/logout', (req, res) => {
   req.logout();
   res.redirect('/');
@@ -30,14 +41,12 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
 
 // Gets information about available tracks
 // Params: id
-// Defaults:
-//  id  -> If undefined, will return an array containing all available tracks
-// Examples (try them in Postman):
+// Examples:
 // http://localhost:8080/track
-// http://localhost:8080/track?id=3zT1inKSRDpJvkAXGV7fBd
+// http://localhost:8080/track?id=${track_id}
 routes.get('/tracks', Track.getTrack);
 
-// Returns the number of available tracks
+// Gets the number of available tracks stored in the database
 routes.get('/tracks/length', Track.getTrackLength);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,12 +55,7 @@ routes.get('/tracks/length', Track.getTrackLength);
 
 // Gets a curated list of tracks based on the parameters given
 // Params: country, trend, random, limit
-// Defaults:
-//  country -> If undefined, will return a world mix (accepts multiple arguments separated by a comma and no whitespace)
-//  trend   -> If undefined, will return a mix of trends (accepts multiple arguments separated by a comma and no whitespace)
-//  random   -> If undefined or false, will return an ordered list (queries containing a mix of multiple countries or trends will always be randomized)
-//  limit   -> If undefined will return 100 tracks
-// Examples (try them in Postman):
+// Examples:
 // http://localhost:8080/playlist?country=Mexico,Argentina,Colombia,USA&trend=Current,Underground&limit=35
 //  -> Will return 35 random Current or Underground tracks from Mexico, Argentina, Colombia or USA
 // http://localhost:8080/playlist?country=Mexico&trend=Current&random=true
@@ -64,14 +68,88 @@ routes.get('/playlist', Playlist.getPlaylist);
 
 // Gets information about available playlists
 // Params: id
-// Defaults:
-//  id  -> If undefined, will return an array containing all available playlists
-// Examples (try them in Postman):
+// Examples:
 // http://localhost:8080/playlist
-// http://localhost:8080/playlist?id=3zT1inKSRDpJvkAXGV7fBd
+// http://localhost:8080/playlist?id=${playlist_id}
 routes.get('/playlist/info', Playlist.getPlaylistInfo);
 
-// Returns the number of available playlist
+// Gets the number of available playlists stored in the database
 routes.get('/playlist/length', Playlist.getPlaylistLength);
+
+// Serve data to d3 for asnyc loading
+routes.get('/data/world-110m.json', MapData.getWorldJson);
+routes.get('/data/world-110m-country-names.tsv', MapData.getCountryNames);
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Devices
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Get a User's Available Devices
+// http://localhost:8080/devices
+// Response:
+// {
+//   "devices" : [ {
+//     "id" : "9f2d444a827b1e993c2eaa9fe0dca6eb0f311169",
+//     "is_active" : true,
+//     "is_restricted" : false,
+//     "name" : "Arturo’s MacBook Air",
+//     "type" : "Computer",
+//     "volume_percent" : 100
+//   } ]
+// }
+routes.get('/devices', Devices.info);
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Player
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Get Information About The User's Current Playback
+// Params: device
+// Examples:
+// http://localhost:8080/player/info?device=${device_id}
+// Response:
+// {
+//   "timestamp" : 1495773587619,
+//   "progress_ms" : 4692,
+//   "is_playing" : true,
+//   "item" : { ... },
+//   "context" : null,
+//   "device" : { ... },
+//   "repeat_state" : "track",
+//   "shuffle_state" : true
+// }
+// routes.get('/player/info', Player.info);
+
+// Start a User's Playback
+// Request body contains song object with optional millisecond start point
+// Deprecated examples:
+// http://localhost:8080/player/play?device=${device_id}&type=artist&id={artist_id}
+// http://localhost:8080/player/play?device=${device_id}&type=album&id={album_id}
+// http://localhost:8080/player/play?device=${device_id}&type=album&id={album_id}&offset=5
+// http://localhost:8080/player/play?device=${device_id}&type=playlist&id={playlist_id}&user=${playlist_owner}
+// http://localhost:8080/player/play?device=${device_id}&type=playlist&id={playlist_id}&user=${playlist_owner}&offset=10
+routes.put('/player/play', Player.play);
+
+// Start a User's Playback
+// Uses user's active device at time of login
+routes.get('/player/pause', Player.pause);
+routes.get('/player/seek', Player.seek);
+
+// Set Volume For User's Playback
+// Params: device, volume
+// Examples:
+// http://localhost:8080/player/info?device=${device_id}&volume=100
+// http://localhost:8080/player/info?device=${device_id}&volume=50
+// http://localhost:8080/player/info?device=${device_id}&volume=0
+routes.get('/player/volume', Player.volume);
+
+routes.get('/player/auth', Player.isAuth);
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// User Playlists
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// routes.get('/userplaylist/info', UserPlaylist.getInfo);
+// routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
 
 module.exports = routes;

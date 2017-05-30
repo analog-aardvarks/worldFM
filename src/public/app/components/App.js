@@ -1,11 +1,20 @@
 import React from 'react';
-import Menu from './Menu';
+import Menu from '../containers/Menu';
 import Playlist from '../containers/Playlist';
-import Player from '../containers/Player';
+import HiddenPlayer from '../containers/HiddenPlayer';
+import UserPlayList from './UserPlayList';
+import Player from './Player';
+import ConnectedGlobe from '../containers/GlobeMenu';
+import '../styles/main.scss';
+
+const showGlobe = true;
 
 const App = () => (
   <div>
+    <HiddenPlayer />
+    {showGlobe ? <ConnectedGlobe /> : null}
     <Menu />
+    <UserPlayList />
     <Playlist />
     <Player />
   </div>
