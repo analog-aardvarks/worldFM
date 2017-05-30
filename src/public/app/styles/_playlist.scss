@@ -1,7 +1,8 @@
+//playlist css
 .Playlist {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 60px;
+  // margin-top: 60px;
 }
 
 .Song {
@@ -13,9 +14,15 @@
   cursor: default;
 }
 
-.Song:hover {
-  border: 3px solid rgb(30, 215, 96);
+
+.Song:hover .Song__container {
+  opacity: 1;
 }
+
+// .Song:hover {
+//   padding: 3px solid rgb(30, 215, 96);
+// }
+
 
 .SongHover {
   position: relative;
@@ -27,6 +34,7 @@
   justify-content: center;
   opacity: 0;
   z-index: 3;
+  border: 3px solid rgb(30, 215, 96);
 }
 
 .SongHover:hover {
@@ -79,8 +87,9 @@
   padding-right: 10px;
 }
 
+//song bottom info
 .Song__container {
-  opacity: 1;
+  opacity: 0;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   max-width: 100%;
@@ -89,6 +98,13 @@
   color: rgb(230, 230, 230);
   padding: 5px 10px;
   z-index: 5;
+  border-left: 3px solid rgb(30, 215, 96);
+  border-bottom: 3px solid rgb(30, 215, 96);
+  border-right: 3px solid rgb(30, 215, 96);
+}
+
+.Song__container:hover .SongHover {
+  opacity: 1;
 }
 
 .Song__info {

@@ -1,23 +1,43 @@
 import React from 'react';
+import Select from 'react-select';
 
-const TopMenu = ({
-  auth,
-  toggleCountryMenu,
-  toggleQueueMenu,
-  toggleSpotifyPlaylist,
-  toggleSideMenu }) => {
-  // console.log(auth)
+const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth }) => {
+
+  const countries = availableCountries.reduce((acc, country) => {
+      acc.push({value:country, label:country})
+      return acc;
+    }, []);
+
+  const scrollUp = () => {
+    console.log('scrolling up')
+    window.scrollTo(0,0);
+  }
+
+  const scrollDown = () => {
+    console.log('scrolling down')
+    window.scrollTo(0,560);
+  }
+
   return (
     <div className="Menu">
-      <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu} />
-      <h1 className="Menu--logo">world.fm</h1>
+      <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
+
+      <i className="Mobile--icon fa fa-bars fa-2x fa-fw"></i>
+      <a className='Menu--logo' href="/">world.fm</a>
       <div className="TopMenu">
-        <span
-          className="CountryMenu--toggle"
-          onClick={toggleCountryMenu}
-        >
-          <i className="fa fa fa-globe fa-lg fa-fw" />
-        </span>
+        <Select
+          className="TopMenu--CountryDropdown"
+          value={currentCountry}
+          options={countries}
+          onChange={handleCountryChange}
+          clearable={false}
+          // placeholder="Select a country.."    doesn't work beacause initial value is selected
+        />
+        {/* <span className="CountryMenu--stoggle" onClick={toggleCountryMenu}> <i className="fa fa fa-globe fa-lg fa-fw" /></span> */}
+        <span><img src="../../assets/icon-fire.png" className="FireIcon" width="26px" /></span>
+        <span className="CountryMenu--toggle" onClick={scrollUp}> <i className="fa fa fa-globe fa-lg fa-fw" /></span>
+        <span className="ScrollDown--button" onClick={scrollDown}> <i className="fa fa fa-angle-down fa-lg fa-fw" /></span>
+
         {/* <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span> */}
         {/* <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span> */}
         {/* <a className="Menu--login" href="/auth/spotify">Login</a> */}

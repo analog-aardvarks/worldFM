@@ -1,3 +1,3 @@
-const availableTrends = 'Mix,Current,Emerging,Underground'.split(',');
+const availableTrends = 'All,Current,Emerging,Underground'.split(',');
 
 export default availableTrends;
