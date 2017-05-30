@@ -6,7 +6,9 @@ import {
   playSpotifyPlayer,
   setSpotifyPlayerMute,
   setSpotifyPlayerSeekerEl,
-  setSpotifyPlayerEllapsed } from '../actions';
+  setSpotifyPlayerEllapsed,
+  setSpotifyPlayerInterval,
+  clearSpotifyPlayerInterval } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -35,9 +37,12 @@ const mapDispatchToProps = dispatch => ({
     .then(() => dispatch(playSpotifyPlayer(track)))
     .catch(err => console.log(err));
   },
+  resumeSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   setSpotifyPlayerMute: mute => dispatch(setSpotifyPlayerMute(mute)),
   setSpotifyPlayerSeekerElHandler: el => dispatch(setSpotifyPlayerSeekerEl(el)),
   setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
+  setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
+  clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),
 });
 
 class Player extends React.Component {
@@ -48,9 +53,10 @@ class Player extends React.Component {
     this.changePlayerVolumeWithThrottle = _.throttle(this.changePlayerVolume, 350);
     this.handlePlayClick = this.handlePlayClick.bind(this);
     this.handleVolumeClick = this.handleVolumeClick.bind(this);
+    this.handleSeekerChange = this.handleSeekerChange.bind(this);
 
     this.updateSeeker = this.updateSeeker.bind(this);
-    this.interval = null;
+    // this.interval = null;
   }
 
   // check for auth
@@ -85,7 +91,7 @@ class Player extends React.Component {
         // console.log('TRACK_CHANGE');
         this.$seekerInput.value = 0;
         this.props.setSpotifyPlayerEllapsedHandler(0);
-        this.interval = setInterval(this.updateSeeker, 500);
+        this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
       }
     }
   }
@@ -100,7 +106,12 @@ class Player extends React.Component {
   pausePlayer() {
     if (this.props.auth) {
       fetch('/player/pause', { credentials: 'include' })
-        .then(res => this.props.pauseSpotifyPlayerHandler())
+        .then((res) => {
+          // console.log(this.props.spotifyPlayer.ellapsed);
+          clearInterval(this.props.spotifyPlayer.interval);
+          this.props.clearSpotifyPlayerIntervalHandler();
+          this.props.pauseSpotifyPlayerHandler();
+        })
         .catch(err => console.log(err));
     }
   }
@@ -119,7 +130,21 @@ class Player extends React.Component {
       if (this.props.spotifyPlayer.isPaused) {
         if (this.props.spotifyPlayer.currentTrack) {
           // resume playback
-          console.log('RESUME_PLAYBACK');
+          const track = this.props.spotifyPlayer.currentTrack;
+          fetch('/player/play', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(track),
+          })
+          .then(() => {
+            this.props.resumeSpotifyPlayerHandler(track);
+            // seek!
+            fetch(`/player/seek?ms=${this.props.spotifyPlayer.ellapsed}`, { credentials: 'include' })
+              .then(res => this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500)))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
         } else {
           // play first song on playlist
           this.props.playSpotifyPlayer(this.props.playlist[0]);
@@ -156,6 +181,21 @@ class Player extends React.Component {
           .catch(err => console.log(err));
       }
     }
+  }
+
+  handleSeekerChange(e) {
+    // seek!
+    const ms = parseInt(e.target.value, 10);
+    clearInterval(this.props.spotifyPlayer.interval);
+    this.props.clearSpotifyPlayerIntervalHandler();
+    // this.$volumeInput.value = ms;
+
+    fetch(`/player/seek?ms=${ms}`, { credentials: 'include' })
+      .then((res) => {
+        this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
+        this.props.setSpotifyPlayerEllapsedHandler(ms);
+      })
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -208,6 +248,7 @@ class Player extends React.Component {
           <input
             defaultValue="0"
             className="Player__seeker__input"
+            onMouseUp={e => this.handleSeekerChange(e)}
             ref={(el) => { this.$seekerInput = el; }}
             type="range"
             min="0"

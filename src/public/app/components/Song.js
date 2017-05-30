@@ -14,12 +14,16 @@ const Song = ({ size,
   playSpotifyPlayer,
   pauseSpotifyPlayer,
   togglePreview,
+  clearSpotifyPlayerIntervalHandler,
+  setSpotifyPlayerIntervalHandler,
+  resumeSpotifyPlayerHandler,
+  setSpotifyPlayerEllapsedHandler,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
 
   // define icon for album image
-  let icon = currentSong.isPlaying && track.track_preview_url === currentSong.src ? 'pause' : 'play';
+  let icon = currentSong.isPlaying && track.track_preview_url === currentSong.track_preview_url ? 'pause' : 'play';
   if (auth && spotifyPlayer.currentTrack) {
     // asigning icon
     // console.log(spotifyPlayer.isPaused, track.track_id, spotifyPlayer.currentTrack);
@@ -34,13 +38,42 @@ const Song = ({ size,
     } else {
       openSongMenu(ranking);
     }
-  }
+  };
+
+  const updateSeeker = () => {
+    let e = spotifyPlayer.ellapsed;
+    e += 500;
+    spotifyPlayer.$seeker.value = e;
+    setSpotifyPlayerEllapsedHandler(e);
+  };
+
   const togglePlay = () => {
     // console.log(spotifyPlayer.currentTrack.track_id, track.track_id)
     if (auth) {
       if (!spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
+        clearInterval(spotifyPlayer.interval);
+        clearSpotifyPlayerIntervalHandler();
         pauseSpotifyPlayer();
+      } else if (spotifyPlayer.currentTrack && spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
+        // resume!
+        fetch('/player/play', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(track),
+        })
+        .then(() => {
+          resumeSpotifyPlayerHandler(track);
+          // seek!
+          fetch(`/player/seek?ms=${spotifyPlayer.ellapsed}`, { credentials: 'include' })
+            .then(res => setSpotifyPlayerIntervalHandler(setInterval(updateSeeker, 500)))
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
       } else {
+        // change track!
+        clearInterval(spotifyPlayer.interval);
+        clearSpotifyPlayerIntervalHandler();
         playSpotifyPlayer(track);
       }
     } else {

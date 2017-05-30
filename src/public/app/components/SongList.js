@@ -16,6 +16,10 @@ const Songs = ({
   pauseSpotifyPlayer,
   auth,
   spotifyPlayer,
+  clearSpotifyPlayerIntervalHandler,
+  resumeSpotifyPlayerHandler,
+  setSpotifyPlayerIntervalHandler,
+  setSpotifyPlayerEllapsedHandler,
 }) => {
   window.onresize = () => onWindowResize(window.innerWidth);
   let width = 0;
@@ -59,6 +63,10 @@ const Songs = ({
             playSpotifyPlayer={playSpotifyPlayer}
             pauseSpotifyPlayer={pauseSpotifyPlayer}
             togglePreview={togglePreview}
+            clearSpotifyPlayerIntervalHandler={clearSpotifyPlayerIntervalHandler}
+            resumeSpotifyPlayerHandler={resumeSpotifyPlayerHandler}
+            setSpotifyPlayerIntervalHandler={setSpotifyPlayerIntervalHandler}
+            setSpotifyPlayerEllapsedHandler={setSpotifyPlayerEllapsedHandler}
           />
       ))}
 

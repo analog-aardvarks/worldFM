@@ -48,7 +48,7 @@ Player.pause = (req, res) => {
   if (req.user) {
     request({
       method: 'PUT',
-      url: `https://api.spotify.com/v1/me/player/pause`,
+      url: 'https://api.spotify.com/v1/me/player/pause',
       headers: { Authorization: `Bearer ${req.user.accessToken}` },
     })
       .then(response => res.status(200).send(response))
@@ -66,6 +66,17 @@ Player.volume = (req, res) => {
       .then(response => res.status(200).send(response))
       .catch(err => res.status(400).send(err));
   }
+};
+
+Player.seek = (req, res) => {
+  const ms = req.query.ms;
+  request({
+    method: 'PUT',
+    url: `https://api.spotify.com/v1/me/player/seek?position_ms=${ms}`,
+    headers: { Authorization: `Bearer ${req.user.accessToken}` },
+  })
+    .then(response => res.status(200).send(response))
+    .catch(err => res.status(400).send(err));
 };
 
 module.exports = Player;

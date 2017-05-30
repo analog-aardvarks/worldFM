@@ -5,6 +5,9 @@ import { togglePlay,
   closeSongMenu,
   playSpotifyPlayer,
   pauseSpotifyPlayer,
+  clearSpotifyPlayerInterval,
+  setSpotifyPlayerEllapsed,
+  setSpotifyPlayerInterval,
 } from '../actions';
 import SongList from '../components/SongList';
 
@@ -34,6 +37,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setWindowWidth(newSize)),
   openSongMenu: index => dispatch(openSongMenu(index)),
   closeSongMenu: () => dispatch(closeSongMenu()),
+  clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),
+  resumeSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
+  setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
+  setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
 });
 
 const Playlist = connect(
