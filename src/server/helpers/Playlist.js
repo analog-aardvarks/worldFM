@@ -1,6 +1,8 @@
 const knex = require('../db/db');
 const _ = require('underscore');
 
+const abbreviation = require('../data/abbreviation');
+
 const Playlist = {};
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,16 +23,25 @@ const parseGetPlaylistReq = (req, min, max) => {
   return props;
 };
 
-const filterPlaylistsWorldMix = playlists =>
-  playlists.filter(playlist => !playlist.playlist_name.includes('/'));
+const filterPlaylistsWorldMix = (playlists) => {
+  // the Needle
+  const curatedPlaylists = playlists.filter(playlist => playlist.playlist_name.includes('The Needle') && !playlist.playlist_name.includes('/'));
+  // log the names
+  curatedPlaylists.forEach(playlist => console.log(playlist.playlist_name));
+  return curatedPlaylists;
+};
 
 const filterPlaylistsByCountries = (playlists, countries) => {
-  if (countries === null) return filterPlaylistsWorldMix(playlists);
+  if (countries === null || countries[0] === 'World') return filterPlaylistsWorldMix(playlists);
   let curatedPlaylists = [];
-
   countries.forEach((country) => {
-    const matchingPlaylists = playlists.filter(playlist =>
-      playlist.playlist_name.includes(country));
+    const abb = abbreviation[country];
+    // console.log(abb);
+    const matchingPlaylists = playlists.filter((playlist) => {
+      // india bug fix!
+      if (country === 'India' && playlist.playlist_name.includes('Indiana')) return false;
+      return playlist.playlist_name.includes(country) || playlist.playlist_name.includes(abb);
+    });
     curatedPlaylists = curatedPlaylists.concat(matchingPlaylists);
   });
 
@@ -40,20 +51,17 @@ const filterPlaylistsByCountries = (playlists, countries) => {
   }
 
   // log the names
-  // curatedPlaylists.forEach(playlist => console.log('<42> : ', playlist.playlist_name));
-
+  curatedPlaylists.forEach(playlist => console.log(playlist.playlist_name));
   return curatedPlaylists;
 };
 
 const filterPlaylistsByTrends = (playlists, trends) => {
   if (trends === null) return playlists;
   let curatedPlaylists = [];
-
   trends.forEach((trend) => {
     const matchingPlaylists = playlists.filter(playlist => playlist.playlist_name.includes(trend));
     curatedPlaylists = curatedPlaylists.concat(matchingPlaylists);
   });
-
   // if trend not available
   if (curatedPlaylists.length === 0) {
     curatedPlaylists = playlists;
@@ -61,40 +69,25 @@ const filterPlaylistsByTrends = (playlists, trends) => {
   return curatedPlaylists;
 };
 
-// Using Durstenfeld shuffle algorithm.
-// const shuffleArray = (array) => {
-//   for (let i = array.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     const temp = array[i];
-//     array[i] = array[j];
-//     array[j] = temp;
-//   }
-//   return array;
+// const randomizeTracks = (tracks, shouldRandomize) => {
+//   if (shouldRandomize === false) return tracks;
+//   return _.shuffle(tracks);
 // };
-
-const randomizeTracks = (tracks, shouldRandomize) => {
-  if (shouldRandomize === false) return tracks;
-  return _.shuffle(tracks);
-};
 
 const makeSureWeCanPlayTheTracks = (tracks) => {
   const original = tracks.length;
-  console.log('<82> ORIGINAL -> ', tracks.length);
-  let curatedTracks = _.filter(tracks, (track) => {
+  // console.log('<82> ORIGINAL -> ', tracks.length);
+  const curatedTracks = _.filter(tracks, (track) => {
     const hasPreviewURL = track.track_preview_url !== null;
-    //console.log(track.track_available_markets);
     let isAvailableInTheUS;
-    // console.log(track.track_available_markets[track.track_available_markets.length - 1])
-    if(track.track_available_markets[track.track_available_markets.length - 1] === "]") {
-      // console.log(track.track_available_markets)
+    if (track.track_available_markets[track.track_available_markets.length - 1] === ']') {
       isAvailableInTheUS = JSON.parse(track.track_available_markets).includes('US');
     } else {
       isAvailableInTheUS = false;
     }
-
     return hasPreviewURL && isAvailableInTheUS;
   });
-  console.log('<88> FILTER -> ', curatedTracks.length);
+  // console.log('<88> FILTER -> ', curatedTracks.length);
   return curatedTracks;
 };
 
@@ -110,8 +103,8 @@ Playlist.getPlaylist = (req, res) => {
   const min = 0; // not being used currently
   // parse query string
   const props = parseGetPlaylistReq(req, min, max);
-  let randomize = false;
-  if (props.random === true) randomize = true;
+  // let randomize = false;
+  // if (props.random === true) randomize = true;
   console.log(`Country: ${props.country}, Trend: ${props.trend}, Limit: ${props.limit}, Random: ${props.random}`);
 
   // get all playlists from the database
@@ -123,7 +116,7 @@ Playlist.getPlaylist = (req, res) => {
       curatedPlaylists = filterPlaylistsByCountries(curatedPlaylists, props.country);
       curatedPlaylists = filterPlaylistsByTrends(curatedPlaylists, props.trend);
 
-      if (curatedPlaylists.length > 1) randomize = true;
+      // if (curatedPlaylists.length > 1) randomize = true;
       // create an array of tracks ids with no duplicates
       let curatedTracks = curatedPlaylists.reduce((acc, playlist) =>
          acc.concat(JSON.parse(playlist.playlist_tracks)), []);
@@ -136,18 +129,12 @@ Playlist.getPlaylist = (req, res) => {
 
       // get all tracks from the database included in the tracks array
       knex('tracks')
-        .groupBy('track_id') // removes duplicate id's (not necessary in theory but still...)
+        .groupBy('track_id') // removes duplicate id's (not necessary in theory, yet it is)
         .whereIn('track_id', curatedTracks)
         .then((data) => {
-
-          /* */ /* */ /* */ /* */ /* */
           data = makeSureWeCanPlayTheTracks(data);
-          /* */ /* */ /* */ /* */ /* */
-          // data = randomizeTracks(data, randomize);
           data = _.shuffle(data);
-          if (data.length + 1 > props.limit) {
-            data = data.slice(0, props.limit);
-          }
+          if (data.length + 1 > props.limit) data = data.slice(0, props.limit);
           res.status(200).send(data);
         })
         .catch((err) => {
