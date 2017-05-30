@@ -39,7 +39,7 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, to
         <span className="ScrollDown--button" onClick={scrollDown}> <i className="fa fa fa-angle-down fa-lg fa-fw" /></span>
 
         {/* <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span> */}
-        {/* <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span> */}
+        <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span>
         {/* <a className="Menu--login" href="/auth/spotify">Login</a> */}
         <a
           className="Menu--login"
