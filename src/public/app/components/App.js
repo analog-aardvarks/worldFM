@@ -6,6 +6,7 @@ import UserPlayList from './UserPlayList';
 import Player from './Player';
 import ConnectedGlobe from '../containers/GlobeMenu';
 import '../styles/main.scss';
+import About from './About';
 
 const showGlobe = true;
 
@@ -16,6 +17,7 @@ const App = () => (
     <Menu />
     <Playlist />
     <Player />
+    <About />
   </div>
 );
 
