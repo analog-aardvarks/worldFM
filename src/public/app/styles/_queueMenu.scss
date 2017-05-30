@@ -1,25 +1,40 @@
 .QueueMenu {
   z-index: 15;
-  padding: 20px;
   position: fixed;
-  top: 60px;
+  bottom: 64px;
   right: 0%;
-  width: 300px;
-  height: calc(100% - 124px);
+  width: 100%;
+  height: 170px;
   font-family: 'Permanent Marker', cursive;
   color: white;
-  background-color: rgba(0,0,0,0.75);
+  font-size: 20pt;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-bottom: 1px solid #636343;
 }
 
-.IndividualSong {
+.QueueMenu--TopBar {
+  height: 30px;
+  width: 100%;
+  background: linear-gradient(#171717, #282828);
+  display: flex;
+  align-items: center;
+}
+
+.QueueMenu--SongList {
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+}
+
+.QueueMenu--IndividualSong {
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   font-size: 14pt;
-  width: 260px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-  border-bottom: 1px;
-  border-bottom-style: solid;
-  border-color: #636343;
+  width: 150px;
+  margin-top: 10px;
+  padding-left: 15px;
+  border-left: 1px solid #636343;
 }
