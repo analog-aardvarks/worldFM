@@ -76,6 +76,9 @@ routes.get('/playlist/info', Playlist.getPlaylistInfo);
 // Gets the number of available playlists stored in the database
 routes.get('/playlist/length', Playlist.getPlaylistLength);
 
+// Gets the names of available playlists stored in the database
+routes.get('/playlist/names', Playlist.getPlaylistNames);
+
 // Serve data to d3 for asnyc loading
 routes.get('/data/world-110m.json', MapData.getWorldJson);
 routes.get('/data/world-110m-country-names.tsv', MapData.getCountryNames);
