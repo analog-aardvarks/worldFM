@@ -169,7 +169,7 @@ const renderGlobe = (element, handleCountryClick) => {
     }
     // Globe rotation
     // const globeSpin = setInterval(spinningGlobe, 20);
-    d3.selectAll('.available').on('mouseleave', startSpin)
+    svg.on('mouseleave', startSpin)
       .on('mouseover', stopSpin);
     startSpin();
 
