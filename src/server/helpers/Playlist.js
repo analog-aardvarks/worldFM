@@ -40,7 +40,7 @@ const filterPlaylistsByCountries = (playlists, countries) => {
   }
 
   // log the names
-  curatedPlaylists.forEach(playlist => console.log('<42> : ', playlist.playlist_name));
+  // curatedPlaylists.forEach(playlist => console.log('<42> : ', playlist.playlist_name));
 
   return curatedPlaylists;
 };
@@ -82,7 +82,16 @@ const makeSureWeCanPlayTheTracks = (tracks) => {
   console.log('<82> ORIGINAL -> ', tracks.length);
   let curatedTracks = _.filter(tracks, (track) => {
     const hasPreviewURL = track.track_preview_url !== null;
-    const isAvailableInTheUS = JSON.parse(track.track_available_markets).includes('US');
+    //console.log(track.track_available_markets);
+    let isAvailableInTheUS;
+    // console.log(track.track_available_markets[track.track_available_markets.length - 1])
+    if(track.track_available_markets[track.track_available_markets.length - 1] === "]") {
+      // console.log(track.track_available_markets)
+      isAvailableInTheUS = JSON.parse(track.track_available_markets).includes('US');
+    } else {
+      isAvailableInTheUS = false;
+    }
+
     return hasPreviewURL && isAvailableInTheUS;
   });
   console.log('<88> FILTER -> ', curatedTracks.length);
@@ -122,9 +131,7 @@ Playlist.getPlaylist = (req, res) => {
       // curatedTracks = makeSureWeCanPlayTheTracks(curatedTracks);
       // TODO! check lower limit
       // console.log(curatedTracks.length, _.uniq(curatedTracks).length)
-      // if (curatedTracks.length + 1 > props.limit) {
-      //   curatedTracks = curatedTracks.slice(0, props.limit);
-      // }
+
       console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
 
       // get all tracks from the database included in the tracks array
@@ -138,6 +145,9 @@ Playlist.getPlaylist = (req, res) => {
           /* */ /* */ /* */ /* */ /* */
           // data = randomizeTracks(data, randomize);
           data = _.shuffle(data);
+          if (data.length + 1 > props.limit) {
+            data = data.slice(0, props.limit);
+          }
           res.status(200).send(data);
         })
         .catch((err) => {
