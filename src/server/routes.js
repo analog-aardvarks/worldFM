@@ -8,6 +8,7 @@ const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
 const UserPlaylist = require('./helpers/UserPlaylist');
+const favorites = require('./helpers/favorites');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
@@ -154,5 +155,9 @@ routes.get('/player/auth', Player.isAuth);
 
 // routes.get('/userplaylist/info', UserPlaylist.getInfo);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
+
+routes.route('/favorites')
+  .put(favorites.addTrack)
+  .delete(favorites.removeTrack);
 
 module.exports = routes;
