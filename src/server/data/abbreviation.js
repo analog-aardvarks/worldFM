@@ -7,7 +7,7 @@ const abbreviation = {
   Australia: 'AU',
   UK: 'GB',
   Germany: 'DE',
-  Philiphines: 'PH',
+  Philippines: 'PH',
   Norway: 'NO',
   Sweden: 'SE',
   Colombia: 'CO',

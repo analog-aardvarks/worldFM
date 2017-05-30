@@ -1,7 +1,7 @@
 const extraPlaylists = {
   Nigeria: ['spotify:user:1229255324:playlist:23fCAKOF4pG6E0baakihsK', 'spotify:user:mfonumo:playlist:1dY58Ar9Dvlx1Le3AUAv3n'],
   Ethiopia: ['spotify:user:1237887860:playlist:7z5AOkgPtgxFMAoYax7tJX', 'spotify:user:birukgirma11:playlist:44zjKdGl628Rc1xYQB7gZ2'],
-  Congo: ['spotify:user:1123550439:playlist:3MRxL25q4UxtK4Me4abyRQ', 'spotify:album:2iszP9onGYOHVGQoEjHirE'],
+  Congo: ['spotify:user:1123550439:playlist:3MRxL25q4UxtK4Me4abyRQ'],
   'South Africa': ['spotify:user:filtr.za:playlist:0hCbLT00O6Ck3O706GbNje', 'spotify:user:1230048443:playlist:1sxY6Hy6YlVvNcmSaW7pHy'],
   Tanzania: ['spotify:user:michi3792:playlist:3hiMm1Lv17MAGNMulOyWk0', 'spotify:user:115512586:playlist:3fLy38VEuYnvnpkjroiAJt'],
   Kenya: ['spotify:user:126152614:playlist:1mprLvJeiYDAENPOMNYl6Z'],
@@ -26,7 +26,6 @@ const extraPlaylists = {
   Malaysia: ['spotify:user:sonymusicmalaysia:playlist:2SMHhx2EZg3RPhGitzIw6L'],
   Nepal: ['spotify:user:marcosfernandez82:playlist:3ADhMcCdR74xeMmAzYXiG6', 'spotify:user:1143632026:playlist:5imwnJ6KzNdcpEHGGCwC8c', 'spotify:user:parimal.nepane:playlist:6XCoaYliTcEOJmE0tXyemV'],
   'Sri Lanka': ['spotify:user:prageethw:playlist:2NVUOonMu3SuHMu5Exos0x'],
-  Kazakhstan: ['spotify:album:5MQbzzlqdICshRDGq69h38'],
   Cambodia: ['spotify:user:123778380:playlist:6zcoAnop5jgRnH6nM1kyCM'],
   Israel: ['spotify:user:1254556608:playlist:0lEMWP9z1d5jXpalKhOjqJ'],
   Cuba: ['spotify:user:lacubanitabruchsal:playlist:1kg6WRmaCzgmR0xMMF435t'],
