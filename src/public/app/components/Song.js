@@ -74,12 +74,12 @@ const Song = ({ size,
             </div>
           </div>
         </div>
-        }
+      }
 
-        { showTrackInfo &&
+        {/* { showTrackInfo && */}
         <div
           className="Song__container"
-          style={{ opacity:  showTrackInfo ? 1 : 0 }}
+          // style={{ opacity:  showTrackInfo ? 1 : 0 }}
         >
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
@@ -93,7 +93,7 @@ const Song = ({ size,
             />
           </span>
         </div>
-        }
+        {/* } */}
 
       </div>
 
