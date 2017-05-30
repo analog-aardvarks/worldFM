@@ -7,14 +7,13 @@ import Player from './Player';
 import ConnectedGlobe from '../containers/GlobeMenu';
 import '../styles/main.scss';
 
-const showGlobe = false;
+const showGlobe = true;
 
 const App = () => (
   <div>
     <HiddenPlayer />
     {showGlobe ? <ConnectedGlobe /> : null}
     <Menu />
-    <UserPlayList />
     <Playlist />
     <Player />
   </div>
