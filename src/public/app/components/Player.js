@@ -4,7 +4,15 @@ import { connect } from 'react-redux';
 import {
   setSpotifyPlayerVolume,
   playSpotifyPlayer,
-  setSpotifyPlayerMute } from '../actions';
+  setSpotifyPlayerMute,
+  setSpotifyPlayerSeekerEl,
+  setSpotifyPlayerEllapsed } from '../actions';
+
+const millisToMinutesAndSeconds = (millis) => {
+  const minutes = Math.floor(millis / 60000);
+  const seconds = ((millis % 60000) / 1000).toFixed(0);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -28,6 +36,8 @@ const mapDispatchToProps = dispatch => ({
     .catch(err => console.log(err));
   },
   setSpotifyPlayerMute: mute => dispatch(setSpotifyPlayerMute(mute)),
+  setSpotifyPlayerSeekerElHandler: el => dispatch(setSpotifyPlayerSeekerEl(el)),
+  setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
 });
 
 class Player extends React.Component {
@@ -38,6 +48,9 @@ class Player extends React.Component {
     this.changePlayerVolumeWithThrottle = _.throttle(this.changePlayerVolume, 350);
     this.handlePlayClick = this.handlePlayClick.bind(this);
     this.handleVolumeClick = this.handleVolumeClick.bind(this);
+
+    this.updateSeeker = this.updateSeeker.bind(this);
+    this.interval = null;
   }
 
   // check for auth
@@ -53,6 +66,35 @@ class Player extends React.Component {
         }
       })
       .catch(err => console.log(err));
+  }
+
+  // check for new currentTrack
+  componentDidUpdate(prev) {
+    // set seeker dom element
+    if (this.props.spotifyPlayer.$seeker === null && this.$seekerInput !== undefined) {
+      this.props.setSpotifyPlayerSeekerElHandler(this.$seekerInput);
+    }
+
+    // console.log('CURRENT: ', this.props.spotifyPlayer.currentTrack);
+    // console.log('PREV: ', prev.spotifyPlayer.currentTrack);
+    if (this.props.auth && this.props.spotifyPlayer.currentTrack) {
+      if (prev.spotifyPlayer.currentTrack === null ||
+        (prev.spotifyPlayer.currentTrack.track_id !==
+        this.props.spotifyPlayer.currentTrack.track_id)) {
+        // track change!
+        // console.log('TRACK_CHANGE');
+        this.$seekerInput.value = 0;
+        this.props.setSpotifyPlayerEllapsedHandler(0);
+        this.interval = setInterval(this.updateSeeker, 500);
+      }
+    }
+  }
+
+  updateSeeker() {
+    let e = this.props.spotifyPlayer.ellapsed;
+    e += 500;
+    this.$seekerInput.value = e;
+    this.props.setSpotifyPlayerEllapsedHandler(e);
   }
 
   pausePlayer() {
@@ -90,7 +132,7 @@ class Player extends React.Component {
   }
 
   handleVolumeClick() {
-    console.log(this.props.spotifyPlayer.volume, this.props.spotifyPlayer.mute, this.$volumeInput.value);
+    // console.log(this.props.spotifyPlayer.volume, this.props.spotifyPlayer.mute, this.$volumeInput.value);
     if (parseInt(this.props.spotifyPlayer.volume, 10) > 0) {
       const currentVolume = this.props.spotifyPlayer.volume;
       // mute player
@@ -125,38 +167,58 @@ class Player extends React.Component {
 
     return (
       <div className="Player">
-      <div className="PlayerControls">
-        <div className="PlayerControlsPlay">
-          <i className="fa fa fa-step-backward fa-lg fa-fw" />
-          <i
-            className={`fa fa-${playIcon} fa-2x fa-fw`}
-            onClick={this.handlePlayClick}
-          />
-          <i className="fa fa-step-forward fa-lg fa-fw" />
+        <div className="PlayerControls">
+          <div className="PlayerControlsPlay">
+            <i className="fa fa fa-step-backward fa-lg fa-fw" />
+            <i
+              className={`fa fa-${playIcon} fa-2x fa-fw`}
+              onClick={this.handlePlayClick}
+            />
+            <i className="fa fa-step-forward fa-lg fa-fw" />
+          </div>
+          <div className="Player__volume">
+            <i
+              className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
+              onClick={this.handleVolumeClick}
+            />
+            <input
+              ref={(el) => { this.$volumeInput = el; }}
+              onChange={(e) => {
+                e.persist();
+                this.changePlayerVolumeWithThrottle(e);
+              }}
+              onMouseUp={(e) => {
+                e.persist();
+                this.changePlayerVolume(e);
+              }}
+              type="range"
+              min="0"
+              max="100"
+            />
+          </div>
+          {/* random and shuffle buttons */}
+          {/* <i className="fa fa-random fa-1x fa-lg RandomButton" /> */}
         </div>
-        <div className="Player__volume">
-          <i
-            className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
-            onClick={this.handleVolumeClick}
-          />
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="Player__seeker">
+          <div className="Player__seeker__ellapsed">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
+          </div>
+          {/* Desktop only! */}
           <input
-            ref={(el) => { this.$volumeInput = el; }}
-            onChange={(e) => {
-              e.persist();
-              this.changePlayerVolumeWithThrottle(e);
-            }}
-            onMouseUp={(e) => {
-              e.persist();
-              this.changePlayerVolume(e);
-            }}
+            defaultValue="0"
+            className="Player__seeker__input"
+            ref={(el) => { this.$seekerInput = el; }}
             type="range"
             min="0"
-            max="100"
+            max={this.props.spotifyPlayer.currentTrack.track_length}
+            step="250"
           />
+          <div className="Player__seeker__total">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
+          </div>
         </div>
-        {/* random and shuffle buttons */}
-        {/* <i className="fa fa-random fa-1x fa-lg RandomButton" /> */}
-      </div>
+        }
         {/* current song when authenticated */}
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="CurrentSong">

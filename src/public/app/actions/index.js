@@ -74,3 +74,29 @@ export function setSpotifyPlayerMute(mute) {
     mute,
   };
 }
+
+export function setSpotifyPlayerSeekerEl(el) {
+  return {
+    type: 'SET_SPOTIFY_PLAYER_SEEKER_EL',
+    el,
+  };
+}
+
+export function setSpotifyPlayerEllapsed(ellapsed) {
+  return {
+    type: 'SET_SPOTIFY_PLAYER_ELLAPSED',
+    ellapsed,
+  };
+}
+
+export function setSpotifyPlayerInterval(interval) {
+  return {
+    type: 'SET_SPOTIFY_PLAYER_INTERVAL',
+    interval,
+  };
+}
+export function clearSpotifyPlayerInterval(interval) {
+  return {
+    type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL',
+  };
+}
