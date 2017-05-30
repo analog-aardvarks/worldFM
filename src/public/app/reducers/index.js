@@ -97,6 +97,22 @@ function showSideMenu(state = false, action) {
   }
 }
 
+function showVolumeGauge(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_VOLUME_GAUGE': return true;
+    case 'HIDE_VOLUME_GAUGE': return false;
+    default: return state;
+  }
+}
+
+function showAvailableDevices(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_AVAILABLE_DEVICES': return true;
+    case 'HIDE_AVAILABLE_DEVICES': return false;
+    default: return state;
+  }
+}
+
 // function previewPlayer(state = {}, action) {
 //
 // };
@@ -149,6 +165,8 @@ const reducer = combineReducers({
   auth,
   // previewPlayer,
   spotifyPlayer,
+  showVolumeGauge,
+  showAvailableDevices,
 });
 
 export default reducer;

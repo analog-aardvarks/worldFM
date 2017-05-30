@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 240px;
+    width: 234px;
     margin-left: 40px;
 }
 
@@ -29,7 +29,7 @@
 
 .PlayerControls {
   input {
-    width: 60px;
+    width: 80px;
   }
 }
 
@@ -85,4 +85,34 @@
 
 .CurrentSongPic {
 
+}
+
+.Player__volumeGauge {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+  height: 40px;
+  width: 100px;
+  position: absolute;
+  left: 148px;
+  bottom: 94px;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+}
+
+.Device--Selector {
+  height: 140px;
+  width: 110px;
+  position: absolute;
+  left: 206px;
+  bottom: 64px;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  flex-direction: column;
+  align-items: center;
 }

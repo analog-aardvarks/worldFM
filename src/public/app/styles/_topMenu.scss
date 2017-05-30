@@ -1,7 +1,24 @@
 .TopMenu {
   display: flex;
-  width: 300px;
+  width: 340px;
   border-bottom: 1px white;
+}
+
+.Menu--logo {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 24pt;
+  margin: 0;
+  color: white;
+}
+
+.Menu--logo:hover {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.Menu--logo:active {
+  color: rgb(30, 215, 96)
 }
 
 // width of dropdown
@@ -40,4 +57,14 @@
 		background-color: rgb(30, 215, 96);
 		color: white;
 	}
+}
+
+
+.ScrollDown--button {
+  font-size: 18pt;
+  margin-left: 20px;
+}
+
+.FireIcon {
+  margin-left: 20px;
 }

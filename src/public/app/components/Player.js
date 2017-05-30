@@ -6,13 +6,22 @@ import { setSpotifyPlayerVolume, playSpotifyPlayer } from '../actions';
 const mapStateToProps = state => ({
   auth: state.auth,
   spotifyPlayer: state.spotifyPlayer,
+  currentSong: state.currentSong,
+  showVolumeGauge: state.showVolumeGauge,
+  showAvailableDevices: state.showAvailableDevices,
 });
+
+let volumeDisplay = false;
 
 const mapDispatchToProps = dispatch => ({
   authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_PLAYER' }),
   setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
+  showVolumeGaugeEvent: () => dispatch({ type: 'SHOW_VOLUME_GAUGE' }),
+  hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
+  showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
+  hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
 });
 
 class Player extends React.Component {
@@ -20,7 +29,8 @@ class Player extends React.Component {
     super(props);
     this.pausePlayer = this.pausePlayer.bind(this);
     this.changePlayerVolume = this.changePlayerVolume.bind(this);
-    this.changePlayerVolumeWithThrottle = _.throttle(this.changePlayerVolume, 350);
+    this.toggleVolumeDisplay = this.toggleVolumeDisplay.bind(this);
+    this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
   }
 
   // check for auth
@@ -54,6 +64,16 @@ class Player extends React.Component {
     }
   }
 
+  toggleVolumeDisplay() {
+    if(this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
+    if(!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
+  }
+
+  toggleAvailableDevices() {
+    if(this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
+    if(!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
+  }
+
   render() {
     return (
       <div className="Player">
@@ -64,20 +84,30 @@ class Player extends React.Component {
           <i className="fa fa-step-forward fa-lg fa-fw" />
         </div>
         <div className="Player__volume">
-          <i className="fa fa-volume-up fa-lg fa-fw" />
-          <input
-            onChange={(e) => {
-              e.persist();
-              this.changePlayerVolumeWithThrottle(e);
-            }}
-            onMouseUp={(e) => {
-              e.persist();
-              this.changePlayerVolume(e);
-            }}
-            type="range"
-            min="0"
-            max="100"
-          />
+          <i className="fa fa-volume-up fa-lg fa-fw" onClick={this.toggleVolumeDisplay} />
+          {this.props.showVolumeGauge ? <div className="Player__volumeGauge">
+            <input
+              onChange={(e) => {
+                e.persist();
+                this.changePlayerVolumeWithThrottle(e);
+              }}
+              onMouseUp={(e) => {
+                e.persist();
+                this.changePlayerVolume(e);
+              }}
+              type="range"
+              min="0"
+              max="100"
+            />
+          </div>  : null}
+        </div>
+        <div className="Player__devices">
+          <i className="fa fa fa-mobile fa-lg fa-fw" onClick={this.toggleAvailableDevices} />
+            {this.props.showAvailableDevices ? <div className="Device--Selector">
+            <span>Devices</span>
+            <span>Device 1</span>
+            <span>Device 2</span>
+          </div> : null}
         </div>
         {/* <i className="fa fa-random fa-1x fa-lg RandomButton" /> */}
       </div>
