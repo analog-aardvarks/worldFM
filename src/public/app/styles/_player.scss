@@ -18,6 +18,7 @@
     justify-content: space-between;
     width: 240px;
     margin-left: 40px;
+    margin-right: 40px;
 }
 
 .PlayerControlsPlay {
@@ -32,19 +33,6 @@
     width: 60px;
   }
 }
-
-.Player__volume {
-    display: flex;
-    align-items: center;
-    width: 100px;
-    justify-content: space-around;
-}
-
-// .fa-step-backwards,
-// .fa-play,
-// .fa-step-forward {
-//   margin-left: 0px;
-// }
 
 .fa-step-backwards:hover,
 .fa-play:hover,
@@ -63,16 +51,21 @@
   color: rgb(30, 215, 96);
 }
 
-// .RandomButton {
-//   margin-left: 40px;
-// }
+.Player__volume {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    justify-content: space-around;
+}
 
 .CurrentSong {
-  min-width: 350px;
+  min-width: 220px;
+  max-height: 42px;
   display: flex;
   flex-direction: row;
-  justify-content: left;
-  margin-right: 50px;
+  margin-right: 40px;
+  margin-left: 20px;
+  justify-content: flex-start;
 }
 
 .CurrentSongInfo {
@@ -82,6 +75,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  // text-overflow: ellipsis;
+  // overflow: hidden;
+  // overflow-x: hidden;
+  // overflow-y: hidden;
+  // white-space: nowrap;
 }
 
 .CurrentSongPic {
@@ -92,9 +90,41 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  width: 400px;
 }
 
 .Player__seeker__input {
   min-width: 250px;
   margin: 0 10px;
+}
+
+.Player__volumeGauge {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+  height: 40px;
+  width: 100px;
+  position: absolute;
+  left: 151px;
+  bottom: 94px;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+}
+
+.Device--Selector {
+  height: 140px;
+  width: 110px;
+  position: absolute;
+  left: 214px;
+  bottom: 64px;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }

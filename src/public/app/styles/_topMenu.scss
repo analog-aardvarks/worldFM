@@ -1,0 +1,70 @@
+.TopMenu {
+  display: flex;
+  width: 340px;
+  border-bottom: 1px white;
+}
+
+.Menu--logo {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 24pt;
+  margin: 0;
+  color: white;
+}
+
+.Menu--logo:hover {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.Menu--logo:active {
+  color: rgb(30, 215, 96)
+}
+
+// width of dropdown
+.TopMenu--CountryDropdown {
+  width: 140px;
+}
+
+// selected value font
+.has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+  color: rgb(30, 215, 96);
+    font-family: 'Lato';
+}
+
+//border
+.Select-control {
+  border-color: #171717;
+}
+
+// selected view
+.Select-value {
+  // background: linear-gradient(#171717, #353535, #171717);;
+  // border: none;
+}
+
+.Select-option {
+	background-color: white;
+	color: #171717;
+	cursor: pointer;
+  font-family: 'Lato';
+	display: block;
+	&.is-selected {
+		background-color: rgb(30, 215, 96);
+		color: white;
+	}
+	&.is-focused {
+		background-color: rgb(30, 215, 96);
+		color: white;
+	}
+}
+
+
+.ScrollDown--button {
+  font-size: 18pt;
+  margin-left: 20px;
+}
+
+.FireIcon {
+  margin-left: 20px;
+}

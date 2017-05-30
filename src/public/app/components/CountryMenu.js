@@ -26,7 +26,7 @@ const CountryMenu = ({ availableCountries, availableTrends, currentCountry, curr
           className="Country--dropdown"
           value={currentCountry}
           onChange={handleCountryChange}
-          size="18"
+          size="6"
         >
           {availableCountries.map((country, idx) => <option key={idx}>{country}</option>)}
         </select>

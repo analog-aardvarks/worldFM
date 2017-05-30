@@ -8,7 +8,7 @@ import {
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval } from '../actions';
+  clearSpotifyPlayerInterval, } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -20,6 +20,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
   playlist: state.playlist,
   spotifyPlayer: state.spotifyPlayer,
+  showVolumeGauge: state.showVolumeGauge,
+  showAvailableDevices: state.showAvailableDevices,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -43,6 +45,10 @@ const mapDispatchToProps = dispatch => ({
   setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
   setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
   clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),
+  showVolumeGaugeEvent: () => dispatch({ type: 'SHOW_VOLUME_GAUGE' }),
+  hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
+  showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
+  hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
 });
 
 class Player extends React.Component {
@@ -54,7 +60,8 @@ class Player extends React.Component {
     this.handlePlayClick = this.handlePlayClick.bind(this);
     this.handleVolumeClick = this.handleVolumeClick.bind(this);
     this.handleSeekerChange = this.handleSeekerChange.bind(this);
-
+    this.toggleVolumeDisplay = this.toggleVolumeDisplay.bind(this);
+    this.toggleAvailableDevices = this.toggleAvailableDevices .bind(this);
     this.updateSeeker = this.updateSeeker.bind(this);
     // this.interval = null;
   }
@@ -198,6 +205,16 @@ class Player extends React.Component {
       .catch(err => console.log(err));
   }
 
+  toggleVolumeDisplay() {
+    if(this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
+    if(!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
+  }
+
+  toggleAvailableDevices() {
+    if(this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
+    if(!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
+  }
+
   render() {
     // play/pause icon for spotify player
     // console.log(this.props.spotifyPlayer.isPaused)
@@ -207,7 +224,9 @@ class Player extends React.Component {
 
     return (
       <div className="Player">
+
         <div className="PlayerControls">
+
           <div className="PlayerControlsPlay">
             <i className="fa fa fa-step-backward fa-lg fa-fw" />
             <i
@@ -216,29 +235,42 @@ class Player extends React.Component {
             />
             <i className="fa fa-step-forward fa-lg fa-fw" />
           </div>
+
           <div className="Player__volume">
             <i
               className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
               onClick={this.handleVolumeClick}
+              onMouseOver={this.props.showVolumeGaugeEvent}
             />
-            <input
-              ref={(el) => { this.$volumeInput = el; }}
-              onChange={(e) => {
-                e.persist();
-                this.changePlayerVolumeWithThrottle(e);
-              }}
-              onMouseUp={(e) => {
-                e.persist();
-                this.changePlayerVolume(e);
-              }}
-              type="range"
-              min="0"
-              max="100"
-            />
+            {this.props.showVolumeGauge ? <div className="Player__volumeGauge" onMouseOver={this.props.showVolumeGaugeEvent}>
+              <input
+                ref={(el) => { this.$volumeInput = el; }}
+                onMouseOver={this.props.showVolumeGaugeEvent}
+                onMouseOut={this.props.hideVolumeGaugeEvent}
+                onChange={(e) => {
+                  e.persist();
+                  this.changePlayerVolumeWithThrottle(e);
+                }}
+                onMouseUp={(e) => {
+                  e.persist();
+                  this.changePlayerVolume(e);
+                }}
+                type="range"
+                min="0"
+                max="100"
+              />
+            </div>: null}
           </div>
-          {/* random and shuffle buttons */}
-          {/* <i className="fa fa-random fa-1x fa-lg RandomButton" /> */}
+
+          <div className="Player__devices">
+            <i className="fa fa fa-mobile fa-lg fa-fw" onMouseOver={this.props.showAvailableDevicesEvent} />
+              {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
+                Devices
+            </div> : null}
+          </div>
+
         </div>
+
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="Player__seeker">
           <div className="Player__seeker__ellapsed">
@@ -260,6 +292,7 @@ class Player extends React.Component {
           </div>
         </div>
         }
+
         {/* current song when authenticated */}
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="CurrentSong">
@@ -276,7 +309,8 @@ class Player extends React.Component {
           </div>
         </div>
         }
-      </div>
+
+    </div>
     );
   }
 }
