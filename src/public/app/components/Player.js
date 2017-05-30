@@ -22,6 +22,7 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
+  showQueueMenu: state.showQueueMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -49,6 +50,8 @@ const mapDispatchToProps = dispatch => ({
   hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
   showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
+  showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
+  hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
 });
 
 class Player extends React.Component {
@@ -61,8 +64,9 @@ class Player extends React.Component {
     this.handleVolumeClick = this.handleVolumeClick.bind(this);
     this.handleSeekerChange = this.handleSeekerChange.bind(this);
     this.toggleVolumeDisplay = this.toggleVolumeDisplay.bind(this);
-    this.toggleAvailableDevices = this.toggleAvailableDevices .bind(this);
+    this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
     this.updateSeeker = this.updateSeeker.bind(this);
+    this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     // this.interval = null;
   }
 
@@ -229,6 +233,11 @@ class Player extends React.Component {
     if(!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
   }
 
+  toggleQueueMenu() {
+    if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
+    if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+  }
+
   render() {
     // play/pause icon for spotify player
     // console.log(this.props.spotifyPlayer.isPaused)
@@ -277,10 +286,14 @@ class Player extends React.Component {
           </div>
 
           <div className="Player__devices">
-            <i className="fa fa fa-mobile fa-lg fa-fw" onMouseOver={this.props.showAvailableDevicesEvent} />
+            <i className="fa fa fa-mobile fa-2x fa-fw" onMouseOver={this.props.showAvailableDevicesEvent} />
               {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
                 Devices
             </div> : null}
+          </div>
+
+          <div className="QueueMenu--toggle">
+            <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
           </div>
 
         </div>

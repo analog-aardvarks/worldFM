@@ -21,8 +21,6 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, to
   return (
     <div className="Menu">
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
-
-      <i className="Mobile--icon fa fa-bars fa-2x fa-fw"></i>
       <a className='Menu--logo' href="/">world.fm</a>
       <div className="TopMenu">
         <Select
@@ -39,7 +37,7 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, to
         <span className="ScrollDown--button" onClick={scrollDown}> <i className="fa fa fa-angle-down fa-lg fa-fw" /></span>
 
         {/* <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span> */}
-        <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span>
+        {/* <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span> */}
         {/* <a className="Menu--login" href="/auth/spotify">Login</a> */}
         <a
           className="Menu--login"

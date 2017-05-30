@@ -24,6 +24,7 @@ class GlobeMenu extends Component {
       <div
         ref={(el) => { this.container = el; }}
         className="globeContainer"
+        style={{height: (window.innerHeight - 64)}}
       />
     );
   }
