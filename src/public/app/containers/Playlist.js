@@ -8,15 +8,7 @@ import { togglePlay,
 } from '../actions';
 import SongList from '../components/SongList';
 
-const mapStateToProps = ({ playlist, windowWidth, currentSong, showTrackInfo, songMenu, auth, spotifyPlayer }) => ({
-  playlist,
-  windowWidth,
-  currentSong,
-  showTrackInfo,
-  songMenu,
-  auth,
-  spotifyPlayer,
-});
+const mapStateToProps = state => ({ ...state });
 
 const mapDispatchToProps = dispatch => ({
   togglePreview: (src) => {
