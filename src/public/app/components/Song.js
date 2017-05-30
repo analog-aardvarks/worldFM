@@ -1,5 +1,3 @@
-//song
-
 import React from 'react';
 
 const Song = ({ size,
@@ -85,7 +83,6 @@ const Song = ({ size,
   return (
     <div
       className={`Song ${ranking === songMenu ? 'Song--green-border' : ''}`}
-
       style={{
         backgroundImage: `url(${track.track_album_image})`,
         width: netSize,
@@ -94,41 +91,45 @@ const Song = ({ size,
     >
 
       <div className="Song__wrapper">
+
         { ranking === songMenu &&
-        <div className="Song__more-info-wrapper">
-          <div className="Song__more-info">
+          <div className="Song__more-info" onMouseLeave={closeSongMenu}>
+
             <div className="Song__more-info-option">
               <i className="fa fa-plus fa-lg fa-fw" />
-              <span>Add Track</span>
+              <span>Add to favorites</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-info-circle fa-lg fa-fw" />
               <span>Album</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-user-circle fa-lg fa-fw" />
               <span>Artist</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-share-alt fa-lg fa-fw" />
               <span>Share Track</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-music fa-lg fa-fw" />
               <span>More Like This</span>
             </div>
-          </div>
-        </div>
-      }
 
-        {/* { showTrackInfo && */}
-        <div
-          className="Song__container"
-          // style={{ opacity: showTrackInfo ? 1 : 0 }}
+        </div> }
 
-          // style={{ opacity:  showTrackInfo ? 1 : 0 }}
+        <i
+          className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
+          onClick={() => togglePlay()}
+          style={{ left: ((netSize-100)/2), bottom:((netSize-70)/2) }}
+        />
 
-        >
+        <div className="Song__container">
+
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
             <span className="Song__name">{track.track_name}</span>
@@ -141,21 +142,8 @@ const Song = ({ size,
             />
           </span>
         </div>
-        {/* } */}
 
       </div>
-
-      {ranking !== songMenu &&
-      <div
-        className="SongHover"
-        style={{ bottom: netSize - (2 * borderWidth) }}
-      >
-        <i
-          className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
-          onClick={() => togglePlay()}
-        />
-      </div>
-      }
     </div>
   );
 };
