@@ -79,7 +79,19 @@ const Song = ({ size,
     } else {
       togglePreview(track.track_preview_url);
     }
-  }
+  };
+
+  const addFavorite = () => {
+    fetch('/favorites', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(track),
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+  };
+
   return (
     <div
       className={`Song ${ranking === songMenu ? 'Song--green-border' : ''}`}
@@ -95,7 +107,9 @@ const Song = ({ size,
         { ranking === songMenu &&
           <div className="Song__more-info" onMouseLeave={closeSongMenu}>
 
-            <div className="Song__more-info-option">
+            <div className="Song__more-info-option"
+              onClick={() => { addFavorite(track); }}
+              >
               <i className="fa fa-plus fa-lg fa-fw" />
               <span>Add to favorites</span>
             </div>

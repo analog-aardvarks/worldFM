@@ -18,7 +18,7 @@ const renderGlobe = (element, handleCountryClick) => {
 
   const projection = d3.geo.orthographic()
     .scale(globeSize)
-    .rotate([0, 0])
+    .rotate([-100, 0])
     .translate([width / 2, height / 2])
     .clipAngle(90);
 

@@ -15,7 +15,7 @@ const favorites = require('./helpers/favorites');
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 routes.get('/auth/spotify', passport.authenticate('spotify',
-  { scope: ['user-read-playback-state', 'user-modify-playback-state'] }));
+  { scope: ['user-read-playback-state', 'user-modify-playback-state', 'user-library-modify'] }));
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
