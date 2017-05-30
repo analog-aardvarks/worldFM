@@ -14,23 +14,66 @@ const Song = ({ size,
   playSpotifyPlayer,
   pauseSpotifyPlayer,
   togglePreview,
+  clearSpotifyPlayerIntervalHandler,
+  setSpotifyPlayerIntervalHandler,
+  resumeSpotifyPlayerHandler,
+  setSpotifyPlayerEllapsedHandler,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
-  const icon = currentSong.isPlaying && track.track_preview_url === currentSong.src ? 'fa-pause-circle-o' : 'fa-play-circle-o';
+
+  // define icon for album image
+  let icon = currentSong.isPlaying && track.track_preview_url === currentSong.track_preview_url ? 'pause' : 'play';
+  if (auth && spotifyPlayer.currentTrack) {
+    // asigning icon
+    // console.log(spotifyPlayer.isPaused, track.track_id, spotifyPlayer.currentTrack);
+    icon = !spotifyPlayer.isPaused && track.track_id === spotifyPlayer.currentTrack.track_id ? 'pause' : 'play';
+  } else {
+    icon = 'play';
+  }
+
   const toggleSongMenu = () => {
     if (ranking === songMenu) {
       closeSongMenu();
     } else {
       openSongMenu(ranking);
     }
-  }
+  };
+
+  const updateSeeker = () => {
+    let e = spotifyPlayer.ellapsed;
+    e += 500;
+    spotifyPlayer.$seeker.value = e;
+    setSpotifyPlayerEllapsedHandler(e);
+  };
+
   const togglePlay = () => {
-    console.log(spotifyPlayer.currentTrack.track_id, track.track_id)
+    // console.log(spotifyPlayer.currentTrack.track_id, track.track_id)
     if (auth) {
       if (!spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
+        clearInterval(spotifyPlayer.interval);
+        clearSpotifyPlayerIntervalHandler();
         pauseSpotifyPlayer();
+      } else if (spotifyPlayer.currentTrack && spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
+        // resume!
+        fetch('/player/play', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(track),
+        })
+        .then(() => {
+          resumeSpotifyPlayerHandler(track);
+          // seek!
+          fetch(`/player/seek?ms=${spotifyPlayer.ellapsed}`, { credentials: 'include' })
+            .then(res => setSpotifyPlayerIntervalHandler(setInterval(updateSeeker, 500)))
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
       } else {
+        // change track!
+        clearInterval(spotifyPlayer.interval);
+        clearSpotifyPlayerIntervalHandler();
         playSpotifyPlayer(track);
       }
     } else {
@@ -79,7 +122,7 @@ const Song = ({ size,
         { showTrackInfo &&
         <div
           className="Song__container"
-          style={{ opacity:  showTrackInfo ? 1 : 0 }}
+          style={{ opacity: showTrackInfo ? 1 : 0 }}
         >
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
@@ -103,7 +146,7 @@ const Song = ({ size,
         style={{ bottom: netSize - (2 * borderWidth) }}
       >
         <i
-          className={`SongHover__play-button fa ${icon} fa-5x fa-fw`}
+          className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
           onClick={() => togglePlay()}
         />
       </div>

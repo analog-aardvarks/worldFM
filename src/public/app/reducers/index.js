@@ -103,12 +103,15 @@ function showSideMenu(state = false, action) {
 
 function spotifyPlayer(state = {
   queue: [],
-  currentTrack: {},
+  currentTrack: null,
   isPaused: true,
   volume: 0,
   repeat: false,
   shuffle: false,
   mute: false,
+  ellapsed: 0,
+  $seeker: null,
+  interval: null,
 }, action) {
   switch (action.type) {
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: true };
@@ -123,6 +126,11 @@ function spotifyPlayer(state = {
       return { ...state, queue: [...state.queue].push(action.track) };
     case 'REMOVE_FROM_SPOTIFY_QUEUE':
       return { ...state, queue: [...state.queue].splice(action.idx, 1) };
+    case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
+    case 'SET_SPOTIFY_PLAYER_SEEKER_EL': return { ...state, $seeker: action.el };
+    case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
+    case 'SET_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: action.interval };
+    case 'CLEAR_SPOTIFY_PLAYER_CLEAR': return { ...state, interval: null };
     default: return state;
   }
 }

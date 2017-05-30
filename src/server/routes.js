@@ -133,6 +133,7 @@ routes.put('/player/play', Player.play);
 // Start a User's Playback
 // Uses user's active device at time of login
 routes.get('/player/pause', Player.pause);
+routes.get('/player/seek', Player.seek);
 
 // Set Volume For User's Playback
 // Params: device, volume

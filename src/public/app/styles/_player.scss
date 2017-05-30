@@ -68,10 +68,11 @@
 // }
 
 .CurrentSong {
+  min-width: 350px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  margin-right: 80px;
+  justify-content: left;
+  margin-right: 50px;
 }
 
 .CurrentSongInfo {
@@ -85,4 +86,15 @@
 
 .CurrentSongPic {
 
+}
+
+.Player__seeker {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.Player__seeker__input {
+  min-width: 250px;
+  margin: 0 10px;
 }

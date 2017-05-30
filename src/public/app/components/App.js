@@ -7,7 +7,7 @@ import Player from './Player';
 import ConnectedGlobe from '../containers/GlobeMenu';
 import '../styles/main.scss';
 
-const showGlobe = true;
+const showGlobe = false;
 
 const App = () => (
   <div>

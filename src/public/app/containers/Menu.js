@@ -10,10 +10,11 @@ import QueueMenu from '../components/QueueMenu';
 
 
 const mapStateToProps = state => ({
+  availableCountries,
+  availableTrends,
+  auth: state.auth,
   currentCountry: state.currentCountry,
   currentTrend: state.currentTrend,
-  availableCountries: availableCountries,
-  availableTrends: availableTrends,
   showTrackInfo: state.showTrackInfo,
   showSpotifyPlaylist: state.showSpotifyPlaylist,
   showCountryMenu: state.showCountryMenu,
@@ -22,9 +23,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentCountry: (country) => dispatch(setCurrentCountry(country)),
-  setCurrentTrend: (trend) => dispatch(setCurrentTrend(trend)),
-  setPlaylist: (playlist) => dispatch(setPlaylist(playlist)),
+  setCurrentCountry: country => dispatch(setCurrentCountry(country)),
+  setCurrentTrend: trend => dispatch(setCurrentTrend(trend)),
+  setPlaylist: playlist => dispatch(setPlaylist(playlist)),
   showTrackInfoEvent: () => dispatch({ type: 'SHOW_TRACK_INFO' }),
   hideTrackInfoEvent: () => dispatch({ type: 'HIDE_TRACK_INFO' }),
   showSpotifyPlaylistEvent: () => dispatch({ type: 'SHOW_SPOTIFY_PLAYLIST' }),
@@ -48,6 +49,7 @@ class Menu extends React.Component {
     this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
+    // console.log(props.auth);
   }
 
   componentDidMount() {
@@ -112,6 +114,7 @@ class Menu extends React.Component {
     return (
       <div>
         <TopMenu
+          auth={this.props.auth}
           toggleCountryMenu={this.toggleCountryMenu}
           toggleQueueMenu={this.toggleQueueMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
