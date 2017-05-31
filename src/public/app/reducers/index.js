@@ -106,6 +106,14 @@ function showSideMenu(state = false, action) {
   }
 }
 
+function showAbout(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_ABOUT': return true;
+    case 'HIDE_ABOUT': return false;
+    default: return state;
+  }
+}
+
 function showVolumeGauge(state = false, action) {
   switch(action.type) {
     case 'SHOW_VOLUME_GAUGE': return true;
@@ -194,6 +202,7 @@ const reducer = combineReducers({
   showVolumeGauge,
   showAvailableDevices,
   favorites,
+  showAbout,
 });
 
 export default reducer;
