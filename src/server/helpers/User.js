@@ -37,7 +37,10 @@ User.getFavorites = (req, res) => {
     .then((user) => {
       const favs = user[0].user_favorites;
       if (favs) {
-        res.send(favs.split(','));
+        knex('tracks')
+          .groupBy('track_id')
+          .whereIn('track_id', favs.split(','))
+          .then(favTracks => res.send(favTracks));
       } else {
         res.send([]);
       }

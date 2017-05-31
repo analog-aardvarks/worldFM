@@ -108,13 +108,9 @@ const Song = ({ size,
   };
 
   const handleFavoritesClick = () => {
-    console.log('favorites: ', favorites);
-    console.log('already added: ', favorites.includes(track.track_id))
-    if (favorites.includes(track.track_id)) {
-      console.log('remove');
+    if (favorites.some(fav => fav.id === track.id)) {
       removeFavorite();
     } else {
-      console.log('add');
       addFavorite();
     }
   };
