@@ -8,17 +8,18 @@ const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
 const UserPlaylist = require('./helpers/UserPlaylist');
+const User = require('./helpers/User');
+const favorites = require('./helpers/favorites');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 routes.get('/auth/spotify', passport.authenticate('spotify',
-  { scope: ['user-read-playback-state', 'user-modify-playback-state'] }));
+  { scope: ['user-read-playback-state', 'user-modify-playback-state', 'user-library-modify'] }));
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  // (req, res) => res.redirect('/loggedIn'));
   (req, res) => {
     res.cookie('auth', 'true');
     Devices.getDevices(req).then(res.redirect('/'));
@@ -154,5 +155,10 @@ routes.get('/player/auth', Player.isAuth);
 
 // routes.get('/userplaylist/info', UserPlaylist.getInfo);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
+
+routes.route('/favorites')
+  .get(User.getFavorites)
+  .put(User.addFavorite)
+  .delete(User.removeFavorite);
 
 module.exports = routes;

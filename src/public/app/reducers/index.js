@@ -167,6 +167,14 @@ function auth(state = false, action) {
   }
 }
 
+function favorites(state = [], action) {
+  switch (action.type) {
+    case 'SET_FAVORITES':
+      return action.favorites;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -185,6 +193,7 @@ const reducer = combineReducers({
   spotifyPlayer,
   showVolumeGauge,
   showAvailableDevices,
+  favorites,
 });
 
 export default reducer;
