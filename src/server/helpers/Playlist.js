@@ -1,4 +1,5 @@
 const knex = require('../db/db');
+const request = require('request-promise-native');
 const _ = require('underscore');
 
 const abbreviation = require('../data/abbreviation');
@@ -200,14 +201,72 @@ Playlist.sync = (req, res) => {
         console.log('Sync -> userPlaylist: ', userPlaylist);
         if (userPlaylist === null) {
           // create playlist!
+          request({
+            method: 'POST',
+            url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+            headers: { Authorization: `Bearer ${req.user.accessToken}` },
+            body: JSON.stringify({
+              name: 'World FM',
+              description: 'This playlist was created with love',
+            }),
+          })
+            .then(newPlaylistData => JSON.parse(newPlaylistData))
+            .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
+            .then((newPlaylistId) => {
+              console.log('Sync -> newPlaylistId: ', newPlaylistId);
+              // store new playlist in database!
+              knex('users')
+              .where('user_id', userId)
+              .update({ user_playlist: newPlaylistId })
+              .catch(err => res.status(400).send(err));
+              // sync new playlist!
+            })
+            .catch(err => res.status(400).send(err));
         } else {
-          // sync playlist!
+          // check if list is in spotify!
+          request({
+            method: 'GET',
+            url: `https://api.spotify.com/v1/users/${userId}/playlists?limit=50`,
+            headers: { Authorization: `Bearer ${req.user.accessToken}` },
+          })
+          .then(userPlaylistsData => JSON.parse(userPlaylistsData))
+          .then(parsedUserPlaylistsData => parsedUserPlaylistsData.items.map(i => i.id))
+          .then(mappedUserPlaylistsData => _.contains(mappedUserPlaylistsData, userPlaylist))
+          .then((playlistIsInSpotify) => {
+            if (playlistIsInSpotify) {
+              // sync playlist!
+            } else {
+              // create playlist!
+              request({
+                method: 'POST',
+                url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+                headers: { Authorization: `Bearer ${req.user.accessToken}` },
+                body: JSON.stringify({
+                  name: 'World FM',
+                  description: 'This playlist was created with love',
+                }),
+              })
+                .then(newPlaylistData => JSON.parse(newPlaylistData))
+                .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
+                .then((newPlaylistId) => {
+                  console.log('Sync -> newPlaylistId: ', newPlaylistId);
+                  // store new playlist in database!
+                  knex('users')
+                  .where('user_id', userId)
+                  .update({ user_playlist: newPlaylistId })
+                  .catch(err => res.status(400).send(err));
+                  // sync new playlist!
+                })
+                .catch(err => res.status(400).send(err));
+            }
+          })
+          .catch(err => res.status(400).send(err));
         }
       })
-      .catch(err => err);
+      .catch(err => res.status(400).send(err));
   }
   // not auth
-  res.status(404).send();
+  res.status(400).send();
 };
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
