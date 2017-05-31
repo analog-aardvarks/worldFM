@@ -8,6 +8,7 @@ const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
 const UserPlaylist = require('./helpers/UserPlaylist');
+const User = require('./helpers/User');
 const favorites = require('./helpers/favorites');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,7 +20,6 @@ routes.get('/auth/spotify', passport.authenticate('spotify',
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  // (req, res) => res.redirect('/loggedIn'));
   (req, res) => {
     res.cookie('auth', 'true');
     Devices.getDevices(req).then(res.redirect('/'));
@@ -157,7 +157,8 @@ routes.get('/player/auth', Player.isAuth);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
 
 routes.route('/favorites')
-  .put(favorites.addTrack)
-  .delete(favorites.removeTrack);
+  .get(User.getFavorites)
+  .put(User.addFavorite)
+  .delete(User.removeFavorite);
 
 module.exports = routes;

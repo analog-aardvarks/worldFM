@@ -1,6 +1,7 @@
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 
+const User = require('./helpers/User');
 const Devices = require('./helpers/Devices');
 const config = process.env.SPOTIFYID ? {
   clientID: process.env.SPOTIFYID,
@@ -16,6 +17,7 @@ passport.use(new SpotifyStrategy({
 },
 (accessToken, refreshToken, profile, done) => {
   profile.accessToken = accessToken;
+  User.login(profile);
   Devices.getDevices(profile)
     .then(userInfo => done(null, userInfo));
 }));
