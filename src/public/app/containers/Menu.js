@@ -20,6 +20,7 @@ const mapStateToProps = state => ({
   showCountryMenu: state.showCountryMenu,
   showSideMenu: state.showSideMenu,
   showQueueMenu: state.showQueueMenu,
+  favorites: state.favorites,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -15,12 +15,13 @@ passport.use(new SpotifyStrategy({
   clientSecret: config.clientSecret,
   callbackURL: `${baseURL}/auth/spotify/callback`,
 },
-(accessToken, refreshToken, profile, done) => {
-  profile.accessToken = accessToken;
-  User.login(profile);
-  Devices.getDevices(profile)
-    .then(userInfo => done(null, userInfo));
-}));
+  (accessToken, refreshToken, profile, done) => {
+    profile.accessToken = accessToken;
+    User.login(profile);
+    Devices.getDevices(profile)
+      .then(userInfo => done(null, userInfo))
+      .catch(err => console.log(err));
+  }));
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));

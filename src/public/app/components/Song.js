@@ -18,6 +18,8 @@ const Song = ({ size,
   setSpotifyPlayerIntervalHandler,
   resumeSpotifyPlayerHandler,
   setSpotifyPlayerEllapsedHandler,
+  favorites,
+  handleFavoritesChange,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
@@ -88,8 +90,30 @@ const Song = ({ size,
       credentials: 'include',
       body: JSON.stringify(track),
     })
-    .then(res => console.log(res))
+    .then(res => res.json())
+    .then(favs => handleFavoritesChange(favs))
     .catch(err => console.log(err));
+  };
+
+  const removeFavorite = () => {
+    fetch('/favorites', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(track),
+    })
+    .then(res => res.json())
+    .then(favs => handleFavoritesChange(favs))
+    .catch(err => console.log(err));
+  };
+
+  const handleFavoritesClick = () => {
+    console.log('favorites: ', favorites);
+    if (favorites.includes(track.id)) {
+      removeFavorite();
+    } else {
+      addFavorite();
+    }
   };
 
   return (
@@ -108,7 +132,7 @@ const Song = ({ size,
           <div className="Song__more-info" onMouseLeave={closeSongMenu}>
 
             <div className="Song__more-info-option"
-              onClick={() => { addFavorite(track); }}
+              onClick={handleFavoritesClick}
               >
               <i className="fa fa-plus fa-lg fa-fw" />
               <span>Add to favorites</span>

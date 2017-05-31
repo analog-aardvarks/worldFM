@@ -1,22 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setCurrentCountry } from '../actions';
 import renderGlobe from './renderGlobe';
 
-const mapDispatchToProps = dispatch => ({
-  handleCountryClick: (country) => {
-    dispatch(setCurrentCountry(country));
-  },
-});
-
-class GlobeMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleCountryClick = props.handleCountryClick.bind(this);
-  }
+export default class GlobeMenu extends Component {
   componentDidMount() {
-    renderGlobe(this.container, this.props.handleCountryClick);
+    renderGlobe(this.container);
   }
 
   render() {
@@ -28,7 +15,3 @@ class GlobeMenu extends Component {
     );
   }
 }
-
-const ConnectedGlobe = connect(mapDispatchToProps)(GlobeMenu);
-
-export default ConnectedGlobe;
