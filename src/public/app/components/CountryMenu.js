@@ -13,7 +13,7 @@ const CountryMenu = ({ availableCountries, availableTrends, currentCountry, curr
       <div className="CountryMenu--Section">
         <select
           className="Trend--dropdown"
-          value ={currentTrend}
+          value={currentTrend}
           onChange={handleTrendChange}
           size="4"
         >
