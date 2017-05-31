@@ -1,34 +1,27 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setCurrentCountry } from '../actions';
+// import 'particles.js';
 import renderGlobe from './renderGlobe';
+import particleConfig from '../../../../particlesjs-config.json';
 
-const mapDispatchToProps = dispatch => ({
-  handleCountryClick: (country) => {
-    dispatch(setCurrentCountry(country));
-  },
-});
-
-class GlobeMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleCountryClick = props.handleCountryClick.bind(this);
-  }
+export default class GlobeMenu extends Component {
   componentDidMount() {
-    renderGlobe(this.container, this.props.handleCountryClick);
+    // renderGlobe(this.container, this.props.handleCountryClick);
+    particlesJS('particles', particleConfig);
+    // particlesJS('particles-js', particleConfig, !1);
+    renderGlobe(this.container);
   }
 
   render() {
     return (
-      <div
-        ref={(el) => { this.container = el; }}
-        className="globeContainer"
-      />
+      <div className="page-container">
+        <div id="particles">
+          <div
+            ref={(el) => { this.container = el; }}
+            className="globeContainer"
+            style={{ height: (window.innerHeight - 64) }}
+          />
+        </div>
+      </div>
     );
   }
 }
-
-const ConnectedGlobe = connect(mapDispatchToProps)(GlobeMenu);
-
-export default ConnectedGlobe;

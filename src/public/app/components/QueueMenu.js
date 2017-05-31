@@ -32,17 +32,25 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu }) => {
 
   ];
   return (
-    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }}>
-      <i className="fa fa fa-times fa-lg fa-fw" onClick={toggleQueueMenu} />
+    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }} onMouseLeave={toggleQueueMenu}>
+
+      <div className="QueueMenu--TopBar">
+        <i className="fa fa fa-times fa-1 fa-fw" onClick={toggleQueueMenu} />
+      </div>
+
+      <div className="QueueMenu--SongList">
       {songTestList.map((song, idx) => (
-        <div className="IndividualSong" key={song.key}>
+        <div className="QueueMenu--IndividualSong" key={song.key}>
           <span>{idx+1}</span>
           <span>{song.Artist}</span>
           <span>{song.SongName}</span>
           <span>{song.Time}</span>
         </div>
       ))}
+      </div>
+
     </div>
   )
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(QueueMenu);

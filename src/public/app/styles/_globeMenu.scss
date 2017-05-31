@@ -42,10 +42,37 @@ div.countryTooltip {
   font-family: sans-serif;
 }
 .globeContainer {
-  margin-top: 60px;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 30px;
-  background-image: url("http://wallpapercave.com/wp/xX2GRj6.gif");
+  align-items: center;
+  svg {
+    z-index: 3;
+  }
+}
+
+.page-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+canvas {
+  top: 0px;
+  left: 0px;
+  position: absolute;
+}
+
+#particles-js {
+  display: block;
+  vertical-align: bottom;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+#particles-js .particles-js-canvas-el {
+  background-position: center;
+  background-size: cover;
+  width: 100vw!important;
+  height: 100vh!important;
+  z-index: -1;
 }

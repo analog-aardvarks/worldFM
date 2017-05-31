@@ -49,6 +49,15 @@ function windowWidth(state = window.innerWidth, action) {
   }
 }
 
+function windowHeight(state = window.innerHeight, action) {
+  switch (action.type) {
+    case 'WINDOW_RESIZE':
+      return action.newSize;
+    default:
+      return state;
+  }
+}
+
 function showTrackInfo(state = false, action) {
   switch (action.type) {
     case 'SHOW_TRACK_INFO': return true;
@@ -158,12 +167,21 @@ function auth(state = false, action) {
   }
 }
 
+function favorites(state = [], action) {
+  switch (action.type) {
+    case 'SET_FAVORITES':
+      return action.favorites;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
   currentCountry,
   currentTrend,
   windowWidth,
+  windowHeight,
   showTrackInfo,
   showSpotifyPlaylist,
   showCountryMenu,
@@ -175,6 +193,7 @@ const reducer = combineReducers({
   spotifyPlayer,
   showVolumeGauge,
   showAvailableDevices,
+  favorites,
 });
 
 export default reducer;

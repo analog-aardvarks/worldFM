@@ -1,8 +1,10 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 const config = require('../../config');
+const knex = require('./db/db');
 
 const Track = require('./helpers/Track');
 const Playlist = require('./helpers/Playlist');
+const extraPlaylists = require('./data/extraPlaylists');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
@@ -33,6 +35,17 @@ const promisifyGetPlaylist = (owner, id) =>
       });
   });
 
+const promisifyGetPlaylistExtraData = (owner, id) =>
+  new Promise((resolve, reject) => {
+    spotifyApi.getPlaylist(owner, id)
+      .then((data) => {
+        resolve(data.body);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
 // Parse raw data to be in line with schema structure
 const parseTrackData = trackData => ({
   track_id: trackData.track.id,
@@ -53,6 +66,13 @@ const parseTrackData = trackData => ({
 const parsePlaylistData = (playlistData, tracksArray) => ({
   playlist_id: playlistData.id,
   playlist_name: playlistData.name,
+  playlist_tracks: JSON.stringify(tracksArray),
+  playlist_tracks_total: tracksArray.length,
+});
+
+const parsePlaylistDataExtra = (playlistData, tracksArray, country) => ({
+  playlist_id: playlistData.id,
+  playlist_name: `${country} : ${playlistData.name}`,
   playlist_tracks: JSON.stringify(tracksArray),
   playlist_tracks_total: tracksArray.length,
 });
@@ -96,9 +116,9 @@ const spotifyWorker = (owner, limit, offset) => {
 // Read 'Run' for details
 
 const runWorkers = () => {
-  // spotifyWorker('thesoundsofspotify', 50, 0);
-  // spotifyWorker('thesoundsofspotify', 50, 50);
-  // spotifyWorker('thesoundsofspotify', 50, 100);
+  spotifyWorker('thesoundsofspotify', 50, 850);
+  spotifyWorker('thesoundsofspotify', 50, 900);
+  spotifyWorker('thesoundsofspotify', 50, 950);
   // spotifyWorker('thesoundsofspotify', 50, 150);
   // spotifyWorker('thesoundsofspotify', 2, 200);
 
@@ -109,6 +129,40 @@ const runWorkers = () => {
   // for(var i = 0; i <= 10000; i += 50) {
   //   spotifyWorker('thesoundsofspotify', 50, i);
   // }
+};
+
+const runExtraWorker = () => {
+  Object.keys(extraPlaylists).forEach((country) => {
+    extraPlaylists[country].forEach((uri) => {
+      // console.log(`${country}: ${uri}`);
+      const uriArray = uri.split(':');
+      const owner = uriArray[2];
+      const id = uriArray[4];
+      // console.log(`${country}: ${owner}: ${id}`);
+      const p = promisifyGetPlaylistExtraData(owner, id);
+      p.then((data) => {
+        const tracksData = data.tracks.items;
+        const tracksArray = [];
+        tracksData.forEach((singleTrackData) => {
+          // console.log(singleTrackData)
+          // console.log('!?!', singleTrackData.track.album.images.length);
+          if (singleTrackData.track.album.images.length > 0) {
+            tracksArray.push(singleTrackData.track.id);
+            const parsedTrackData = parseTrackData(singleTrackData);
+            // console.log(parsedTrackData);
+            Track.postTrack(parsedTrackData);
+          }
+        });
+        return [tracksArray, data];
+      })
+      .then((tracksTuple) => {
+        const parsedPlaylistData = parsePlaylistDataExtra(tracksTuple[1], tracksTuple[0], country);
+        // console.log(parsedPlaylistData);
+        Playlist.postPlaylist(parsedPlaylistData);
+      })
+      .catch(err => console.log(err));
+    });
+  });
 };
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,4 +183,18 @@ const runWorkers = () => {
 // Attemps to get the first 202 playlists from user 'thesoundsofspotify'
 // WARNING! Hundreds of API calls, run with caution as call limit can be reached fast
 
-runWorkers();
+// runWorkers();
+runExtraWorker();
+// Object.keys(extraPlaylists).forEach((country) => {
+//   knex('playlists')
+//   .where('playlist_name', `${country} : Metal & Rock`)
+//   .del()
+//   .then(data => console.log(data));
+// });
+
+// spotifyApi.getPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK')
+//   .then(function(data) {
+//     console.log('Some information about this playlist', data.body);
+//   }, function(err) {
+//     console.log('Something went wrong!', err);
+//   });

@@ -1,4 +1,4 @@
-$mainColor: #171717;
+$mainColor: #0c0c0c;
 $fontColor: rgb(230, 230, 230);
 $fontOnHoverColor: rgb(30, 215, 96);
 $fontOnClickColor: rgb(30, 215, 96);
@@ -11,9 +11,11 @@ body {
 @import "topMenu";
 @import "globeMenu";
 @import "playlist";
+@import "song";
 @import "spotifyPlaylist";
 @import "countryMenu";
 @import "queueMenu";
 @import "sideMenu";
 @import "player";
 @import "mobile";
+@import "about";
