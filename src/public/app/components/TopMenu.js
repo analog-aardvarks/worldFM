@@ -15,7 +15,7 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, to
 
   const scrollDown = () => {
     console.log('scrolling down')
-    window.scrollTo(0, windowHeight);
+    window.scrollTo(0, windowHeight - 60);
   }
 
   return (

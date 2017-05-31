@@ -42,11 +42,13 @@ div.countryTooltip {
   font-family: sans-serif;
 }
 .globeContainer {
-  margin-top: 60px;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 30px;
+  align-items: center;
+  svg {
+    z-index: 3;
+  }
 }
 
 .page-container {

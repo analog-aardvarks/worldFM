@@ -21,11 +21,11 @@
       }
     },
     "opacity": {
-      "value": 0.7,
+      "value": 0.8,
       "random": false,
       "anim": {
         "enable": true,
-        "speed": 2,
+        "speed": 4,
         "opacity_min": 0,
         "sync": false
       }
@@ -35,7 +35,7 @@
       "random": true,
       "anim": {
         "enable": true,
-        "speed": 0.2,
+        "speed": 8,
         "size_min": 0,
         "sync": false
       }
@@ -49,7 +49,7 @@
     },
     "move": {
       "enable": true,
-      "speed": 0.2,
+      "speed": 1,
       "direction": "none",
       "random": true,
       "straight": false,
