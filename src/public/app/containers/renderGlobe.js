@@ -8,10 +8,12 @@ import { setCurrentCountry } from '../actions';
 
 
 const renderGlobe = (element, handleCountryClick) => {
-  const width = 600;
-  const height = 500;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  let height = h < w ? h * 0.55 : w * 0.7;
+  const width = height;
   const sens = 0.25;
-  const globeSize = 200;
+  const globeSize = height/2;
   let focused;
 
   // Set projection

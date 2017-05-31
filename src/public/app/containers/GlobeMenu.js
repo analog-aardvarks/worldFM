@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setCurrentCountry } from '../actions';
 import renderGlobe from './renderGlobe';
-import 'particles.js';
 import particleConfig from '../../../../particlesjs-config.json';
 
 const mapDispatchToProps = dispatch => ({
@@ -19,13 +18,13 @@ class GlobeMenu extends Component {
   }
   componentDidMount() {
     renderGlobe(this.container, this.props.handleCountryClick);
-    particlesJS('particles-js', particleConfig, !1);
+    particlesJS('particles', particleConfig);
   }
 
   render() {
     return (
       <div className="page-container">
-        <div id="particles-js">
+        <div id="particles">
           <div
             ref={(el) => { this.container = el; }}
             className="globeContainer"
