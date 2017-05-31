@@ -7,11 +7,8 @@ User.getUser = user =>
   new Promise((reject, resolve) =>
     knex('users').where('user_id', user.id)
       .then((userData) => {
-        if (userData.length > 0) {
-          resolve(userData);
-        } else {
-          resolve(false);
-        }
+        if (userData.length > 0) resolve(userData);
+        else resolve(false);
       })
       .catch(err => console.log(err)));
 
@@ -29,8 +26,7 @@ User.login = (user) => {
           user_favorites: '',
         };
         knex('users').insert(newUser)
-          .then(() => console.log(`User ${user.id} successfully added!`))
-          .catch(err => console.log(err));
+          .then(() => console.log(`User ${user.id} successfully added!`));
       }
     })
     .catch(err => console.log(err));
@@ -69,10 +65,8 @@ User.addFavorite = (req, res) => {
         user_favorites: newFavs,
       })
         .then((data) => {
-          User.getFavorites(req, res)
-            .then(favorites => res.send(JSON.stringify(favorites)));
-        })
-        .catch(err => console.log(err));
+          User.getFavorites(req, res);
+        });
     })
     .catch(err => console.log(err));
 };
@@ -81,17 +75,15 @@ User.removeFavorite = (req, res) => {
   knex('users').select('user_favorites').where('user_id', req.user.id)
     .then(((user) => {
       const favs = user[0].user_favorites.split(',');
-      const newFavs = _.reject(favs, f => f === JSON.parse(req.body.track_id));
-      knex('user').where('user_id', req.user.id).update({
+      const newFavs = _.reject(favs, f => f === req.body.track_id).join(',');
+      knex('users').where('user_id', req.user.id).update({
         user_favorites: newFavs,
       })
         .then((data) => {
-          User.getFavorites(req, res)
-              .then(favorites => res.send(JSON.stringify(favorites)));
-        })
-        .catch(err => console.log(err));
-    })
-    .catch(err => console.log(err)));
+          User.getFavorites(req, res);
+        });
+    }))
+    .catch(err => console.log(err));
   console.log('DELETED!');
 };
 
