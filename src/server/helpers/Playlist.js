@@ -189,16 +189,41 @@ Playlist.getPlaylistNames = (req, res) => {
 // Sync
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// const syncPlaylist = (userId, playlistId, tracks, token) =>
+//   new Promise((resolve, reject) => {
+//     request({
+//       method: 'GET',
+//       url: `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}?fields=tracks(total)`,
+//       headers: { Authorization: `Bearer ${token}` },
+//     })
+//     .then(playlistData => JSON.parse(playlistData))
+//     .then(parsedPlaylistData => parsedPlaylistData.tracks.total)
+//     .then((totalTracks) => {
+//       request({
+//         method: 'GET',
+//         url: `https://api.spotify.com/v1/users/${userId}/playlists/{playlist_id}/tracks?offset=0&limit=100`,
+//         headers: { Authorization: `Bearer ${token}` },
+//       })
+//       .then(playlistData => JSON.parse(playlistData))
+//       .then(parsedPlaylistData => parsedPlaylistData.items.map(i => i.track.id))
+//       .then((mappedPlaylistsData) => {
+//         resolve(mappedPlaylistsData);
+//       })
+//       .catch(err => reject(err));
+//     })
+//     .catch(err => reject(err));
+//   });
+
 Playlist.sync = (req, res) => {
   // auth
   if (req.user) {
     const userId = req.user.id;
-    console.log('Sync -> userId: ', userId);
+    // console.log('Sync -> userId: ', userId);
     knex('users')
       .where('user_id', userId)
       .then(users => users[0].user_playlist)
       .then((userPlaylist) => {
-        console.log('Sync -> userPlaylist: ', userPlaylist);
+        // console.log('Sync -> userPlaylist: ', userPlaylist);
         if (userPlaylist === null) {
           // create playlist!
           request({
@@ -213,7 +238,7 @@ Playlist.sync = (req, res) => {
             .then(newPlaylistData => JSON.parse(newPlaylistData))
             .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
             .then((newPlaylistId) => {
-              console.log('Sync -> newPlaylistId: ', newPlaylistId);
+              // console.log('Sync -> newPlaylistId: ', newPlaylistId);
               // store new playlist in database!
               knex('users')
               .where('user_id', userId)
@@ -235,6 +260,35 @@ Playlist.sync = (req, res) => {
           .then((playlistIsInSpotify) => {
             if (playlistIsInSpotify) {
               // sync playlist!
+              // console.log('Get total tracks!');
+              request({
+                method: 'GET',
+                url: 'https://api.spotify.com/v1/users/thesoundsofspotify/playlists/2CHEbtr3agbkbrEnzSOJPf?fields=tracks(total)',
+                headers: { Authorization: `Bearer ${req.user.accessToken}` },
+              })
+              .then(playlistData => JSON.parse(playlistData))
+              .then(parsedPlaylistData => parsedPlaylistData.tracks.total)
+              .then((totalTracks) => {
+                const p = [];
+                for (let i = 0; i < totalTracks; i += 100) {
+                  // console.log('Offset: ', i);
+                  p.push(
+                    request({
+                      method: 'GET',
+                      url: `https://api.spotify.com/v1/users/thesoundsofspotify/playlists/2CHEbtr3agbkbrEnzSOJPf/tracks?offset=${i}&limit=100`,
+                      headers: { Authorization: `Bearer ${req.user.accessToken}` },
+                    }));
+                }
+                // console.log('Before Promise.all');
+                Promise.all(p)
+                .then(data => data.map(d => JSON.parse(d)))
+                .then(parsedData => parsedData.map(d => d.items))
+                .then(itemsData => itemsData.map(i => i.map(d => d.track.id)))
+                .then(tracksIds => _.flatten(tracksIds))
+                .then(tracksIds => console.log(tracksIds, tracksIds.length))
+                .catch(err => res.status(400).send(err));
+              })
+              .catch(err => res.status(400).send(err));
             } else {
               // create playlist!
               request({
@@ -249,7 +303,7 @@ Playlist.sync = (req, res) => {
                 .then(newPlaylistData => JSON.parse(newPlaylistData))
                 .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
                 .then((newPlaylistId) => {
-                  console.log('Sync -> newPlaylistId: ', newPlaylistId);
+                  // console.log('Sync -> newPlaylistId: ', newPlaylistId);
                   // store new playlist in database!
                   knex('users')
                   .where('user_id', userId)
