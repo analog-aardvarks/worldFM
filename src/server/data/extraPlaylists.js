@@ -31,6 +31,7 @@ const extraPlaylists = {
   Cuba: ['spotify:user:lacubanitabruchsal:playlist:1kg6WRmaCzgmR0xMMF435t'],
   Mongolia: ['spotify:user:1218062855:playlist:7mvyWgsmJVVDp2pTXzUJN5', 'spotify:user:1218062855:playlist:7mvyWgsmJVVDp2pTXzUJN5'],
   Ukraine: ['spotify:user:oleh_the_great:playlist:0K7LWA7DVr4Yw0jhDngCI6', 'spotify:user:1225037656:playlist:4B24ETLEWtVLHNCuHJaJa1'],
+  Haiti: ['spotify:user:1242761210:playlist:6ARscEi5PCaFi8auAdy9f7'],
 };
 
 module.exports = extraPlaylists;
