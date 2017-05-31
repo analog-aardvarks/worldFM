@@ -185,6 +185,32 @@ Playlist.getPlaylistNames = (req, res) => {
 };
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Sync
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Playlist.sync = (req, res) => {
+  // auth
+  if (req.user) {
+    const userId = req.user.id;
+    console.log('Sync -> userId: ', userId);
+    knex('users')
+      .where('user_id', userId)
+      .then(users => users[0].user_playlist)
+      .then((userPlaylist) => {
+        console.log('Sync -> userPlaylist: ', userPlaylist);
+        if (userPlaylist === null) {
+          // create playlist!
+        } else {
+          // sync playlist!
+        }
+      })
+      .catch(err => err);
+  }
+  // not auth
+  res.status(404).send();
+};
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Database
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

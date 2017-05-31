@@ -15,7 +15,7 @@ const favorites = require('./helpers/favorites');
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 routes.get('/auth/spotify', passport.authenticate('spotify',
-  { scope: ['user-read-playback-state', 'user-modify-playback-state', 'user-library-modify'] }));
+  { scope: ['playlist-modify-public', 'playlist-modify-private', 'user-read-playback-state', 'user-modify-playback-state', 'user-library-modify'] }));
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
@@ -81,7 +81,7 @@ routes.get('/playlist/names', Playlist.getPlaylistNames);
 
 // new!
 // routes.post('/playlist/create', Playlist.create);
-// routes.get('/playlist/sync', Playlist.sync);
+routes.get('/playlist/sync', Playlist.sync);
 
 // Serve data to d3 for asnyc loading
 routes.get('/data/world-110m.json', MapData.getWorldJson);
