@@ -154,8 +154,9 @@ routes.get('/player/volume', Player.volume);
 routes.get('/player/auth', Player.isAuth);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// User Playlists
+// Users
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+routes.get('/users/info', User.getInfo);
 
 // routes.get('/userplaylist/info', UserPlaylist.getInfo);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);

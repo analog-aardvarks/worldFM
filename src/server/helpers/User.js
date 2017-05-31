@@ -3,6 +3,12 @@ const _ = require('underscore');
 
 const User = {};
 
+User.getInfo = (req, res) => {
+  knex('users').select('*')
+    .then(users => res.status(200).send(users))
+    .catch(err => console.log(err));
+};
+
 User.getUser = user =>
   new Promise((reject, resolve) =>
     knex('users').where('user_id', user.id)
