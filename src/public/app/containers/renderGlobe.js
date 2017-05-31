@@ -20,7 +20,7 @@ const renderGlobe = (element, handleCountryClick) => {
 
   const projection = d3.geo.orthographic()
     .scale(globeSize)
-    .rotate([0, 0])
+    .rotate([-100, 0])
     .translate([width / 2, height / 2])
     .clipAngle(90);
 
@@ -112,7 +112,7 @@ const renderGlobe = (element, handleCountryClick) => {
         }
       });
 
-    // Country focus on option select
+    // TODO: Country focus on option select
 
     // globeSelect.on('change', () => {
     //   const rotate = projection.rotate();
@@ -143,12 +143,14 @@ const renderGlobe = (element, handleCountryClick) => {
 
     // Configuration for the spinning effect
 
-    let time = Date.now();
-    let rotation = [0, 0];
+    // let time = Date.now();
+    let time;
+    let interval;
+    let rotation;
     const velocity = [0.015, -0];
 
     function spinningGlobe() {
-      // d3.timer(function () {
+      // d3.timer(function () {  // TODO: implement d3.timer
         // get current time
         const dt = Date.now() - time;
 
@@ -160,7 +162,6 @@ const renderGlobe = (element, handleCountryClick) => {
       // });
     }
 
-    let interval;
     function startSpin() {
       time = Date.now();
       rotation = projection.rotate();

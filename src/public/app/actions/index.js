@@ -100,3 +100,10 @@ export function clearSpotifyPlayerInterval(interval) {
     type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL',
   };
 }
+
+export function setFavorites(favorites) {
+  return {
+    type: 'SET_FAVORITES',
+    favorites,
+  };
+}
