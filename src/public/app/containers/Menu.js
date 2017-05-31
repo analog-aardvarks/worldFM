@@ -12,6 +12,8 @@ import QueueMenu from '../components/QueueMenu';
 const mapStateToProps = state => ({
   availableCountries,
   availableTrends,
+  windowHeight: state.windowHeight,
+  windowWidth: state.windowWidth,
   auth: state.auth,
   currentCountry: state.currentCountry,
   currentTrend: state.currentTrend,
@@ -123,6 +125,8 @@ class Menu extends React.Component {
           availableCountries={this.props.availableCountries}
           handleCountryChange={this.handleCountryChange}
           currentCountry={this.props.currentCountry}
+          windowHeight={this.props.windowHeight}
+          windowWidth={this.props.windowWidth}
         />
         <CountryMenu
           availableCountries={this.props.availableCountries}
