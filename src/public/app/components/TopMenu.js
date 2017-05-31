@@ -21,8 +21,6 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleSpotifyPlaylist, to
   return (
     <div className="Menu">
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
-
-      <i className="Mobile--icon fa fa-bars fa-2x fa-fw"></i>
       <a className='Menu--logo' href="/">world.fm</a>
       <div className="TopMenu">
         <Select
