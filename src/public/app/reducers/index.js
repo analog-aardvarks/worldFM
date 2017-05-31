@@ -49,6 +49,15 @@ function windowWidth(state = window.innerWidth, action) {
   }
 }
 
+function windowHeight(state = window.innerHeight, action) {
+  switch (action.type) {
+    case 'WINDOW_RESIZE':
+      return action.newSize;
+    default:
+      return state;
+  }
+}
+
 function showTrackInfo(state = false, action) {
   switch (action.type) {
     case 'SHOW_TRACK_INFO': return true;
@@ -164,6 +173,7 @@ const reducer = combineReducers({
   currentCountry,
   currentTrend,
   windowWidth,
+  windowHeight,
   showTrackInfo,
   showSpotifyPlaylist,
   showCountryMenu,
