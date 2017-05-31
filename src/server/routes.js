@@ -7,7 +7,6 @@ const Playlist = require('./helpers/Playlist');
 const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
-const UserPlaylist = require('./helpers/UserPlaylist');
 const User = require('./helpers/User');
 const favorites = require('./helpers/favorites');
 
@@ -81,8 +80,8 @@ routes.get('/playlist/length', Playlist.getPlaylistLength);
 routes.get('/playlist/names', Playlist.getPlaylistNames);
 
 // new!
-routes.post('/playlist/create', Playlist.create);
-routes.get('/playlist/sync', Playlist.sync);
+// routes.post('/playlist/create', Playlist.create);
+// routes.get('/playlist/sync', Playlist.sync);
 
 // Serve data to d3 for asnyc loading
 routes.get('/data/world-110m.json', MapData.getWorldJson);
@@ -156,7 +155,7 @@ routes.get('/player/auth', Player.isAuth);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Users
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-routes.get('/users/info', User.getInfo);
+routes.get('/user/info', User.getInfo);
 
 // routes.get('/userplaylist/info', UserPlaylist.getInfo);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
