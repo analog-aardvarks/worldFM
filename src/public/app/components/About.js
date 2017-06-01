@@ -1,7 +1,7 @@
 import React from 'react';
 
 const About = ({ toggleAbout, showAbout }) => (
-  <div id="about" className="container about">
+  <div className="About">
     <div className="aboutSection">
       <div className="aboutHeader">
         About World.FM

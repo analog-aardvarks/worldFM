@@ -118,7 +118,6 @@ class Menu extends React.Component {
   }
 
   toggleAbout() {
-    console.warn('YOOOO');
     if (this.props.showAbout) this.props.hideAboutEvent();
     if (!this.props.showAbout) this.props.showAboutEvent();
   }
