@@ -3,12 +3,6 @@ const _ = require('underscore');
 
 const User = {};
 
-User.getInfo = (req, res) => {
-  knex('users').select('*')
-    .then(users => res.status(200).send(users))
-    .catch(err => console.log(err));
-};
-
 User.getUser = user =>
   new Promise((resolve, reject) =>
     knex('users').where('user_id', user.id)
@@ -30,6 +24,7 @@ User.login = (user) => {
           user_url: user.profileUrl,
           // user_image: user.photos[0],
           user_favorites: '',
+          user_sync: false,
         };
         knex('users').insert(newUser)
           .then(() => console.log(`User ${user.id} successfully added!`));
@@ -107,6 +102,23 @@ User.removeFavorite = (req, res) => {
     }))
     .catch(err => console.log(err));
   console.log('DELETED!');
+};
+
+User.toggleSync = (req, res) => {
+  User.getUser(req.user.id)
+    .then((userData) => {
+      if (userData.user_sync !== req.body) {
+        knex('users').where('user_id', req.user.id).update({
+          user_sync: req.body,
+        })
+        .then(() => res.send(req.body));
+        if(req.body === true) {
+          
+        }
+      } else {
+        res.send(req.body);
+      }
+    });
 };
 
 module.exports = User;
