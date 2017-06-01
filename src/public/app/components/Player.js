@@ -87,9 +87,8 @@ class Player extends React.Component {
           .then(devicesRes => devicesRes.json())
           .then((devicesRes) => {
             devicesRes.devices.forEach((device) => {
-              // console.log(device);
               if (device.is_active) {
-                this.changePlayerVolume({ target: { value: device.volume_percent } });
+                this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
               }
             });
           })
@@ -103,19 +102,20 @@ class Player extends React.Component {
 
   // check for new currentTrack
   componentDidUpdate(prev) {
+    // update volume if it doesn't match the state
+    if (this.props.showVolumeGauge) {
+      this.$volumeInput.value = this.props.spotifyPlayer.volume;
+    }
     // set seeker dom element
     if (this.props.spotifyPlayer.$seeker === null && this.$seekerInput !== undefined) {
       this.props.setSpotifyPlayerSeekerElHandler(this.$seekerInput);
     }
 
-    // console.log('CURRENT: ', this.props.spotifyPlayer.currentTrack);
-    // console.log('PREV: ', prev.spotifyPlayer.currentTrack);
     if (this.props.auth && this.props.spotifyPlayer.currentTrack) {
       if (prev.spotifyPlayer.currentTrack === null ||
         (prev.spotifyPlayer.currentTrack.track_id !==
         this.props.spotifyPlayer.currentTrack.track_id)) {
         // track change!
-        // console.log('TRACK_CHANGE');
         this.$seekerInput.value = 0;
         this.props.setSpotifyPlayerEllapsedHandler(0);
         this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
@@ -229,13 +229,13 @@ class Player extends React.Component {
   }
 
   toggleVolumeDisplay() {
-    if(this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
-    if(!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
+    if (this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
+    if (!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
   }
 
   toggleAvailableDevices() {
-    if(this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
-    if(!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
+    if (this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
+    if (!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
   }
 
   toggleQueueMenu() {
