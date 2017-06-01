@@ -27,6 +27,7 @@ const mapStateToProps = state => ({
   favorites: state.favorites,
   showAbout: state.showAbout,
   showFavoritesMenu : state.showFavoritesMenu ,
+  showQueueMenu: state.showQueueMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -166,9 +167,12 @@ class Menu extends React.Component {
         <FavoritesMenu
           showFavoritesMenu={this.props.showFavoritesMenu}
           favorites={this.props.favorites}
+          showQueueMenu={this.props.showQueueMenu}
+          windowHeight={this.props.windowHeight}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
+          favorites={this.props.favorites}
         />
         {this.props.showSideMenu ? <BurgerMenu
           toggleAbout={this.toggleAbout}

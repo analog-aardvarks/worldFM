@@ -1,17 +1,22 @@
 import React from 'react';
 
-const FavoritesMenu = ({ showFavoritesMenu, favorites }) => {
+const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeight }) => {
 
   return (
-    <div className="FavoritesMenu" style={{ display:  showFavoritesMenu ? "block" : "none" }}>
+    <div
+      className="FavoritesMenu"
+      style={{
+        display:  showFavoritesMenu ? "block" : "none",
+        height: showQueueMenu ? windowHeight - 200 : windowHeight - 124,
+      }}>
       <div className="FavoritesMenu__syncButton">
         <div>
           <span>sync with spotify</span>
           <i className="fa fa-refresh fa-lg fa-fw" />
         </div>
       </div>
-      {favorites.reverse().map((track) => (
-          <div className="FavoritesMenu__indivdualSong">
+      {favorites.reverse().map((track, idx) => (
+          <div className="FavoritesMenu__indivdualSong" key={idx}>
             <div className="FavoritesMenu__indivdualSong__songInfoAndPicture">
               <img
                 src={track.track_album_image}
