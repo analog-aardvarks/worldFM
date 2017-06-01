@@ -7,10 +7,10 @@ import { setCurrentCountry } from '../actions';
 // import activateGlobe from '../helpers/globeBehavior';
 
 
-const renderGlobe = (element, handleCountryClick) => {
+const renderGlobe = (element, startCoordinates) => {
   const w = window.innerWidth;
   const h = window.innerHeight;
-  let height = h < w ? h * 0.55 : w * 0.7;
+  const height = h < w ? h * 0.55 : w * 0.7;
   const width = height;
   const sens = 0.25;
   const globeSize = height/2;
@@ -20,7 +20,7 @@ const renderGlobe = (element, handleCountryClick) => {
 
   const projection = d3.geo.orthographic()
     .scale(globeSize)
-    .rotate([-100, 0])
+    .rotate(startCoordinates)
     .translate([width / 2, height / 2])
     .clipAngle(90);
 
@@ -30,7 +30,8 @@ const renderGlobe = (element, handleCountryClick) => {
   // SVG container
   const svg = d3.select(element).append('svg')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
+    .attr('class', 'globe');
 
   // Add water
   svg.append('path')
@@ -141,50 +142,64 @@ const renderGlobe = (element, handleCountryClick) => {
     //   })();
     // });
 
-    // Configuration for the spinning effect
-
-    // let time = Date.now();
+    // Configuration for rotation
     let time;
     let interval;
     let rotation;
     const velocity = [0.015, -0];
 
     function spinningGlobe() {
-        if (svg.get('rotate')) {
-          const dt = Date.now() - time;
+      const dt = Date.now() - time;
 
-          // get the new position
-          projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+      // get the new position
+      projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
 
-          // update land positions
-          svg.selectAll('path.land').attr('d', path);
-        }
+      // update land positions
+      svg.selectAll('path.land').attr('d', path);
     }
 
     function startSpin() {
       time = Date.now();
       rotation = projection.rotate();
-      svg.set('rotate', true);
+      interval = setInterval(spinningGlobe, 10);
     }
     function stopSpin() {
-      svg.set('rotate', false);
+      clearInterval(interval);
     }
-    // Globe rotation
-    // const globeSpin = setInterval(spinningGlobe, 20);
+    // Rotate!
     svg.on('mouseleave', startSpin)
       .on('mouseover', stopSpin);
     startSpin();
 
+    // Zoom!
+    // const scale0 = (width - 1) / 2 / Math.PI;
+
+    // const zoom = d3.behavior.zoom()
+    //   .translate([width / 2, height / 2])
+    //   .scale(scale0)
+    //   .scaleExtent([scale0, 8 * scale0])
+    //   .on('zoom', zoomed);
+    //
+    // svg.call(zoom)
+    //   .call(zoom.event);
+    //
+    // function zoomed() {
+    //   projection.translate(zoom.translate())
+    //   .scale(zoom.scale());
+    //   svg.selectAll('path')
+    //   .attr('d', path);
+    // }
+
     function country(cnt, sel) {
-      console.log('cnt in country: ', cnt)
+      console.log('cnt in country: ', cnt);
       console.log('sel.value: ', sel.value);
       for (let i = 0; i < cnt.length; i++) {
         if (cnt[i].id === sel.value) return cnt[i];
       }
     }
   }
-
-}
+  return { svg, projection };
+};
 
 
 export default renderGlobe;

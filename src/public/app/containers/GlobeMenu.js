@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 // import 'particles.js';
 import renderGlobe from './renderGlobe';
 import particleConfig from '../../../../particlesjs-config.json';
 
-export default class GlobeMenu extends Component {
+const mapStateToProps = ({ windowHeight, windowWidth }) => ({
+  windowHeight,
+  windowWidth,
+});
+
+class GlobeMenu extends Component {
+
   componentDidMount() {
-    // renderGlobe(this.container, this.props.handleCountryClick);
     particlesJS('particles', particleConfig);
-    // particlesJS('particles-js', particleConfig, !1);
-    renderGlobe(this.container);
+    this.globeSpecs = renderGlobe(this.container, [-100, 0]);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.windowHeight !== this.props.windowHeight
+      || nextProps.windowWidth !== this.props.windowWidth) {
+      d3.select('.globe').remove();
+      const rotation = this.globeSpecs.projection.rotate();
+      this.globeSpecs = renderGlobe(this.container, rotation);
+    }
   }
 
   render() {
@@ -25,3 +38,5 @@ export default class GlobeMenu extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(GlobeMenu);
