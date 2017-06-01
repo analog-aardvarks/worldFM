@@ -30,6 +30,7 @@ const mapDispatchToProps = dispatch => ({
   authUserHandler: (favs) => {
     dispatch({ type: 'AUTHENTICATE_USER' });
     dispatch(setFavorites(favs));
+    console.log('FAVS', favs);
   },
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
