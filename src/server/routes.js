@@ -82,6 +82,7 @@ routes.get('/playlist/names', Playlist.getPlaylistNames);
 // new!
 // routes.post('/playlist/create', Playlist.create);
 routes.post('/playlist/sync', Playlist.sync);
+routes.post('/playlist/save', Playlist.save);
 
 // Serve data to d3 for asnyc loading
 routes.get('/data/world-110m.json', MapData.getWorldJson);

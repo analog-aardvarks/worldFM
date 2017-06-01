@@ -189,31 +189,6 @@ Playlist.getPlaylistNames = (req, res) => {
 // Sync
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// const syncPlaylist = (userId, playlistId, tracks, token) =>
-//   new Promise((resolve, reject) => {
-//     request({
-//       method: 'GET',
-//       url: `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}?fields=tracks(total)`,
-//       headers: { Authorization: `Bearer ${token}` },
-//     })
-//     .then(playlistData => JSON.parse(playlistData))
-//     .then(parsedPlaylistData => parsedPlaylistData.tracks.total)
-//     .then((totalTracks) => {
-//       request({
-//         method: 'GET',
-//         url: `https://api.spotify.com/v1/users/${userId}/playlists/{playlist_id}/tracks?offset=0&limit=100`,
-//         headers: { Authorization: `Bearer ${token}` },
-//       })
-//       .then(playlistData => JSON.parse(playlistData))
-//       .then(parsedPlaylistData => parsedPlaylistData.items.map(i => i.track.id))
-//       .then((mappedPlaylistsData) => {
-//         resolve(mappedPlaylistsData);
-//       })
-//       .catch(err => reject(err));
-//     })
-//     .catch(err => reject(err));
-//   });
-
 Playlist.sync = (req, res) => {
   // AKA PROMISE HELL!
   const DEBUG_MODE = true;
@@ -422,6 +397,60 @@ Playlist.sync = (req, res) => {
   } else {
     // Case No Auth
     res.status(424).send();
+  }
+};
+
+Playlist.save = (req, res) => {
+  // AKA PROMISE HELL!
+  const DEBUG_MODE = true;
+  const TIME_START = Date.now();
+  // Case Auth
+  if (req.user) {
+    const userId = req.user.id;
+    if (DEBUG_MODE) console.log(`435 [${Date.now() - TIME_START}ms] -> AUTHENTICATED!`);
+    if (DEBUG_MODE) console.log(`436 [${Date.now() - TIME_START}ms] -> USER ID: ${userId}`);
+    const tracks = req.body.tracks.map(t => t.track_id);
+    if (DEBUG_MODE) console.log(`438 [${Date.now() - TIME_START}ms] -> RECEIVED ${tracks.length} TRACKS!`);
+    if (DEBUG_MODE) console.log(`439 [${Date.now() - TIME_START}ms] -> PLAYLIST DOESN'T EXISTS, CREATING ONE...`);
+    request({
+      method: 'POST',
+      url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+      headers: { Authorization: `Bearer ${req.user.accessToken}` },
+      body: JSON.stringify({
+        name: `World FM | ${req.body.country} | ${Date.now()}`,
+        description: 'Be cool, but also be warm!',
+      }),
+    })
+    .then(newPlaylistData => JSON.parse(newPlaylistData))
+    .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
+    .then((newPlaylistId) => {
+      if (DEBUG_MODE) console.log(`452 [${Date.now() - TIME_START}ms] -> PLAYLIST CREATED WITH ID ${newPlaylistId}`);
+      if (DEBUG_MODE) console.log(`453 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
+      const tracksToAdd = tracks.map(t => `spotify:track:${t}`);
+      if (DEBUG_MODE) console.log(`455 [${Date.now() - TIME_START}ms] -> ADDING ${tracksToAdd.length} TRACKS TO PLAYLIST...`);
+      const addP = [];
+      for (let i = 0; i < tracksToAdd.length; i += 50) {
+        if (DEBUG_MODE) console.log(`459 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 50}`);
+        addP.push(
+          request({
+            method: 'POST',
+            url: `https://api.spotify.com/v1/users/${userId}/playlists/${newPlaylistId}/tracks`,
+            headers: { Authorization: `Bearer ${req.user.accessToken}` },
+            body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 50) }),
+          }));
+      }
+      if (DEBUG_MODE) console.log(`467 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
+      Promise.all(addP)
+      .then((addResponse) => {
+        if (DEBUG_MODE) console.log(`470 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${addResponse}`);
+        res.status(471).send(addResponse);
+      })
+      .catch(err => res.status(473).send(err));
+    })
+    .catch(err => res.status(475).send(err));
+  } else {
+    // Case No Auth
+    res.status(478).send();
   }
 };
 
