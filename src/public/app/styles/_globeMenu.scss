@@ -1,7 +1,7 @@
 /* Globe syles */
 .water {
   /*fill: rgba(50,167,224,0.4);*/
-  fill: rgba(0,0,0,0.75)
+  fill: rgba(10,10,10,1)
 }
 .land {
   fill: #ccc;
@@ -60,6 +60,7 @@ canvas {
   top: 0px;
   left: 0px;
   position: absolute;
+  // background: radial-gradient(circle, #313131, $mainColor, $mainColor, $mainColor);
 }
 
 #particles-js {

@@ -42,10 +42,10 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
         <span>faves</span>
       </div>
 
-      <div className="TopMenu--login" href="/auth/spotify">
+      <a className="TopMenu--login" href="/auth/spotify">
         <i className="fa fa fa-spotify fa-lg fa-fw" style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}/>
         <span>connect with spotify</span>
-      </div>
+      </a>
 
         {/* scroll down arrow button */}
       <span className="ScrollDown--button" style={{left: (windowWidth/2) - 45}} onClick={scrollDown}><i className="fa fa fa-angle-down fa-lg fa-fw" /></span>

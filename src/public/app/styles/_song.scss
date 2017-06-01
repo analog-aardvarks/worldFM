@@ -1,8 +1,8 @@
 .Song {
   background-size: cover;
   box-sizing: border-box;
-  color: rgb(230, 230, 230);
-  border: 3px solid #0c0c0c;
+  color: $mainfontColor;
+  border: 3px solid $mainColor;
   cursor: default;
 }
 
@@ -26,17 +26,17 @@
   opacity: 1;
 }
 
-.SongHover__play-button {
+.SongHover__play-button,
+.SongHover__add-que,
+.SongHover__add-favorites {
   opacity: 0;
   position: absolute;
 }
 
-.SongHover__play-button:hover {
-  opacity: 0.75;
-}
-
-.Song__wrapper:hover .SongHover__play-button {
-  opacity: 1;
+.Song__wrapper:hover .SongHover__play-button,
+.Song__wrapper:hover .SongHover__add-que,
+.Song__wrapper:hover .SongHover__add-favorites  {
+  opacity: 0.6;
 }
 
 .Song__wrapper {
@@ -83,7 +83,7 @@
 
 .Song__ranking {
   font-family: 'Permanent Marker', cursive;
-  color: rgb(230, 230, 230);
+  color: $mainfontColor;
   font-size: 24px;
   min-width: 42px;
   padding-right: 15px;
@@ -98,11 +98,10 @@
   cursor: pointer;
 }
 
-
 .Song__more-info {
   padding: 5px 10px;
   font-size: 16px;
-  background-color: rgb(30, 215, 96);
+  background-color: $spotifyGreen;
   z-index: 5;
 }
 
@@ -122,5 +121,5 @@
 .Song__wrapper:hover {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.50);
-  border: 3px solid rgb(30, 215, 96);
+  border: 3px solid $spotifyGreen;
 }

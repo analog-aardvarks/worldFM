@@ -24,12 +24,10 @@ const mapStateToProps = state => ({
   showCountryMenu: state.showCountryMenu,
   showSideMenu: state.showSideMenu,
   showQueueMenu: state.showQueueMenu,
-
   favorites: state.favorites,
   showAbout: state.showAbout,
-
   showFavoritesMenu : state.showFavoritesMenu ,
-
+  showQueueMenu: state.showQueueMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -47,13 +45,10 @@ const mapDispatchToProps = dispatch => ({
   closeSongMenu: () => dispatch(closeSongMenu()),
   showSideMenuEvent: () => dispatch({ type: 'SHOW_SIDE_MENU' }),
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
-
   showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
   hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
-
   showFavoritesMenuEvent: () => dispatch( {type: 'SHOW_FAVORITES_MENU' }),
   hideFavoritesMenuEvent: () => dispatch( {type: 'HIDE_FAVORITES_MENU' }),
-
 });
 
 class Menu extends React.Component {
@@ -66,11 +61,8 @@ class Menu extends React.Component {
     this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
-
     this.toggleAbout = this.toggleAbout.bind(this);
-
     this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
-
     // console.log(props.auth);
   }
 
@@ -127,27 +119,19 @@ class Menu extends React.Component {
   }
 
   toggleQueueMenu() {
-
     if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
     if (!this.props.showQueueMenu) this.props.showQueueMenuEvent();
   }
 
   toggleAbout() {
-    console.warn('YOOOO');
     if (this.props.showAbout) this.props.hideAboutEvent();
     if (!this.props.showAbout) this.props.showAboutEvent();
-
-    if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
-    if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
   }
 
   toggleFavoritesMenu() {
     if(this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
     if(!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
-
   }
-
-
 
   render() {
     return (
@@ -179,9 +163,13 @@ class Menu extends React.Component {
         /> */}
         <FavoritesMenu
           showFavoritesMenu={this.props.showFavoritesMenu}
+          favorites={this.props.favorites}
+          showQueueMenu={this.props.showQueueMenu}
+          windowHeight={this.props.windowHeight}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
+          favorites={this.props.favorites}
         />
         {this.props.showSideMenu ? <BurgerMenu
           toggleAbout={this.toggleAbout}

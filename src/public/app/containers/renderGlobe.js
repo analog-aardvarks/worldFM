@@ -17,7 +17,7 @@ const renderGlobe = (element, startCoordinates) => {
   let focused;
 
   // Set projection
-
+  
   const projection = d3.geo.orthographic()
     .scale(globeSize)
     .rotate(startCoordinates)

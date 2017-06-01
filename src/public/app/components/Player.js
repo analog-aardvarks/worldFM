@@ -77,11 +77,11 @@ class Player extends React.Component {
   // check for auth
   componentWillMount() {
     fetch('/player/auth', { credentials: 'include' })
-      .then((res) => {
-        const auth = res.status === 200;
-        if (auth) {
+      .then(res => res.json())
+      .then((favs) => {
+        if (favs) {
           // set auth status and user favorites
-          this.props.authUserHandler(res.body);
+          this.props.authUserHandler(favs);
           // get and set spotify volume
           fetch('/devices', { credentials: 'include' })
           .then(devicesRes => devicesRes.json())
