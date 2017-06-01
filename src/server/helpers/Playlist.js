@@ -70,10 +70,18 @@ const filterPlaylistsByTrends = (playlists, trends) => {
   return curatedPlaylists;
 };
 
-// const randomizeTracks = (tracks, shouldRandomize) => {
-//   if (shouldRandomize === false) return tracks;
-//   return _.shuffle(tracks);
-// };
+const removeAlbumDuplicates = (tracks) => {
+  tracks = _.shuffle(tracks);
+  const albums = {};
+  const curatedTracks = [];
+  tracks.forEach((t) => {
+    albums[t.track_album_id] = albums[t.track_album_id] + 1 || 1;
+    if (albums[t.track_album_id] === 1) {
+      curatedTracks.push(t);
+    }
+  });
+  return curatedTracks;
+};
 
 const makeSureWeCanPlayTheTracks = (tracks) => {
   const original = tracks.length;
@@ -133,6 +141,7 @@ Playlist.getPlaylist = (req, res) => {
         .groupBy('track_id') // removes duplicate id's (not necessary in theory, yet it is)
         .whereIn('track_id', curatedTracks)
         .then((data) => {
+          data = removeAlbumDuplicates(data);
           data = makeSureWeCanPlayTheTracks(data);
           data = _.shuffle(data);
           if (data.length + 1 > props.limit) data = data.slice(0, props.limit);
