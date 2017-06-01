@@ -80,7 +80,6 @@ class Player extends React.Component {
     fetch('/player/auth', { credentials: 'include' })
       .then(res => res.json())
       .then((favs) => {
-        console.log('JSON RES:', favs);
         if (favs) {
           // set auth status and user favorites
           this.props.authUserHandler(JSON.stringify(favs));
