@@ -157,7 +157,7 @@ routes.get('/player/auth', Player.isAuth);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
 
 routes.route('/favorites')
-  .get(User.getFavorites)
+  .get(User.getFavoriteTracks)
   .put(User.addFavorite)
   .delete(User.removeFavorite);
 

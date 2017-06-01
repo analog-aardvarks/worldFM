@@ -4,10 +4,10 @@ const _ = require('underscore');
 const User = {};
 
 User.getUser = user =>
-  new Promise((reject, resolve) =>
+  new Promise((resolve, reject) =>
     knex('users').where('user_id', user.id)
       .then((userData) => {
-        if (userData.length > 0) resolve(userData);
+        if (userData.length > 0) resolve(userData.split(','));
         else resolve(false);
       })
       .catch(err => console.log(err)));
@@ -32,22 +32,23 @@ User.login = (user) => {
     .catch(err => console.log(err));
 };
 
-User.getFavorites = (req, res) => {
-  knex('users').where('user_id', req.user.id)
-    .then((user) => {
-      const favs = user[0].user_favorites;
-      if (favs) {
+User.getFavoriteTracks = userId =>
+  new Promise((resolve, reject) => {
+    knex('users').where('user_id', userId)
+    .then((userData) => {
+      const favs = userData[0].user_favorites;
+      if (!favs) {
+        resolve(false);
+      } else {
         knex('tracks')
           .groupBy('track_id')
           .whereIn('track_id', favs.split(','))
-          .then(favTracks => res.send(favTracks));
-      } else {
-        res.send([]);
+            .then(favTracks => resolve(favTracks))
+            .catch(err => console.log(err));
       }
     })
     .catch(err => console.log(err));
-};
-
+  });
 
 User.addFavorite = (req, res) => {
   knex('users').select('user_favorites').where('user_id', req.user.id)
@@ -63,12 +64,22 @@ User.addFavorite = (req, res) => {
       } else {
         newFavs = req.body.track_id;
       }
-      console.log('newFavs: ', newFavs);
       knex('users').where('user_id', req.user.id).update({
         user_favorites: newFavs,
       })
         .then((data) => {
-          User.getFavorites(req, res);
+          console.log('something happening');
+          User.getFavoriteTracks(req.user.id)
+            .then((updatedFavs) => {
+              console.log('OUTER ENTERED');
+              if (updatedFavs) {
+                console.log('ENTERED');
+                res.send((updatedFavs));
+              } else {
+                res.send([]);
+              }
+            })
+            .catch(err => console.log(err));
         });
     })
     .catch(err => console.log(err));
@@ -82,8 +93,10 @@ User.removeFavorite = (req, res) => {
       knex('users').where('user_id', req.user.id).update({
         user_favorites: newFavs,
       })
-        .then((data) => {
-          User.getFavorites(req, res);
+        .then(data => User.getFavoriteTracks(req.user.id))
+        .then((updatedFavs) => {
+          if (updatedFavs) res.send(updatedFavs);
+          else res.send([]);
         });
     }))
     .catch(err => console.log(err));

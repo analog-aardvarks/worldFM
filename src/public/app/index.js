@@ -11,12 +11,12 @@ const actionLogger = ({dispatch, getState}) =>
 
 const middleware = applyMiddleware(actionLogger);
 
-const store = createStore(
-  reducer,
-  compose(
-    middleware,
+const store = createStore(reducer);
+
+  // compose(
+    // middleware,
     // window.devToolsExtension ? window.devToolsExtension() : f => f
-  ));
+  // )
 
 render(
   <Provider store={store}>

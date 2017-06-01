@@ -1,4 +1,5 @@
 const request = require('request-promise-native');
+const User = require('./User');
 
 const Player = {};
 
@@ -40,7 +41,11 @@ Player.play = (req, res) => {
 };
 
 Player.isAuth = (req, res) => {
-  if (req.user !== undefined) res.status(200).send();
+  if (req.user) {
+    // get favs
+    // favs on
+    res.status(200).send();
+  }
   else res.status(201).send();
 };
 
