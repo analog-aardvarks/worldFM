@@ -1,7 +1,13 @@
 import React from 'react';
 
 const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeight }) => {
-
+  const toggleSync = () => {
+    fetch('/sync', {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json'},
+      body: true,
+    })
+  }
   return (
     <div
       className="FavoritesMenu"

@@ -1,5 +1,6 @@
-const knex = require('../db/db');
 const _ = require('underscore');
+const knex = require('../db/db');
+const Playlist = require('./Playlist');
 
 const User = {};
 
@@ -112,8 +113,10 @@ User.toggleSync = (req, res) => {
           user_sync: req.body,
         })
         .then(() => res.send(req.body));
-        if(req.body === true) {
-          
+        if (req.body === true) {
+          User.getFavoriteTracks(req.user.id)
+            .then(favs => Playlist.sync(req.user, favs))
+            .catch(err => console.log(err));
         }
       } else {
         res.send(req.body);

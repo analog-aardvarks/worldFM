@@ -156,10 +156,12 @@ routes.get('/player/auth', Player.isAuth);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Users
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-routes.get('/user/info', User.getInfo);
+// routes.get('/user/info', User.getInfo);
 
 // routes.get('/userplaylist/info', UserPlaylist.getInfo);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
+
+routes.put('/sync', User.toggleSync);
 
 routes.route('/favorites')
   .get(User.getFavoriteTracks)
