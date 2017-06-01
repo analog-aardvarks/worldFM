@@ -2,13 +2,14 @@ import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import {
+  setFavorites,
   setSpotifyPlayerVolume,
   playSpotifyPlayer,
   setSpotifyPlayerMute,
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval, } from '../actions';
+  clearSpotifyPlayerInterval } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -26,7 +27,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
+  authUserHandler: (favs) => {
+    dispatch({ type: 'AUTHENTICATE_USER' });
+    dispatch(setFavorites(favs));
+  },
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
   setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
@@ -76,7 +80,8 @@ class Player extends React.Component {
       .then((res) => {
         const auth = res.status === 200;
         if (auth) {
-          this.props.authUserHandler();
+          // set auth status and user favorites
+          this.props.authUserHandler(res.body);
           // get and set spotify volume
           fetch('/devices', { credentials: 'include' })
           .then(devicesRes => devicesRes.json())

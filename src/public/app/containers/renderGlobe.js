@@ -38,7 +38,7 @@ const renderGlobe = (element, handleCountryClick) => {
     .attr('class', 'water')
     .attr('d', path);
 
-  const countryTooltip = d3.select(element)
+  const countryTooltip = d3.select('body')
     .append('div')
     .attr('class', 'countryTooltip');
   const globeSelect = d3.select(element)
@@ -150,25 +150,24 @@ const renderGlobe = (element, handleCountryClick) => {
     const velocity = [0.015, -0];
 
     function spinningGlobe() {
-      // d3.timer(function () {  // TODO: implement d3.timer
-        // get current time
-        const dt = Date.now() - time;
+        if (svg.get('rotate')) {
+          const dt = Date.now() - time;
 
-        // get the new position from modified projection function
-        projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+          // get the new position
+          projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
 
-        // update cities position = redraw
-        svg.selectAll('path.land').attr('d', path);
-      // });
+          // update land positions
+          svg.selectAll('path.land').attr('d', path);
+        }
     }
 
     function startSpin() {
       time = Date.now();
       rotation = projection.rotate();
-      interval = setInterval(spinningGlobe, 20);
+      svg.set('rotate', true);
     }
     function stopSpin() {
-      clearInterval(interval);
+      svg.set('rotate', false);
     }
     // Globe rotation
     // const globeSpin = setInterval(spinningGlobe, 20);
