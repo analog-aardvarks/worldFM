@@ -104,4 +104,18 @@ User.removeFavorite = (req, res) => {
   console.log('DELETED!');
 };
 
+User.toggleSync = (req, res) => {
+  User.getUser(req.user.id)
+    .then((userData) => {
+      if (userData.user_sync !== req.body) {
+        knex('users').where('user_id', req.user.id).update({
+          user_sync: req.body,
+        })
+        .then(() => res.send(req.body));
+      } else {
+        res.send(req.body);
+      }
+    });
+};
+
 module.exports = User;

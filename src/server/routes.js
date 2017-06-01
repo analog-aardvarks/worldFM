@@ -161,4 +161,6 @@ routes.route('/favorites')
   .put(User.addFavorite)
   .delete(User.removeFavorite);
 
+routes.get('/sync', User.toggleSync);
+
 module.exports = routes;
