@@ -24,6 +24,7 @@ User.login = (user) => {
           user_url: user.profileUrl,
           // user_image: user.photos[0],
           user_favorites: '',
+          user_sync: false,
         };
         knex('users').insert(newUser)
           .then(() => console.log(`User ${user.id} successfully added!`));

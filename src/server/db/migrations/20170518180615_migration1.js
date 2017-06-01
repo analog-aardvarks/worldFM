@@ -35,6 +35,7 @@ exports.up = (knex, Promise) =>
       table.string('user_image');
       table.string('user_favorites', 10000);
       table.string('user_playlist');
+      table.boolean('user_sync');
     })
     .then(() => {
       console.log('table \'users\' successfully created!');
@@ -45,5 +46,5 @@ exports.down = (knex, Promise) =>
   Promise.all([
     // knex.schema.dropTableIfExists('playlists'),
     // knex.schema.dropTableIfExists('tracks'),
-    knex.schema.dropTableIfExists('users'),
+    knex.schema.dropTable('users'),
   ]);
