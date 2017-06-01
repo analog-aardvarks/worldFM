@@ -10,7 +10,7 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites }) => {
           <i className="fa fa-refresh fa-lg fa-fw" />
         </div>
       </div>
-      {favorites.map((track) => (
+      {favorites.reverse().map((track) => (
           <div className="FavoritesMenu__indivdualSong">
             <div className="FavoritesMenu__indivdualSong__songInfoAndPicture">
               <img

@@ -10,7 +10,12 @@ import { setCurrentCountry } from '../actions';
 const renderGlobe = (element, handleCountryClick) => {
   const w = window.innerWidth;
   const h = window.innerHeight;
-  let height = h < w ? h * 0.55 : w * 0.7;
+  let height;
+  if(w/h < 1.2) {
+    height = h * 0.48;
+  } else {
+    height = h < w ? h * 0.55 : w * 0.5;
+  }
   const width = height;
   const sens = 0.25;
   const globeSize = height/2;

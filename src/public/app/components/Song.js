@@ -165,6 +165,17 @@ const Song = ({ size,
           style={{ left: ((netSize-100)/2), bottom:((netSize-70)/2) }}
         />
 
+        <i
+          className="SongHover__add-que fa fa-plus fa-2x fa-fw"
+          style={{ right: ((netSize-100)/10), top:((netSize-70)/10) }}
+        />
+
+        <i
+          className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
+          onClick={handleFavoritesClick}
+          style={{ left: ((netSize-100)/10), top:((netSize-70)/10) }}
+        />
+
         <div className="Song__container">
 
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
