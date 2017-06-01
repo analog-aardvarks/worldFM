@@ -83,7 +83,7 @@ class Player extends React.Component {
         console.log('JSON RES:', favs);
         if (favs) {
           // set auth status and user favorites
-          this.props.authUserHandler(JSON.stringify(favs));
+          this.props.authUserHandler(favs);
           // get and set spotify volume
           fetch('/devices', { credentials: 'include' })
           .then(devicesRes => devicesRes.json())
