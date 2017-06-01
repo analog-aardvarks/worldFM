@@ -254,10 +254,30 @@ Playlist.sync = (req, res) => {
               .catch(err => res.status(254).send(err));
               if (DEBUG_MODE) console.log(`255 [${Date.now() - TIME_START}ms] -> SAVED PLAYLIST ${newPlaylistId} IN DATABASE!`);
               if (DEBUG_MODE) console.log(`256 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
+              const tracksToAdd = tracks.map(t => `spotify:track:${t}`);
+              if (DEBUG_MODE) console.log(`258 [${Date.now() - TIME_START}ms] -> ADDING ${tracksToAdd.length} TRACKS TO PLAYLIST...`);
+              const addP = [];
+              for (let i = 0; i < tracksToAdd.length; i += 100) {
+                if (DEBUG_MODE) console.log(`311 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
+                addP.push(
+                  request({
+                    method: 'POST',
+                    url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks`,
+                    headers: { Authorization: `Bearer ${req.user.accessToken}` },
+                    body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 100) }),
+                  }));
+              }
+              if (DEBUG_MODE) console.log(`270 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
+              Promise.all(addP)
+              .then((addResponse) => {
+                if (DEBUG_MODE) console.log(`273 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${addResponse}`);
+                res.status(274).send(addResponse);
+              })
+              .catch(err => res.status(276).send(err));
             })
-            .catch(err => res.status(258).send(err));
+            .catch(err => res.status(278).send(err));
         } else {
-          if (DEBUG_MODE) console.log(`261 [${Date.now() - TIME_START}ms] -> LOOKING FOR PLAYLIST ${userPlaylist} IN SPOTIFY...`);
+          if (DEBUG_MODE) console.log(`280 [${Date.now() - TIME_START}ms] -> LOOKING FOR PLAYLIST ${userPlaylist} IN SPOTIFY...`);
           request({
             method: 'GET',
             url: `https://api.spotify.com/v1/users/${userId}/playlists?limit=50`,
@@ -268,8 +288,8 @@ Playlist.sync = (req, res) => {
           .then(mappedUserPlaylistsData => _.contains(mappedUserPlaylistsData, userPlaylist))
           .then((playlistIsInSpotify) => {
             if (playlistIsInSpotify) {
-              if (DEBUG_MODE) console.log(`271 [${Date.now() - TIME_START}ms] -> PLAYLIST WITH ID ${userPlaylist} FOUND IN SPOTIFY! `);
-              if (DEBUG_MODE) console.log(`272 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
+              if (DEBUG_MODE) console.log(`291 [${Date.now() - TIME_START}ms] -> PLAYLIST WITH ID ${userPlaylist} FOUND IN SPOTIFY! `);
+              if (DEBUG_MODE) console.log(`292 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
               request({
                 method: 'GET',
                 url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}?fields=tracks(total)`,
@@ -278,11 +298,11 @@ Playlist.sync = (req, res) => {
               .then(playlistData => JSON.parse(playlistData))
               .then(parsedPlaylistData => parsedPlaylistData.tracks.total)
               .then((totalTracks) => {
-                if (DEBUG_MODE) console.log(`281 [${Date.now() - TIME_START}ms] -> PLAYLIST WITH ID ${userPlaylist} HAS ${totalTracks} TOTAL TRACKS!`);
-                if (DEBUG_MODE) console.log(`282 [${Date.now() - TIME_START}ms] -> CREATING ARRAY OF TRACK IDS...`);
+                if (DEBUG_MODE) console.log(`301 [${Date.now() - TIME_START}ms] -> PLAYLIST WITH ID ${userPlaylist} HAS ${totalTracks} TOTAL TRACKS!`);
+                if (DEBUG_MODE) console.log(`302 [${Date.now() - TIME_START}ms] -> CREATING ARRAY OF TRACK IDS...`);
                 const p = [];
                 for (let i = 0; i < totalTracks; i += 100) {
-                  if (DEBUG_MODE) console.log(`285 [${Date.now() - TIME_START}ms] -> LOOKING THROUGH TRACKS ${i} - ${i + 100}`);
+                  if (DEBUG_MODE) console.log(`305 [${Date.now() - TIME_START}ms] -> LOOKING THROUGH TRACKS ${i} - ${i + 100}`);
                   p.push(
                     request({
                       method: 'GET',
@@ -290,25 +310,25 @@ Playlist.sync = (req, res) => {
                       headers: { Authorization: `Bearer ${req.user.accessToken}` },
                     }));
                 }
-                if (DEBUG_MODE) console.log(`293 [${Date.now() - TIME_START}ms] -> STARTING PROMISE CALL TO GET ${userPlaylist} TRACK IDS`);
+                if (DEBUG_MODE) console.log(`313 [${Date.now() - TIME_START}ms] -> STARTING PROMISE CALL TO GET ${userPlaylist} TRACK IDS`);
                 Promise.all(p)
                 .then(data => data.map(d => JSON.parse(d)))
                 .then(parsedData => parsedData.map(d => d.items))
                 .then(itemsData => itemsData.map(i => i.map(d => d.track.id)))
                 .then(tracksIds => _.flatten(tracksIds))
                 .then((tracksIds) => {
-                  if (DEBUG_MODE) console.log(`300 [${Date.now() - TIME_START}ms] -> ${tracksIds.length} TRACK IDS RETRIEVED! COMPARING WITH TRACKS PROVIDED...`);
+                  if (DEBUG_MODE) console.log(`320 [${Date.now() - TIME_START}ms] -> ${tracksIds.length} TRACK IDS RETRIEVED! COMPARING WITH TRACKS PROVIDED...`);
                   let tracksToAdd = _.difference(tracks, tracksIds);
                   tracksToAdd = tracksToAdd.map(t => `spotify:track:${t}`);
-                  if (DEBUG_MODE) console.log(`303 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToAdd.length} TRACKS TO ADD!`);
+                  if (DEBUG_MODE) console.log(`323 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToAdd.length} TRACKS TO ADD!`);
                   let tracksToRemove = _.difference(tracksIds, tracks);
                   tracksToRemove = tracksToRemove.map(t => `spotify:track:${t}`);
-                  if (DEBUG_MODE) console.log(`306 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToAdd.length} TRACKS TO REMOVE!`);
-                  if (DEBUG_MODE) console.log(`307 [${Date.now() - TIME_START}ms] -> PLAYLIST SHOULD HAVE ${tracksIds.length + tracksToAdd.length - tracksToRemove.length} TRACKS!`);
-                  if (DEBUG_MODE) console.log(`308 [${Date.now() - TIME_START}ms] -> REMOVING TRACKS FROM PLAYLIST...`);
+                  if (DEBUG_MODE) console.log(`326 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToAdd.length} TRACKS TO REMOVE!`);
+                  if (DEBUG_MODE) console.log(`327 [${Date.now() - TIME_START}ms] -> PLAYLIST SHOULD HAVE ${tracksIds.length + tracksToAdd.length - tracksToRemove.length} TRACKS!`);
+                  if (DEBUG_MODE) console.log(`328 [${Date.now() - TIME_START}ms] -> REMOVING TRACKS FROM PLAYLIST...`);
                   const removeP = [];
                   for (let i = 0; i < tracksToRemove.length; i += 100) {
-                    if (DEBUG_MODE) console.log(`311 [${Date.now() - TIME_START}ms] -> CREATING REMOVE PROMISES, TRACKS ${i} - ${i + 100}`);
+                    if (DEBUG_MODE) console.log(`331 [${Date.now() - TIME_START}ms] -> CREATING REMOVE PROMISES, TRACKS ${i} - ${i + 100}`);
                     let tracksToRemoveThisIteration = tracksToRemove.slice(i, i + 100);
                     tracksToRemoveThisIteration = tracksToRemoveThisIteration.map((t) => {
                       return { uri: t };
@@ -321,14 +341,14 @@ Playlist.sync = (req, res) => {
                         body: JSON.stringify({ tracks: tracksToRemoveThisIteration }),
                       }));
                   }
-                  if (DEBUG_MODE) console.log(`324 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, REMOVING TRACKS...`);
+                  if (DEBUG_MODE) console.log(`344 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, REMOVING TRACKS...`);
                   Promise.all(removeP)
                   .then((removeResponse) => {
-                    if (DEBUG_MODE) console.log(`327 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${removeResponse}`);
-                    if (DEBUG_MODE) console.log(`328 [${Date.now() - TIME_START}ms] -> ADDING TRACKS FROM PLAYLIST...`);
+                    if (DEBUG_MODE) console.log(`347 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${removeResponse}`);
+                    if (DEBUG_MODE) console.log(`348 [${Date.now() - TIME_START}ms] -> ADDING TRACKS FROM PLAYLIST...`);
                     const addP = [];
                     for (let i = 0; i < tracksToAdd.length; i += 100) {
-                      if (DEBUG_MODE) console.log(`311 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
+                      if (DEBUG_MODE) console.log(`351 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
                       addP.push(
                         request({
                           method: 'POST',
@@ -337,21 +357,21 @@ Playlist.sync = (req, res) => {
                           body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 100) }),
                         }));
                     }
-                    if (DEBUG_MODE) console.log(`324 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
+                    if (DEBUG_MODE) console.log(`360 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
                     Promise.all(addP)
                     .then((addResponse) => {
-                      if (DEBUG_MODE) console.log(`327 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${addResponse}`);
-                      res.status(344).send(addResponse);
+                      if (DEBUG_MODE) console.log(`363 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${addResponse}`);
+                      res.status(364).send(addResponse);
                     })
-                    .catch(err => res.status(346).send(err));
+                    .catch(err => res.status(366).send(err));
                   })
-                  .catch(err => res.status(348).send(err));
+                  .catch(err => res.status(368).send(err));
                 })
-                .catch(err => res.status(350).send(err));
+                .catch(err => res.status(370).send(err));
               })
-              .catch(err => res.status(352).send(err));
+              .catch(err => res.status(372).send(err));
             } else {
-              if (DEBUG_MODE) console.log(`354 [${Date.now() - TIME_START}ms] -> PLAYLIST NOT FOUND IN SPOTIFY! CREATING ONE...`);
+              if (DEBUG_MODE) console.log(`374 [${Date.now() - TIME_START}ms] -> PLAYLIST NOT FOUND IN SPOTIFY! CREATING ONE...`);
               request({
                 method: 'POST',
                 url: `https://api.spotify.com/v1/users/${userId}/playlists`,
@@ -368,20 +388,40 @@ Playlist.sync = (req, res) => {
                 knex('users')
                 .where('user_id', userId)
                 .update({ user_playlist: newPlaylistId })
-                .catch(err => res.status(369).send(err));
-                if (DEBUG_MODE) console.log(`255 [${Date.now() - TIME_START}ms] -> SAVED PLAYLIST ${newPlaylistId} IN DATABASE!`);
-                if (DEBUG_MODE) console.log(`256 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
+                .catch(err => res.status(391).send(err));
+                if (DEBUG_MODE) console.log(`392 [${Date.now() - TIME_START}ms] -> SAVED PLAYLIST ${newPlaylistId} IN DATABASE!`);
+                if (DEBUG_MODE) console.log(`393 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
+                const tracksToAdd = tracks.map(t => `spotify:track:${t}`);
+                if (DEBUG_MODE) console.log(`395 [${Date.now() - TIME_START}ms] -> ADDING ${tracksToAdd.length} TRACKS TO PLAYLIST...`);
+                const addP = [];
+                for (let i = 0; i < tracksToAdd.length; i += 100) {
+                  if (DEBUG_MODE) console.log(`398 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
+                  addP.push(
+                    request({
+                      method: 'POST',
+                      url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks`,
+                      headers: { Authorization: `Bearer ${req.user.accessToken}` },
+                      body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 100) }),
+                    }));
+                }
+                if (DEBUG_MODE) console.log(`407 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
+                Promise.all(addP)
+                .then((addResponse) => {
+                  if (DEBUG_MODE) console.log(`410 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${addResponse}`);
+                  res.status(411).send(addResponse);
+                })
+                .catch(err => res.status(413).send(err));
               })
-              .catch(err => res.status(372).send(err));
+              .catch(err => res.status(415).send(err));
             }
           })
-          .catch(err => res.status(375).send(err));
+          .catch(err => res.status(418).send(err));
         }
       })
-      .catch(err => res.status(378).send(err));
+      .catch(err => res.status(421).send(err));
   } else {
     // Case No Auth
-    res.status(381).send();
+    res.status(424).send();
   }
 };
 
