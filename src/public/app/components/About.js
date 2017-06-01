@@ -1,7 +1,7 @@
 import React from 'react';
 
-const About = () => (
-  <div id="about" className ="container about">
+const About = ({ toggleAbout, showAbout }) => (
+  <div id="about" className="container about">
     <div className="aboutSection">
       <div className="aboutHeader">
         About World.FM
@@ -14,7 +14,6 @@ const About = () => (
           JDSAHFIOWEFHWIFHWOIFHVUOBCOWBFOIEsfbewioHEWodihewFOWHFOURWFHRWUFHRWFOWFWRFUORFOUGROWUFWS
         </p>
       </div>
-
     </div>
     <div>
       <div className="aboutHeader">Development Team</div>
@@ -50,7 +49,7 @@ const About = () => (
             <h5>Software Engineer</h5>
             <p className="contacts">
               <a href="https://github.com/dhamberlin/"><img className="gitIcon" src="https://www.measurementjs.com/icon-images/github-icon.png" alt="Github" /></a>
-              <a href="https://www.linkedin.com/in/anthony-greenheck-73933144/"><img className="linkedIcon" src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/linkedin_circle_color-512.png" alt="LinkedIn" /></a>
+              <a href="https://www.linkedin.com/in/davidhamberlin/"><img className="linkedIcon" src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/linkedin_circle_color-512.png" alt="LinkedIn" /></a>
             </p>
           </div>
           <div className="Developer col-sm-2">

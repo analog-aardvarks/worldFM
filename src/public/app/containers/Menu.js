@@ -5,8 +5,10 @@ import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
+import FavoritesMenu from '../components/FavoritesMenu';
 import BurgerMenu from '../components/BurgerMenu';
 import QueueMenu from '../components/QueueMenu';
+import About from '../components/About';
 
 
 const mapStateToProps = state => ({
@@ -23,6 +25,9 @@ const mapStateToProps = state => ({
   showSideMenu: state.showSideMenu,
   showQueueMenu: state.showQueueMenu,
   favorites: state.favorites,
+  showAbout: state.showAbout,
+  showFavoritesMenu : state.showFavoritesMenu ,
+  showQueueMenu: state.showQueueMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -40,6 +45,10 @@ const mapDispatchToProps = dispatch => ({
   closeSongMenu: () => dispatch(closeSongMenu()),
   showSideMenuEvent: () => dispatch({ type: 'SHOW_SIDE_MENU' }),
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
+  showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
+  hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
+  showFavoritesMenuEvent: () => dispatch( {type: 'SHOW_FAVORITES_MENU' }),
+  hideFavoritesMenuEvent: () => dispatch( {type: 'HIDE_FAVORITES_MENU' }),
 });
 
 class Menu extends React.Component {
@@ -52,6 +61,8 @@ class Menu extends React.Component {
     this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
+    this.toggleAbout = this.toggleAbout.bind(this);
+    this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     // console.log(props.auth);
   }
 
@@ -64,7 +75,7 @@ class Menu extends React.Component {
     if (prev.currentCountry !== this.props.currentCountry) {
       this.getPlaylist();
       this.props.closeSongMenu();
-    } else if(prev.currentTrend !== this.props.currentTrend) {
+    } else if (prev.currentTrend !== this.props.currentTrend) {
       this.getPlaylist();
       this.props.closeSongMenu();
     }
@@ -76,7 +87,7 @@ class Menu extends React.Component {
 
   handleTrendChange(e) {
     this.props.setCurrentTrend(e.target.value);
-    //console.log(e)
+    // console.log(e)
   }
 
   getPlaylist(e) {
@@ -87,30 +98,39 @@ class Menu extends React.Component {
   }
 
   toggleTrackInfo() {
-    if(this.props.showTrackInfo) this.props.hideTrackInfoEvent();
-    if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
+    if (this.props.showTrackInfo) this.props.hideTrackInfoEvent();
+    if (!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
 
   toggleSpotifyPlaylist() {
-    if(this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
-    if(!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
+    if (this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
+    if (!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
   }
 
   toggleCountryMenu() {
-    if(this.props.showCountryMenu) this.props.hideCountryMenuEvent();
-    if(!this.props.showCountryMenu) this.props.showCountryMenuEvent();
+    if (this.props.showCountryMenu) this.props.hideCountryMenuEvent();
+    if (!this.props.showCountryMenu) this.props.showCountryMenuEvent();
   }
 
   toggleSideMenu() {
-    console.log(this.props.showSideMenu)
-    if(this.props.showSideMenu) this.props.hideSideMenuEvent();
-    if(!this.props.showSideMenu) this.props.showSideMenuEvent();
+    console.log(this.props.showSideMenu);
+    if (this.props.showSideMenu) this.props.hideSideMenuEvent();
+    if (!this.props.showSideMenu) this.props.showSideMenuEvent();
   }
 
   toggleQueueMenu() {
-    if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
-    if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+    if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
+    if (!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+  }
 
+  toggleAbout() {
+    if (this.props.showAbout) this.props.hideAboutEvent();
+    if (!this.props.showAbout) this.props.showAboutEvent();
+  }
+
+  toggleFavoritesMenu() {
+    if(this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
+    if(!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
   }
 
   render() {
@@ -123,13 +143,14 @@ class Menu extends React.Component {
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleTrackInfo={this.toggleTrackInfo}
           toggleSideMenu={this.toggleSideMenu}
+          toggleFavoritesMenu={this.toggleFavoritesMenu}
           availableCountries={this.props.availableCountries}
           handleCountryChange={this.handleCountryChange}
           currentCountry={this.props.currentCountry}
           windowHeight={this.props.windowHeight}
           windowWidth={this.props.windowWidth}
         />
-        <CountryMenu
+        {/* <CountryMenu
           availableCountries={this.props.availableCountries}
           availableTrends={this.props.availableTrends}
           currentCountry={this.props.currentCountry}
@@ -139,11 +160,19 @@ class Menu extends React.Component {
           showCountryMenu={this.props.showCountryMenu}
           toggleTrackInfo={this.toggleTrackInfo}
           toggleCountryMenu={this.toggleCountryMenu}
+        /> */}
+        <FavoritesMenu
+          showFavoritesMenu={this.props.showFavoritesMenu}
+          favorites={this.props.favorites}
+          showQueueMenu={this.props.showQueueMenu}
+          windowHeight={this.props.windowHeight}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
+          favorites={this.props.favorites}
         />
         {this.props.showSideMenu ? <BurgerMenu
+          toggleAbout={this.toggleAbout}
           toggleCountryMenu={this.toggleCountryMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleQueueMenu={this.toggleQueueMenu}

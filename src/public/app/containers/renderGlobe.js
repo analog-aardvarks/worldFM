@@ -172,23 +172,23 @@ const renderGlobe = (element, startCoordinates) => {
     startSpin();
 
     // Zoom!
-    // const scale0 = (width - 1) / 2 / Math.PI;
+    const scale0 = (width - 1) / 2 / Math.PI;
 
-    // const zoom = d3.behavior.zoom()
-    //   .translate([width / 2, height / 2])
-    //   .scale(scale0)
-    //   .scaleExtent([scale0, 8 * scale0])
-    //   .on('zoom', zoomed);
-    //
-    // svg.call(zoom)
-    //   .call(zoom.event);
-    //
-    // function zoomed() {
-    //   projection.translate(zoom.translate())
-    //   .scale(zoom.scale());
-    //   svg.selectAll('path')
-    //   .attr('d', path);
-    // }
+    const zoom = d3.behavior.zoom()
+      .translate([width / 2, height / 2])
+      .scale(scale0)
+      .scaleExtent([scale0, 8 * scale0])
+      .on('zoom', zoomed);
+
+    svg.call(zoom)
+      .call(zoom.event);
+
+    function zoomed() {
+      projection.translate(zoom.translate())
+      .scale(zoom.scale());
+      svg.selectAll('path')
+      .attr('d', path);
+    }
 
     function country(cnt, sel) {
       console.log('cnt in country: ', cnt);

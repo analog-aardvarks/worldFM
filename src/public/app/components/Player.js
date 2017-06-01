@@ -82,7 +82,7 @@ class Player extends React.Component {
       .then((favs) => {
         if (favs) {
           // set auth status and user favorites
-          this.props.authUserHandler(JSON.stringify(favs));
+          this.props.authUserHandler(favs);
           // get and set spotify volume
           fetch('/devices', { credentials: 'include' })
           .then(devicesRes => devicesRes.json())
@@ -291,15 +291,21 @@ class Player extends React.Component {
             </div>: null}
           </div>
 
-          <div className="Player__devices">
-            <i className="fa fa fa-mobile fa-2x fa-fw" onMouseOver={this.props.showAvailableDevicesEvent} />
-              {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
-                Devices
-            </div> : null}
-          </div>
 
-          <div className="QueueMenu--toggle">
-            <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
+          <div className="Player__extras">
+            {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
+              Devices
+          </div> : null}
+
+            <div className="Player__devices">
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.props.showAvailableDevicesEvent} />
+              <span>devices</span>
+            </div>
+
+            <div className="QueueMenu--toggle">
+              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
+              <span>que</span>
+            </div>
           </div>
 
         </div>
@@ -339,6 +345,9 @@ class Player extends React.Component {
           <div className="CurrentSongInfo">
             <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
             <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
+          </div>
+          <div className="Player__likeButton">
+            <i className="fa fa fa-heart fa-lg fa-fw" />
           </div>
         </div>
         }

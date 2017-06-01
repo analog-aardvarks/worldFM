@@ -1,4 +1,5 @@
 const extraPlaylists = {
+  Haiti: ['spotify:user:1242761210:playlist:6ARscEi5PCaFi8auAdy9f7'],
   Nigeria: ['spotify:user:1229255324:playlist:23fCAKOF4pG6E0baakihsK', 'spotify:user:mfonumo:playlist:1dY58Ar9Dvlx1Le3AUAv3n'],
   Ethiopia: ['spotify:user:1237887860:playlist:7z5AOkgPtgxFMAoYax7tJX', 'spotify:user:birukgirma11:playlist:44zjKdGl628Rc1xYQB7gZ2'],
   Congo: ['spotify:user:1123550439:playlist:3MRxL25q4UxtK4Me4abyRQ'],

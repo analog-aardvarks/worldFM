@@ -51,8 +51,7 @@
 .Menu--login,
 .Menu--toggle,
 .SpotifyPlaylist--toggle,
-.CountryMenu--toggle,
-.QueueMenu--toggle {
+.CountryMenu--toggle {
   align-items: flex-start;
   color: white;
   cursor: pointer;
@@ -65,8 +64,7 @@
 .Menu--login:hover,
 .Menu--toggle:hover,
 .SpotifyPlaylist--toggle:hover,
-.CountryMenu--toggle:hover,
-.QueueMenu--toggle:hover {
+.CountryMenu--toggle:hover {
   color: white;
   opacity: 0.75;
   text-decoration: none;
@@ -75,12 +73,7 @@
 .Menu--login:active,
 .Menu--toggle:active,
 .SpotifyPlaylist--toggle:active,
-.CountryMenu--toggle:active,
-.QueueMenu--toggle:active {
+.CountryMenu--toggle:active {
   opacity: 1;
-  color: $fontOnHoverColor;
-}
-
-.fa-spotify {
-  color: $fontOnHoverColor;
+  color: $spotifyGreen;
 }

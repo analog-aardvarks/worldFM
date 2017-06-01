@@ -1,6 +1,8 @@
 .TopMenu {
   display: flex;
-  width: 340px;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 360px;
   border-bottom: 1px white;
 }
 
@@ -11,38 +13,37 @@
   color: white;
 }
 
-.Menu--logo:hover {
+.Menu--logo:hover,
+i:hover {
   color: white;
   opacity: 0.75;
   text-decoration: none;
 }
 
-.Menu--logo:active {
+.Menu--logo:active,
+i:active {
   color: rgb(30, 215, 96)
 }
 
 // width of dropdown
 .TopMenu--CountryDropdown {
   width: 140px;
+  margin-right: 20px;
 }
-
 // selected value font
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
   color: rgb(30, 215, 96);
     font-family: 'Lato';
 }
-
 //border
 .Select-control {
   border-color: #171717;
 }
-
 // selected view
 .Select-value {
   // background: linear-gradient(#171717, #353535, #171717);;
   // border: none;
 }
-
 .Select-option {
 	background-color: white;
 	color: #171717;
@@ -59,12 +60,32 @@
 	}
 }
 
+.FavoritesMenu--toggle,
+.GlobeView--toggle,
+.TopMenu--login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  i {
+    font-size: 18pt;
+    margin-bottom: 2px;
+    text-decoration: none;
+  }
+  span {
+    font-size: 8pt;
+    opacity: 0.6;
+    text-decoration: none;
+    color: white;
+    margin-top: 2.5px;
+  }
+  span:hover {
+    text-decoration: none;
+  }
+}
+
 .ScrollDown--button {
   font-size: 34pt;
   position: fixed;
   bottom: 80px;
-}
-
-.FireIcon {
-  margin-left: 20px;
 }

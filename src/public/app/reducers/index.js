@@ -90,6 +90,14 @@ function showQueueMenu(state = false, action) {
   }
 }
 
+function showFavoritesMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_FAVORITES_MENU': return true;
+    case 'HIDE_FAVORITES_MENU': return false;
+    default: return state;
+  }
+}
+
 function songMenu(state = null, action) {
   switch (action.type) {
     case 'OPEN_SONG_MENU': return action.index;
@@ -102,6 +110,14 @@ function showSideMenu(state = false, action) {
   switch (action.type) {
     case 'SHOW_SIDE_MENU': return true;
     case 'HIDE_SIDE_MENU': return false;
+    default: return state;
+  }
+}
+
+function showAbout(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_ABOUT': return true;
+    case 'HIDE_ABOUT': return false;
     default: return state;
   }
 }
@@ -186,6 +202,7 @@ const reducer = combineReducers({
   showSpotifyPlaylist,
   showCountryMenu,
   showQueueMenu,
+  showFavoritesMenu,
   songMenu,
   showSideMenu,
   auth,
@@ -194,6 +211,7 @@ const reducer = combineReducers({
   showVolumeGauge,
   showAvailableDevices,
   favorites,
+  showAbout,
 });
 
 export default reducer;
