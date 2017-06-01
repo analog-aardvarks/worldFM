@@ -257,14 +257,14 @@ Playlist.sync = (req, res) => {
               const tracksToAdd = tracks.map(t => `spotify:track:${t}`);
               if (DEBUG_MODE) console.log(`258 [${Date.now() - TIME_START}ms] -> ADDING ${tracksToAdd.length} TRACKS TO PLAYLIST...`);
               const addP = [];
-              for (let i = 0; i < tracksToAdd.length; i += 100) {
-                if (DEBUG_MODE) console.log(`311 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
+              for (let i = 0; i < tracksToAdd.length; i += 50) {
+                if (DEBUG_MODE) console.log(`311 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 50}`);
                 addP.push(
                   request({
                     method: 'POST',
-                    url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks`,
+                    url: `https://api.spotify.com/v1/users/${userId}/playlists/${newPlaylistId}/tracks`,
                     headers: { Authorization: `Bearer ${req.user.accessToken}` },
-                    body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 100) }),
+                    body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 50) }),
                   }));
               }
               if (DEBUG_MODE) console.log(`270 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
@@ -317,19 +317,19 @@ Playlist.sync = (req, res) => {
                 .then(itemsData => itemsData.map(i => i.map(d => d.track.id)))
                 .then(tracksIds => _.flatten(tracksIds))
                 .then((tracksIds) => {
-                  if (DEBUG_MODE) console.log(`320 [${Date.now() - TIME_START}ms] -> ${tracksIds.length} TRACK IDS RETRIEVED! COMPARING WITH TRACKS PROVIDED...`);
+                  if (DEBUG_MODE) console.log(`320 [${Date.now() - TIME_START}ms] -> TRACK IDS RETRIEVED! COMPARING WITH TRACKS PROVIDED...`);
                   let tracksToAdd = _.difference(tracks, tracksIds);
                   tracksToAdd = tracksToAdd.map(t => `spotify:track:${t}`);
                   if (DEBUG_MODE) console.log(`323 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToAdd.length} TRACKS TO ADD!`);
                   let tracksToRemove = _.difference(tracksIds, tracks);
                   tracksToRemove = tracksToRemove.map(t => `spotify:track:${t}`);
-                  if (DEBUG_MODE) console.log(`326 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToAdd.length} TRACKS TO REMOVE!`);
+                  if (DEBUG_MODE) console.log(`326 [${Date.now() - TIME_START}ms] -> FOUND ${tracksToRemove.length} TRACKS TO REMOVE!`);
                   if (DEBUG_MODE) console.log(`327 [${Date.now() - TIME_START}ms] -> PLAYLIST SHOULD HAVE ${tracksIds.length + tracksToAdd.length - tracksToRemove.length} TRACKS!`);
                   if (DEBUG_MODE) console.log(`328 [${Date.now() - TIME_START}ms] -> REMOVING TRACKS FROM PLAYLIST...`);
                   const removeP = [];
-                  for (let i = 0; i < tracksToRemove.length; i += 100) {
-                    if (DEBUG_MODE) console.log(`331 [${Date.now() - TIME_START}ms] -> CREATING REMOVE PROMISES, TRACKS ${i} - ${i + 100}`);
-                    let tracksToRemoveThisIteration = tracksToRemove.slice(i, i + 100);
+                  for (let i = 0; i < tracksToRemove.length; i += 50) {
+                    if (DEBUG_MODE) console.log(`331 [${Date.now() - TIME_START}ms] -> CREATING REMOVE PROMISES, TRACKS ${i} - ${i + 50}`);
+                    let tracksToRemoveThisIteration = tracksToRemove.slice(i, i + 50);
                     tracksToRemoveThisIteration = tracksToRemoveThisIteration.map((t) => {
                       return { uri: t };
                     });
@@ -347,14 +347,14 @@ Playlist.sync = (req, res) => {
                     if (DEBUG_MODE) console.log(`347 [${Date.now() - TIME_START}ms] -> PROMISE ALL HAS ENDED! RESPONSE IS: ${removeResponse}`);
                     if (DEBUG_MODE) console.log(`348 [${Date.now() - TIME_START}ms] -> ADDING TRACKS FROM PLAYLIST...`);
                     const addP = [];
-                    for (let i = 0; i < tracksToAdd.length; i += 100) {
-                      if (DEBUG_MODE) console.log(`351 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
+                    for (let i = 0; i < tracksToAdd.length; i += 50) {
+                      if (DEBUG_MODE) console.log(`351 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 50}`);
                       addP.push(
                         request({
                           method: 'POST',
                           url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks`,
                           headers: { Authorization: `Bearer ${req.user.accessToken}` },
-                          body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 100) }),
+                          body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 50) }),
                         }));
                     }
                     if (DEBUG_MODE) console.log(`360 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
@@ -394,14 +394,14 @@ Playlist.sync = (req, res) => {
                 const tracksToAdd = tracks.map(t => `spotify:track:${t}`);
                 if (DEBUG_MODE) console.log(`395 [${Date.now() - TIME_START}ms] -> ADDING ${tracksToAdd.length} TRACKS TO PLAYLIST...`);
                 const addP = [];
-                for (let i = 0; i < tracksToAdd.length; i += 100) {
-                  if (DEBUG_MODE) console.log(`398 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 100}`);
+                for (let i = 0; i < tracksToAdd.length; i += 50) {
+                  if (DEBUG_MODE) console.log(`398 [${Date.now() - TIME_START}ms] -> CREATING ADD PROMISES, TRACKS ${i} - ${i + 50}`);
                   addP.push(
                     request({
                       method: 'POST',
-                      url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks`,
+                      url: `https://api.spotify.com/v1/users/${userId}/playlists/${newPlaylistId}/tracks`,
                       headers: { Authorization: `Bearer ${req.user.accessToken}` },
-                      body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 100) }),
+                      body: JSON.stringify({ uris: tracksToAdd.slice(i, i + 50) }),
                     }));
                 }
                 if (DEBUG_MODE) console.log(`407 [${Date.now() - TIME_START}ms] -> ABOUT TO START PROMISE ALL, ADDING TRACKS...`);
