@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
   showQueueMenu: state.showQueueMenu,
+  spotifyPlayer: state.spotifyPlayer,
 })
 
 const mapDispatchToProps = dispatch => ({
-  hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
+
 })
 
-const QueueMenu = ({ showQueueMenu, toggleQueueMenu, favorites }) => {
-
-  let songTestList = favorites;
+const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackFromQueue }) => {
 
   return (
+
     <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }} onMouseLeave={toggleQueueMenu}>
 
       <div className="QueueMenu__topBar">
@@ -21,8 +21,7 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu, favorites }) => {
       </div>
 
       <div className="QueueMenu__songList">
-
-        {favorites.reverse().map((track, idx) => (
+        {spotifyPlayer.queue.map((track, idx) => (
             <div className="QueueMenu__indivdualSong" key={idx}>
               <span className="QueueMenu__position" >{idx+1}</span>
               <div className="QueueMenu__indivdualSong__songInfoAndPicture">
@@ -36,7 +35,7 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu, favorites }) => {
                   <span className="QueueMenu__songArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
                 </div>
               </div>
-              <i className="fa fa-minus fa-lg fa-fw" />
+              <i className="fa fa-minus fa-lg fa-fw" onClick={ () => removeTrackFromQueue(idx) }/>
             </div>
           ))}
 
