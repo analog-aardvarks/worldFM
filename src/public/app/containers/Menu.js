@@ -82,7 +82,10 @@ class Menu extends React.Component {
   getPlaylist(e) {
     fetch(`playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
       .then(res => res.json())
-      .then(res => this.props.setPlaylist(res))
+      .then((res) => {
+        // console.log(JSON.stringify(res));
+        this.props.setPlaylist(res);
+      })
       .catch(err => console.log(err));
   }
 

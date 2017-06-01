@@ -72,11 +72,6 @@ class Player extends React.Component {
 
   // check for auth
   componentWillMount() {
-    // test
-    fetch('/playlist/sync', { credentials: 'include' })
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
-
     fetch('/player/auth', { credentials: 'include' })
       .then((res) => {
         const auth = res.status === 200;
@@ -103,6 +98,19 @@ class Player extends React.Component {
 
   // check for new currentTrack
   componentDidUpdate(prev) {
+    // test
+    if (this.props.playlist.length > 0) {
+      fetch('/playlist/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(this.props.playlist),
+      })
+      .then(res => res.json())
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+    }
+
     // set seeker dom element
     if (this.props.spotifyPlayer.$seeker === null && this.$seekerInput !== undefined) {
       this.props.setSpotifyPlayerSeekerElHandler(this.$seekerInput);
