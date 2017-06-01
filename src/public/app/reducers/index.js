@@ -163,10 +163,15 @@ function spotifyPlayer(state = {
         currentTrack: action.currentTrack || state.currentTrack,
       };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
-    case 'ADD_SONG_TO_SPOTIFY_QUEUE':
-      return { ...state, queue: [...state.queue].push(action.track) };
-    case 'REMOVE_FROM_SPOTIFY_QUEUE':
-      return { ...state, queue: [...state.queue].splice(action.idx, 1) };
+    case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
+      const q = [...state.queue];
+      q.push(action.track);
+      return { ...state, queue: q };
+    case 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE':
+      const queue = [...state.queue];
+      const idx = action.track;
+      queue.splice(idx, 1);
+      return { ...state, queue: queue };
     case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
     case 'SET_SPOTIFY_PLAYER_SEEKER_EL': return { ...state, $seeker: action.el };
     case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
