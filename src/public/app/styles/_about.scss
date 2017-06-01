@@ -1,9 +1,25 @@
+.aboutHeader {
+  font-family: 'Magra';
+  font-weight: bold;
+  text-align: center;
+  font-size: 35px;
+  margin: 15px 0;
+}
+
 .about {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100vw;
   height: 94.45vh;
+  font-family: 'Magra';
+  font-size: 40px
+}
+
+.devTeamHeader {
+  text-align: center;
+  font-size: 30px;
+  margin: 15px 0
 }
 
 .about-body {
@@ -16,18 +32,11 @@
     font-size: 30px;
   }
   color: 'white';
-}
-
-.aboutHeader {
-  font-family: 'sans-serif';
-  font-weight: bold;
-  text-align: center;
-  font-size: 40px;
-  margin: 15px 0;
+  font-size: 20px;
 }
 
 .developmentTeam {
-  font-family: 'sans-serif';
+  font-family: 'Magra';
   font-weight: bold;
 }
 
@@ -39,6 +48,12 @@
 
 .devName {
   font-weight: bold;
+  font-size: 23px
+}
+
+.title {
+  font-weight: regular;
+  font-size: 17px
 }
 
 .aboutWorldfm {
