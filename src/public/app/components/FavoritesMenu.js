@@ -14,6 +14,16 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
     .then(favs => store.dispatch(setFavorites(favs)))
     .catch(err => console.log(err));
   };
+
+  const toggleSync = () => {
+    fetch('/sync', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ sync: true }),
+    });
+  };
+
   return (
     <div
       className="FavoritesMenu"
@@ -26,7 +36,7 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
         onClick={() => store.dispatch({ type: 'SET_PLAYLIST', playlist: favorites })}
       />
       <div className="FavoritesMenu__syncButton">
-        <div>
+        <div onClick={toggleSync}>
           <span>sync with spotify</span>
           <i className="fa fa-refresh fa-lg fa-fw" />
         </div>
