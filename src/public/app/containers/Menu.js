@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu } from '../actions';
+import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu, removeTrackFromSpotifyQueue } from '../actions';
 import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
@@ -28,6 +28,7 @@ const mapStateToProps = state => ({
   showAbout: state.showAbout,
   showFavoritesMenu : state.showFavoritesMenu ,
   showQueueMenu: state.showQueueMenu,
+  spotifyPlayer: state.spotifyPlayer,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -49,6 +50,7 @@ const mapDispatchToProps = dispatch => ({
   hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
   showFavoritesMenuEvent: () => dispatch( {type: 'SHOW_FAVORITES_MENU' }),
   hideFavoritesMenuEvent: () => dispatch( {type: 'HIDE_FAVORITES_MENU' }),
+  removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
 });
 
 class Menu extends React.Component {
@@ -63,6 +65,7 @@ class Menu extends React.Component {
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     this.toggleAbout = this.toggleAbout.bind(this);
     this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
+    this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
     // console.log(props.auth);
   }
 
@@ -87,7 +90,6 @@ class Menu extends React.Component {
 
   handleTrendChange(e) {
     this.props.setCurrentTrend(e.target.value);
-    // console.log(e)
   }
 
   getPlaylist(e) {
@@ -136,6 +138,10 @@ class Menu extends React.Component {
     if(!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
   }
 
+  removeTrackFromQueue(track) {
+    this.props.removeTrackFromSpotifyQueue(track);
+  }
+
   render() {
     return (
       <div>
@@ -173,6 +179,8 @@ class Menu extends React.Component {
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
           favorites={this.props.favorites}
+          spotifyPlayer={this.props.spotifyPlayer}
+          removeTrackFromQueue={this.removeTrackFromQueue}
         />
         {this.props.showSideMenu ? <BurgerMenu
           toggleAbout={this.toggleAbout}
