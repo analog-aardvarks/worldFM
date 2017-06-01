@@ -30,6 +30,7 @@ const mapDispatchToProps = dispatch => ({
   authUserHandler: (favs) => {
     dispatch({ type: 'AUTHENTICATE_USER' });
     dispatch(setFavorites(favs));
+    console.log('FAVS', favs);
   },
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
@@ -77,11 +78,11 @@ class Player extends React.Component {
   // check for auth
   componentWillMount() {
     fetch('/player/auth', { credentials: 'include' })
-      .then((res) => {
-        const auth = res.status === 200;
-        if (auth) {
+      .then(res => res.json())
+      .then((favs) => {
+        if (favs) {
           // set auth status and user favorites
-          this.props.authUserHandler(res.body);
+          this.props.authUserHandler(JSON.stringify(favs));
           // get and set spotify volume
           fetch('/devices', { credentials: 'include' })
           .then(devicesRes => devicesRes.json())
