@@ -22,9 +22,15 @@ const Songs = ({
   setSpotifyPlayerEllapsedHandler,
   favorites,
   handleFavoritesChange,
+  showFavoritesMenu,
 }) => {
+
   window.onresize = () => onWindowResize(window.innerWidth);
+
+
+
   let width = 0;
+
   if (windowWidth < 500) {
     width = windowWidth / 2;
   }
@@ -41,11 +47,13 @@ const Songs = ({
     width = windowWidth / 6;
   }
 
+
+
   return (
     <div
       className="Playlist"
       style={{
-        width: windowWidth,
+        width: showFavoritesMenu ?  windowWidth - 260 : windowWidth,
       }}
     >
       {

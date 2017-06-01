@@ -165,6 +165,7 @@ class Menu extends React.Component {
         /> */}
         <FavoritesMenu
           showFavoritesMenu={this.props.showFavoritesMenu}
+          favorites={this.props.favorites}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
