@@ -33,7 +33,8 @@ exports.up = (knex, Promise) =>
       table.string('user_name');
       table.string('user_url');
       table.string('user_image');
-      table.string('user_favorites', 7500);
+      table.string('user_favorites', 10000);
+      table.string('user_playlist');
     })
     .then(() => {
       console.log('table \'users\' successfully created!');
@@ -42,7 +43,7 @@ exports.up = (knex, Promise) =>
 
 exports.down = (knex, Promise) =>
   Promise.all([
-    knex.schema.dropTableIfExists('playlists'),
-    knex.schema.dropTableIfExists('tracks'),
+    // knex.schema.dropTableIfExists('playlists'),
+    // knex.schema.dropTableIfExists('tracks'),
     knex.schema.dropTableIfExists('users'),
   ]);
