@@ -240,7 +240,7 @@ Playlist.sync = (req, res) => {
             url: `https://api.spotify.com/v1/users/${userId}/playlists`,
             headers: { Authorization: `Bearer ${req.user.accessToken}` },
             body: JSON.stringify({
-              name: `World.fm - ${Date.now()}`,
+              name: 'World FM',
               description: 'Created with love, just for you!',
             }),
           })
@@ -378,7 +378,7 @@ Playlist.sync = (req, res) => {
                 headers: { Authorization: `Bearer ${req.user.accessToken}` },
                 body: JSON.stringify({
                   name: 'World FM',
-                  description: 'This playlist was created with love',
+                  description: 'Created with love, just for you!',
                 }),
               })
               .then(newPlaylistData => JSON.parse(newPlaylistData))
