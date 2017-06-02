@@ -177,7 +177,7 @@ User.info = (req, res) => {
     })
     .catch(err => res.status(201).send(err));
   } else {
-    res.status(179).send();
+    res.status(201).send();
   }
 };
 

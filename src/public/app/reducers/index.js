@@ -131,42 +131,19 @@ function showVolumeGauge(state = false, action) {
 }
 
 function showAvailableDevices(state = false, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_AVAILABLE_DEVICES': return true;
     case 'HIDE_AVAILABLE_DEVICES': return false;
     default: return state;
   }
 }
 
-function availableDevices(state = [
-      {
-          "id": "91c40a4713eda00d55ac0160034cd7e56efc44a4",
-          "is_active": false,
-          "is_restricted": false,
-          "name": "Anthony’s MacBook Air",
-          "type": "Computer",
-          "volume_percent": 31
-      },
-      {
-          "id": "7532fb3520e0a576ea4d7b93f54930c96cd413ed",
-          "is_active": true,
-          "is_restricted": false,
-          "name": "Anthony's iPhone",
-          "type": "Smartphone",
-          "volume_percent": null
-      }
-  ], action) {
+function availableDevices(state = [], action) {
   switch (action.type) {
-    case 'SET_DEVICES':
-      return action.playlist;
-    default:
-      return state;
+    case 'SET_DEVICES': return action.devices;
+    default: return state;
   }
 }
-
-// function previewPlayer(state = {}, action) {
-//
-// };
 
 function spotifyPlayer(state = {
   queue: [],
@@ -223,14 +200,30 @@ function favorites(state = [], action) {
 }
 
 function showTopMenu(state = false, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_TOP_MENU': return true;
     case 'HIDE_TOP_MENU': return false;
     default: return state;
   }
 }
 
+function sync(state = 0, action) {
+  switch (action.type) {
+    case 'SET_SPOTIFY_SYNC': return 1;
+    default: return state;
+  }
+}
+
+function activeDevice(state = {}, action) {
+  switch (action.type) {
+    case 'SET_ACTIVE_DEVICE': return action.device;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
+  activeDevice,
+  sync,
   playlist,
   currentSong,
   currentCountry,
@@ -245,7 +238,6 @@ const reducer = combineReducers({
   songMenu,
   showSideMenu,
   auth,
-  // previewPlayer,
   spotifyPlayer,
   showVolumeGauge,
   availableDevices,

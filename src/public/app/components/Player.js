@@ -29,11 +29,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  authUserHandler: (favs) => {
-    dispatch({ type: 'AUTHENTICATE_USER' });
-    dispatch(setFavorites(favs));
-    console.log('FAVS', favs);
-  },
+  authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
+  setSyncStatusHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
+  setActiveDeviceHandler: device => dispatch({ type: 'SET_ACTIVE_DEVICE', device }),
+  setDevicesHandler: devices => dispatch({ type: 'SET_DEVICES', devices }),
+  setUserFavoritesHandler: favs => dispatch(setFavorites(favs)),
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
   setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
@@ -80,26 +80,33 @@ class Player extends React.Component {
   // check for auth
   componentWillMount() {
     fetch('/user/info', { credentials: 'include' })
-      .then(res => res.json())
-      .then((favs) => {
-        console.log(favs);
-        // if (favs) {
-        //   // set auth status and user favorites
-        //   this.props.authUserHandler(favs);
-        //   // get and set spotify volume
-        //   fetch('/devices', { credentials: 'include' })
-        //   .then(devicesRes => devicesRes.json())
-        //   .then((devicesRes) => {
-        //     devicesRes.devices.forEach((device) => {
-        //       if (device.is_active) {
-        //         this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
-        //       }
-        //     });
-        //   })
-        //   .catch(err => console.log(err));
-        // } else {
-        //   console.log('NO_AUTH');
-        // }
+      .then((res) => {
+        if (res.status === 200) this.props.authUserHandler(); // set auth status
+        return res.json();
+      })
+      .then((res) => {
+        let activeDevice = '';
+        if (!res.favs) res.favs = [];
+        if (!res.devices.devices) {
+          console.log('no open devices'); /* TODO */
+          window.open('https://open.spotify.com');
+        } else {
+          this.props.setDevicesHandler(res.devices.devices);
+          res.devices.devices.forEach((device) => {
+            if (device.is_active) {
+              activeDevice = device.id;
+              this.props.setActiveDeviceHandler(device);
+              this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
+            }
+          });
+          if (activeDevice === '') {
+            console.log('no open devices'); /* TODO */
+            window.open('https://open.spotify.com');
+          }
+        }
+
+        this.props.setUserFavoritesHandler(res.favs);
+        this.props.setSyncStatusHandler(res.sync);
       })
       .catch(err => console.log(err));
   }
