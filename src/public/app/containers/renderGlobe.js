@@ -17,7 +17,7 @@ const renderGlobe = (element, startCoordinates) => {
   let focused;
 
   // Set projection
-  
+
   const projection = d3.geo.orthographic()
     .scale(globeSize)
     .rotate(startCoordinates)
@@ -173,7 +173,7 @@ const renderGlobe = (element, startCoordinates) => {
 
     // Zoom!
     // const scale0 = (width - 1) / 2 / Math.PI;
-
+    //
     // const zoom = d3.behavior.zoom()
     //   .translate([width / 2, height / 2])
     //   .scale(scale0)
