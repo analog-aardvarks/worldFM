@@ -38,18 +38,29 @@ User.getFavoriteTracks = userId =>
   new Promise((resolve, reject) => {
     knex('users').where('user_id', userId)
     .then((userData) => {
-      const favs = userData[0].user_favorites;
+      let favs = userData[0].user_favorites;
       if (!favs) {
         resolve([]);
       } else {
         knex('tracks')
-          .groupBy('track_id')
-          .whereIn('track_id', favs.split(','))
-            .then(favTracks => resolve(favTracks))
-            .catch(err => console.log(err));
+        .groupBy('track_id')
+        .whereIn('track_id', favs.split(','))
+        .then((favTracks) => {
+          const orderedFavs = [];
+          favs = favs.split(',');
+          favs.forEach((f) => {
+            favTracks.forEach((t) => {
+              if (t.track_id === f) orderedFavs.push(t);
+            });
+          });
+          console.log(favTracks.map(t => t.track_name));
+          return orderedFavs;
+        })
+        .then(favTracks => resolve(favTracks))
+        .catch(err => reject(err));
       }
     })
-    .catch(err => console.log(err));
+    .catch(err => reject(err));
   });
 
 User.addFavorite = (req, res) => {
