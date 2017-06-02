@@ -52,8 +52,8 @@ const mapDispatchToProps = dispatch => ({
   showFavoritesMenuEvent: () => dispatch({ type: 'SHOW_FAVORITES_MENU' }),
   hideFavoritesMenuEvent: () => dispatch({ type: 'HIDE_FAVORITES_MENU' }),
   removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
-  showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }), //TODO
-  hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }), //TODO
+  showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }),
+  hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }),
 });
 
 class Menu extends React.Component {

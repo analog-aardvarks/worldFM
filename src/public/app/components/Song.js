@@ -4,6 +4,7 @@ const Song = ({ size,
   track,
   ranking,
   currentSong,
+  playlist,
   howTrackInfo,
   songMenu,
   openSongMenu,
@@ -21,6 +22,7 @@ const Song = ({ size,
   favorites,
   handleFavoritesChange,
   addTrackToSpotifyQueue,
+  setSpotifyPlayerCurrentTrackIdx,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
@@ -78,6 +80,7 @@ const Song = ({ size,
         clearInterval(spotifyPlayer.interval);
         clearSpotifyPlayerIntervalHandler();
         playSpotifyPlayer(track);
+        setSpotifyPlayerCurrentTrackIdx(playlist.indexOf(track))
       }
     } else {
       togglePreview(track.track_preview_url);

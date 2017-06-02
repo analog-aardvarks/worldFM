@@ -9,7 +9,9 @@ import {
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval } from '../actions';
+  clearSpotifyPlayerInterval,
+  setSpotifyPlayerCurrentTrackIdx,
+} from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -26,6 +28,7 @@ const mapStateToProps = state => ({
   availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
+  currentSong: state.currentSong,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -59,6 +62,7 @@ const mapDispatchToProps = dispatch => ({
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
+  setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
 });
 
 class Player extends React.Component {
@@ -74,6 +78,8 @@ class Player extends React.Component {
     this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
     this.updateSeeker = this.updateSeeker.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
+    this.handlePreviousClick = this.handlePreviousClick.bind(this);
+    this.handleNextClick = this.handleNextClick.bind(this);
     // this.interval = null;
   }
 
@@ -128,9 +134,22 @@ class Player extends React.Component {
 
   updateSeeker() {
     let e = this.props.spotifyPlayer.ellapsed;
-    e += 500;
-    this.$seekerInput.value = e;
-    this.props.setSpotifyPlayerEllapsedHandler(e);
+    if (e >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+      console.log('song ended');
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.$seekerInput.value = 0;
+      console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
+      if(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+        this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+        this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+      }
+    } else {
+      e += 500;
+      this.$seekerInput.value = e;
+      this.props.setSpotifyPlayerEllapsedHandler(e);
+    }
   }
 
   pausePlayer() {
@@ -181,6 +200,7 @@ class Player extends React.Component {
         } else {
           // play first song on playlist
           this.props.playSpotifyPlayer(this.props.playlist[0]);
+          this.props.setSpotifyPlayerCurrentTrackIdx(0);
         }
       } else {
         // pause
@@ -229,6 +249,26 @@ class Player extends React.Component {
         this.props.setSpotifyPlayerEllapsedHandler(ms);
       })
       .catch(err => console.log(err));
+  }
+
+  handlePreviousClick() {
+    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]) {
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx - 1);
+    }
+  }
+
+  handleNextClick() {
+    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+    }
   }
 
   toggleVolumeDisplay() {
@@ -293,12 +333,13 @@ class Player extends React.Component {
               }
             }
           />
-            <i className="fa fa fa-step-backward fa-lg fa-fw" />
+            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick}/>
             <i
               className={`fa fa-${playIcon} fa-2x fa-fw`}
               onClick={this.handlePlayClick}
             />
-            <i className="fa fa-step-forward fa-lg fa-fw" />
+            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick}/>
+
           </div>
 
           <div className="Player__volume">

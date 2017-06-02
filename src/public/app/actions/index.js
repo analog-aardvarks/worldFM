@@ -76,6 +76,13 @@ export function playSpotifyPlayer(currentTrack) {
   };
 }
 
+export function setSpotifyPlayerCurrentTrackIdx(currentTrackIdx) {
+  return {
+    type: 'SET_CURRENT_TRACK_IDX',
+    currentTrackIdx,
+  };
+}
+
 export function pauseSpotifyPlayer(track) {
   return {
     type: 'PAUSE_SPOTIFY_PLAYER',
