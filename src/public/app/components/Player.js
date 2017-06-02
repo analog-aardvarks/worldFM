@@ -28,10 +28,14 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
+<<<<<<< HEAD
   availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
   currentSong: state.currentSong,
+=======
+  currentCountry: state.currentCountry,
+>>>>>>> [feat] add icon to add playlist to spotify
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -329,10 +333,34 @@ class Player extends React.Component {
 
         <div className="Player__leftPortion">
 
-          <div className="Player__controls">
-            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
-            <i className={`fa fa-${playIcon} fa-2x fa-fw`} onClick={this.handlePlayClick} />
-            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
+          <div className="PlayerControlsPlay">
+            <span
+              className="fa fa fa-futbol-o fa-2x fa-fw"
+              style={{ color: 'rgb(255,0,255)' }}
+              onClick={() => {
+                if (this.props.auth) {
+                  console.log(this.props.currentCountry);
+                  fetch('/playlist/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                      country: this.props.currentCountry,
+                      tracks: this.props.playlist,
+                    }),
+                  })
+                  .then(res => console.log(res))
+                  .catch(err => console.log(err));
+                }
+              }
+            }
+            />
+            <i className="fa fa fa-step-backward fa-lg fa-fw" />
+            <i
+              className={`fa fa-${playIcon} fa-2x fa-fw`}
+              onClick={this.handlePlayClick}
+            />
+            <i className="fa fa-step-forward fa-lg fa-fw" />
           </div>
 
           <div className="Player__extraButtons">
