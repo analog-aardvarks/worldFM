@@ -26,6 +26,7 @@ const mapStateToProps = state => ({
   availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
+  activeDevice: state.activeDevice,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -254,7 +255,6 @@ class Player extends React.Component {
     if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
   }
 
-
   render() {
     // play/pause icon for spotify player
     // console.log(this.props.spotifyPlayer.isPaused)
@@ -337,15 +337,21 @@ class Player extends React.Component {
 
           <div className="Player__devices">
 
-            {this.props.showAvailableDevices ? <div className="Device__selector">
+            {this.props.showAvailableDevices ?
+            <div className="Device__selector">
               <div className="Player__devicesTitle">Devices</div>
               <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
-                {this.props.availableDevices.map((device, idx) => (
-                  <div className="Player__devicesDevice" key={idx}>
-                    <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
-                    <span>{device.name}</span>
-                  </div>
-                ))}
+              {this.props.availableDevices.map((device, idx) => (
+                <div
+                  className="Player__devicesDevice"
+                  style={{ color: device.id === this.props.activeDevice.id ? 'green' : 'white', cursor: 'pointer' }}
+                  key={idx}
+                  onClick={() => this.props.setActiveDeviceHandler(device)}
+                >
+                  <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                  <span>{device.name}</span>
+                </div>
+              ))}
             </div> : null}
 
             <div className="Player__devicesToggle">
