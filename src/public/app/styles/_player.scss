@@ -114,14 +114,14 @@
   justify-content: center;
 }
 
-.Player__extras {
+.Player__devices {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   width: 110px;
 }
 
-.Player__devices {
+.Player__devicesToggle {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,19 +134,62 @@
   }
 }
 
-.Device--Selector {
+.Device__selector {
   height: 140px;
-  width: 110px;
+  width: 200px;
   position: absolute;
-  left: 155px;
+  left: 114px;
   bottom: 64px;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
-  justify-content: space-around;
-  padding: 20px;
+  padding: 10px;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  font-size: 8pt;
+  i {
+    position: inherit;
+    right: 8px;
+    top: 10px;
+  }
+}
+
+.Device__selector {
+  i:hover {
+    opacity: 0.7;
+  }
+}
+
+
+.Player__devicesTitle {
+  display: flex;
+  justify-content: center;
+  font-size: 11pt;
+  font-family: 'Permanent Marker', cursive;
+  margin-bottom: 6px;
+}
+
+.Player__devicesDevice {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  width: 170px;
+  span {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    width: inherit;
+  }
+}
+
+.Player__devicesDevice:hover {
+  color: grey;
+  i {
+    opacity: 1;
+    color: $spotifyGreen;
+  }
 }
 
 .QueueMenu--toggle {

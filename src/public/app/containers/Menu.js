@@ -29,6 +29,7 @@ const mapStateToProps = state => ({
   showFavoritesMenu : state.showFavoritesMenu ,
   showQueueMenu: state.showQueueMenu,
   spotifyPlayer: state.spotifyPlayer,
+  showTopMenu: state.showTopMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -48,9 +49,11 @@ const mapDispatchToProps = dispatch => ({
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
   showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
   hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
-  showFavoritesMenuEvent: () => dispatch( {type: 'SHOW_FAVORITES_MENU' }),
-  hideFavoritesMenuEvent: () => dispatch( {type: 'HIDE_FAVORITES_MENU' }),
+  showFavoritesMenuEvent: () => dispatch({ type: 'SHOW_FAVORITES_MENU' }),
+  hideFavoritesMenuEvent: () => dispatch({ type: 'HIDE_FAVORITES_MENU' }),
   removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
+  showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }), //TODO
+  hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }), //TODO
 });
 
 class Menu extends React.Component {
@@ -66,6 +69,7 @@ class Menu extends React.Component {
     this.toggleAbout = this.toggleAbout.bind(this);
     this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
+    this.toggleTopMenu = this.toggleTopMenu.bind(this);
     // console.log(props.auth);
   }
 
@@ -134,12 +138,21 @@ class Menu extends React.Component {
   }
 
   toggleFavoritesMenu() {
-    if(this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
-    if(!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
+    if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
+    if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
   }
 
   removeTrackFromQueue(track) {
     this.props.removeTrackFromSpotifyQueue(track);
+  }
+
+  toggleTopMenu() {
+    if (this.props.showTopMenu) {
+      this.props.hideTopMenuEvent()
+    }
+    else {
+      this.props.showTopMenuEvent();
+    }
   }
 
   render() {
@@ -158,6 +171,8 @@ class Menu extends React.Component {
           currentCountry={this.props.currentCountry}
           windowHeight={this.props.windowHeight}
           windowWidth={this.props.windowWidth}
+          toggleTopMenu={this.toggleTopMenu}
+          showTopMenu={this.props.showTopMenu}
         />
         {/* <CountryMenu
           availableCountries={this.props.availableCountries}
