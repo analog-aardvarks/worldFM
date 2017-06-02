@@ -304,22 +304,21 @@ class Player extends React.Component {
             </div>: null}
           </div>
 
-
           <div className="Player__devices">
-            {this.props.showAvailableDevices ? <div className="Device__selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
+
+            {this.props.showAvailableDevices ? <div className="Device__selector">
               <div className="Player__devicesTitle">Devices</div>
-              {this.props.availableDevices.map(device => (
-
-                <div className="Player__devicesDevice">
-                  <i className={`fa fa-${deviceIcon(device.type)} fa-lg fa-fw`} />
-                  <span>{device.name}</span>
-                </div>
-
-              ))}
-          </div> : null}
+              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+                {this.props.availableDevices.map((device, idx) => (
+                  <div className="Player__devicesDevice" key={idx}>
+                    <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                    <span>{device.name}</span>
+                  </div>
+                ))}
+            </div> : null}
 
             <div className="Player__devicesToggle">
-              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.props.showAvailableDevicesEvent} />
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
               <span>devices</span>
             </div>
 
@@ -327,8 +326,8 @@ class Player extends React.Component {
               <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
               <span>que</span>
             </div>
-          </div>
 
+          </div>
         </div>
 
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
