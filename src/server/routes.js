@@ -35,6 +35,9 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
     <pre>${JSON.stringify(req.user, null, 4)}</pre>`);
 });
 
+/* new! */
+// routes.get('user/info', User.info);
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Tracks
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

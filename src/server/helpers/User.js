@@ -1,8 +1,43 @@
 const _ = require('underscore');
 const knex = require('../db/db');
+const request = require('request-promise-native');
 const Playlist = require('./Playlist');
 
 const User = {};
+
+User.info = (req, res) => {
+  if (req.user) {
+    const info = {};
+    // get favourites
+    User
+    .getFavoriteTracks
+    .then((favs) => {
+      info.favs = favs;
+      // get sync status
+      knex('users')
+      .where('user_id', req.user.id)
+      .then(users => users[0])
+      .then((user) => {
+        info.sync = user.user_sync;
+        // get devices
+        request({
+          method: 'GET',
+          url: 'https://api.spotify.com/v1/me/player/devices',
+          headers: { Authorization: `Bearer ${req.user.accessToken}` },
+        })
+        .then((response) => {
+          info.devices = response;
+          res.status(200).send(info);
+        })
+        .catch(err => res.status(202).send(err));
+      })
+      .catch(err => res.status(202).send(err));
+    })
+    .catch(err => res.status(202).send(err));
+  } else {
+    res.status(201).send();
+  }
+};
 
 User.getUser = user =>
   new Promise((resolve, reject) =>
