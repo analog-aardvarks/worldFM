@@ -24,6 +24,7 @@ const mapStateToProps = state => ({
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
   showQueueMenu: state.showQueueMenu,
+  currentCountry: state.currentCountry,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -257,6 +258,27 @@ class Player extends React.Component {
         <div className="PlayerControls">
 
           <div className="PlayerControlsPlay">
+            <span
+              className="fa fa fa-futbol-o fa-2x fa-fw"
+              style={{ color: 'rgb(255,0,255)' }}
+              onClick={() => {
+                if (this.props.auth) {
+                  console.log(this.props.currentCountry);
+                  fetch('/playlist/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                      country: this.props.currentCountry,
+                      tracks: this.props.playlist,
+                    }),
+                  })
+                  .then(res => console.log(res))
+                  .catch(err => console.log(err));
+                }
+              }
+            }
+          />
             <i className="fa fa fa-step-backward fa-lg fa-fw" />
             <i
               className={`fa fa-${playIcon} fa-2x fa-fw`}
