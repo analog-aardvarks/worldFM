@@ -55,6 +55,20 @@ export function setSpotifyPlayerVolume(v) {
   };
 }
 
+export function addTrackToSpotifyQueue(track) {
+  return {
+    type: 'ADD_TRACK_TO_SPOTIFY_QUEUE',
+    track: track,
+  };
+}
+
+export function removeTrackFromSpotifyQueue(song) {
+  return {
+    type: 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE',
+    track: song,
+  };
+}
+
 export function playSpotifyPlayer(currentTrack) {
   return {
     type: 'PLAY_SPOTIFY_PLAYER',
@@ -98,5 +112,12 @@ export function setSpotifyPlayerInterval(interval) {
 export function clearSpotifyPlayerInterval(interval) {
   return {
     type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL',
+  };
+}
+
+export function setFavorites(favorites) {
+  return {
+    type: 'SET_FAVORITES',
+    favorites,
   };
 }

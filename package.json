@@ -29,7 +29,7 @@
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "node-fetch": "^1.6.3",
-    "node-sass": "^4.5.3",
+    "node-sass": "^3.3.3",
     "npm": "^4.6.1",
     "passport": "^0.3.2",
     "passport-spotify": "^0.3.1",

@@ -1,17 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu } from '../actions';
+import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu, removeTrackFromSpotifyQueue } from '../actions';
 import availableCountries from '../constance/availableCountries';
 import availableTrends from '../constance/availableTrends';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
+import FavoritesMenu from '../components/FavoritesMenu';
 import BurgerMenu from '../components/BurgerMenu';
 import QueueMenu from '../components/QueueMenu';
+import About from '../components/About';
 
 
 const mapStateToProps = state => ({
   availableCountries,
   availableTrends,
+  windowHeight: state.windowHeight,
+  windowWidth: state.windowWidth,
   auth: state.auth,
   currentCountry: state.currentCountry,
   currentTrend: state.currentTrend,
@@ -20,6 +24,12 @@ const mapStateToProps = state => ({
   showCountryMenu: state.showCountryMenu,
   showSideMenu: state.showSideMenu,
   showQueueMenu: state.showQueueMenu,
+  favorites: state.favorites,
+  showAbout: state.showAbout,
+  showFavoritesMenu : state.showFavoritesMenu ,
+  showQueueMenu: state.showQueueMenu,
+  spotifyPlayer: state.spotifyPlayer,
+  showTopMenu: state.showTopMenu,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -37,6 +47,13 @@ const mapDispatchToProps = dispatch => ({
   closeSongMenu: () => dispatch(closeSongMenu()),
   showSideMenuEvent: () => dispatch({ type: 'SHOW_SIDE_MENU' }),
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
+  showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
+  hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
+  showFavoritesMenuEvent: () => dispatch({ type: 'SHOW_FAVORITES_MENU' }),
+  hideFavoritesMenuEvent: () => dispatch({ type: 'HIDE_FAVORITES_MENU' }),
+  removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
+  showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }), //TODO
+  hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }), //TODO
 });
 
 class Menu extends React.Component {
@@ -49,6 +66,10 @@ class Menu extends React.Component {
     this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
+    this.toggleAbout = this.toggleAbout.bind(this);
+    this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
+    this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
+    this.toggleTopMenu = this.toggleTopMenu.bind(this);
     // console.log(props.auth);
   }
 
@@ -61,7 +82,7 @@ class Menu extends React.Component {
     if (prev.currentCountry !== this.props.currentCountry) {
       this.getPlaylist();
       this.props.closeSongMenu();
-    } else if(prev.currentTrend !== this.props.currentTrend) {
+    } else if (prev.currentTrend !== this.props.currentTrend) {
       this.getPlaylist();
       this.props.closeSongMenu();
     }
@@ -73,41 +94,65 @@ class Menu extends React.Component {
 
   handleTrendChange(e) {
     this.props.setCurrentTrend(e.target.value);
-    //console.log(e)
   }
 
   getPlaylist(e) {
     fetch(`playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
       .then(res => res.json())
-      .then(res => this.props.setPlaylist(res))
+      .then((res) => {
+        // console.log(JSON.stringify(res));
+        this.props.setPlaylist(res);
+      })
       .catch(err => console.log(err));
   }
 
   toggleTrackInfo() {
-    if(this.props.showTrackInfo) this.props.hideTrackInfoEvent();
-    if(!this.props.showTrackInfo) this.props.showTrackInfoEvent();
+    if (this.props.showTrackInfo) this.props.hideTrackInfoEvent();
+    if (!this.props.showTrackInfo) this.props.showTrackInfoEvent();
   }
 
   toggleSpotifyPlaylist() {
-    if(this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
-    if(!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
+    if (this.props.showSpotifyPlaylist) this.props.hideSpotifyPlaylistEvent();
+    if (!this.props.showSpotifyPlaylist) this.props.showSpotifyPlaylistEvent();
   }
 
   toggleCountryMenu() {
-    if(this.props.showCountryMenu) this.props.hideCountryMenuEvent();
-    if(!this.props.showCountryMenu) this.props.showCountryMenuEvent();
+    if (this.props.showCountryMenu) this.props.hideCountryMenuEvent();
+    if (!this.props.showCountryMenu) this.props.showCountryMenuEvent();
   }
 
   toggleSideMenu() {
-    console.log(this.props.showSideMenu)
-    if(this.props.showSideMenu) this.props.hideSideMenuEvent();
-    if(!this.props.showSideMenu) this.props.showSideMenuEvent();
+    console.log(this.props.showSideMenu);
+    if (this.props.showSideMenu) this.props.hideSideMenuEvent();
+    if (!this.props.showSideMenu) this.props.showSideMenuEvent();
   }
 
   toggleQueueMenu() {
-    if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
-    if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+    if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
+    if (!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+  }
 
+  toggleAbout() {
+    if (this.props.showAbout) this.props.hideAboutEvent();
+    if (!this.props.showAbout) this.props.showAboutEvent();
+  }
+
+  toggleFavoritesMenu() {
+    if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
+    if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
+  }
+
+  removeTrackFromQueue(track) {
+    this.props.removeTrackFromSpotifyQueue(track);
+  }
+
+  toggleTopMenu() {
+    if (this.props.showTopMenu) {
+      this.props.hideTopMenuEvent()
+    }
+    else {
+      this.props.showTopMenuEvent();
+    }
   }
 
   render() {
@@ -120,11 +165,16 @@ class Menu extends React.Component {
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleTrackInfo={this.toggleTrackInfo}
           toggleSideMenu={this.toggleSideMenu}
+          toggleFavoritesMenu={this.toggleFavoritesMenu}
           availableCountries={this.props.availableCountries}
           handleCountryChange={this.handleCountryChange}
           currentCountry={this.props.currentCountry}
+          windowHeight={this.props.windowHeight}
+          windowWidth={this.props.windowWidth}
+          toggleTopMenu={this.toggleTopMenu}
+          showTopMenu={this.props.showTopMenu}
         />
-        <CountryMenu
+        {/* <CountryMenu
           availableCountries={this.props.availableCountries}
           availableTrends={this.props.availableTrends}
           currentCountry={this.props.currentCountry}
@@ -134,11 +184,21 @@ class Menu extends React.Component {
           showCountryMenu={this.props.showCountryMenu}
           toggleTrackInfo={this.toggleTrackInfo}
           toggleCountryMenu={this.toggleCountryMenu}
+        /> */}
+        <FavoritesMenu
+          showFavoritesMenu={this.props.showFavoritesMenu}
+          favorites={this.props.favorites}
+          showQueueMenu={this.props.showQueueMenu}
+          windowHeight={this.props.windowHeight}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
+          favorites={this.props.favorites}
+          spotifyPlayer={this.props.spotifyPlayer}
+          removeTrackFromQueue={this.removeTrackFromQueue}
         />
         {this.props.showSideMenu ? <BurgerMenu
+          toggleAbout={this.toggleAbout}
           toggleCountryMenu={this.toggleCountryMenu}
           toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
           toggleQueueMenu={this.toggleQueueMenu}

@@ -1,5 +1,3 @@
-//song
-
 import React from 'react';
 
 const Song = ({ size,
@@ -20,6 +18,9 @@ const Song = ({ size,
   setSpotifyPlayerIntervalHandler,
   resumeSpotifyPlayerHandler,
   setSpotifyPlayerEllapsedHandler,
+  favorites,
+  handleFavoritesChange,
+  addTrackToSpotifyQueue,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
@@ -81,11 +82,48 @@ const Song = ({ size,
     } else {
       togglePreview(track.track_preview_url);
     }
+  };
+
+  const addFavorite = () => {
+    fetch('/favorites', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(track),
+    })
+    .then(res => res.json())
+    .then(favs => handleFavoritesChange(favs))
+    .catch(err => console.log(err));
+  };
+
+  const removeFavorite = () => {
+    fetch('/favorites', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(track),
+    })
+    .then(res => res.json())
+    .then(favs => handleFavoritesChange(favs))
+    .catch(err => console.log(err));
+  };
+
+  const handleFavoritesClick = () => {
+    if (favorites.some(fav => fav.track_id === track.track_id)) {
+      removeFavorite();
+    } else {
+      addFavorite();
+    }
+  };
+
+  const addToQueue = () => {
+    addTrackToSpotifyQueue(track);
   }
+
+
   return (
     <div
       className={`Song ${ranking === songMenu ? 'Song--green-border' : ''}`}
-
       style={{
         backgroundImage: `url(${track.track_album_image})`,
         width: netSize,
@@ -94,41 +132,59 @@ const Song = ({ size,
     >
 
       <div className="Song__wrapper">
+
         { ranking === songMenu &&
-        <div className="Song__more-info-wrapper">
-          <div className="Song__more-info">
-            <div className="Song__more-info-option">
+          <div className="Song__more-info" onMouseLeave={closeSongMenu}>
+
+            {/* <div className="Song__more-info-option"
+              onClick={handleFavoritesClick}
+              >
               <i className="fa fa-plus fa-lg fa-fw" />
-              <span>Add Track</span>
-            </div>
+              <span>Add to favorites</span>
+            </div> */}
+
             <div className="Song__more-info-option">
               <i className="fa fa-info-circle fa-lg fa-fw" />
               <span>Album</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-user-circle fa-lg fa-fw" />
               <span>Artist</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-share-alt fa-lg fa-fw" />
               <span>Share Track</span>
             </div>
+
             <div className="Song__more-info-option">
               <i className="fa fa-music fa-lg fa-fw" />
               <span>More Like This</span>
             </div>
-          </div>
-        </div>
-      }
 
-        {/* { showTrackInfo && */}
-        <div
-          className="Song__container"
-          // style={{ opacity: showTrackInfo ? 1 : 0 }}
+        </div> }
 
-          // style={{ opacity:  showTrackInfo ? 1 : 0 }}
+        <i
+          className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
+          onClick={() => togglePlay()}
+          style={{ left: ((netSize-100)/2), bottom:((netSize-70)/2) }}
+        />
 
-        >
+        <i
+          className="SongHover__add-que fa fa-plus fa-2x fa-fw"
+          onClick={addToQueue}
+          style={{ right: ((netSize-100)/10), top:((netSize-70)/10) }}
+        />
+
+        <i
+          className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
+          onClick={handleFavoritesClick}
+          style={{ left: ((netSize-100)/10), top:((netSize-70)/10) }}
+        />
+
+        <div className="Song__container">
+
           <span className="Song__ranking">{ranking < 10 ? `0${ranking}` : ranking}</span>
           <div className="Song__info">
             <span className="Song__name">{track.track_name}</span>
@@ -141,21 +197,8 @@ const Song = ({ size,
             />
           </span>
         </div>
-        {/* } */}
 
       </div>
-
-      {ranking !== songMenu &&
-      <div
-        className="SongHover"
-        style={{ bottom: netSize - (2 * borderWidth) }}
-      >
-        <i
-          className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
-          onClick={() => togglePlay()}
-        />
-      </div>
-      }
     </div>
   );
 };

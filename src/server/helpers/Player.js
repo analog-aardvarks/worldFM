@@ -1,4 +1,5 @@
 const request = require('request-promise-native');
+const User = require('./User');
 
 const Player = {};
 
@@ -15,10 +16,6 @@ const Player = {};
 // };
 
 Player.play = (req, res) => {
-  // console.log('WHOLE FRICKIN THING: ', req);
-  // console.log('REQ.BODY ON PLAY: ', req.body);
-  // console.log('REQ.USER ON PLAY:', req.user);
-  // console.log('REQ.PARAMS: ', req.params);
   const track = req.body;
   const position = track.track_position - 1;
   const url = 'https://api.spotify.com/v1/me/player/play';// ?device_id=${deviceID}`;
@@ -40,8 +37,11 @@ Player.play = (req, res) => {
 };
 
 Player.isAuth = (req, res) => {
-  if (req.user !== undefined) res.status(200).send();
-  else res.status(201).send();
+  if (req.user) {
+    User.getFavoriteTracks(req.user.id)
+      .then(favs => res.send(favs))
+      .catch(err => console.log(err));
+  } else res.status(201).send();
 };
 
 Player.pause = (req, res) => {

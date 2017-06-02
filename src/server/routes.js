@@ -7,18 +7,18 @@ const Playlist = require('./helpers/Playlist');
 const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
-const UserPlaylist = require('./helpers/UserPlaylist');
+const User = require('./helpers/User');
+const favorites = require('./helpers/favorites');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 routes.get('/auth/spotify', passport.authenticate('spotify',
-  { scope: ['user-read-playback-state', 'user-modify-playback-state'] }));
+  { scope: ['playlist-modify-public', 'playlist-modify-private', 'user-read-playback-state', 'user-modify-playback-state', 'user-library-modify'] }));
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  // (req, res) => res.redirect('/loggedIn'));
   (req, res) => {
     res.cookie('auth', 'true');
     Devices.getDevices(req).then(res.redirect('/'));
@@ -75,6 +75,14 @@ routes.get('/playlist/info', Playlist.getPlaylistInfo);
 
 // Gets the number of available playlists stored in the database
 routes.get('/playlist/length', Playlist.getPlaylistLength);
+
+// Gets the names of available playlists stored in the database
+routes.get('/playlist/names', Playlist.getPlaylistNames);
+
+// new!
+// routes.post('/playlist/create', Playlist.create);
+routes.post('/playlist/sync', Playlist.sync);
+routes.post('/playlist/save', Playlist.save);
 
 // Serve data to d3 for asnyc loading
 routes.get('/data/world-110m.json', MapData.getWorldJson);
@@ -146,10 +154,20 @@ routes.get('/player/volume', Player.volume);
 routes.get('/player/auth', Player.isAuth);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// User Playlists
+// Users
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// routes.get('/user/info', User.getInfo);
 
 // routes.get('/userplaylist/info', UserPlaylist.getInfo);
 // routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
+
+routes.put('/sync', User.toggleSync);
+
+routes.route('/favorites')
+  .get(User.getFavoriteTracks)
+  .put(User.addFavorite)
+  .delete(User.removeFavorite);
+
+routes.get('/sync', User.toggleSync);
 
 module.exports = routes;

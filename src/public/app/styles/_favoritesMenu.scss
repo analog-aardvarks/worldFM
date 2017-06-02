@@ -1,0 +1,64 @@
+.FavoritesMenu {
+  z-index: 4;
+  padding: 11px;
+  position: fixed;
+  top: 60px;
+  right: 0%;
+  width: 300px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.75);
+  overflow: auto;
+}
+
+.FavoritesMenu__syncButton {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  div {
+    width: 150px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 4px;
+    margin-bottom: 12px;
+  }
+  i {
+    color: $spotifyGreen;
+  }
+}
+
+.FavoritesMenu__indivdualSong {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid $devider;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  max-height: 67px;
+  img {
+    margin-right: 10px;
+  }
+  i {
+    position: relative;
+  }
+}
+
+.FavoritesMenu__indivdualSong__songInfoAndPicture {
+  display: flex;
+  align-items: flex-start;
+}
+
+.FavoritesMenu__indivdualSong__songInfo {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  max-height: 40px;
+}
+
+.FavoritesMenu__SongName {
+
+}
+
+.FavoritesMenu__ArtistName {
+  font-style: italic;
+}

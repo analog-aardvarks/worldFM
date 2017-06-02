@@ -3,46 +3,45 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
   showQueueMenu: state.showQueueMenu,
+  spotifyPlayer: state.spotifyPlayer,
 })
 
 const mapDispatchToProps = dispatch => ({
-  hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
 })
 
-const QueueMenu = ({ showQueueMenu, toggleQueueMenu }) => {
-  let songTestList = [
-    {
-      Artist: 'Bob',
-      SongName: 'Song 1',
-      Time: '2:21',
-      key: 1
-    },
-    {
-      Artist: 'Ashley',
-      SongName: 'Song 2',
-      Time: '3:11',
-      key: 2,
-    },
-    {
-      Artist: 'Rob',
-      SongName: 'Song 3',
-      Time: '10:21',
-      key: 3
-    },
+const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackFromQueue }) => {
 
-  ];
   return (
-    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }}>
-      <i className="fa fa fa-times fa-lg fa-fw" onClick={toggleQueueMenu} />
-      {songTestList.map((song, idx) => (
-        <div className="IndividualSong" key={song.key}>
-          <span>{idx+1}</span>
-          <span>{song.Artist}</span>
-          <span>{song.SongName}</span>
-          <span>{song.Time}</span>
-        </div>
-      ))}
+
+    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }} onMouseLeave={toggleQueueMenu}>
+
+      <div className="QueueMenu__topBar">
+        <i className="fa fa fa-times fa-1 fa-fw" onClick={toggleQueueMenu} />
+      </div>
+
+      <div className="QueueMenu__songList">
+        {spotifyPlayer.queue.map((track, idx) => (
+            <div className="QueueMenu__indivdualSong" key={idx}>
+              <span className="QueueMenu__position" >{idx+1}</span>
+              <div className="QueueMenu__indivdualSong__songInfoAndPicture">
+                <img
+                  src={track.track_album_image}
+                  width="46"
+                  height="46"
+                />
+                <div className="QueueMenu__indivdualSong__songInfo">
+                  <span className="QueueMenu__songName">{track.track_name}</span>
+                  <span className="QueueMenu__songArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
+                </div>
+              </div>
+              <i className="fa fa-minus fa-lg fa-fw" onClick={ () => removeTrackFromQueue(idx) }/>
+            </div>
+          ))}
+
+      </div>
+
     </div>
   )
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(QueueMenu);

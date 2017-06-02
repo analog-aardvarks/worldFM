@@ -1,25 +1,68 @@
 .QueueMenu {
   z-index: 15;
-  padding: 20px;
   position: fixed;
-  top: 60px;
+  bottom: 64px;
   right: 0%;
-  width: 300px;
-  height: calc(100% - 124px);
-  font-family: 'Permanent Marker', cursive;
-  color: white;
-  background-color: rgba(0,0,0,0.75);
+  width: 100%;
+  height: 88px;
+  color: #e6e6e6;
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
-.IndividualSong {
+.QueueMenu__topBar {
+  height: 20px;
+  width: 100%;
+  background: linear-gradient(#171717, #1C1C1C);
+  display: flex;
+  align-items: center;
+}
+
+.QueueMenu__songList {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  overflow: auto;
+}
+
+.QueueMenu__indivdualSong {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 14pt;
-  width: 260px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-  border-bottom: 1px;
-  border-bottom-style: solid;
-  border-color: #636343;
+  border-right: 1px solid $devider;
+  padding-right: 12px;
+  padding-left: 12px;
+  width: 200px;
+  img {
+    margin-right: 10px;
+  }
+  i {
+    position: relative;
+  }
+}
+
+.QueueMenu__indivdualSong__songInfoAndPicture {
+  display: flex;
+  align-items: flex-start;
+  margin-left: 10px;
+}
+
+.QueueMenu__position {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.QueueMenu__indivdualSong__songInfo {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  max-height: 40px;
+}
+
+.QueueMenu__SongName {
+
+}
+
+.QueueMenu__ArtistName {
+  font-style: italic;
 }

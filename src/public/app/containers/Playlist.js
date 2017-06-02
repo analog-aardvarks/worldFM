@@ -8,6 +8,8 @@ import { togglePlay,
   clearSpotifyPlayerInterval,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
+  setFavorites,
+  addTrackToSpotifyQueue,
 } from '../actions';
 import SongList from '../components/SongList';
 
@@ -41,6 +43,8 @@ const mapDispatchToProps = dispatch => ({
   resumeSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
   setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
+  handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
+  addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
 });
 
 const Playlist = connect(

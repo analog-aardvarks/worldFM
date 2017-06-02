@@ -5,9 +5,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import App from './components/App'
 import reducer from './reducers';
 
-const actionLogger = ({dispatch, getState}) =>
+const actionLogger = ({ dispatch, getState }) =>
   (next) => (action) =>
-    { console.log(action); return next(action) }
+    { console.log(action); return next(action); }
 
 const middleware = applyMiddleware(actionLogger);
 
@@ -15,8 +15,9 @@ const store = createStore(
   reducer,
   compose(
     middleware,
-    // window.devToolsExtension ? window.devToolsExtension() : f => f
+    window.devToolsExtension ? window.devToolsExtension() : f => f,
   ));
+
 
 render(
   <Provider store={store}>

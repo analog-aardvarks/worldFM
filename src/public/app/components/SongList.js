@@ -20,30 +20,36 @@ const Songs = ({
   resumeSpotifyPlayerHandler,
   setSpotifyPlayerIntervalHandler,
   setSpotifyPlayerEllapsedHandler,
+  favorites,
+  handleFavoritesChange,
+  showFavoritesMenu,
+  addTrackToSpotifyQueue,
 }) => {
+
   window.onresize = () => onWindowResize(window.innerWidth);
-  let width = 0;
-  if (windowWidth < 500) {
-    width = windowWidth / 2;
+  let songWidth = 0;
+  let playlistWidth = showFavoritesMenu ?  windowWidth - 290 : windowWidth;
+  if (playlistWidth < 500) {
+    songWidth = playlistWidth / 2;
   }
-  else if (windowWidth < 800) {
-    width = windowWidth / 3;
+  else if (playlistWidth < 800) {
+    songWidth = playlistWidth / 3;
   }
-  else if (windowWidth < 1100) {
-    width = windowWidth / 4;
+  else if (playlistWidth < 1100) {
+    songWidth = playlistWidth / 4;
   }
-  else if (windowWidth < 1450) {
-    width = windowWidth / 5;
+  else if (playlistWidth < 1450) {
+    songWidth = playlistWidth / 5;
   }
   else  {
-    width = windowWidth / 6;
+    songWidth = playlistWidth / 6;
   }
 
   return (
     <div
       className="Playlist"
       style={{
-        width: windowWidth,
+        width: playlistWidth,
       }}
     >
       {
@@ -52,7 +58,7 @@ const Songs = ({
             key={listItem.track_id}
             ranking={idx + 1}
             track={listItem}
-            size={width}
+            size={songWidth}
             currentSong={currentSong}
             showTrackInfo={showTrackInfo}
             songMenu={songMenu}
@@ -67,6 +73,9 @@ const Songs = ({
             resumeSpotifyPlayerHandler={resumeSpotifyPlayerHandler}
             setSpotifyPlayerIntervalHandler={setSpotifyPlayerIntervalHandler}
             setSpotifyPlayerEllapsedHandler={setSpotifyPlayerEllapsedHandler}
+            handleFavoritesChange={handleFavoritesChange}
+            favorites={favorites}
+            addTrackToSpotifyQueue={addTrackToSpotifyQueue}
           />
       ))}
 

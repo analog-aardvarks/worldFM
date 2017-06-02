@@ -1,0 +1,121 @@
+.aboutHeader {
+  font-family: 'Magra';
+  font-weight: bold;
+  text-align: center;
+  font-size: 35px;
+  margin: 15px 0;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100vw;
+  height: 94.45vh;
+  font-family: 'Magra';
+  font-size: 40px
+}
+
+.devTeamHeader {
+  text-align: center;
+  font-size: 30px;
+  margin: 15px 0
+}
+
+.about-body {
+  margin-top: 2%;
+  margin-bottom: 3%;
+  @media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    font-size: 30px;
+  }
+  color: 'white';
+  font-size: 20px;
+}
+
+.developmentTeam {
+  font-family: 'Magra';
+  font-weight: bold;
+}
+
+.devRow {
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+}
+
+.devName {
+  font-weight: bold;
+  font-size: 23px
+}
+
+.title {
+  font-weight: regular;
+  font-size: 17px
+}
+
+.aboutWorldfm {
+  display: flex;
+  flex-direction: column;
+}
+
+.aboutSection {
+  height: 30vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.worldfmDesc {
+  font-size: 14px;
+  width: 60vw;
+  height: 100vh;
+  @media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    width: 100%;
+  }
+}
+
+.Developer {
+  text-align: center;
+}
+
+.profilePicture {
+  width: 100px;
+  height: auto;
+}
+
+.gitIcon {
+  width: 20px;
+}
+
+.linkedIcon {
+  width: 23px;
+}
+
+.footer {
+  display: flex;
+  bottom: 0;
+  position: relative;
+  height: 45px;
+}
+
+.footer-content {
+    width: 100vw;
+    margin: 0px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 15px;
+    text-align: center;
+    background-color: 'black';
+    color: #fff;
+}
+
+.github-link {
+  color: 'green';
+}

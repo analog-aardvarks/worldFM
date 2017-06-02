@@ -2,13 +2,14 @@ import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import {
+  setFavorites,
   setSpotifyPlayerVolume,
   playSpotifyPlayer,
   setSpotifyPlayerMute,
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval, } from '../actions';
+  clearSpotifyPlayerInterval } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -22,11 +23,17 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
+  availableDevices: state.availableDevices,
+  showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
 });
 
 const mapDispatchToProps = dispatch => ({
-  authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
+  authUserHandler: (favs) => {
+    dispatch({ type: 'AUTHENTICATE_USER' });
+    dispatch(setFavorites(favs));
+    console.log('FAVS', favs);
+  },
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
   setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
@@ -50,6 +57,8 @@ const mapDispatchToProps = dispatch => ({
   hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
   showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
+  showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
+  hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
 });
 
 class Player extends React.Component {
@@ -62,19 +71,31 @@ class Player extends React.Component {
     this.handleVolumeClick = this.handleVolumeClick.bind(this);
     this.handleSeekerChange = this.handleSeekerChange.bind(this);
     this.toggleVolumeDisplay = this.toggleVolumeDisplay.bind(this);
-    this.toggleAvailableDevices = this.toggleAvailableDevices .bind(this);
+    this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
     this.updateSeeker = this.updateSeeker.bind(this);
+    this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     // this.interval = null;
   }
 
   // check for auth
   componentWillMount() {
     fetch('/player/auth', { credentials: 'include' })
-      .then((res) => {
-        const auth = res.status === 200;
-        if (auth) {
-          this.props.authUserHandler();
-          this.changePlayerVolume({ target: { value: 50 } });
+      .then(res => res.json())
+      .then((favs) => {
+        if (favs) {
+          // set auth status and user favorites
+          this.props.authUserHandler(favs);
+          // get and set spotify volume
+          fetch('/devices', { credentials: 'include' })
+          .then(devicesRes => devicesRes.json())
+          .then((devicesRes) => {
+            devicesRes.devices.forEach((device) => {
+              if (device.is_active) {
+                this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
+              }
+            });
+          })
+          .catch(err => console.log(err));
         } else {
           console.log('NO_AUTH');
         }
@@ -84,19 +105,20 @@ class Player extends React.Component {
 
   // check for new currentTrack
   componentDidUpdate(prev) {
+    // update volume if it doesn't match the state
+    if (this.props.showVolumeGauge) {
+      this.$volumeInput.value = this.props.spotifyPlayer.volume;
+    }
     // set seeker dom element
     if (this.props.spotifyPlayer.$seeker === null && this.$seekerInput !== undefined) {
       this.props.setSpotifyPlayerSeekerElHandler(this.$seekerInput);
     }
 
-    // console.log('CURRENT: ', this.props.spotifyPlayer.currentTrack);
-    // console.log('PREV: ', prev.spotifyPlayer.currentTrack);
     if (this.props.auth && this.props.spotifyPlayer.currentTrack) {
       if (prev.spotifyPlayer.currentTrack === null ||
         (prev.spotifyPlayer.currentTrack.track_id !==
         this.props.spotifyPlayer.currentTrack.track_id)) {
         // track change!
-        // console.log('TRACK_CHANGE');
         this.$seekerInput.value = 0;
         this.props.setSpotifyPlayerEllapsedHandler(0);
         this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
@@ -127,7 +149,10 @@ class Player extends React.Component {
   changePlayerVolume(e) {
     if (this.props.auth) {
       fetch(`/player/volume?volume=${e.target.value}`, { credentials: 'include' })
-        .then(res => this.props.setSpotifyPlayerVolumeHandler(e.target.value))
+        .then((res) => {
+          this.$volumeInput.value = e.target.value;
+          this.props.setSpotifyPlayerVolumeHandler(e.target.value);
+        })
         .catch(err => console.log(err));
     }
   }
@@ -207,14 +232,20 @@ class Player extends React.Component {
   }
 
   toggleVolumeDisplay() {
-    if(this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
-    if(!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
+    if (this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
+    if (!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
   }
 
   toggleAvailableDevices() {
-    if(this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
-    if(!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
+    if (this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
+    if (!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
   }
+
+  toggleQueueMenu() {
+    if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
+    if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+  }
+
 
   render() {
     // play/pause icon for spotify player
@@ -222,6 +253,18 @@ class Player extends React.Component {
     const playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
     // sorry!
     const volumeIcon = this.props.spotifyPlayer.volume >= 70 ? 'up' : (this.props.spotifyPlayer.volume <= 10 ? 'off' : 'down');
+
+    const deviceIcon = function(type) {
+      if(type === 'Computer') {
+        return 'laptop';
+      }
+      if(type === 'Smartphone') {
+        return 'mobile';
+      }
+      else {
+        return 'cog';
+      }
+    }
 
     return (
       <div className="Player">
@@ -285,12 +328,29 @@ class Player extends React.Component {
           </div>
 
           <div className="Player__devices">
-            <i className="fa fa fa-mobile fa-lg fa-fw" onMouseOver={this.props.showAvailableDevicesEvent} />
-              {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
-                Devices
-            </div> : null}
-          </div>
 
+            {this.props.showAvailableDevices ? <div className="Device__selector">
+              <div className="Player__devicesTitle">Devices</div>
+              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+                {this.props.availableDevices.map((device, idx) => (
+                  <div className="Player__devicesDevice" key={idx}>
+                    <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                    <span>{device.name}</span>
+                  </div>
+                ))}
+            </div> : null}
+
+            <div className="Player__devicesToggle">
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
+              <span>devices</span>
+            </div>
+
+            <div className="QueueMenu--toggle">
+              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
+              <span>que</span>
+            </div>
+
+          </div>
         </div>
 
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
@@ -328,6 +388,9 @@ class Player extends React.Component {
           <div className="CurrentSongInfo">
             <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
             <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
+          </div>
+          <div className="Player__likeButton">
+            <i className="fa fa fa-heart fa-lg fa-fw" />
           </div>
         </div>
         }
