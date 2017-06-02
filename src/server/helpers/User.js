@@ -1,43 +1,9 @@
 const _ = require('underscore');
 const knex = require('../db/db');
-const request = require('request-promise-native');
 const Playlist = require('./Playlist');
+const Devices = require('./Devices');
 
 const User = {};
-
-User.info = (req, res) => {
-  if (req.user) {
-    const info = {};
-    // get favourites
-    User
-    .getFavoriteTracks
-    .then((favs) => {
-      info.favs = favs;
-      // get sync status
-      knex('users')
-      .where('user_id', req.user.id)
-      .then(users => users[0])
-      .then((user) => {
-        info.sync = user.user_sync;
-        // get devices
-        request({
-          method: 'GET',
-          url: 'https://api.spotify.com/v1/me/player/devices',
-          headers: { Authorization: `Bearer ${req.user.accessToken}` },
-        })
-        .then((response) => {
-          info.devices = response;
-          res.status(200).send(info);
-        })
-        .catch(err => res.status(202).send(err));
-      })
-      .catch(err => res.status(202).send(err));
-    })
-    .catch(err => res.status(202).send(err));
-  } else {
-    res.status(201).send();
-  }
-};
 
 User.getUser = user =>
   new Promise((resolve, reject) =>
@@ -71,8 +37,10 @@ User.login = (user) => {
 
 User.getFavoriteTracks = userId =>
   new Promise((resolve, reject) => {
+    console.log('FAVS');
     knex('users').where('user_id', userId)
     .then((userData) => {
+      console.log('FAVS', userData);
       let favs = userData[0].user_favorites;
       if (!favs) {
         resolve([]);
@@ -81,6 +49,7 @@ User.getFavoriteTracks = userId =>
         .groupBy('track_id')
         .whereIn('track_id', favs.split(','))
         .then((favTracks) => {
+          console.log('FAVS', favTracks);
           const orderedFavs = [];
           favs = favs.split(',');
           favs.forEach((f) => {
@@ -89,6 +58,7 @@ User.getFavoriteTracks = userId =>
             });
           });
           console.log(favTracks.map(t => t.track_name));
+          console.log(orderedFavs);
           return orderedFavs;
         })
         .then(favTracks => resolve(favTracks))
@@ -139,7 +109,7 @@ User.removeFavorite = (req, res) => {
       knex('users').where('user_id', req.user.id).update({
         user_favorites: newFavs,
       })
-        .then(data => User.getFavoriteTracks(req.user.id))
+        .then(() => User.getFavoriteTracks(req.user.id))
         .then((updatedFavs) => {
           if (updatedFavs) res.send(updatedFavs);
           else res.send([]);
@@ -173,6 +143,46 @@ User.toggleSync = (req, res) => {
         res.send(req.body.sync);
       }
     });
+};
+
+User.info = (req, res) => {
+  if (req.user) {
+    const info = {};
+    knex('users')
+    .where('user_id', req.user.id)
+    .then(users => users[0])
+    .then((user) => {
+      info.sync = user.user_sync;
+      knex('tracks')
+      .groupBy('track_id')
+      .whereIn('track_id', user.user_favorites.split(','))
+      .then((userFavorites) => {
+        const orderedFavorites = [];
+        user.user_favorites.split(',').forEach((f) => {
+          userFavorites.forEach((t) => { if (t.track_id === f) orderedFavorites.push(t); });
+        });
+        return orderedFavorites;
+      })
+      .then((orderedFavorites) => {
+        info.favs = orderedFavorites;
+        Devices
+        .getDevices(req.user)
+        .then((devices) => {
+          info.devices = devices;
+          res.status(200).send(info);
+        })
+        .catch(err => res.status(201).send(err));
+      })
+      .catch(err => res.status(201).send(err));
+    })
+    .catch(err => res.status(201).send(err));
+  } else {
+    res.status(179).send();
+  }
+};
+
+User.all = (req, res) => {
+  knex('users').select('*').then(data => res.send(data));
 };
 
 module.exports = User;

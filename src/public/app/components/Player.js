@@ -79,26 +79,27 @@ class Player extends React.Component {
 
   // check for auth
   componentWillMount() {
-    fetch('/player/auth', { credentials: 'include' })
+    fetch('/user/info', { credentials: 'include' })
       .then(res => res.json())
       .then((favs) => {
-        if (favs) {
-          // set auth status and user favorites
-          this.props.authUserHandler(favs);
-          // get and set spotify volume
-          fetch('/devices', { credentials: 'include' })
-          .then(devicesRes => devicesRes.json())
-          .then((devicesRes) => {
-            devicesRes.devices.forEach((device) => {
-              if (device.is_active) {
-                this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
-              }
-            });
-          })
-          .catch(err => console.log(err));
-        } else {
-          console.log('NO_AUTH');
-        }
+        console.log(favs);
+        // if (favs) {
+        //   // set auth status and user favorites
+        //   this.props.authUserHandler(favs);
+        //   // get and set spotify volume
+        //   fetch('/devices', { credentials: 'include' })
+        //   .then(devicesRes => devicesRes.json())
+        //   .then((devicesRes) => {
+        //     devicesRes.devices.forEach((device) => {
+        //       if (device.is_active) {
+        //         this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
+        //       }
+        //     });
+        //   })
+        //   .catch(err => console.log(err));
+        // } else {
+        //   console.log('NO_AUTH');
+        // }
       })
       .catch(err => console.log(err));
   }

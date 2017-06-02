@@ -36,7 +36,8 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
 });
 
 /* new! */
-// routes.get('user/info', User.info);
+routes.get('/user/info', User.info);
+routes.get('/user/all', User.all);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Tracks
