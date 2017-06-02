@@ -158,7 +158,7 @@ function availableDevices(state = [
   ], action) {
   switch (action.type) {
     case 'SET_DEVICES':
-      return action.playlist;
+      return action.devices;
     default:
       return state;
   }
@@ -171,6 +171,7 @@ function availableDevices(state = [
 function spotifyPlayer(state = {
   queue: [],
   currentTrack: null,
+  currentTrackIdx: null,
   isPaused: true,
   volume: 0,
   repeat: false,
@@ -183,11 +184,15 @@ function spotifyPlayer(state = {
   switch (action.type) {
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: true };
     case 'PLAY_SPOTIFY_PLAYER':
+        console.log('this is the song', state)
       return {
         ...state,
         isPaused: false,
         currentTrack: action.currentTrack || state.currentTrack,
       };
+    case 'SET_CURRENT_TRACK_IDX':
+      console.log('this is the idx', state)
+    return { ...state, currentTrackIdx: action.currentTrackIdx };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
     case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
       const q = [...state.queue];

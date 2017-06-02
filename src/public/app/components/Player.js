@@ -9,7 +9,9 @@ import {
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval } from '../actions';
+  clearSpotifyPlayerInterval,
+  setSpotifyPlayerCurrentTrackIdx,
+} from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -60,6 +62,7 @@ const mapDispatchToProps = dispatch => ({
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
+  setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
 });
 
 class Player extends React.Component {
@@ -136,7 +139,9 @@ class Player extends React.Component {
       this.props.pauseSpotifyPlayerHandler();
       this.props.setSpotifyPlayerEllapsedHandler(0);
       this.$seekerInput.value = 0;
-      
+      console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
     } else {
       e += 500;
       this.$seekerInput.value = e;
@@ -192,6 +197,7 @@ class Player extends React.Component {
         } else {
           // play first song on playlist
           this.props.playSpotifyPlayer(this.props.playlist[0]);
+          this.props.setSpotifyPlayerCurrentTrackIdx(0);
         }
       } else {
         // pause

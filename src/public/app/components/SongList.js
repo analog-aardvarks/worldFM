@@ -24,6 +24,7 @@ const Songs = ({
   handleFavoritesChange,
   showFavoritesMenu,
   addTrackToSpotifyQueue,
+  setSpotifyPlayerCurrentTrackIdx,
 }) => {
 
   window.onresize = () => onWindowResize(window.innerWidth);
@@ -60,6 +61,7 @@ const Songs = ({
             track={listItem}
             size={songWidth}
             currentSong={currentSong}
+            playlist={playlist}
             showTrackInfo={showTrackInfo}
             songMenu={songMenu}
             openSongMenu={openSongMenu}
@@ -76,6 +78,7 @@ const Songs = ({
             handleFavoritesChange={handleFavoritesChange}
             favorites={favorites}
             addTrackToSpotifyQueue={addTrackToSpotifyQueue}
+            setSpotifyPlayerCurrentTrackIdx={setSpotifyPlayerCurrentTrackIdx}
           />
       ))}
 
