@@ -26,6 +26,7 @@ const mapStateToProps = state => ({
   availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
+  currentSong: state.currentSong,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -128,9 +129,19 @@ class Player extends React.Component {
 
   updateSeeker() {
     let e = this.props.spotifyPlayer.ellapsed;
-    e += 500;
-    this.$seekerInput.value = e;
-    this.props.setSpotifyPlayerEllapsedHandler(e);
+    if (e >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+      console.log('song ended');
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.pauseSpotifyPlayerHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.$seekerInput.value = 0;
+      
+    } else {
+      e += 500;
+      this.$seekerInput.value = e;
+      this.props.setSpotifyPlayerEllapsedHandler(e);
+    }
   }
 
   pausePlayer() {
