@@ -40,7 +40,7 @@ User.getFavoriteTracks = userId =>
     .then((userData) => {
       const favs = userData[0].user_favorites;
       if (!favs) {
-        resolve(false);
+        resolve([]);
       } else {
         knex('tracks')
           .groupBy('track_id')

@@ -23,7 +23,9 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
+  availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
+  currentCountry: state.currentCountry,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -88,9 +90,8 @@ class Player extends React.Component {
           .then(devicesRes => devicesRes.json())
           .then((devicesRes) => {
             devicesRes.devices.forEach((device) => {
-              // console.log(device);
               if (device.is_active) {
-                this.changePlayerVolume({ target: { value: device.volume_percent } });
+                this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
               }
             });
           })
@@ -104,19 +105,20 @@ class Player extends React.Component {
 
   // check for new currentTrack
   componentDidUpdate(prev) {
+    // update volume if it doesn't match the state
+    if (this.props.showVolumeGauge) {
+      this.$volumeInput.value = this.props.spotifyPlayer.volume;
+    }
     // set seeker dom element
     if (this.props.spotifyPlayer.$seeker === null && this.$seekerInput !== undefined) {
       this.props.setSpotifyPlayerSeekerElHandler(this.$seekerInput);
     }
 
-    // console.log('CURRENT: ', this.props.spotifyPlayer.currentTrack);
-    // console.log('PREV: ', prev.spotifyPlayer.currentTrack);
     if (this.props.auth && this.props.spotifyPlayer.currentTrack) {
       if (prev.spotifyPlayer.currentTrack === null ||
         (prev.spotifyPlayer.currentTrack.track_id !==
         this.props.spotifyPlayer.currentTrack.track_id)) {
         // track change!
-        // console.log('TRACK_CHANGE');
         this.$seekerInput.value = 0;
         this.props.setSpotifyPlayerEllapsedHandler(0);
         this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
@@ -230,19 +232,20 @@ class Player extends React.Component {
   }
 
   toggleVolumeDisplay() {
-    if(this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
-    if(!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
+    if (this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
+    if (!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
   }
 
   toggleAvailableDevices() {
-    if(this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
-    if(!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
+    if (this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
+    if (!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
   }
 
   toggleQueueMenu() {
     if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
     if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
   }
+
 
   render() {
     // play/pause icon for spotify player
@@ -251,12 +254,45 @@ class Player extends React.Component {
     // sorry!
     const volumeIcon = this.props.spotifyPlayer.volume >= 70 ? 'up' : (this.props.spotifyPlayer.volume <= 10 ? 'off' : 'down');
 
+    const deviceIcon = function(type) {
+      if(type === 'Computer') {
+        return 'laptop';
+      }
+      if(type === 'Smartphone') {
+        return 'mobile';
+      }
+      else {
+        return 'cog';
+      }
+    }
+
     return (
       <div className="Player">
 
         <div className="PlayerControls">
 
           <div className="PlayerControlsPlay">
+            <span
+              className="fa fa fa-futbol-o fa-2x fa-fw"
+              style={{ color: 'rgb(255,0,255)' }}
+              onClick={() => {
+                if (this.props.auth) {
+                  console.log(this.props.currentCountry);
+                  fetch('/playlist/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                      country: this.props.currentCountry,
+                      tracks: this.props.playlist,
+                    }),
+                  })
+                  .then(res => console.log(res))
+                  .catch(err => console.log(err));
+                }
+              }
+            }
+          />
             <i className="fa fa fa-step-backward fa-lg fa-fw" />
             <i
               className={`fa fa-${playIcon} fa-2x fa-fw`}
@@ -291,14 +327,21 @@ class Player extends React.Component {
             </div>: null}
           </div>
 
+          <div className="Player__devices">
 
-          <div className="Player__extras">
-            {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
-              Devices
-          </div> : null}
+            {this.props.showAvailableDevices ? <div className="Device__selector">
+              <div className="Player__devicesTitle">Devices</div>
+              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+                {this.props.availableDevices.map((device, idx) => (
+                  <div className="Player__devicesDevice" key={idx}>
+                    <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                    <span>{device.name}</span>
+                  </div>
+                ))}
+            </div> : null}
 
-            <div className="Player__devices">
-              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.props.showAvailableDevicesEvent} />
+            <div className="Player__devicesToggle">
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
               <span>devices</span>
             </div>
 
@@ -306,8 +349,8 @@ class Player extends React.Component {
               <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
               <span>que</span>
             </div>
-          </div>
 
+          </div>
         </div>
 
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&

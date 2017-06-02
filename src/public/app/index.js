@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import App from './components/App'
 import reducer from './reducers';
 
-const actionLogger = ({dispatch, getState}) =>
+const actionLogger = ({ dispatch, getState }) =>
   (next) => (action) =>
     { console.log(action); return next(action); }
 

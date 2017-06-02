@@ -138,6 +138,32 @@ function showAvailableDevices(state = false, action) {
   }
 }
 
+function availableDevices(state = [
+      {
+          "id": "91c40a4713eda00d55ac0160034cd7e56efc44a4",
+          "is_active": false,
+          "is_restricted": false,
+          "name": "Anthony’s MacBook Air",
+          "type": "Computer",
+          "volume_percent": 31
+      },
+      {
+          "id": "7532fb3520e0a576ea4d7b93f54930c96cd413ed",
+          "is_active": true,
+          "is_restricted": false,
+          "name": "Anthony's iPhone",
+          "type": "Smartphone",
+          "volume_percent": null
+      }
+  ], action) {
+  switch (action.type) {
+    case 'SET_DEVICES':
+      return action.playlist;
+    default:
+      return state;
+  }
+}
+
 // function previewPlayer(state = {}, action) {
 //
 // };
@@ -163,10 +189,15 @@ function spotifyPlayer(state = {
         currentTrack: action.currentTrack || state.currentTrack,
       };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
-    case 'ADD_SONG_TO_SPOTIFY_QUEUE':
-      return { ...state, queue: [...state.queue].push(action.track) };
-    case 'REMOVE_FROM_SPOTIFY_QUEUE':
-      return { ...state, queue: [...state.queue].splice(action.idx, 1) };
+    case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
+      const q = [...state.queue];
+      q.push(action.track);
+      return { ...state, queue: q };
+    case 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE':
+      const queue = [...state.queue];
+      const idx = action.track;
+      queue.splice(idx, 1);
+      return { ...state, queue: queue };
     case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
     case 'SET_SPOTIFY_PLAYER_SEEKER_EL': return { ...state, $seeker: action.el };
     case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
@@ -191,6 +222,14 @@ function favorites(state = [], action) {
   }
 }
 
+function showTopMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_TOP_MENU': return true;
+    case 'HIDE_TOP_MENU': return false;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -209,9 +248,11 @@ const reducer = combineReducers({
   // previewPlayer,
   spotifyPlayer,
   showVolumeGauge,
+  availableDevices,
   showAvailableDevices,
   favorites,
   showAbout,
+  showTopMenu,
 });
 
 export default reducer;

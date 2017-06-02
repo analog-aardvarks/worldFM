@@ -1,4 +1,28 @@
 .TopMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    color: white;
+    font-family: 'Roboto', cursive;
+    font-weight: 400;
+    padding-left: 40px;
+    padding-right: 40px;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* position: absolute; */
+    display: static;
+    top: 0%;
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    z-index: 20;
+}
+
+.TopMenu__content {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -82,10 +106,4 @@ i:active {
   span:hover {
     text-decoration: none;
   }
-}
-
-.ScrollDown--button {
-  font-size: 34pt;
-  position: fixed;
-  bottom: 80px;
 }

@@ -20,6 +20,7 @@ const Song = ({ size,
   setSpotifyPlayerEllapsedHandler,
   favorites,
   handleFavoritesChange,
+  addTrackToSpotifyQueue,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
@@ -115,6 +116,11 @@ const Song = ({ size,
     }
   };
 
+  const addToQueue = () => {
+    addTrackToSpotifyQueue(track);
+  }
+
+
   return (
     <div
       className={`Song ${ranking === songMenu ? 'Song--green-border' : ''}`}
@@ -130,12 +136,12 @@ const Song = ({ size,
         { ranking === songMenu &&
           <div className="Song__more-info" onMouseLeave={closeSongMenu}>
 
-            <div className="Song__more-info-option"
+            {/* <div className="Song__more-info-option"
               onClick={handleFavoritesClick}
               >
               <i className="fa fa-plus fa-lg fa-fw" />
               <span>Add to favorites</span>
-            </div>
+            </div> */}
 
             <div className="Song__more-info-option">
               <i className="fa fa-info-circle fa-lg fa-fw" />
@@ -167,6 +173,7 @@ const Song = ({ size,
 
         <i
           className="SongHover__add-que fa fa-plus fa-2x fa-fw"
+          onClick={addToQueue}
           style={{ right: ((netSize-100)/10), top:((netSize-70)/10) }}
         />
 
