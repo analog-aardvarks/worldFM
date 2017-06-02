@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { togglePlay,
-  setWindowWidth,
+  setWindowSize,
   openSongMenu,
   closeSongMenu,
   playSpotifyPlayer,
@@ -35,8 +35,8 @@ const mapDispatchToProps = dispatch => ({
       .then(dispatch(pauseSpotifyPlayer()))
       .catch(err => console.log(err));
   },
-  onWindowResize: newSize =>
-    dispatch(setWindowWidth(newSize)),
+  onWindowResize: () =>
+    dispatch(setWindowSize(window.innerWidth, window.innerHeight)),
   openSongMenu: index => dispatch(openSongMenu(index)),
   closeSongMenu: () => dispatch(closeSongMenu()),
   clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),

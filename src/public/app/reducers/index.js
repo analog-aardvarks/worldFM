@@ -43,7 +43,7 @@ function currentTrend(state = 'Mix', action) {
 function windowWidth(state = window.innerWidth, action) {
   switch (action.type) {
     case 'WINDOW_RESIZE':
-      return action.newSize;
+      return window.innerWidth;
     default:
       return state;
   }
@@ -52,7 +52,7 @@ function windowWidth(state = window.innerWidth, action) {
 function windowHeight(state = window.innerHeight, action) {
   switch (action.type) {
     case 'WINDOW_RESIZE':
-      return action.newSize;
+      return window.innerHeight;
     default:
       return state;
   }
@@ -223,9 +223,19 @@ function favorites(state = [], action) {
 }
 
 function showTopMenu(state = false, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_TOP_MENU': return true;
     case 'HIDE_TOP_MENU': return false;
+    default: return state;
+  }
+}
+
+function lightbox(state = { show: false, src: null }, action) {
+  switch (action.type) {
+    case 'SHOW_LIGHTBOX':
+      return { show: true, src: action.src };
+    case 'HIDE_LIGHTBOX':
+      return { ...state, show: false };
     default: return state;
   }
 }
@@ -253,6 +263,7 @@ const reducer = combineReducers({
   favorites,
   showAbout,
   showTopMenu,
+  lightbox,
 });
 
 export default reducer;

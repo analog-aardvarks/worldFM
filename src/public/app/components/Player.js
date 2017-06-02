@@ -9,7 +9,8 @@ import {
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval } from '../actions';
+  clearSpotifyPlayerInterval,
+  showLightbox } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -59,6 +60,7 @@ const mapDispatchToProps = dispatch => ({
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
+  handlePicClick: src => dispatch(showLightbox(src)),
 });
 
 class Player extends React.Component {
@@ -384,6 +386,9 @@ class Player extends React.Component {
             src={this.props.spotifyPlayer.currentTrack.track_album_image}
             width="46"
             height="46"
+            onClick={() => {
+              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack.track_album_image);
+            }}
           />
           <div className="CurrentSongInfo">
             <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
@@ -395,7 +400,7 @@ class Player extends React.Component {
         </div>
         }
 
-    </div>
+      </div>
     );
   }
 }

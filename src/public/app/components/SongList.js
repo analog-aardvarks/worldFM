@@ -26,7 +26,7 @@ const Songs = ({
   addTrackToSpotifyQueue,
 }) => {
 
-  window.onresize = () => onWindowResize(window.innerWidth);
+  window.onresize = () => onWindowResize(window.innerWidth, window.innerHeight);
   let songWidth = 0;
   let playlistWidth = showFavoritesMenu ?  windowWidth - 290 : windowWidth;
   if (playlistWidth < 500) {

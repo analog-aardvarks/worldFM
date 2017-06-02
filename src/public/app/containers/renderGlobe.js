@@ -13,8 +13,9 @@ const renderGlobe = (element, startCoordinates) => {
   const height = h < w ? h * 0.55 : w * 0.7;
   const width = height;
   const sens = 0.25;
-  const globeSize = height/2;
+  const globeSize = height / 2;
   let focused;
+  let interval = {};
 
   // Set projection
 
@@ -144,7 +145,6 @@ const renderGlobe = (element, startCoordinates) => {
 
     // Configuration for rotation
     let time;
-    let interval;
     let rotation;
     const velocity = [0.015, -0];
 
@@ -161,10 +161,10 @@ const renderGlobe = (element, startCoordinates) => {
     function startSpin() {
       time = Date.now();
       rotation = projection.rotate();
-      interval = setInterval(spinningGlobe, 10);
+      interval.current = setInterval(spinningGlobe, 10);
     }
     function stopSpin() {
-      clearInterval(interval);
+      clearInterval(interval.current);
     }
     // Rotate!
     svg.on('mouseleave', startSpin)
@@ -198,7 +198,7 @@ const renderGlobe = (element, startCoordinates) => {
       }
     }
   }
-  return { svg, projection };
+  return { svg, projection, interval };
 };
 
 
