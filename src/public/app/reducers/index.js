@@ -138,6 +138,32 @@ function showAvailableDevices(state = false, action) {
   }
 }
 
+function availableDevices(state = [
+      {
+          "id": "91c40a4713eda00d55ac0160034cd7e56efc44a4",
+          "is_active": false,
+          "is_restricted": false,
+          "name": "Anthony’s MacBook Air",
+          "type": "Computer",
+          "volume_percent": 31
+      },
+      {
+          "id": "7532fb3520e0a576ea4d7b93f54930c96cd413ed",
+          "is_active": true,
+          "is_restricted": false,
+          "name": "Anthony's iPhone",
+          "type": "Smartphone",
+          "volume_percent": null
+      }
+  ], action) {
+  switch (action.type) {
+    case 'SET_DEVICES':
+      return action.playlist;
+    default:
+      return state;
+  }
+}
+
 // function previewPlayer(state = {}, action) {
 //
 // };
@@ -214,6 +240,7 @@ const reducer = combineReducers({
   // previewPlayer,
   spotifyPlayer,
   showVolumeGauge,
+  availableDevices,
   showAvailableDevices,
   favorites,
   showAbout,

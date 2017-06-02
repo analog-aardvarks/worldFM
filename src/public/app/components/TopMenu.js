@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 
-const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth, windowHeight, windowWidth}) => {
+const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth }) => {
 
   const countries = availableCountries.reduce((acc, country) => {
       acc.push({value:country, label:country})
@@ -11,11 +11,6 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
   const scrollUp = () => {
     console.log('scrolling up')
     window.scrollTo(0,0);
-  }
-
-  const scrollDown = () => {
-    console.log('scrolling down')
-    window.scrollTo(0, windowHeight - 60);
   }
 
   return (
@@ -47,15 +42,12 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
         <span>connect with spotify</span>
       </a>
 
-        {/* scroll down arrow button */}
-      <span className="ScrollDown--button" style={{left: (windowWidth/2) - 45}} onClick={scrollDown}><i className="fa fa fa-angle-down fa-lg fa-fw" /></span>
-
-        {/* CURRENTLY UNUSED */}
-        {/* <span className="CountryMenu--stoggle" onClick={toggleCountryMenu}> <i className="fa fa fa-globe fa-lg fa-fw" /></span> */}
-        {/* <span><img src="../../assets/icon-fire.png" className="FireIcon" width="26px" /></span> */}
-        {/* <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span> */}
-        {/* <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span> */}
-        {/* <a className="Menu--login" href="/auth/spotify">Login</a> */}
+      {/* CURRENTLY UNUSED */}
+      {/* <span className="CountryMenu--stoggle" onClick={toggleCountryMenu}> <i className="fa fa fa-globe fa-lg fa-fw" /></span> */}
+      {/* <span><img src="../../assets/icon-fire.png" className="FireIcon" width="26px" /></span> */}
+      {/* <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span> */}
+      {/* <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span> */}
+      {/* <a className="Menu--login" href="/auth/spotify">Login</a> */}
 
       </div>
     </div>

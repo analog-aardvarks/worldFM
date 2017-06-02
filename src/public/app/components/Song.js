@@ -120,6 +120,7 @@ const Song = ({ size,
     addTrackToSpotifyQueue(track);
   }
 
+
   return (
     <div
       className={`Song ${ranking === songMenu ? 'Song--green-border' : ''}`}
@@ -135,12 +136,12 @@ const Song = ({ size,
         { ranking === songMenu &&
           <div className="Song__more-info" onMouseLeave={closeSongMenu}>
 
-            <div className="Song__more-info-option"
+            {/* <div className="Song__more-info-option"
               onClick={handleFavoritesClick}
               >
               <i className="fa fa-plus fa-lg fa-fw" />
               <span>Add to favorites</span>
-            </div>
+            </div> */}
 
             <div className="Song__more-info-option">
               <i className="fa fa-info-circle fa-lg fa-fw" />

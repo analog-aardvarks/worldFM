@@ -114,14 +114,14 @@
   justify-content: center;
 }
 
-.Player__extras {
+.Player__devices {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   width: 110px;
 }
 
-.Player__devices {
+.Player__devicesToggle {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,19 +134,38 @@
   }
 }
 
-.Device--Selector {
+.Device__selector {
   height: 140px;
-  width: 110px;
+  width: 200px;
   position: absolute;
-  left: 155px;
+  left: 130px;
   bottom: 64px;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
-  justify-content: space-around;
-  padding: 20px;
+  padding: 10px;
   flex-direction: column;
   align-items: center;
+  font-size: 8pt;
+}
+
+.Player__devicesTitle {
+  display: flex;
+  justify-content: center;
+  font-size: 11pt;
+  margin-bottom: 6px;
+}
+
+.Player__devicesDevice {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
   justify-content: flex-start;
+  width: inherit;
+  .span {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
 }
 
 .QueueMenu--toggle {

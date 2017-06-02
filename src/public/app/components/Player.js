@@ -23,6 +23,7 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
+  availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
 });
 
@@ -243,12 +244,25 @@ class Player extends React.Component {
     if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
   }
 
+
   render() {
     // play/pause icon for spotify player
     // console.log(this.props.spotifyPlayer.isPaused)
     const playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
     // sorry!
     const volumeIcon = this.props.spotifyPlayer.volume >= 70 ? 'up' : (this.props.spotifyPlayer.volume <= 10 ? 'off' : 'down');
+
+    const deviceIcon = function(type) {
+      if(type === 'Computer') {
+        return 'laptop';
+      }
+      if(type === 'Smartphone') {
+        return 'mobile';
+      }
+      else {
+        return 'cog';
+      }
+    }
 
     return (
       <div className="Player">
@@ -291,12 +305,20 @@ class Player extends React.Component {
           </div>
 
 
-          <div className="Player__extras">
-            {this.props.showAvailableDevices ? <div className="Device--Selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
-              Devices
+          <div className="Player__devices">
+            {this.props.showAvailableDevices ? <div className="Device__selector" onMouseOver={this.props.showAvailableDevicesEvent} onMouseOut={this.props.hideAvailableDevicesEvent}>
+              <div className="Player__devicesTitle">Devices</div>
+              {this.props.availableDevices.map(device => (
+
+                <div className="Player__devicesDevice">
+                  <i className={`fa fa-${deviceIcon(device.type)} fa-lg fa-fw`} />
+                  <span>{device.name}</span>
+                </div>
+
+              ))}
           </div> : null}
 
-            <div className="Player__devices">
+            <div className="Player__devicesToggle">
               <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.props.showAvailableDevicesEvent} />
               <span>devices</span>
             </div>
