@@ -7,7 +7,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-
 })
 
 const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackFromQueue }) => {
