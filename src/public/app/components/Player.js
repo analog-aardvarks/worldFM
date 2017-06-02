@@ -78,6 +78,8 @@ class Player extends React.Component {
     this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
     this.updateSeeker = this.updateSeeker.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
+    this.handlePreviousClick = this.handlePreviousClick.bind(this);
+    this.handleNextClick = this.handleNextClick.bind(this);
     // this.interval = null;
   }
 
@@ -136,12 +138,13 @@ class Player extends React.Component {
       console.log('song ended');
       clearInterval(this.props.spotifyPlayer.interval);
       this.props.clearSpotifyPlayerIntervalHandler();
-      this.props.pauseSpotifyPlayerHandler();
       this.props.setSpotifyPlayerEllapsedHandler(0);
       this.$seekerInput.value = 0;
       console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
-      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
-      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+      if(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+        this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+        this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+      }
     } else {
       e += 500;
       this.$seekerInput.value = e;
@@ -248,6 +251,26 @@ class Player extends React.Component {
       .catch(err => console.log(err));
   }
 
+  handlePreviousClick() {
+    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]) {
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx - 1);
+    }
+  }
+
+  handleNextClick() {
+    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+    }
+  }
+
   toggleVolumeDisplay() {
     if (this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
     if (!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
@@ -310,12 +333,13 @@ class Player extends React.Component {
               }
             }
           />
-            <i className="fa fa fa-step-backward fa-lg fa-fw" />
+            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick}/>
             <i
               className={`fa fa-${playIcon} fa-2x fa-fw`}
               onClick={this.handlePlayClick}
             />
-            <i className="fa fa-step-forward fa-lg fa-fw" />
+            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick}/>
+
           </div>
 
           <div className="Player__volume">

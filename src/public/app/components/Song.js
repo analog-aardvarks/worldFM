@@ -80,8 +80,7 @@ const Song = ({ size,
         clearInterval(spotifyPlayer.interval);
         clearSpotifyPlayerIntervalHandler();
         playSpotifyPlayer(track);
-        console.log('teeeeeeeeest', setSpotifyPlayerCurrentTrackIdx)
-        setSpotifyPlayerCurrentTrackIdx(playlist.indexOf(track)) //TODO find playlist
+        setSpotifyPlayerCurrentTrackIdx(playlist.indexOf(track))
       }
     } else {
       togglePreview(track.track_preview_url);
