@@ -6,7 +6,7 @@ Player.play = (req, res) => {
   const deviceID = req.query.device;
   const track = req.body;
   const position = track.track_position - 1;
-  const url = `https://api.spotify.com/v1/me/player/play'?device_id=${deviceID}`;
+  const url = `https://api.spotify.com/v1/me/player/play?device_id=${deviceID}`;
   const options = {
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
     body: {

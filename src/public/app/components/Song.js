@@ -21,6 +21,7 @@ const Song = ({ size,
   favorites,
   handleFavoritesChange,
   addTrackToSpotifyQueue,
+  activeDevice,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
@@ -59,7 +60,7 @@ const Song = ({ size,
         pauseSpotifyPlayer();
       } else if (spotifyPlayer.currentTrack && spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
         // resume!
-        fetch('/player/play', {
+        fetch(`/player/play?device=${this.props.activeDevice.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -77,7 +78,7 @@ const Song = ({ size,
         // change track!
         clearInterval(spotifyPlayer.interval);
         clearSpotifyPlayerIntervalHandler();
-        playSpotifyPlayer(track);
+        playSpotifyPlayer(track, activeDevice.id);
       }
     } else {
       togglePreview(track.track_preview_url);

@@ -24,6 +24,7 @@ const Songs = ({
   handleFavoritesChange,
   showFavoritesMenu,
   addTrackToSpotifyQueue,
+  activeDevice,
 }) => {
 
   window.onresize = () => onWindowResize(window.innerWidth);
@@ -76,6 +77,7 @@ const Songs = ({
             handleFavoritesChange={handleFavoritesChange}
             favorites={favorites}
             addTrackToSpotifyQueue={addTrackToSpotifyQueue}
+            activeDevice={activeDevice}
           />
       ))}
 

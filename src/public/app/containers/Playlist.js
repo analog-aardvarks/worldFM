@@ -20,8 +20,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(togglePlay(src));
     dispatch(closeSongMenu());
   },
-  playSpotifyPlayer: (track) => {
-    fetch('/player/play', {
+  playSpotifyPlayer: (track, device) => {
+    fetch(`/player/play?device=${device}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

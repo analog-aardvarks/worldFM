@@ -38,8 +38,8 @@ const mapDispatchToProps = dispatch => ({
   playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
   pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
   setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
-  playSpotifyPlayer: (track) => {
-    fetch('/player/play', {
+  playSpotifyPlayer: (track, device) => {
+    fetch(`/player/play?device=${device}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -173,7 +173,7 @@ class Player extends React.Component {
         if (this.props.spotifyPlayer.currentTrack) {
           // resume playback
           const track = this.props.spotifyPlayer.currentTrack;
-          fetch('/player/play', {
+          fetch(`/player/play?device=${this.props.activeDevice.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -189,7 +189,7 @@ class Player extends React.Component {
           .catch(err => console.log(err));
         } else {
           // play first song on playlist
-          this.props.playSpotifyPlayer(this.props.playlist[0]);
+          this.props.playSpotifyPlayer(this.props.playlist[0], this.props.activeDevice.id);
         }
       } else {
         // pause
@@ -251,8 +251,42 @@ class Player extends React.Component {
   }
 
   toggleQueueMenu() {
-    if(this.props.showQueueMenu) this.props.hideQueueMenuEvent();
-    if(!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+    if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
+    if (!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+  }
+
+  changeActiveDevice(device) {
+    if (this.props.auth) {
+      if (device.id !== this.props.activeDevice.id) {
+        fetch('/player/pause', { credentials: 'include' })
+          .then(() => {
+            clearInterval(this.props.spotifyPlayer.interval);
+            this.props.clearSpotifyPlayerIntervalHandler();
+            this.props.pauseSpotifyPlayerHandler();
+            this.props.setActiveDeviceHandler(device);
+
+            fetch(`/player/play?device=${this.props.activeDevice.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify(this.props.spotifyPlayer.currentTrack),
+            })
+            .then(() => {
+              this.props.resumeSpotifyPlayerHandler(this.props.spotifyPlayer.currentTrack);
+              fetch(`/player/seek?ms=${this.props.spotifyPlayer.ellapsed}`, { credentials: 'include' })
+                .then(() => {
+                  this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
+                  fetch(`/player/volume?volume=${this.props.spotifyPlayer.volume}`, { credentials: 'include' })
+                    .then()
+                    .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+      }
+    }
   }
 
   render() {
@@ -346,7 +380,7 @@ class Player extends React.Component {
                   className="Player__devicesDevice"
                   style={{ color: device.id === this.props.activeDevice.id ? 'green' : 'white', cursor: 'pointer' }}
                   key={idx}
-                  onClick={() => this.props.setActiveDeviceHandler(device)}
+                  onClick={() => this.changeActiveDevice(device)}
                 >
                   <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
                   <span>{device.name}</span>
