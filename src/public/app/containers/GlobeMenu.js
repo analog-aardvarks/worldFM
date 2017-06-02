@@ -31,7 +31,7 @@ class GlobeMenu extends Component {
 
   scrollDown() {
     console.log('scrolling down')
-    window.scrollTo(0, this.props.windowHeight - 60);
+    window.scrollTo(0, this.props.windowHeight - 62);
   }
 
   render() {

@@ -1,7 +1,17 @@
 import React from 'react';
 import Select from 'react-select';
+import { connect } from 'react-redux';
 
-const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth }) => {
+const mapStateToProps = state => ({
+  showTopMenu: state.showTopMenu,
+})
+
+const mapDispatchToProps = dispatch => ({
+  // showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }), //TODO
+  // hideTopMenu: () => dispatch({ type: 'HIDE_TOP_MENU' }), //TODO
+})
+
+const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth, toggleTopMenu, showTopMenu }) => {
 
   const countries = availableCountries.reduce((acc, country) => {
       acc.push({value:country, label:country})
@@ -13,11 +23,24 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
     window.scrollTo(0,0);
   }
 
+  let height = window.innerHeight - 63;
+
+  window.onscroll = () => {
+    if (window.pageYOffset >= height && showTopMenu === false) {
+      toggleTopMenu();
+    }
+    else if (window.pageYOffset < height && showTopMenu === true) {
+      toggleTopMenu();
+    }
+  }
+
   return (
-    <div className="Menu">
+    <div className="TopMenu" style={{ background: showTopMenu ? 'linear-gradient(#171717, #1C1C1C)' : 'rgba(0, 0, 0, 0)' }}>
+
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
+
       <a className='Menu--logo' href="/">world.fm</a>
-      <div className="TopMenu">
+      <div className="TopMenu__content">
         <Select
           className="TopMenu--CountryDropdown"
           value={currentCountry}
@@ -54,4 +77,4 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
   )
 }
 
-export default TopMenu;
+export default connect(mapStateToProps, mapDispatchToProps)(TopMenu);

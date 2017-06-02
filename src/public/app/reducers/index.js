@@ -222,6 +222,14 @@ function favorites(state = [], action) {
   }
 }
 
+function showTopMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_TOP_MENU': return true;
+    case 'HIDE_TOP_MENU': return false;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   playlist,
   currentSong,
@@ -244,6 +252,7 @@ const reducer = combineReducers({
   showAvailableDevices,
   favorites,
   showAbout,
+  showTopMenu,
 });
 
 export default reducer;
