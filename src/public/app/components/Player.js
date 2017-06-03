@@ -459,8 +459,7 @@ class Player extends React.Component {
           </div>
         </div>
         }
-
-    </div>
+      </div>
     );
   }
 }

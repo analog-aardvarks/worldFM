@@ -1,7 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {
+  setSpotifyPlayerEllapsed,
+  setSpotifyPlayerInterval,
+  setFavorites,
+  addTrackToSpotifyQueue,
+  setSpotifyPlayerCurrentTrack,
+} from '../actions';
+
+const mapStateToProps = state => ({ ...state });
+
+const mapDispatchToProps = dispatch => ({
+  pauseSpotifyPlayerHandler: isPaused => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER', isPaused }),
+  setSpotifyPlayerCurrentTrackHandler: track => dispatch(setSpotifyPlayerCurrentTrack(track)),
+  setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
+  setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
+  clearSpotifyPlayerIntervalHandler: () => dispatch({ type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL' }),
+  handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
+  addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
+});
 
 class Song extends React.Component {
-
   constructor(props) {
     super(props);
     this.borderWidth = 3; // px
@@ -190,4 +209,5 @@ class Song extends React.Component {
   }
 }
 
+Song = connect(mapStateToProps, mapDispatchToProps)(Song);
 export default Song;
