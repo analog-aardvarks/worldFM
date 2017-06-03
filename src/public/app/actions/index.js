@@ -45,6 +45,12 @@ export function closeSongMenu() {
   };
 }
 
+export function showAboutEvent() {
+  return {
+    type: 'SHOW_ABOUT',
+  };
+}
+
 // Spotify Player
 
 export function setSpotifyPlayerVolume(v) {
