@@ -41,9 +41,6 @@ const renderGlobe = (element, startCoordinates) => {
     .attr('class', 'water')
     .attr('d', path);
 
-  const countryTooltip = d3.select('body')
-    .append('div')
-    .attr('class', 'countryTooltip');
   const globeSelect = d3.select(element)
     .append('select')
     .attr('class', 'globeSelect')
@@ -72,11 +69,12 @@ const renderGlobe = (element, startCoordinates) => {
       .data(countries)
       .enter().append('path')
       .attr('class', 'land')
+      .attr('data-tip', 'doot')
       .attr('d', path)
       .filter(d => availableCountries.includes(countryById[d.id]))
         .classed('available', true);
 
-      // Drag event
+    // Drag event
 
     svg.call(d3.behavior.drag()
       .origin(() => {
@@ -93,23 +91,8 @@ const renderGlobe = (element, startCoordinates) => {
     // Mouse events
 
     d3.selectAll('.land')
-      .on('mouseover', (d) => {
-        countryTooltip.text(countryById[d.id])
-          .style('left', `${(d3.event.pageX + 7)} px`)
-          .style('top', `${(d3.event.pageY - 15)} px`)
-          .style('display', 'block')
-          .style('opacity', 1);
-      })
-      .on('mouseout', (d) => {
-        countryTooltip.style('opacity', 0)
-          .style('display', 'none');
-      })
-      .on('mousemove', (d) => {
-        countryTooltip.style('left', `${d3.event.pageX + 7} px`)
-          .style('top', `${d3.event.pageY - 15} px`);
-      })
+      .attr('data-tip', d => countryById[d.id])
       .on('click', (d) => {
-        console.log(countryById[d.id]);
         if (availableCountries.includes(countryById[d.id])) {
           store.dispatch(setCurrentCountry(countryById[d.id]));
         }
