@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { togglePlay,
-  setWindowWidth,
+  setWindowSize,
   openSongMenu,
   closeSongMenu,
   playSpotifyPlayer,
@@ -10,6 +10,8 @@ import { togglePlay,
   setSpotifyPlayerInterval,
   setFavorites,
   addTrackToSpotifyQueue,
+  setSpotifyPlayerCurrentTrackIdx,
+  showLightbox,
 } from '../actions';
 import SongList from '../components/SongList';
 
@@ -35,8 +37,8 @@ const mapDispatchToProps = dispatch => ({
       .then(dispatch(pauseSpotifyPlayer()))
       .catch(err => console.log(err));
   },
-  onWindowResize: newSize =>
-    dispatch(setWindowWidth(newSize)),
+  onWindowResize: () =>
+    dispatch(setWindowSize(window.innerWidth, window.innerHeight)),
   openSongMenu: index => dispatch(openSongMenu(index)),
   closeSongMenu: () => dispatch(closeSongMenu()),
   clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),
@@ -45,6 +47,8 @@ const mapDispatchToProps = dispatch => ({
   setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
   handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
+  setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
+  handleExpandClick: src => dispatch(showLightbox(src)),
 });
 
 const Playlist = connect(

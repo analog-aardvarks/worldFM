@@ -8,13 +8,15 @@ import { setCurrentCountry } from '../actions';
 
 
 const renderGlobe = (element, startCoordinates) => {
+  const globe = {};
   const w = window.innerWidth;
   const h = window.innerHeight;
   const height = h < w ? h * 0.55 : w * 0.7;
   const width = height;
   const sens = 0.25;
-  const globeSize = height/2;
+  const globeSize = height / 2;
   let focused;
+  let interval = {};
 
   // Set projection
 
@@ -144,12 +146,13 @@ const renderGlobe = (element, startCoordinates) => {
 
     // Configuration for rotation
     let time;
-    let interval;
     let rotation;
     const velocity = [0.015, -0];
 
     function spinningGlobe() {
       const dt = Date.now() - time;
+
+      // console.log('tick')
 
       // get the new position
       projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
@@ -158,18 +161,18 @@ const renderGlobe = (element, startCoordinates) => {
       svg.selectAll('path.land').attr('d', path);
     }
 
-    function startSpin() {
+    globe.startSpin = () => {
       time = Date.now();
       rotation = projection.rotate();
-      interval = setInterval(spinningGlobe, 10);
+      interval.current = setInterval(spinningGlobe, 10);
     }
-    function stopSpin() {
-      clearInterval(interval);
+    globe.stopSpin = () => {
+      clearInterval(interval.current);
     }
     // Rotate!
-    svg.on('mouseleave', startSpin)
-      .on('mouseover', stopSpin);
-    startSpin();
+    svg.on('mouseleave', globe.startSpin)
+      .on('mouseover', globe.stopSpin);
+    globe.startSpin();
 
     // Zoom!
     // const scale0 = (width - 1) / 2 / Math.PI;
@@ -198,7 +201,9 @@ const renderGlobe = (element, startCoordinates) => {
       }
     }
   }
-  return { svg, projection };
+  globe.svg = svg;
+  globe.projection = projection;
+  return globe;
 };
 
 

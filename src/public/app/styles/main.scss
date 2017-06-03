@@ -11,8 +11,7 @@ body {
 @import "topMenu";
 @import "globeMenu";
 @import "playlist";
-@import "song";
-@import "spotifyPlaylist";
+// @import "spotifyPlaylist";
 @import "countryMenu";
 @import "favoritesMenu";
 @import "queueMenu";
@@ -20,3 +19,5 @@ body {
 @import "player";
 @import "mobile";
 @import "about";
+@import "lightbox";
+@import "song";

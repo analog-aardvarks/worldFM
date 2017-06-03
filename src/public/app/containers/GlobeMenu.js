@@ -4,9 +4,10 @@ import renderGlobe from './renderGlobe';
 import particleConfig from '../../../../particlesjs-config.json';
 import SweetScroll from 'sweet-scroll';
 
-const mapStateToProps = ({ windowHeight, windowWidth }) => ({
+const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu }) => ({
   windowHeight,
   windowWidth,
+  showTopMenu,
 });
 
 class GlobeMenu extends Component {
@@ -18,15 +19,27 @@ class GlobeMenu extends Component {
 
   componentDidMount() {
     particlesJS('particles', particleConfig);
-    this.globeSpecs = renderGlobe(this.container, [-100, 0]);
+    this.globe = renderGlobe(this.container, [-100, 0]);
+    //code below forces window view to top before leaving
+    // window.onbeforeunload = function () {
+    //   window.scrollTo(0, 0);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.windowHeight !== this.props.windowHeight
       || nextProps.windowWidth !== this.props.windowWidth) {
       d3.select('.globe').remove();
-      const rotation = this.globeSpecs.projection.rotate();
-      this.globeSpecs = renderGlobe(this.container, rotation);
+      this.globe.stopSpin();
+      const rotation = this.globe.projection.rotate();
+      this.globe = renderGlobe(this.container, rotation);
+    }
+
+    // Stop rotation when globe is out of view, resume when in view
+    if (!this.props.showTopMenu && nextProps.showTopMenu) {
+      this.globe.stopSpin();
+    } else if (this.props.showTopMenu && !nextProps.showTopMenu) {
+      this.globe.startSpin();
     }
   }
 

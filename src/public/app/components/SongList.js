@@ -1,8 +1,8 @@
 import React from 'react';
 import Song from './Song';
-import Menu from '../containers/Menu';
 
-const Songs = ({
+
+const SongList = ({
   playlist,
   togglePreview,
   windowWidth,
@@ -24,9 +24,11 @@ const Songs = ({
   handleFavoritesChange,
   showFavoritesMenu,
   addTrackToSpotifyQueue,
+  setSpotifyPlayerCurrentTrackIdx,
+  handleExpandClick,
 }) => {
 
-  window.onresize = () => onWindowResize(window.innerWidth);
+  window.onresize = () => onWindowResize(window.innerWidth, window.innerHeight);
   let songWidth = 0;
   let playlistWidth = showFavoritesMenu ?  windowWidth - 290 : windowWidth;
   if (playlistWidth < 500) {
@@ -52,6 +54,7 @@ const Songs = ({
         width: playlistWidth,
       }}
     >
+
       {
         playlist.map((listItem, idx) => (
           <Song
@@ -60,6 +63,7 @@ const Songs = ({
             track={listItem}
             size={songWidth}
             currentSong={currentSong}
+            playlist={playlist}
             showTrackInfo={showTrackInfo}
             songMenu={songMenu}
             openSongMenu={openSongMenu}
@@ -76,11 +80,12 @@ const Songs = ({
             handleFavoritesChange={handleFavoritesChange}
             favorites={favorites}
             addTrackToSpotifyQueue={addTrackToSpotifyQueue}
+            setSpotifyPlayerCurrentTrackIdx={setSpotifyPlayerCurrentTrackIdx}
+            handleExpandClick={handleExpandClick}
           />
       ))}
-
     </div>
   );
 }
 
-export default Songs;
+export default SongList;

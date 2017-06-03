@@ -26,10 +26,9 @@ export function setCurrentTrend(trend) {
   };
 }
 
-export function setWindowWidth(newSize) {
+export function setWindowSize() {
   return {
     type: 'WINDOW_RESIZE',
-    newSize,
   };
 }
 
@@ -76,6 +75,13 @@ export function playSpotifyPlayer(currentTrack) {
   };
 }
 
+export function setSpotifyPlayerCurrentTrackIdx(currentTrackIdx) {
+  return {
+    type: 'SET_CURRENT_TRACK_IDX',
+    currentTrackIdx,
+  };
+}
+
 export function pauseSpotifyPlayer(track) {
   return {
     type: 'PAUSE_SPOTIFY_PLAYER',
@@ -112,6 +118,13 @@ export function setSpotifyPlayerInterval(interval) {
 export function clearSpotifyPlayerInterval(interval) {
   return {
     type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL',
+  };
+}
+
+export function showLightbox(src) {
+  return {
+    type: 'SHOW_LIGHTBOX',
+    src,
   };
 }
 

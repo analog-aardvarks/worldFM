@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 import {
   setFavorites,
   setSpotifyPlayerVolume,
@@ -9,7 +10,11 @@ import {
   setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval } from '../actions';
+  clearSpotifyPlayerInterval,
+  setSpotifyPlayerCurrentTrackIdx,
+  showLightbox,
+} from '../actions';
+
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -26,6 +31,7 @@ const mapStateToProps = state => ({
   availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
+  currentSong: state.currentSong,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -59,6 +65,8 @@ const mapDispatchToProps = dispatch => ({
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
+  setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
+  handlePicClick: src => dispatch(showLightbox(src)),
 });
 
 class Player extends React.Component {
@@ -74,6 +82,8 @@ class Player extends React.Component {
     this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
     this.updateSeeker = this.updateSeeker.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
+    this.handlePreviousClick = this.handlePreviousClick.bind(this);
+    this.handleNextClick = this.handleNextClick.bind(this);
     // this.interval = null;
   }
 
@@ -124,13 +134,27 @@ class Player extends React.Component {
         this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
       }
     }
+    if (this.props.playlist !== prev.playlist) ReactTooltip.rebuild();
   }
 
   updateSeeker() {
     let e = this.props.spotifyPlayer.ellapsed;
-    e += 500;
-    this.$seekerInput.value = e;
-    this.props.setSpotifyPlayerEllapsedHandler(e);
+    if (e >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+      console.log('song ended');
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.$seekerInput.value = 0;
+      console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
+      if(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+        this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+        this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+      }
+    } else {
+      e += 500;
+      this.$seekerInput.value = e;
+      this.props.setSpotifyPlayerEllapsedHandler(e);
+    }
   }
 
   pausePlayer() {
@@ -181,6 +205,7 @@ class Player extends React.Component {
         } else {
           // play first song on playlist
           this.props.playSpotifyPlayer(this.props.playlist[0]);
+          this.props.setSpotifyPlayerCurrentTrackIdx(0);
         }
       } else {
         // pause
@@ -231,6 +256,26 @@ class Player extends React.Component {
       .catch(err => console.log(err));
   }
 
+  handlePreviousClick() {
+    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]) {
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx - 1);
+    }
+  }
+
+  handleNextClick() {
+    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+      clearInterval(this.props.spotifyPlayer.interval);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.props.setSpotifyPlayerEllapsedHandler(0);
+      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+    }
+  }
+
   toggleVolumeDisplay() {
     if (this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
     if (!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
@@ -269,37 +314,104 @@ class Player extends React.Component {
     return (
       <div className="Player">
 
-        <div className="PlayerControls">
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <input
+          defaultValue="0"
+          className="Player__mobile__seeker__input"
+          onMouseUp={e => this.handleSeekerChange(e)}
+          ref={(el) => { this.$seekerInput = el; }}
+          type="range"
+          min="0"
+          max={this.props.spotifyPlayer.currentTrack.track_length}
+          step="250"
+        /> }
 
-          <div className="PlayerControlsPlay">
-            <span
-              className="fa fa fa-futbol-o fa-2x fa-fw"
-              style={{ color: 'rgb(255,0,255)' }}
-              onClick={() => {
-                if (this.props.auth) {
-                  console.log(this.props.currentCountry);
-                  fetch('/playlist/save', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                      country: this.props.currentCountry,
-                      tracks: this.props.playlist,
-                    }),
-                  })
-                  .then(res => console.log(res))
-                  .catch(err => console.log(err));
-                }
-              }
-            }
-          />
-            <i className="fa fa fa-step-backward fa-lg fa-fw" />
-            <i
-              className={`fa fa-${playIcon} fa-2x fa-fw`}
-              onClick={this.handlePlayClick}
-            />
-            <i className="fa fa-step-forward fa-lg fa-fw" />
+
+        <div className="Player__leftPortion">
+
+          <div className="Player__controls">
+            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
+            <i className={`fa fa-${playIcon} fa-2x fa-fw`} onClick={this.handlePlayClick} />
+            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
           </div>
+
+          <div className="Player__extraButtons">
+
+            <div className="Player__playslistExportToggle">
+              <i className="fa fa fa-download fa-lg fa-fw" onClick={() => {
+                  if (this.props.auth) {
+                    console.log(this.props.currentCountry);
+                    fetch('/playlist/save', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      credentials: 'include',
+                      body: JSON.stringify({
+                        country: this.props.currentCountry,
+                        tracks: this.props.playlist,
+                      }),
+                    })
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
+                  }
+                }}
+              />
+              <span>export</span>
+            </div>
+
+            <div className="Player__devicesToggle">
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
+              <span>devices</span>
+            </div>
+            {this.props.showAvailableDevices ? <div className="Device__selector">
+              <div className="Player__devicesTitle">Devices</div>
+              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+              {this.props.availableDevices.map((device, idx) => (
+                <div className="Player__devicesDevice" key={idx}>
+                  <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                  <span>{device.name}</span>
+                </div>
+              ))}
+            </div> : null}
+
+            <div className="QueueMenu--toggle">
+              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
+              <span>que</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="Player__seeker">
+
+          {/* <div className="Player__seeker__ellapsed">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
+          </div> */}
+          {/* Desktop only! */}
+          {/* <input
+            defaultValue="0"
+            className="Player__seeker__input"
+            onMouseUp={e => this.handleSeekerChange(e)}
+            ref={(el) => { this.$seekerInput = el; }}
+            type="range"
+            min="0"
+            max={this.props.spotifyPlayer.currentTrack.track_length}
+            step="250"
+          /> */}
+          {/* <div className="Player__seeker__total">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
+          </div> */}
+
+        </div>
+        }
+
+        <div className="Equalizer">
+        <img src="http://rs558.pbsrc.com/albums/ss30/mem72/equalizer.gif~c200"/>
+        </div>
+        {/* current song when authenticated */}
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="CurrentSong">
 
           <div className="Player__volume">
             <i
@@ -327,78 +439,28 @@ class Player extends React.Component {
             </div>: null}
           </div>
 
-          <div className="Player__devices">
-
-            {this.props.showAvailableDevices ? <div className="Device__selector">
-              <div className="Player__devicesTitle">Devices</div>
-              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
-                {this.props.availableDevices.map((device, idx) => (
-                  <div className="Player__devicesDevice" key={idx}>
-                    <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
-                    <span>{device.name}</span>
-                  </div>
-                ))}
-            </div> : null}
-
-            <div className="Player__devicesToggle">
-              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
-              <span>devices</span>
-            </div>
-
-            <div className="QueueMenu--toggle">
-              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
-              <span>que</span>
-            </div>
-
-          </div>
-        </div>
-
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="Player__seeker">
-          <div className="Player__seeker__ellapsed">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
-          </div>
-          {/* Desktop only! */}
-          <input
-            defaultValue="0"
-            className="Player__seeker__input"
-            onMouseUp={e => this.handleSeekerChange(e)}
-            ref={(el) => { this.$seekerInput = el; }}
-            type="range"
-            min="0"
-            max={this.props.spotifyPlayer.currentTrack.track_length}
-            step="250"
-          />
-          <div className="Player__seeker__total">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div>
-        </div>
-        }
-
-        <div className="Equalizer">
-        <img src="http://rs558.pbsrc.com/albums/ss30/mem72/equalizer.gif~c200"/>
-        </div>
-        {/* current song when authenticated */}
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="CurrentSong">
           <img
             className="CurrentSongPic"
             alt="track_album_image"
             src={this.props.spotifyPlayer.currentTrack.track_album_image}
             width="46"
             height="46"
+            onClick={() => {
+              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack.track_album_image);
+            }}
           />
           <div className="CurrentSongInfo">
             <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
             <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
           </div>
-          <div className="Player__likeButton">
-            <i className="fa fa fa-heart fa-lg fa-fw" />
+
+          <div className="CurrentSongTime">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
           </div>
         </div>
         }
 
-    </div>
+      </div>
     );
   }
 }

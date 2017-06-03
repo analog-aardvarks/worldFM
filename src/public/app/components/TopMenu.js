@@ -9,8 +9,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  // showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }), //TODO
-  // hideTopMenu: () => dispatch({ type: 'HIDE_TOP_MENU' }), //TODO
+
 })
 
 const TopMenu = ({ windowHeight, oggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth, toggleTopMenu, showTopMenu }) => {
@@ -39,7 +38,7 @@ const TopMenu = ({ windowHeight, oggleCountryMenu, toggleQueueMenu, toggleFavori
   }
 
   return (
-    <div className="TopMenu" style={{ background: showTopMenu ? 'linear-gradient(#171717, #1C1C1C)' : 'rgba(0, 0, 0, 0)' }}>
+    <div className="TopMenu" style={{ background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #080808)' : 'rgba(0, 0, 0, 0)' }}>
 
       <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
 
@@ -51,7 +50,6 @@ const TopMenu = ({ windowHeight, oggleCountryMenu, toggleQueueMenu, toggleFavori
           options={countries}
           onChange={handleCountryChange}
           clearable={false}
-          // placeholder="Select a country.."    doesn't work beacause initial value is selected
       />
 
       <div className="GlobeView--toggle" onClick={scrollUp}>
