@@ -19,6 +19,10 @@ class GlobeMenu extends Component {
   componentDidMount() {
     particlesJS('particles', particleConfig);
     this.globe = renderGlobe(this.container, [-100, 0]);
+    //code below forces window view to top before leaving
+    // window.onbeforeunload = function () {
+    //   window.scrollTo(0, 0);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {

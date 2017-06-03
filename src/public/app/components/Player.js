@@ -314,38 +314,101 @@ class Player extends React.Component {
     return (
       <div className="Player">
 
-        <div className="PlayerControls">
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <input
+          defaultValue="0"
+          className="Player__mobile__seeker__input"
+          onMouseUp={e => this.handleSeekerChange(e)}
+          ref={(el) => { this.$seekerInput = el; }}
+          type="range"
+          min="0"
+          max={this.props.spotifyPlayer.currentTrack.track_length}
+          step="250"
+        /> }
 
-          <div className="PlayerControlsPlay">
-            <span
-              className="fa fa fa-futbol-o fa-2x fa-fw"
-              style={{ color: 'rgb(255,0,255)' }}
-              onClick={() => {
-                if (this.props.auth) {
-                  console.log(this.props.currentCountry);
-                  fetch('/playlist/save', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                      country: this.props.currentCountry,
-                      tracks: this.props.playlist,
-                    }),
-                  })
-                  .then(res => console.log(res))
-                  .catch(err => console.log(err));
-                }
-              }
-            }
-          />
-            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick}/>
-            <i
-              className={`fa fa-${playIcon} fa-2x fa-fw`}
-              onClick={this.handlePlayClick}
-            />
-            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick}/>
+
+        <div className="Player__leftPortion">
+
+          <div className="Player__controls">
+            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
+            <i className={`fa fa-${playIcon} fa-2x fa-fw`} onClick={this.handlePlayClick} />
+            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
+          </div>
+
+          <div className="Player__extraButtons">
+
+            <div className="Player__playslistExportToggle">
+              <i className="fa fa fa-download fa-lg fa-fw" onClick={() => {
+                  if (this.props.auth) {
+                    console.log(this.props.currentCountry);
+                    fetch('/playlist/save', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      credentials: 'include',
+                      body: JSON.stringify({
+                        country: this.props.currentCountry,
+                        tracks: this.props.playlist,
+                      }),
+                    })
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
+                  }
+                }}
+              />
+              <span>export</span>
+            </div>
+
+            <div className="Player__devicesToggle">
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
+              <span>devices</span>
+            </div>
+            {this.props.showAvailableDevices ? <div className="Device__selector">
+              <div className="Player__devicesTitle">Devices</div>
+              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+              {this.props.availableDevices.map((device, idx) => (
+                <div className="Player__devicesDevice" key={idx}>
+                  <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                  <span>{device.name}</span>
+                </div>
+              ))}
+            </div> : null}
+
+            <div className="QueueMenu--toggle">
+              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
+              <span>que</span>
+            </div>
 
           </div>
+
+        </div>
+
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="Player__seeker">
+
+          {/* <div className="Player__seeker__ellapsed">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
+          </div> */}
+          {/* Desktop only! */}
+          {/* <input
+            defaultValue="0"
+            className="Player__seeker__input"
+            onMouseUp={e => this.handleSeekerChange(e)}
+            ref={(el) => { this.$seekerInput = el; }}
+            type="range"
+            min="0"
+            max={this.props.spotifyPlayer.currentTrack.track_length}
+            step="250"
+          /> */}
+          {/* <div className="Player__seeker__total">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
+          </div> */}
+
+        </div>
+        }
+
+        {/* current song when authenticated */}
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="CurrentSong">
 
           <div className="Player__volume">
             <i
@@ -373,57 +436,6 @@ class Player extends React.Component {
             </div>: null}
           </div>
 
-          <div className="Player__devices">
-
-            {this.props.showAvailableDevices ? <div className="Device__selector">
-              <div className="Player__devicesTitle">Devices</div>
-              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
-                {this.props.availableDevices.map((device, idx) => (
-                  <div className="Player__devicesDevice" key={idx}>
-                    <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
-                    <span>{device.name}</span>
-                  </div>
-                ))}
-            </div> : null}
-
-            <div className="Player__devicesToggle">
-              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
-              <span>devices</span>
-            </div>
-
-            <div className="QueueMenu--toggle">
-              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
-              <span>que</span>
-            </div>
-
-          </div>
-        </div>
-
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="Player__seeker">
-          <div className="Player__seeker__ellapsed">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
-          </div>
-          {/* Desktop only! */}
-          <input
-            defaultValue="0"
-            className="Player__seeker__input"
-            onMouseUp={e => this.handleSeekerChange(e)}
-            ref={(el) => { this.$seekerInput = el; }}
-            type="range"
-            min="0"
-            max={this.props.spotifyPlayer.currentTrack.track_length}
-            step="250"
-          />
-          <div className="Player__seeker__total">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div>
-        </div>
-        }
-
-        {/* current song when authenticated */}
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="CurrentSong">
           <img
             className="CurrentSongPic"
             alt="track_album_image"
@@ -438,8 +450,9 @@ class Player extends React.Component {
             <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
             <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
           </div>
-          <div className="Player__likeButton">
-            <i className="fa fa fa-heart fa-lg fa-fw" />
+
+          <div className="CurrentSongTime">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
           </div>
         </div>
         }
