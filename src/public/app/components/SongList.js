@@ -24,6 +24,7 @@ const Songs = ({
   handleFavoritesChange,
   showFavoritesMenu,
   addTrackToSpotifyQueue,
+  handleExpandClick,
 }) => {
 
   window.onresize = () => onWindowResize(window.innerWidth, window.innerHeight);
@@ -76,6 +77,7 @@ const Songs = ({
             handleFavoritesChange={handleFavoritesChange}
             favorites={favorites}
             addTrackToSpotifyQueue={addTrackToSpotifyQueue}
+            handleExpandClick={handleExpandClick}
           />
       ))}
 

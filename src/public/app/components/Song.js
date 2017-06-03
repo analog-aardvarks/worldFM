@@ -4,7 +4,6 @@ const Song = ({ size,
   track,
   ranking,
   currentSong,
-  howTrackInfo,
   songMenu,
   openSongMenu,
   closeSongMenu,
@@ -21,6 +20,7 @@ const Song = ({ size,
   favorites,
   handleFavoritesChange,
   addTrackToSpotifyQueue,
+  handleExpandClick,
 }) => {
   const borderWidth = 3; // px
   const netSize = size - borderWidth;
@@ -118,7 +118,7 @@ const Song = ({ size,
 
   const addToQueue = () => {
     addTrackToSpotifyQueue(track);
-  }
+  };
 
 
   return (
@@ -180,6 +180,12 @@ const Song = ({ size,
         <i
           className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
           onClick={handleFavoritesClick}
+          style={{ right: ((netSize-100)/10) + 30, top:((netSize-70)/10) }}
+        />
+
+        <i
+          className="SongHover__expand fa fa-expand fa-2x fa-fw"
+          onClick={() => handleExpandClick(track.track_album_image)}
           style={{ left: ((netSize-100)/10), top:((netSize-70)/10) }}
         />
 
