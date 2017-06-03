@@ -131,27 +131,56 @@ const renderGlobe = (element, startCoordinates) => {
     let time;
     let rotation;
     const velocity = [0.015, -0];
+    let isSpinning = true;
 
-    function spinningGlobe() {
-      const dt = Date.now() - time;
+    // function spinningGlobe() {
+    //   const dt = Date.now() - time;
+    //
+    //   // console.log('tick')
+    //
+    //   // get the new position
+    //   projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+    //
+    //   // update land positions
+    //   svg.selectAll('path.land').attr('d', path);
+    // }
+    //
+    // globe.startSpin = () => {
+    //   time = Date.now();
+    //   rotation = projection.rotate();
+    //   interval.current = setInterval(spinningGlobe, 10);
+    // }
+    // globe.stopSpin = () => {
+    //   clearInterval(interval.current);
+    // }
+    // // Rotate!
+    // svg.on('mouseleave', globe.startSpin)
+    //   .on('mouseover', globe.stopSpin);
+    // globe.startSpin();
 
-      // console.log('tick')
+    // //////////////////
+    // d3.time implementation
+    // //////////////////
 
-      // get the new position
-      projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+    function spinningGlobe(t) {
+      if (isSpinning) {
+        // get the new position
+        projection.rotate([rotation[0] + (velocity[0] * t), rotation[1] + (velocity[1] * t)]);
 
-      // update land positions
-      svg.selectAll('path.land').attr('d', path);
+        // update land positions
+        svg.selectAll('path.land').attr('d', path);
+      }
     }
 
     globe.startSpin = () => {
-      time = Date.now();
       rotation = projection.rotate();
-      interval.current = setInterval(spinningGlobe, 10);
-    }
+      d3.timer(spinningGlobe);
+      isSpinning = true;
+    };
     globe.stopSpin = () => {
-      clearInterval(interval.current);
-    }
+      // timer.stop();
+      isSpinning = false;
+    };
     // Rotate!
     svg.on('mouseleave', globe.startSpin)
       .on('mouseover', globe.stopSpin);
