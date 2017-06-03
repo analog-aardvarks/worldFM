@@ -179,8 +179,8 @@ const runExtraWorker = () => {
 const runWorkers = () => {
   getAuth().then((spotifyApi) => {
     // spotifyWorker('thesoundsofspotify', 50, 850);
-    spotifyWorker('thesoundsofspotify', 50, 900);
-    // spotifyWorker('thesoundsofspotify', 50, 950);
+    // spotifyWorker('thesoundsofspotify', 50, 900);
+    spotifyWorker('thesoundsofspotify', 50, 950);
     // spotifyWorker('thesoundsofspotify', 50, 150);
     // spotifyWorker('thesoundsofspotify', 2, 200);
     // runExtraWorker();
