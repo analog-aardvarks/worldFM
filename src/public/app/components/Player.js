@@ -137,7 +137,7 @@ class Player extends React.Component {
   stopInterval() { this.props.clearSpotifyPlayerIntervalHandler(); }
 
   startInterval() {
-    this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateEllapsed, 500));
+    this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateEllapsed, 250));
   }
 
   updateDeviceInfo(devices) {
@@ -212,7 +212,7 @@ class Player extends React.Component {
 
   updateEllapsed() {
     let ellapsed = this.props.spotifyPlayer.ellapsed;
-    ellapsed += 500;
+    ellapsed += 250;
     this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
   }
 

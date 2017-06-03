@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'underscore';
 import { connect } from 'react-redux';
 import {
   setSpotifyPlayerEllapsed,
@@ -27,18 +28,21 @@ class Song extends React.Component {
     this.netSize = this.props.size - this.borderWidth;
     this.updateEllapsed = this.updateEllapsed.bind(this);
     this.handlePlayClick = this.handlePlayClick.bind(this);
+    this.handlePlayClick = _.throttle(this.handlePlayClick, 750);
     this.handleFavoritesClick = this.handleFavoritesClick.bind(this);
+    this.handleFavoritesClick = _.throttle(this.handleFavoritesClick, 750);
     this.addToQueue = this.addToQueue.bind(this);
+    this.addToQueue = _.throttle(this.addToQueue, 750);
   }
 
   updateEllapsed() {
     let ellapsed = this.props.spotifyPlayer.ellapsed;
-    ellapsed += 500;
+    ellapsed += 250;
     this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
   }
 
   startInterval() {
-    this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateEllapsed, 500));
+    this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateEllapsed, 250));
   }
 
   resetInterval() {
