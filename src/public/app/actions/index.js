@@ -26,10 +26,9 @@ export function setCurrentTrend(trend) {
   };
 }
 
-export function setWindowWidth(newSize) {
+export function setWindowSize() {
   return {
     type: 'WINDOW_RESIZE',
-    newSize,
   };
 }
 
@@ -119,6 +118,13 @@ export function setSpotifyPlayerInterval(interval) {
 export function clearSpotifyPlayerInterval(interval) {
   return {
     type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL',
+  };
+}
+
+export function showLightbox(src) {
+  return {
+    type: 'SHOW_LIGHTBOX',
+    src,
   };
 }
 

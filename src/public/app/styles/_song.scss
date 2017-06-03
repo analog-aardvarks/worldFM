@@ -28,6 +28,7 @@
 
 .SongHover__play-button,
 .SongHover__add-que,
+.SongHover__expand,
 .SongHover__add-favorites {
   opacity: 0;
   position: absolute;
@@ -35,6 +36,7 @@
 
 .Song__wrapper:hover .SongHover__play-button,
 .Song__wrapper:hover .SongHover__add-que,
+.Song__wrapper:hover .SongHover__expand,
 .Song__wrapper:hover .SongHover__add-favorites  {
   opacity: 0.6;
 }

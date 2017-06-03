@@ -34,6 +34,7 @@
     "passport": "^0.3.2",
     "passport-spotify": "^0.3.1",
     "prop-types": "^15.5.10",
+    "rc-tooltip": "^3.4.6",
     "react": "^15.5.4",
     "react-burger-menu": "^2.0.2",
     "react-dom": "^15.5.4",
