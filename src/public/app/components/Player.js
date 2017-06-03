@@ -314,6 +314,19 @@ class Player extends React.Component {
     return (
       <div className="Player">
 
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <input
+          defaultValue="0"
+          className="Player__mobile__seeker__input"
+          onMouseUp={e => this.handleSeekerChange(e)}
+          ref={(el) => { this.$seekerInput = el; }}
+          type="range"
+          min="0"
+          max={this.props.spotifyPlayer.currentTrack.track_length}
+          step="250"
+        /> }
+
+
         <div className="Player__leftPortion">
 
           <div className="Player__controls">
@@ -372,11 +385,11 @@ class Player extends React.Component {
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="Player__seeker">
 
-          <div className="Player__seeker__ellapsed">
+          {/* <div className="Player__seeker__ellapsed">
             <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
-          </div>
+          </div> */}
           {/* Desktop only! */}
-          <input
+          {/* <input
             defaultValue="0"
             className="Player__seeker__input"
             onMouseUp={e => this.handleSeekerChange(e)}
@@ -385,10 +398,17 @@ class Player extends React.Component {
             min="0"
             max={this.props.spotifyPlayer.currentTrack.track_length}
             step="250"
-          />
-          <div className="Player__seeker__total">
+          /> */}
+          {/* <div className="Player__seeker__total">
             <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div>
+          </div> */}
+
+        </div>
+        }
+
+        {/* current song when authenticated */}
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="CurrentSong">
 
           <div className="Player__volume">
             <i
@@ -416,12 +436,6 @@ class Player extends React.Component {
             </div>: null}
           </div>
 
-        </div>
-        }
-
-        {/* current song when authenticated */}
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="CurrentSong">
           <img
             className="CurrentSongPic"
             alt="track_album_image"
@@ -436,8 +450,9 @@ class Player extends React.Component {
             <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
             <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
           </div>
-          <div className="Player__likeButton">
-            <i className="fa fa fa-heart fa-lg fa-fw" />
+
+          <div className="CurrentSongTime">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
           </div>
         </div>
         }
