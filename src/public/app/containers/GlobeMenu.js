@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import renderGlobe from './renderGlobe';
 import particleConfig from '../../../../particlesjs-config.json';
+import SweetScroll from 'sweet-scroll';
 
 const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu }) => ({
   windowHeight,
@@ -19,6 +20,10 @@ class GlobeMenu extends Component {
   componentDidMount() {
     particlesJS('particles', particleConfig);
     this.globe = renderGlobe(this.container, [-100, 0]);
+    //code below forces window view to top before leaving
+    // window.onbeforeunload = function () {
+    //   window.scrollTo(0, 0);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,8 +44,11 @@ class GlobeMenu extends Component {
   }
 
   scrollDown() {
+    const sweetScroll = new SweetScroll();
     console.log('scrolling down')
-    window.scrollTo(0, this.props.windowHeight - 62);
+    const height = this.props.windowHeight - 62;
+    console.log([0, this.props.windowHeight - 62]);
+    sweetScroll.to(height, 0);
   }
 
   render() {
