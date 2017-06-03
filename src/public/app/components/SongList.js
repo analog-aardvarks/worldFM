@@ -1,6 +1,5 @@
 import React from 'react';
 import Song from './Song';
-import Menu from '../containers/Menu';
 
 const Songs = ({
   playlist,
@@ -16,35 +15,25 @@ const Songs = ({
   pauseSpotifyPlayer,
   auth,
   spotifyPlayer,
-  clearSpotifyPlayerIntervalHandler,
-  resumeSpotifyPlayerHandler,
-  setSpotifyPlayerIntervalHandler,
-  setSpotifyPlayerEllapsedHandler,
   favorites,
   handleFavoritesChange,
   showFavoritesMenu,
   addTrackToSpotifyQueue,
   activeDevice,
+  pauseSpotifyPlayerHandler,
+  setSpotifyPlayerCurrentTrackHandler,
+  setSpotifyPlayerEllapsedHandler,
+  setSpotifyPlayerIntervalHandler,
+  clearSpotifyPlayerIntervalHandler,
 }) => {
-
   window.onresize = () => onWindowResize(window.innerWidth);
   let songWidth = 0;
-  let playlistWidth = showFavoritesMenu ?  windowWidth - 290 : windowWidth;
-  if (playlistWidth < 500) {
-    songWidth = playlistWidth / 2;
-  }
-  else if (playlistWidth < 800) {
-    songWidth = playlistWidth / 3;
-  }
-  else if (playlistWidth < 1100) {
-    songWidth = playlistWidth / 4;
-  }
-  else if (playlistWidth < 1450) {
-    songWidth = playlistWidth / 5;
-  }
-  else  {
-    songWidth = playlistWidth / 6;
-  }
+  const playlistWidth = showFavoritesMenu ? windowWidth - 290 : windowWidth;
+  if (playlistWidth < 500) songWidth = playlistWidth / 2;
+  else if (playlistWidth < 800) songWidth = playlistWidth / 3;
+  else if (playlistWidth < 1100) songWidth = playlistWidth / 4;
+  else if (playlistWidth < 1450) songWidth = playlistWidth / 5;
+  else songWidth = playlistWidth / 6;
 
   return (
     <div
@@ -71,18 +60,19 @@ const Songs = ({
             pauseSpotifyPlayer={pauseSpotifyPlayer}
             togglePreview={togglePreview}
             clearSpotifyPlayerIntervalHandler={clearSpotifyPlayerIntervalHandler}
-            resumeSpotifyPlayerHandler={resumeSpotifyPlayerHandler}
             setSpotifyPlayerIntervalHandler={setSpotifyPlayerIntervalHandler}
             setSpotifyPlayerEllapsedHandler={setSpotifyPlayerEllapsedHandler}
             handleFavoritesChange={handleFavoritesChange}
             favorites={favorites}
             addTrackToSpotifyQueue={addTrackToSpotifyQueue}
             activeDevice={activeDevice}
+            setSpotifyPlayerCurrentTrackHandler={setSpotifyPlayerCurrentTrackHandler}
+            pauseSpotifyPlayerHandler={pauseSpotifyPlayerHandler}
           />
       ))}
 
     </div>
   );
-}
+};
 
 export default Songs;

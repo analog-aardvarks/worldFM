@@ -1,15 +1,12 @@
 import { connect } from 'react-redux';
 import { togglePlay,
   setWindowWidth,
-  openSongMenu,
   closeSongMenu,
-  playSpotifyPlayer,
-  pauseSpotifyPlayer,
-  clearSpotifyPlayerInterval,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
   setFavorites,
   addTrackToSpotifyQueue,
+  setSpotifyPlayerCurrentTrack,
 } from '../actions';
 import SongList from '../components/SongList';
 
@@ -20,29 +17,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch(togglePlay(src));
     dispatch(closeSongMenu());
   },
-  playSpotifyPlayer: (track, device) => {
-    fetch(`/player/play?device=${device}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(track),
-    })
-    .then(() => dispatch(playSpotifyPlayer(track)))
-    .catch(err => console.log(err));
-  },
-  pauseSpotifyPlayer: () => {
-    fetch('/player/pause', { credentials: 'include' })
-      .then(dispatch(pauseSpotifyPlayer()))
-      .catch(err => console.log(err));
-  },
   onWindowResize: newSize =>
     dispatch(setWindowWidth(newSize)),
-  openSongMenu: index => dispatch(openSongMenu(index)),
-  closeSongMenu: () => dispatch(closeSongMenu()),
-  clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),
-  resumeSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
+  pauseSpotifyPlayerHandler: isPaused => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER', isPaused }),
+  setSpotifyPlayerCurrentTrackHandler: track => dispatch(setSpotifyPlayerCurrentTrack(track)),
   setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
   setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
+  clearSpotifyPlayerIntervalHandler: () => dispatch({ type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL' }),
   handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
 });

@@ -28,9 +28,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // auth
   authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
-  // spotify player actions
   pauseSpotifyPlayerHandler: isPaused => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER', isPaused }),
   setSpotifyPlayerCurrentTrackHandler: track => dispatch(setSpotifyPlayerCurrentTrack(track)),
   setSpotifyPlayerVolumeHandler: volume => dispatch(setSpotifyPlayerVolume(volume)),
@@ -38,12 +36,10 @@ const mapDispatchToProps = dispatch => ({
   setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
   setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
   clearSpotifyPlayerIntervalHandler: () => dispatch({ type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL' }),
-  // set store
   setSyncStatusHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
   setActiveDeviceHandler: device => dispatch({ type: 'SET_ACTIVE_DEVICE', device }),
   setDevicesHandler: devices => dispatch({ type: 'SET_DEVICES', devices }),
   setUserFavoritesHandler: favs => dispatch(setFavorites(favs)),
-  // menus
   showVolumeGaugeEvent: () => dispatch({ type: 'SHOW_VOLUME_GAUGE' }),
   hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
   showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
@@ -80,14 +76,9 @@ class Player extends React.Component {
   }
 
   componentDidUpdate(prev) {
-    if (this.props.auth &&
-        prev.spotifyPlayer.currentTrack !== this.props.spotifyPlayer.currentTrack) {
-      this.playTrack()
-      .then(() => {
-        this.props.pauseSpotifyPlayerHandler(false);
-        this.resetInterval();
-      })
-      .catch(err => console.log(err));
+    if (this.$seekerInput &&
+        prev.spotifyPlayer.ellapsed !== this.props.spotifyPlayer.ellapsed) {
+      this.$seekerInput.value = this.props.spotifyPlayer.ellapsed;
     }
   }
 
@@ -120,6 +111,12 @@ class Player extends React.Component {
   handlePlayClick() {
     if (!this.props.spotifyPlayer.currentTrack) {
       this.props.setSpotifyPlayerCurrentTrackHandler(this.props.playlist[0]);
+      this.playTrack(this.props.playlist[0])
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(false);
+        this.resetInterval();
+      })
+      .catch(err => console.log(err));
     } else if (this.props.spotifyPlayer.isPaused) {
       this.resumeTrack()
       .then(() => {
@@ -153,23 +150,23 @@ class Player extends React.Component {
           this.setActiveDevice(device);
         }
       });
-      if (!foundActiveDevice) { this.setActiveDevice(devices[0]); }
+      if (!foundActiveDevice && devices[0] !== undefined) { this.setActiveDevice(devices[0]); }
     }
   }
 
   resetInterval() {
     this.props.clearSpotifyPlayerIntervalHandler();
-    this.ellapsed = 0;
+    this.props.setSpotifyPlayerEllapsedHandler(0);
     this.startInterval();
   }
 
-  playTrack() {
+  playTrack(trackToPlay = this.props.spotifyPlayer.currentTrack) {
     return new Promise((resolve, reject) => {
       fetch(`/player/play?device=${this.props.activeDevice.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify(this.props.spotifyPlayer.currentTrack),
+        body: JSON.stringify(trackToPlay),
       })
       .then(() => resolve())
       .catch(err => reject(err));
@@ -217,7 +214,6 @@ class Player extends React.Component {
     let ellapsed = this.props.spotifyPlayer.ellapsed;
     ellapsed += 500;
     this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
-    if (this.$seekerInput) this.$seekerInput.value = ellapsed;
   }
 
   handleSeekerChange(e) {
@@ -225,6 +221,7 @@ class Player extends React.Component {
     this.props.setSpotifyPlayerEllapsedHandler(ms);
     this.resumeTrack(ms)
     .then(() => {
+      this.props.pauseSpotifyPlayerHandler(false);
       this.startInterval();
     })
     .catch(err => console.log(err));
