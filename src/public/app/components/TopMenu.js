@@ -1,9 +1,11 @@
 import React from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
+import SweetScroll from 'sweet-scroll';
 
 const mapStateToProps = state => ({
   showTopMenu: state.showTopMenu,
+  windowHeight: state.windowHeight,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -11,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
   // hideTopMenu: () => dispatch({ type: 'HIDE_TOP_MENU' }), //TODO
 })
 
-const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth, toggleTopMenu, showTopMenu }) => {
+const TopMenu = ({ windowHeight, oggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth, toggleTopMenu, showTopMenu }) => {
 
   const countries = availableCountries.reduce((acc, country) => {
       acc.push({value:country, label:country})
@@ -19,9 +21,11 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
     }, []);
 
   const scrollUp = () => {
-    console.log('scrolling up')
-    window.scrollTo(0,0);
-  }
+    const sweetScroll = new SweetScroll();
+    // sweetScroll.toElement(document.getElementsByClassName('globeMenu'));
+    console.log('scrolling up');
+    sweetScroll.to(0, 0);
+  };
 
   let height = window.innerHeight - 63;
 

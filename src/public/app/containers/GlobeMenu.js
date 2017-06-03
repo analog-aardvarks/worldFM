@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import renderGlobe from './renderGlobe';
 import particleConfig from '../../../../particlesjs-config.json';
+import SweetScroll from 'sweet-scroll';
 
 const mapStateToProps = ({ windowHeight, windowWidth }) => ({
   windowHeight,
@@ -30,8 +31,11 @@ class GlobeMenu extends Component {
   }
 
   scrollDown() {
+    const sweetScroll = new SweetScroll();
     console.log('scrolling down')
-    window.scrollTo(0, this.props.windowHeight - 62);
+    const height = this.props.windowHeight - 62;
+    console.log([0, this.props.windowHeight - 62]);
+    sweetScroll.to(height, 0);
   }
 
   render() {

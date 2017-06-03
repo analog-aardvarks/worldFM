@@ -49,6 +49,7 @@
     "shuffle-array": "^1.0.1",
     "spotify-web-api-node": "^2.4.0",
     "style-loader": "^0.18.1",
+    "sweet-scroll": "^2.2.1",
     "topojson": "^3.0.0",
     "topojson-client": "^3.0.0",
     "underscore": "^1.8.3"

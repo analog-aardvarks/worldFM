@@ -47,7 +47,7 @@ const Songs = ({
 
   return (
     <div
-      className="Playlist"
+      id="playlist" className="Playlist"
       style={{
         width: playlistWidth,
       }}
