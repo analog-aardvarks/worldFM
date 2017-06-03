@@ -9,7 +9,7 @@ import FavoritesMenu from '../components/FavoritesMenu';
 import BurgerMenu from '../components/BurgerMenu';
 import QueueMenu from '../components/QueueMenu';
 import About from '../components/About';
-
+import SweetScroll from 'sweet-scroll';
 
 const mapStateToProps = state => ({
   availableCountries,

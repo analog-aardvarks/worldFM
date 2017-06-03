@@ -434,6 +434,9 @@ class Player extends React.Component {
         </div>
         }
 
+        {!this.props.spotifyPlayer.isPaused || this.props.currentSong.isPlaying && <div className="Equalizer">
+        <img src="http://rs558.pbsrc.com/albums/ss30/mem72/equalizer.gif~c200" height= {60} />
+        </div>}
         {/* current song when authenticated */}
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="CurrentSong">
