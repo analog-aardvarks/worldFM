@@ -8,7 +8,6 @@ const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
 const User = require('./helpers/User');
-const favorites = require('./helpers/favorites');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth

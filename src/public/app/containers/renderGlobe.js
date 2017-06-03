@@ -41,9 +41,6 @@ const renderGlobe = (element, startCoordinates) => {
     .attr('class', 'water')
     .attr('d', path);
 
-  const countryTooltip = d3.select('body')
-    .append('div')
-    .attr('class', 'countryTooltip');
   const globeSelect = d3.select(element)
     .append('select')
     .attr('class', 'globeSelect')
@@ -72,11 +69,12 @@ const renderGlobe = (element, startCoordinates) => {
       .data(countries)
       .enter().append('path')
       .attr('class', 'land')
+      .attr('data-tip', 'doot')
       .attr('d', path)
       .filter(d => availableCountries.includes(countryById[d.id]))
         .classed('available', true);
 
-      // Drag event
+    // Drag event
 
     svg.call(d3.behavior.drag()
       .origin(() => {
@@ -93,23 +91,8 @@ const renderGlobe = (element, startCoordinates) => {
     // Mouse events
 
     d3.selectAll('.land')
-      .on('mouseover', (d) => {
-        countryTooltip.text(countryById[d.id])
-          .style('left', `${(d3.event.pageX + 7)} px`)
-          .style('top', `${(d3.event.pageY - 15)} px`)
-          .style('display', 'block')
-          .style('opacity', 1);
-      })
-      .on('mouseout', (d) => {
-        countryTooltip.style('opacity', 0)
-          .style('display', 'none');
-      })
-      .on('mousemove', (d) => {
-        countryTooltip.style('left', `${d3.event.pageX + 7} px`)
-          .style('top', `${d3.event.pageY - 15} px`);
-      })
+      .attr('data-tip', d => countryById[d.id])
       .on('click', (d) => {
-        console.log(countryById[d.id]);
         if (availableCountries.includes(countryById[d.id])) {
           store.dispatch(setCurrentCountry(countryById[d.id]));
         }
@@ -148,27 +131,56 @@ const renderGlobe = (element, startCoordinates) => {
     let time;
     let rotation;
     const velocity = [0.015, -0];
+    let isSpinning = true;
 
-    function spinningGlobe() {
-      const dt = Date.now() - time;
+    // function spinningGlobe() {
+    //   const dt = Date.now() - time;
+    //
+    //   // console.log('tick')
+    //
+    //   // get the new position
+    //   projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+    //
+    //   // update land positions
+    //   svg.selectAll('path.land').attr('d', path);
+    // }
+    //
+    // globe.startSpin = () => {
+    //   time = Date.now();
+    //   rotation = projection.rotate();
+    //   interval.current = setInterval(spinningGlobe, 10);
+    // }
+    // globe.stopSpin = () => {
+    //   clearInterval(interval.current);
+    // }
+    // // Rotate!
+    // svg.on('mouseleave', globe.startSpin)
+    //   .on('mouseover', globe.stopSpin);
+    // globe.startSpin();
 
-      // console.log('tick')
+    // //////////////////
+    // d3.time implementation
+    // //////////////////
 
-      // get the new position
-      projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+    function spinningGlobe(t) {
+      if (isSpinning) {
+        // get the new position
+        projection.rotate([rotation[0] + (velocity[0] * t), rotation[1] + (velocity[1] * t)]);
 
-      // update land positions
-      svg.selectAll('path.land').attr('d', path);
+        // update land positions
+        svg.selectAll('path.land').attr('d', path);
+      }
     }
 
     globe.startSpin = () => {
-      time = Date.now();
       rotation = projection.rotate();
-      interval.current = setInterval(spinningGlobe, 10);
-    }
+      d3.timer(spinningGlobe);
+      isSpinning = true;
+    };
     globe.stopSpin = () => {
-      clearInterval(interval.current);
-    }
+      // timer.stop();
+      isSpinning = false;
+    };
     // Rotate!
     svg.on('mouseleave', globe.startSpin)
       .on('mouseover', globe.stopSpin);
