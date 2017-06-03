@@ -1,8 +1,8 @@
 import React from 'react';
 import Song from './Song';
-import Menu from '../containers/Menu';
 
-const Songs = ({
+
+const SongList = ({
   playlist,
   togglePreview,
   windowWidth,
@@ -54,6 +54,7 @@ const Songs = ({
         width: playlistWidth,
       }}
     >
+
       {
         playlist.map((listItem, idx) => (
           <Song
@@ -83,9 +84,8 @@ const Songs = ({
             handleExpandClick={handleExpandClick}
           />
       ))}
-
     </div>
   );
 }
 
-export default Songs;
+export default SongList;
