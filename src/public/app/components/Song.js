@@ -5,7 +5,6 @@ const Song = ({ size,
   ranking,
   currentSong,
   playlist,
-  howTrackInfo,
   songMenu,
   openSongMenu,
   closeSongMenu,
@@ -124,6 +123,8 @@ const Song = ({ size,
     addTrackToSpotifyQueue(track);
   };
 
+  const favClass = favorites.some(f => f.track_id === track.track_id) ? 'isFav' : null;
+
 
   return (
     <div
@@ -179,18 +180,21 @@ const Song = ({ size,
           className="SongHover__add-que fa fa-plus fa-2x fa-fw"
           onClick={addToQueue}
           style={{ right: ((netSize-100)/10), top:((netSize-70)/10) }}
+          data-tip="Add to Queue"
         />
 
         <i
-          className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
+          className={`SongHover__add-favorites fa fa-heart fa-2x fa-fw ${favClass}`}
           onClick={handleFavoritesClick}
           style={{ right: ((netSize-100)/10) + 30, top:((netSize-70)/10) }}
+          data-tip="Add to Favorites"
         />
 
         <i
           className="SongHover__expand fa fa-expand fa-2x fa-fw"
           onClick={() => handleExpandClick(track.track_album_image)}
           style={{ left: ((netSize-100)/10), top:((netSize-70)/10) }}
+          data-tip="View Album Art"
         />
 
         <div className="Song__container">

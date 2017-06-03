@@ -34,6 +34,7 @@
   position: absolute;
 }
 
+
 .Song__wrapper:hover .SongHover__play-button,
 .Song__wrapper:hover .SongHover__add-que,
 .Song__wrapper:hover .SongHover__expand,
@@ -124,4 +125,18 @@
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.50);
   border: 3px solid $spotifyGreen;
+}
+
+// .isFav {
+//   color: $spotifyGreen;
+//   opacity: 1;
+// }
+
+.isFav:hover {
+  color: $spotifyGreen;
+}
+
+.isFav:active {
+  color: #3c763d;
+  opacity: 1;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 import {
   setFavorites,
   setSpotifyPlayerVolume,
@@ -133,6 +134,7 @@ class Player extends React.Component {
         this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
       }
     }
+    if (this.props.playlist !== prev.playlist) ReactTooltip.rebuild();
   }
 
   updateSeeker() {
