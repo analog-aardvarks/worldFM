@@ -46,7 +46,6 @@ const TopMenu = ({ toggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, togg
           options={countries}
           onChange={handleCountryChange}
           clearable={false}
-          // placeholder="Select a country.."    doesn't work beacause initial value is selected
       />
 
       <div className="GlobeView--toggle" onClick={scrollUp}>

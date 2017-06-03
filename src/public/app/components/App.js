@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip';
 import Menu from '../containers/Menu';
 import Playlist from '../containers/Playlist';
 import HiddenPlayer from '../containers/HiddenPlayer';
@@ -19,6 +20,7 @@ const App = () => (
     <Player />
     <About />
     <Lightbox />
+    <ReactTooltip />
   </div>
 );
 
