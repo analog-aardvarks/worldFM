@@ -106,6 +106,7 @@ class Player extends React.Component {
   setActiveDevice(device) {
     this.props.setActiveDeviceHandler(device);
     this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
+    this.$volumeInput.value = device.volume_percent;
   }
 
   handlePlayClick() {
@@ -150,7 +151,9 @@ class Player extends React.Component {
           this.setActiveDevice(device);
         }
       });
-      if (!foundActiveDevice && devices[0] !== undefined) { this.setActiveDevice(devices[0]); }
+      if (!foundActiveDevice && devices[0] !== undefined) {
+        this.setActiveDevice(devices[0]);
+      }
     }
   }
 
@@ -189,12 +192,19 @@ class Player extends React.Component {
   }
 
   resumeTrack(ms = this.props.spotifyPlayer.ellapsed) {
+    const volume = this.props.spotifyPlayer.volume;
     return new Promise((resolve, reject) => {
-      this.playTrack()
+      this.changeVolume(0)
       .then(() => {
-        this.seekTrack(ms)
+        this.playTrack()
         .then(() => {
-          resolve();
+          this.seekTrack(ms)
+          .then(() => {
+            this.changeVolume(volume)
+            .then(() => resolve())
+            .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
         })
         .catch(err => reject(err));
       })

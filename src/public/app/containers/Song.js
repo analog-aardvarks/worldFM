@@ -75,15 +75,30 @@ class Song extends React.Component {
   }
 
   resumeTrack(ms = this.props.spotifyPlayer.ellapsed) {
+    const volume = this.props.spotifyPlayer.volume;
     return new Promise((resolve, reject) => {
-      this.playTrack()
+      this.changeVolume(0)
       .then(() => {
-        this.seekTrack(ms)
+        this.playTrack()
         .then(() => {
-          resolve();
+          this.seekTrack(ms)
+          .then(() => {
+            this.changeVolume(volume)
+            .then(() => resolve())
+            .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
         })
         .catch(err => reject(err));
       })
+      .catch(err => reject(err));
+    });
+  }
+
+  changeVolume(volume) {
+    return new Promise((resolve, reject) => {
+      fetch(`/player/volume?volume=${volume}&device=${this.props.activeDevice.id}`, { credentials: 'include' })
+      .then(() => resolve())
       .catch(err => reject(err));
     });
   }
