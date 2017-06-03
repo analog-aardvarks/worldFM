@@ -24,6 +24,7 @@ class GlobeMenu extends Component {
     if (nextProps.windowHeight !== this.props.windowHeight
       || nextProps.windowWidth !== this.props.windowWidth) {
       d3.select('.globe').remove();
+      clearInterval(this.globeSpecs.interval.current);
       const rotation = this.globeSpecs.projection.rotate();
       this.globeSpecs = renderGlobe(this.container, rotation);
     }
