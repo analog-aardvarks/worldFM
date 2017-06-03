@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 import {
   setFavorites,
   setSpotifyPlayerVolume,
-  playSpotifyPlayer,
   setSpotifyPlayerMute,
-  setSpotifyPlayerSeekerEl,
   setSpotifyPlayerEllapsed,
   setSpotifyPlayerInterval,
-  clearSpotifyPlayerInterval } from '../actions';
+  setSpotifyPlayerCurrentTrack } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -30,30 +28,22 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  // auth
   authUserHandler: () => dispatch({ type: 'AUTHENTICATE_USER' }),
+  // spotify player actions
+  pauseSpotifyPlayerHandler: isPaused => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER', isPaused }),
+  setSpotifyPlayerCurrentTrackHandler: track => dispatch(setSpotifyPlayerCurrentTrack(track)),
+  setSpotifyPlayerVolumeHandler: volume => dispatch(setSpotifyPlayerVolume(volume)),
+  setSpotifyPlayerMuteHandler: mute => dispatch(setSpotifyPlayerMute(mute)),
+  setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
+  setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
+  clearSpotifyPlayerIntervalHandler: () => dispatch({ type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL' }),
+  // set store
   setSyncStatusHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
   setActiveDeviceHandler: device => dispatch({ type: 'SET_ACTIVE_DEVICE', device }),
   setDevicesHandler: devices => dispatch({ type: 'SET_DEVICES', devices }),
   setUserFavoritesHandler: favs => dispatch(setFavorites(favs)),
-  playSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
-  pauseSpotifyPlayerHandler: () => dispatch({ type: 'PAUSE_SPOTIFY_PLAYER' }),
-  setSpotifyPlayerVolumeHandler: v => dispatch(setSpotifyPlayerVolume(v)),
-  playSpotifyPlayer: (track, device) => {
-    fetch(`/player/play?device=${device}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(track),
-    })
-    .then(() => dispatch(playSpotifyPlayer(track)))
-    .catch(err => console.log(err));
-  },
-  resumeSpotifyPlayerHandler: track => dispatch(playSpotifyPlayer(track)),
-  setSpotifyPlayerMute: mute => dispatch(setSpotifyPlayerMute(mute)),
-  setSpotifyPlayerSeekerElHandler: el => dispatch(setSpotifyPlayerSeekerEl(el)),
-  setSpotifyPlayerEllapsedHandler: ellapsed => dispatch(setSpotifyPlayerEllapsed(ellapsed)),
-  setSpotifyPlayerIntervalHandler: interval => dispatch(setSpotifyPlayerInterval(interval)),
-  clearSpotifyPlayerIntervalHandler: () => dispatch(clearSpotifyPlayerInterval()),
+  // menus
   showVolumeGaugeEvent: () => dispatch({ type: 'SHOW_VOLUME_GAUGE' }),
   hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
   showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
@@ -65,281 +55,301 @@ const mapDispatchToProps = dispatch => ({
 class Player extends React.Component {
   constructor(props) {
     super(props);
-    this.pausePlayer = this.pausePlayer.bind(this);
-    this.changePlayerVolume = this.changePlayerVolume.bind(this);
-    this.changePlayerVolumeWithThrottle = _.throttle(this.changePlayerVolume, 350);
+    this.pauseTrack = this.pauseTrack.bind(this);
+    this.pauseTrack = _.throttle(this.pauseTrack, 750);
+    this.handleVolumeChange = this.handleVolumeChange.bind(this);
+    this.handleVolumeChange = _.throttle(this.handleVolumeChange, 750);
     this.handlePlayClick = this.handlePlayClick.bind(this);
+    this.handlePlayClick = _.throttle(this.handlePlayClick, 750);
     this.handleVolumeClick = this.handleVolumeClick.bind(this);
+    this.handleVolumeClick = _.throttle(this.handleVolumeClick, 750);
     this.handleSeekerChange = this.handleSeekerChange.bind(this);
-    this.toggleVolumeDisplay = this.toggleVolumeDisplay.bind(this);
+    this.handleSeekerChange = _.throttle(this.handleSeekerChange, 750);
+    this.refreshDevices = this.refreshDevices.bind(this);
+    this.refreshDevices = _.throttle(this.refreshDevices, 750);
+    this.handleDeviceClick = this.handleDeviceClick.bind(this);
+    this.handleDeviceClick = _.throttle(this.handleDeviceClick, 750);
     this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
-    this.updateSeeker = this.updateSeeker.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
-    // this.interval = null;
+    this.updateEllapsed = this.updateEllapsed.bind(this);
+    this.stopInterval = this.stopInterval.bind(this);
   }
 
-  // check for auth
   componentWillMount() {
+    this.getUserInfo();
+  }
+
+  componentDidUpdate(prev) {
+    if (this.props.auth &&
+        prev.spotifyPlayer.currentTrack !== this.props.spotifyPlayer.currentTrack) {
+      this.playTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(false);
+        this.resetInterval();
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
+  getUserInfo() {
     fetch('/user/info', { credentials: 'include' })
       .then((res) => {
-        if (res.status === 200) this.props.authUserHandler(); // set auth status
+        if (res.status === 200) this.props.authUserHandler();
         return res.json();
       })
       .then((res) => {
-        let activeDevice = '';
-        if (!res.favs) res.favs = [];
-        if (!res.devices.devices) {
-          console.log('no open devices'); /* TODO */
-          window.open('https://open.spotify.com');
-        } else {
-          this.props.setDevicesHandler(res.devices.devices);
-          res.devices.devices.forEach((device) => {
-            if (device.is_active) {
-              activeDevice = device.id;
-              this.props.setActiveDeviceHandler(device);
-              this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
-            }
-          });
-          if (activeDevice === '') {
-            console.log('no open devices'); /* TODO */
-            window.open('https://open.spotify.com');
-          }
-        }
-
-        this.props.setUserFavoritesHandler(res.favs);
+        this.props.setUserFavoritesHandler(res.favs || []);
         this.props.setSyncStatusHandler(res.sync);
+        this.updateDeviceInfo(res.devices.devices);
       })
       .catch(err => console.log(err));
   }
 
-  // check for new currentTrack
-  componentDidUpdate(prev) {
-    // update volume if it doesn't match the state
-    if (this.props.showVolumeGauge) {
-      this.$volumeInput.value = this.props.spotifyPlayer.volume;
-    }
-    // set seeker dom element
-    if (this.props.spotifyPlayer.$seeker === null && this.$seekerInput !== undefined) {
-      this.props.setSpotifyPlayerSeekerElHandler(this.$seekerInput);
-    }
-
-    if (this.props.auth && this.props.spotifyPlayer.currentTrack) {
-      if (prev.spotifyPlayer.currentTrack === null ||
-        (prev.spotifyPlayer.currentTrack.track_id !==
-        this.props.spotifyPlayer.currentTrack.track_id)) {
-        // track change!
-        this.$seekerInput.value = 0;
-        this.props.setSpotifyPlayerEllapsedHandler(0);
-        this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
-      }
-    }
+  getNewDeviceInfo() {
+    fetch('/devices', { credentials: 'include' })
+    .then(res => res.json())
+    .then(res => this.updateDeviceInfo(res))
+    .catch(res => console.log(res));
   }
 
-  updateSeeker() {
-    let e = this.props.spotifyPlayer.ellapsed;
-    e += 500;
-    this.$seekerInput.value = e;
-    this.props.setSpotifyPlayerEllapsedHandler(e);
-  }
-
-  pausePlayer() {
-    if (this.props.auth) {
-      fetch('/player/pause', { credentials: 'include' })
-        .then((res) => {
-          // console.log(this.props.spotifyPlayer.ellapsed);
-          clearInterval(this.props.spotifyPlayer.interval);
-          this.props.clearSpotifyPlayerIntervalHandler();
-          this.props.pauseSpotifyPlayerHandler();
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
-  changePlayerVolume(e) {
-    if (this.props.auth) {
-      fetch(`/player/volume?volume=${e.target.value}`, { credentials: 'include' })
-        .then((res) => {
-          this.$volumeInput.value = e.target.value;
-          this.props.setSpotifyPlayerVolumeHandler(e.target.value);
-        })
-        .catch(err => console.log(err));
-    }
+  setActiveDevice(device) {
+    this.props.setActiveDeviceHandler(device);
+    this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
   }
 
   handlePlayClick() {
-    // we don't want it to break if not auth
-    if (this.props.auth) {
-      if (this.props.spotifyPlayer.isPaused) {
-        if (this.props.spotifyPlayer.currentTrack) {
-          // resume playback
-          const track = this.props.spotifyPlayer.currentTrack;
-          fetch(`/player/play?device=${this.props.activeDevice.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(track),
-          })
-          .then(() => {
-            this.props.resumeSpotifyPlayerHandler(track);
-            // seek!
-            fetch(`/player/seek?ms=${this.props.spotifyPlayer.ellapsed}`, { credentials: 'include' })
-              .then(res => this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500)))
-              .catch(err => console.log(err));
-          })
-          .catch(err => console.log(err));
-        } else {
-          // play first song on playlist
-          this.props.playSpotifyPlayer(this.props.playlist[0], this.props.activeDevice.id);
-        }
-      } else {
-        // pause
-        this.pausePlayer();
-      }
+    if (!this.props.spotifyPlayer.currentTrack) {
+      this.props.setSpotifyPlayerCurrentTrackHandler(this.props.playlist[0]);
+    } else if (this.props.spotifyPlayer.isPaused) {
+      this.resumeTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(false);
+        this.startInterval();
+      })
+      .catch(err => console.log(err));
+    } else {
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.stopInterval();
+      })
+      .catch(err => console.log(err));
     }
   }
 
-  handleVolumeClick() {
-    // console.log(this.props.spotifyPlayer.volume, this.props.spotifyPlayer.mute, this.$volumeInput.value);
-    if (parseInt(this.props.spotifyPlayer.volume, 10) > 0) {
-      const currentVolume = this.props.spotifyPlayer.volume;
-      // mute player
-      fetch('/player/volume?volume=0', { credentials: 'include' })
-        .then((res) => {
-          this.$volumeInput.value = '0';
-          this.props.setSpotifyPlayerVolumeHandler(0);
-          this.props.setSpotifyPlayerMute(currentVolume);
-        })
-        .catch(err => console.log(err));
-    } else {
-      // volume is 0
-      if (this.props.spotifyPlayer.mute) {
-        // restore volume
-        fetch(`/player/volume?volume=${this.props.spotifyPlayer.mute}`, { credentials: 'include' })
-          .then((res) => {
-            this.$volumeInput.value = this.props.spotifyPlayer.mute;
-            this.props.setSpotifyPlayerVolumeHandler(this.props.spotifyPlayer.mute);
-            this.props.setSpotifyPlayerMute(false);
-          })
-          .catch(err => console.log(err));
-      }
+  stopInterval() { this.props.clearSpotifyPlayerIntervalHandler(); }
+
+  startInterval() {
+    this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateEllapsed, 500));
+  }
+
+  updateDeviceInfo(devices) {
+    if (devices) {
+      let foundActiveDevice = false;
+      this.props.setDevicesHandler(devices);
+      devices.forEach((device) => {
+        if (device.is_active) {
+          foundActiveDevice = true;
+          this.setActiveDevice(device);
+        }
+      });
+      if (!foundActiveDevice) { this.setActiveDevice(devices[0]); }
     }
+  }
+
+  resetInterval() {
+    this.props.clearSpotifyPlayerIntervalHandler();
+    this.ellapsed = 0;
+    this.startInterval();
+  }
+
+  playTrack() {
+    return new Promise((resolve, reject) => {
+      fetch(`/player/play?device=${this.props.activeDevice.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(this.props.spotifyPlayer.currentTrack),
+      })
+      .then(() => resolve())
+      .catch(err => reject(err));
+    });
+  }
+
+  refreshDevices() {
+    fetch('/devices', { credentials: 'include' })
+    .then(res => res.json())
+    .then(res => this.props.setDevicesHandler(res.devices))
+    .catch(res => console.log(res));
+  }
+
+  pauseTrack() {
+    return new Promise((resolve, reject) => {
+      fetch(`/player/pause?device=${this.props.activeDevice.id}`, { credentials: 'include' })
+      .then(() => resolve())
+      .catch(err => reject(err));
+    });
+  }
+
+  resumeTrack(ms = this.props.spotifyPlayer.ellapsed) {
+    return new Promise((resolve, reject) => {
+      this.playTrack()
+      .then(() => {
+        this.seekTrack(ms)
+        .then(() => {
+          resolve();
+        })
+        .catch(err => reject(err));
+      })
+      .catch(err => reject(err));
+    });
+  }
+
+  seekTrack(ms) {
+    return new Promise((resolve, reject) => {
+      fetch(`/player/seek?ms=${ms}&device=${this.props.activeDevice.id}`, { credentials: 'include' })
+        .then(() => resolve())
+        .catch(err => reject(err));
+    });
+  }
+
+  updateEllapsed() {
+    let ellapsed = this.props.spotifyPlayer.ellapsed;
+    ellapsed += 500;
+    this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
+    if (this.$seekerInput) this.$seekerInput.value = ellapsed;
   }
 
   handleSeekerChange(e) {
-    // seek!
     const ms = parseInt(e.target.value, 10);
-    clearInterval(this.props.spotifyPlayer.interval);
-    this.props.clearSpotifyPlayerIntervalHandler();
-    // this.$volumeInput.value = ms;
+    this.props.setSpotifyPlayerEllapsedHandler(ms);
+    this.resumeTrack(ms)
+    .then(() => {
+      this.startInterval();
+    })
+    .catch(err => console.log(err));
+  }
 
-    fetch(`/player/seek?ms=${ms}`, { credentials: 'include' })
-      .then((res) => {
-        this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
-        this.props.setSpotifyPlayerEllapsedHandler(ms);
+  changeVolume(volume) {
+    return new Promise((resolve, reject) => {
+      fetch(`/player/volume?volume=${volume}&device=${this.props.activeDevice.id}`, { credentials: 'include' })
+      .then(() => resolve())
+      .catch(err => reject(err));
+    });
+  }
+
+  handleVolumeChange(e) {
+    const volume = parseInt(e.target.value, 10);
+    this.changeVolume(volume)
+    .then(() => {
+      this.props.setSpotifyPlayerVolumeHandler(e.target.value);
+    });
+  }
+
+  handleVolumeClick() {
+    if (parseInt(this.props.spotifyPlayer.volume, 10) > 0) {
+      const volume = this.props.spotifyPlayer.volume;
+      this.changeVolume(0)
+      .then(() => {
+        this.$volumeInput.value = '0';
+        this.props.setSpotifyPlayerVolumeHandler(0);
+        this.props.setSpotifyPlayerMuteHandler(volume);
       })
       .catch(err => console.log(err));
+    } else if (this.props.spotifyPlayer.mute) {
+      const volume = this.props.spotifyPlayer.mute;
+      this.changeVolume(volume)
+      .then(() => {
+        this.$volumeInput.value = this.props.spotifyPlayer.mute;
+        this.props.setSpotifyPlayerVolumeHandler(this.props.spotifyPlayer.mute);
+        this.props.setSpotifyPlayerMuteHandler(false);
+      })
+      .catch(err => console.log(err));
+    }
   }
 
   toggleVolumeDisplay() {
     if (this.props.showVolumeGauge) this.props.hideVolumeGaugeEvent();
-    if (!this.props.showVolumeGauge) this.props.showVolumeGaugeEvent();
+    else this.props.showVolumeGaugeEvent();
   }
 
   toggleAvailableDevices() {
     if (this.props.showAvailableDevices) this.props.hideAvailableDevicesEvent();
-    if (!this.props.showAvailableDevices) this.props.showAvailableDevicesEvent();
+    else this.props.showAvailableDevicesEvent();
   }
 
   toggleQueueMenu() {
     if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
-    if (!this.props.showQueueMenu) this.props.showQueueMenuEvent();
+    else this.props.showQueueMenuEvent();
   }
 
-  changeActiveDevice(device) {
-    if (this.props.auth) {
-      if (device.id !== this.props.activeDevice.id) {
-        fetch('/player/pause', { credentials: 'include' })
-          .then(() => {
-            clearInterval(this.props.spotifyPlayer.interval);
-            this.props.clearSpotifyPlayerIntervalHandler();
-            this.props.pauseSpotifyPlayerHandler();
-            this.props.setActiveDeviceHandler(device);
-
-            fetch(`/player/play?device=${this.props.activeDevice.id}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              credentials: 'include',
-              body: JSON.stringify(this.props.spotifyPlayer.currentTrack),
-            })
-            .then(() => {
-              this.props.resumeSpotifyPlayerHandler(this.props.spotifyPlayer.currentTrack);
-              fetch(`/player/seek?ms=${this.props.spotifyPlayer.ellapsed}`, { credentials: 'include' })
-                .then(() => {
-                  this.props.setSpotifyPlayerIntervalHandler(setInterval(this.updateSeeker, 500));
-                  fetch(`/player/volume?volume=${this.props.spotifyPlayer.volume}`, { credentials: 'include' })
-                    .then()
-                    .catch(err => console.log(err));
-                })
-                .catch(err => console.log(err));
-            })
-            .catch(err => console.log(err));
-          })
-          .catch(err => console.log(err));
-      }
+  handleDeviceClick(device) {
+    if (this.props.spotifyPlayer.isPaused === true ||
+        !this.props.spotifyPlayer.currentTrack) {
+      this.props.setActiveDeviceHandler(device);
+    } else {
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.props.setActiveDeviceHandler(device);
+        this.stopInterval();
+        this.resumeTrack()
+        .then(() => {
+          this.props.pauseSpotifyPlayerHandler(false);
+          this.startInterval();
+        })
+        .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
     }
+  }
+
+  deviceIcon(device) {
+    if (device.type === 'Computer') return 'laptop';
+    if (device.type === 'Tablet') return 'tablet';
+    if (device.type === 'Smartphone') return 'mobile';
+    return 'cog';
+  }
+
+  savePlaylist() {
+    fetch('/playlist/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        country: this.props.currentCountry,
+        tracks: this.props.playlist,
+      }),
+    })
+    .then()
+    .catch(err => console.log(err));
   }
 
   render() {
-    // play/pause icon for spotify player
-    // console.log(this.props.spotifyPlayer.isPaused)
-    const playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
-    // sorry!
-    const volumeIcon = this.props.spotifyPlayer.volume >= 70 ? 'up' : (this.props.spotifyPlayer.volume <= 10 ? 'off' : 'down');
-
-    const deviceIcon = function(type) {
-      if(type === 'Computer') {
-        return 'laptop';
-      }
-      if(type === 'Smartphone') {
-        return 'mobile';
-      }
-      else {
-        return 'cog';
-      }
-    }
+    let playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
+    if (this.props.spotifyPlayer.isPaused === undefined) playIcon = 'play';
+    let volumeIcon = 'up';
+    if (this.props.spotifyPlayer.volume < 70) volumeIcon = 'down';
+    if (this.props.spotifyPlayer.volume < 20) volumeIcon = 'off';
 
     return (
       <div className="Player">
-
         <div className="PlayerControls">
-
           <div className="PlayerControlsPlay">
+            {/* create playlist */}
             <span
               className="fa fa fa-futbol-o fa-2x fa-fw"
               style={{ color: 'rgb(255,0,255)' }}
-              onClick={() => {
-                if (this.props.auth) {
-                  console.log(this.props.currentCountry);
-                  fetch('/playlist/save', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                      country: this.props.currentCountry,
-                      tracks: this.props.playlist,
-                    }),
-                  })
-                  .then(res => console.log(res))
-                  .catch(err => console.log(err));
-                }
-              }
-            }
+              onClick={this.savePlaylist}
             />
+            {/* back */}
             <i className="fa fa fa-step-backward fa-lg fa-fw" />
+            {/* play / pause */}
             <i
               className={`fa fa-${playIcon} fa-2x fa-fw`}
               onClick={this.handlePlayClick}
             />
+            {/* next */}
             <i className="fa fa-step-forward fa-lg fa-fw" />
           </div>
 
@@ -349,40 +359,49 @@ class Player extends React.Component {
               onClick={this.handleVolumeClick}
               onMouseOver={this.props.showVolumeGaugeEvent}
             />
-            {this.props.showVolumeGauge ? <div className="Player__volumeGauge" onMouseOver={this.props.showVolumeGaugeEvent}>
+
+            <div
+              className="Player__volumeGauge"
+              onMouseOver={this.props.showVolumeGaugeEvent}
+              style={{ bottom: this.props.showVolumeGauge ? 94 : -1000 }}
+            >
               <input
                 ref={(el) => { this.$volumeInput = el; }}
                 onMouseOver={this.props.showVolumeGaugeEvent}
                 onMouseOut={this.props.hideVolumeGaugeEvent}
-                onChange={(e) => {
-                  e.persist();
-                  this.changePlayerVolumeWithThrottle(e);
-                }}
                 onMouseUp={(e) => {
                   e.persist();
-                  this.changePlayerVolume(e);
+                  this.handleVolumeChange(e);
                 }}
                 type="range"
                 min="0"
                 max="100"
               />
-            </div>: null}
+            </div>
           </div>
 
           <div className="Player__devices">
 
             {this.props.showAvailableDevices ?
             <div className="Device__selector">
-              <div className="Player__devicesTitle">Devices</div>
-              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+              <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between}' }}
+              >
+                <i
+                  className="fa fa-refresh fa-2x fa-fw"
+                  onClick={this.refreshDevices}
+                />
+                <div className="Player__devicesTitle">Devices</div>
+                <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
+              </div>
               {this.props.availableDevices.map((device, idx) => (
                 <div
                   className="Player__devicesDevice"
                   style={{ color: device.id === this.props.activeDevice.id ? 'green' : 'white', cursor: 'pointer' }}
                   key={idx}
-                  onClick={() => this.changeActiveDevice(device)}
+                  onClick={() => this.handleDeviceClick(device)}
                 >
-                  <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
+                  <i className={`fa fa-${this.deviceIcon(device)} fa-2x fa-fw`} />
                   <span>{device.name}</span>
                 </div>
               ))}
@@ -410,6 +429,7 @@ class Player extends React.Component {
           <input
             defaultValue="0"
             className="Player__seeker__input"
+            onMouseDown={this.stopInterval}
             onMouseUp={e => this.handleSeekerChange(e)}
             ref={(el) => { this.$seekerInput = el; }}
             type="range"

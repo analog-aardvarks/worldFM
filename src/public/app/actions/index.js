@@ -46,78 +46,43 @@ export function closeSongMenu() {
   };
 }
 
-// Spotify Player
-
-export function setSpotifyPlayerVolume(v) {
-  return {
-    type: 'SET_SPOTIFY_PLAYER_VOLUME',
-    volume: v,
-  };
-}
-
-export function addTrackToSpotifyQueue(track) {
-  return {
-    type: 'ADD_TRACK_TO_SPOTIFY_QUEUE',
-    track: track,
-  };
-}
-
-export function removeTrackFromSpotifyQueue(song) {
-  return {
-    type: 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE',
-    track: song,
-  };
-}
-
-export function playSpotifyPlayer(currentTrack) {
-  return {
-    type: 'PLAY_SPOTIFY_PLAYER',
-    currentTrack,
-  };
-}
-
-export function pauseSpotifyPlayer(track) {
-  return {
-    type: 'PAUSE_SPOTIFY_PLAYER',
-  };
-}
-
-export function setSpotifyPlayerMute(mute) {
-  return {
-    type: 'SET_SPOTIFY_PLAYER_MUTE',
-    mute,
-  };
-}
-
-export function setSpotifyPlayerSeekerEl(el) {
-  return {
-    type: 'SET_SPOTIFY_PLAYER_SEEKER_EL',
-    el,
-  };
-}
-
-export function setSpotifyPlayerEllapsed(ellapsed) {
-  return {
-    type: 'SET_SPOTIFY_PLAYER_ELLAPSED',
-    ellapsed,
-  };
-}
-
-export function setSpotifyPlayerInterval(interval) {
-  return {
-    type: 'SET_SPOTIFY_PLAYER_INTERVAL',
-    interval,
-  };
-}
-export function clearSpotifyPlayerInterval(interval) {
-  return {
-    type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL',
-  };
-}
-
 export function setFavorites(favorites) {
   return {
     type: 'SET_FAVORITES',
     favorites,
   };
+}
+
+/* player */
+
+export function playSpotifyPlayer(currentTrack) {
+  return { type: 'PLAY_SPOTIFY_PLAYER', currentTrack };
+}
+
+export function setSpotifyPlayerVolume(volume) {
+  return { type: 'SET_SPOTIFY_PLAYER_VOLUME', volume };
+}
+
+export function addTrackToSpotifyQueue(track) {
+  return { type: 'ADD_TRACK_TO_SPOTIFY_QUEUE', track };
+}
+
+export function removeTrackFromSpotifyQueue(track) {
+  return { type: 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE', track };
+}
+
+export function setSpotifyPlayerMute(mute) {
+  return { type: 'SET_SPOTIFY_PLAYER_MUTE', mute };
+}
+
+export function setSpotifyPlayerEllapsed(ellapsed) {
+  return { type: 'SET_SPOTIFY_PLAYER_ELLAPSED', ellapsed };
+}
+
+export function setSpotifyPlayerInterval(interval) {
+  return { type: 'SET_SPOTIFY_PLAYER_INTERVAL', interval };
+}
+
+export function setSpotifyPlayerCurrentTrack(track) {
+  return { type: 'SET_SPOTIFY_PLAYER_CURRENT_TRACK', track };
 }

@@ -4,11 +4,9 @@ const Song = ({ size,
   track,
   ranking,
   currentSong,
-  howTrackInfo,
   songMenu,
   openSongMenu,
   closeSongMenu,
-  showTrackInfo,
   auth,
   spotifyPlayer,
   playSpotifyPlayer,
@@ -46,41 +44,60 @@ const Song = ({ size,
 
   const updateSeeker = () => {
     let e = spotifyPlayer.ellapsed;
+    console.log('updateSeeker inside before SONG', e);
     e += 500;
     spotifyPlayer.$seeker.value = e;
+    console.log('updateSeeker inside SONG', e);
     setSpotifyPlayerEllapsedHandler(e);
   };
 
   const togglePlay = () => {
-    // console.log(spotifyPlayer.currentTrack.track_id, track.track_id)
-    if (auth) {
-      if (!spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
-        clearInterval(spotifyPlayer.interval);
-        clearSpotifyPlayerIntervalHandler();
-        pauseSpotifyPlayer();
-      } else if (spotifyPlayer.currentTrack && spotifyPlayer.isPaused && spotifyPlayer.currentTrack.track_id === track.track_id) {
-        // resume!
-        fetch(`/player/play?device=${this.props.activeDevice.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(track),
-        })
+    if (auth &&
+        spotifyPlayer.currentTrack &&
+        spotifyPlayer.currentTrack.track_id === track.track_id) {
+      if (!spotifyPlayer.isPaused) {
+        // pause!
+        console.log('CLICK ON SONG PAUSE');
+        fetch('/player/pause', { credentials: 'include' })
         .then(() => {
-          resumeSpotifyPlayerHandler(track);
-          // seek!
-          fetch(`/player/seek?ms=${spotifyPlayer.ellapsed}`, { credentials: 'include' })
-            .then(res => setSpotifyPlayerIntervalHandler(setInterval(updateSeeker, 500)))
-            .catch(err => console.log(err));
+          clearInterval(spotifyPlayer.interval);
+          clearSpotifyPlayerIntervalHandler();
+          pauseSpotifyPlayer();
         })
         .catch(err => console.log(err));
       } else {
-        // change track!
-        clearInterval(spotifyPlayer.interval);
-        clearSpotifyPlayerIntervalHandler();
-        playSpotifyPlayer(track, activeDevice.id);
+        // resume!
+        console.log('CLICK ON SONG RESUME');
+        fetch(`/player/play?device=${activeDevice.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(spotifyPlayer.currentTrack),
+        })
+        .then(() => {
+          console.log('CLICK ON SONG RESUME, BACK FROM /PLAY');
+          resumeSpotifyPlayerHandler(track);
+          fetch(`/player/seek?ms=${spotifyPlayer.ellapsed}&device=${activeDevice.id}`, { credentials: 'include' })
+            .then(() => {
+              console.log('CLICK ON SONG RESUME, BACK FROM /SEEK');
+              fetch(`/player/volume?volume=${spotifyPlayer.volume}&device=${activeDevice.id}`, { credentials: 'include' })
+                .then() // setSpotifyPlayerIntervalHandler(setInterval(updateSeeker, 500)))
+                .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
       }
+    } else if (!spotifyPlayer.currentTrack ||
+               spotifyPlayer.currentTrack.track_id !== track.track_id) {
+      // change track!
+      console.log('CLICK ON SONG CHANGE');
+      clearInterval(spotifyPlayer.interval);
+      clearSpotifyPlayerIntervalHandler();
+      playSpotifyPlayer(track, activeDevice.id);
     } else {
+      // not auth!
+      console.log('CLICK ON SONG PREVIEW');
       togglePreview(track.track_preview_url);
     }
   };
@@ -119,9 +136,9 @@ const Song = ({ size,
 
   const addToQueue = () => {
     addTrackToSpotifyQueue(track);
-  }
+  };
 
-
+  // console.log('ELLAPSED', spotifyPlayer.ellapsed);
   return (
     <div
       className={`Song ${ranking === songMenu ? 'Song--green-border' : ''}`}

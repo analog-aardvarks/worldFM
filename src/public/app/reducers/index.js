@@ -148,38 +148,31 @@ function availableDevices(state = [], action) {
 function spotifyPlayer(state = {
   queue: [],
   currentTrack: null,
-  isPaused: true,
+  isPaused: undefined,
   volume: 0,
-  repeat: false,
-  shuffle: false,
   mute: false,
   ellapsed: 0,
-  $seeker: null,
-  interval: null,
+  interval: undefined,
 }, action) {
   switch (action.type) {
-    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: true };
-    case 'PLAY_SPOTIFY_PLAYER':
-      return {
-        ...state,
-        isPaused: false,
-        currentTrack: action.currentTrack || state.currentTrack,
-      };
+    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
+    case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
     case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
-      const q = [...state.queue];
-      q.push(action.track);
-      return { ...state, queue: q };
+      const queueAdd = [...state.queue];
+      queueAdd.push(action.track);
+      return { ...state, queue: queueAdd };
+
     case 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE':
-      const queue = [...state.queue];
+      const queueRemove = [...state.queue];
       const idx = action.track;
-      queue.splice(idx, 1);
-      return { ...state, queue: queue };
+      queueRemove.splice(idx, 1);
+      return { ...state, queue: queueRemove };
+
     case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
-    case 'SET_SPOTIFY_PLAYER_SEEKER_EL': return { ...state, $seeker: action.el };
     case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
     case 'SET_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: action.interval };
-    case 'CLEAR_SPOTIFY_PLAYER_CLEAR': return { ...state, interval: null };
+    case 'CLEAR_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: clearInterval(state.interval) };
     default: return state;
   }
 }

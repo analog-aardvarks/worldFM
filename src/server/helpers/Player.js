@@ -35,10 +35,11 @@ Player.pause = (req, res) => {
 };
 
 Player.volume = (req, res) => {
+  const deviceID = req.query.device || false;
   if (req.user) {
     request({
       method: 'PUT',
-      url: `https://api.spotify.com/v1/me/player/volume?volume_percent=${req.query.volume}`,
+      url: `https://api.spotify.com/v1/me/player/volume?volume_percent=${req.query.volume}${deviceID ? `&device_id=${deviceID}` : ''}`,
       headers: { Authorization: `Bearer ${req.user.accessToken}` },
     })
       .then(response => res.status(200).send(response))
@@ -47,10 +48,11 @@ Player.volume = (req, res) => {
 };
 
 Player.seek = (req, res) => {
+  const deviceID = req.query.device || false;
   const ms = req.query.ms;
   request({
     method: 'PUT',
-    url: `https://api.spotify.com/v1/me/player/seek?position_ms=${ms}`,
+    url: `https://api.spotify.com/v1/me/player/seek?position_ms=${ms}${deviceID ? `&device_id=${deviceID}` : ''}`,
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
     .then(response => res.status(200).send(response))
