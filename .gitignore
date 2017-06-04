@@ -27,6 +27,9 @@ dist/
 /src/public/build/
 /src/public/dist/
 
+/src/server/worker/playlistData.js
+/src/server/worker/playlistIndexData.js
+
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
