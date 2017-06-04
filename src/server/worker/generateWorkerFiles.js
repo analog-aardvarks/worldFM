@@ -34,7 +34,7 @@ const getPlaylistInfo = (offset, limit) => {
             currentPlaylistType = 'GENRE';
             break;
           case 'The Sound of Zydeco':
-            playlistIndexData.endingIndexCities = currentPlaylistIndex;
+            playlistIndexData.endingIndexGenres = currentPlaylistIndex;
             endingFlag = currentPlaylistIndex + 1;
             break;
           default: break;
