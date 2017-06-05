@@ -8,7 +8,7 @@ function playlist(state = [], action) {
 }
 
 // TODO previewPlayer
-function currentSong(state = {}, action) {
+function currentSong(state = { src:null, isPlaying:false }, action) {
   switch (action.type) {
     case 'TOGGLE_PLAY':
       if (state.src === action.src) {

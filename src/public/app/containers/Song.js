@@ -21,6 +21,7 @@ const mapDispatchToProps = dispatch => ({
   handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
   handleExpandClick: src => dispatch(showLightbox(src)),
+  togglePreviewHandler: src => dispatch({ type: 'TOGGLE_PLAY', src }),
 });
 
 class Song extends React.Component {
@@ -142,7 +143,7 @@ class Song extends React.Component {
         }
       }
     } else {
-      this.togglePreview(this.props.track.track_preview_url);
+      this.props.togglePreviewHandler(this.props.track.track_preview_url);
     }
   }
 
@@ -179,18 +180,30 @@ class Song extends React.Component {
   addToQueue() { this.addTrackToSpotifyQueue(this.props.track); }
 
   render() {
+    // TODO fix this piece of logic
     let icon = 'play';
-    if (this.props.auth &&
-        this.props.spotifyPlayer.currentTrack &&
-        !this.props.spotifyPlayer.isPaused &&
-        this.props.track.track_id === this.props.spotifyPlayer.currentTrack.track_id) {
+    if(this.props.auth) {
+      if (this.props.auth &&
+          this.props.spotifyPlayer.currentTrack &&
+          !this.props.spotifyPlayer.isPaused &&
+          this.props.track.track_id === this.props.spotifyPlayer.currentTrack.track_id) {
+        icon = 'pause';
+      } else if (!this.props.auth &&
+          this.props.track_preview_url === this.props.currentSong.track_preview_url) {
+        icon = 'pause';
+      } else if (this.props.spotifyPlayer.isPaused) {
+        icon = 'play';
+      } else if (!this.props.auth && !this.props.isPlaying) {
+        icon = 'play';
+      }
+  } else {
+    if(this.props.currentSong.src !== null &&
+      this.props.currentSong.isPlaying &&
+      this.props.track.track_preview_url === this.props.currentSong.src) {
       icon = 'pause';
-    } else if (!this.props.auth &&
-        this.props.track_preview_url === this.props.currentSong.track_preview_url) {
-      icon = 'pause';
-    } else if (this.props.spotifyPlayer.isPaused) {
-      icon = 'play';
     }
+  }
+
     return (
       <div
         className="Song"
