@@ -219,6 +219,8 @@ function lightbox(state = { show: false, src: null }, action) {
       return { show: true, src: action.src };
     case 'HIDE_LIGHTBOX':
       return { ...state, show: false };
+  }
+}
 
 function sync(state = 0, action) {
   switch (action.type) {

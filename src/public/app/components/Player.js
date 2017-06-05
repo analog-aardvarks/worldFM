@@ -230,24 +230,24 @@ class Player extends React.Component {
   }
 
   // TODO
-  updateSeeker() {
-    let e = this.props.spotifyPlayer.ellapsed;
-    if (e >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
-      console.log('song ended');
-      clearInterval(this.props.spotifyPlayer.interval);
-      this.props.clearSpotifyPlayerIntervalHandler();
-      this.props.setSpotifyPlayerEllapsedHandler(0);
-      this.$seekerInput.value = 0;
-      console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
-      if(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
-        this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
-        this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
-      }
-    } else {
-      e += 500;
-      this.$seekerInput.value = e;
-      this.props.setSpotifyPlayerEllapsedHandler(e);
-    }
+  // updateSeeker() {
+  //   let e = this.props.spotifyPlayer.ellapsed;
+  //   if (e >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+  //     console.log('song ended');
+  //     clearInterval(this.props.spotifyPlayer.interval);
+  //     this.props.clearSpotifyPlayerIntervalHandler();
+  //     this.props.setSpotifyPlayerEllapsedHandler(0);
+  //     this.$seekerInput.value = 0;
+  //     console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
+  //     if(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
+  //       this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
+  //       this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+  //     }
+  //   } else {
+  //     e += 500;
+  //     this.$seekerInput.value = e;
+  //     this.props.setSpotifyPlayerEllapsedHandler(e);
+  //   }
 
   updateEllapsed() {
     let ellapsed = this.props.spotifyPlayer.ellapsed;
@@ -426,33 +426,6 @@ class Player extends React.Component {
               <span>export</span>
             </div>
 
-          <div className="Player__volume">
-            <i
-              className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
-              onClick={this.handleVolumeClick}
-              onMouseOver={this.props.showVolumeGaugeEvent}
-            />
-
-            <div
-              className="Player__volumeGauge"
-              onMouseOver={this.props.showVolumeGaugeEvent}
-              style={{ bottom: this.props.showVolumeGauge ? 94 : -1000 }}
-            >
-              <input
-                ref={(el) => { this.$volumeInput = el; }}
-                onMouseOver={this.props.showVolumeGaugeEvent}
-                onMouseOut={this.props.hideVolumeGaugeEvent}
-                onMouseUp={(e) => {
-                  e.persist();
-                  this.handleVolumeChange(e);
-                }}
-                type="range"
-                min="0"
-                max="100"
-              />
-            </div>
-          </div>
-
           <div className="Player__devices">
 
             {this.props.showAvailableDevices ?
@@ -480,6 +453,7 @@ class Player extends React.Component {
               ))}
             </div> : null}
 
+            { /*
             <div className="Player__devicesToggle">
               <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
               <span>devices</span>
@@ -494,6 +468,7 @@ class Player extends React.Component {
                 </div>
               ))}
             </div> : null}
+            */ }
 
             <div className="QueueMenu--toggle">
               <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
@@ -536,31 +511,32 @@ class Player extends React.Component {
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="CurrentSong">
 
-          <div className="Player__volume">
-            <i
-              className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
-              onClick={this.handleVolumeClick}
+        <div className="Player__volume">
+          <i
+            className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
+            onClick={this.handleVolumeClick}
+            onMouseOver={this.props.showVolumeGaugeEvent}
+          />
+
+          <div
+            className="Player__volumeGauge"
+            onMouseOver={this.props.showVolumeGaugeEvent}
+            style={{ bottom: this.props.showVolumeGauge ? 94 : -1000 }}
+          >
+            <input
+              ref={(el) => { this.$volumeInput = el; }}
               onMouseOver={this.props.showVolumeGaugeEvent}
+              onMouseOut={this.props.hideVolumeGaugeEvent}
+              onMouseUp={(e) => {
+                e.persist();
+                this.handleVolumeChange(e);
+              }}
+              type="range"
+              min="0"
+              max="100"
             />
-            {this.props.showVolumeGauge ? <div className="Player__volumeGauge" onMouseOver={this.props.showVolumeGaugeEvent}>
-              <input
-                ref={(el) => { this.$volumeInput = el; }}
-                onMouseOver={this.props.showVolumeGaugeEvent}
-                onMouseOut={this.props.hideVolumeGaugeEvent}
-                onChange={(e) => {
-                  e.persist();
-                  this.changePlayerVolumeWithThrottle(e);
-                }}
-                onMouseUp={(e) => {
-                  e.persist();
-                  this.changePlayerVolume(e);
-                }}
-                type="range"
-                min="0"
-                max="100"
-              />
-            </div>: null}
           </div>
+        </div>
 
           <img
             className="CurrentSongPic"

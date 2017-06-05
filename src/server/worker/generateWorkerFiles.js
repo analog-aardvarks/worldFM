@@ -2,7 +2,7 @@ const request = require('request-promise-native');
 const fs = require('fs');
 
 const startingTime = Date.now();
-const token = 'BQBWZhesV_ne2ToC1AAJ_t5XxTVL3w9ksRifw4uLVACnvXqalAAQZE7GVrWFJQHIqG0ZwPeKhleIMqspBnjbzmy9AExDE8nJP1JvdzN_yyLfOVuShc84ekg96CXvP7E7zeJn_02Njbh8KgSRSYjZA3ojcMIOlQ6P5BZ-Ymytc-2FrTriQ-vqgEKeXUvwERF-dyI0qYSOOiuwi2MBB6xdoqT2ayaO_VsrkukcJoA-xAAHEfI8FbRhDgBQMDC5_UkMttXIMa9jrmiZEA3LBQ-ZT-IAE7dbwIof4oGT8W2N1g3TkGNO-VSJQzrtVqt309NadO9poA';
+const token = 'BQBlUUxr-DSo1GGTaa3ixX3LKuWsPptu9B2yQ00QuqZkjpX9JeFqjHyGcVY1QFnITbUkLr5u0nukjDcLIsZBmnF3caOnT3hy_xBEUkDKd_xc1XYYAFxASfch0ljbjxBLCTwO5qicfe7_Byzql-gkWnMk_HXosL9MxS0UoqLghTzz3oACjK0D-spHEW9jv3yM33mX_AowSPuMwTW5kwwehCr5kwydyUzjWn65zghIMpX_yG_s_-tFqtvS8WijHa48dbgHmbvPRDwvAtuNIh1R_fLWc1-Ab3VQTXaBSfAxZJiNXcXf_ohi98Hz0tNVYJgRQPyjlQ';
 const owner = 'thesoundsofspotify';
 const startingIndex = 0;// 3398;
 const endingIndex = 5000;// 4928

@@ -79,6 +79,7 @@ export function pauseSpotifyPlayer(track) {
   return {
     type: 'PAUSE_SPOTIFY_PLAYER',
   };
+}
 
 export function addTrackToSpotifyQueue(track) {
   return { type: 'ADD_TRACK_TO_SPOTIFY_QUEUE', track };
@@ -106,12 +107,6 @@ export function showLightbox(src) {
     src,
   };
 }
-
-export function setFavorites(favorites) {
-  return {
-    type: 'SET_FAVORITES',
-    favorites,
-  };
 
 export function setSpotifyPlayerCurrentTrack(track) {
   return { type: 'SET_SPOTIFY_PLAYER_CURRENT_TRACK', track };
