@@ -33,7 +33,7 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
       }}>
       <i
         className="fa fa-info-circle fa-lg fa-fw"
-        onClick={() => store.dispatch({ type: 'TOGGLE_TRACK_INFO' })}
+        onClick={() => store.dispatch({ type: 'SET_PLAYLIST', playlist: favorites })}
       />
       <div className="FavoritesMenu__syncButton">
         <div onClick={toggleSync}>
