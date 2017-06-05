@@ -62,7 +62,8 @@ canvas {
   left: 0px;
   position: absolute;
   // background: radial-gradient(circle, #313131, $mainColor, $mainColor, $mainColor);
-  background: linear-gradient(to bottom right, #000000,$mainColor, #121212)
+  // background: linear-gradient(to bottom right, #000000,$mainColor, #121212)
+  background-image: url('https://preview.ibb.co/daJ0YF/Artboard.png');
 }
 
 #particles-js {

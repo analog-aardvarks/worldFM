@@ -1,9 +1,61 @@
-@media (max-width: 450px) {
-  .TopMenu {
+@media (max-width: 700px) {
+  .CurrentSongInfo {
     display: none;
+  }
+  .CurrentSongPic {
+    position: absolute;
+    right: 9px;
+    bottom: 9px;
+  }
+  .FavoritesMenu--toggle {
+    display: flex !important;
+  }
+  .GlobeView--toggle  {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 18px;
+    margin-right: 18px;
+  }
+  .Menu {
+    justify-content: center;
   }
   .Mobile--icon {
     display: block;
+  }
+  .Player {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .Player__extraButtons {
+    display: none;
+  }
+  .PlayerControls {
+    margin-left: 0;
+    position: absolute;
+  }
+  .Player__leftPortion {
+    width: 130px;
+    margin-left: 0px;
+  }
+  .Player__volume {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+  }
+  .Player__CurrentSongTime {
+    display: none;
+  }
+  .RandomButton {
+    position: fixed;
+    left: -3%;
+  }
+  .SideMenu {
+    display: flex;
   }
   .SpotifyPlaylist {
     width: 80vw;
@@ -11,33 +63,13 @@
     top: 22%;
     left: 22%;
   }
-  .Menu {
+  .TopMenu {
     justify-content: center;
   }
-  .CurrentSongInfo {
+  .TopMenu__content {
     display: none;
   }
-  .CurrentSongPic {
-    right: 10px;
-  }
-  .Player {
-    justify-content: center;
-    align-items: center;
-  }
-  .RandomButton {
-    position: fixed;
-    left: -3%;
-  }
-  .PlayerControls {
-    margin-left: 0;
-    position: absolute;
-  }
-  .CurrentSongPic {
-    position: absolute;
-    right: 9px;
-    bottom: 9px;
-  }
-  .SideMenu {
-    display: flex;
+  .TopMenu--login {
+    display: none;
   }
 }
