@@ -180,7 +180,7 @@ class Song extends React.Component {
     } else this.addFavorite();
   }
 
-  addToQueue() { this.addTrackToSpotifyQueue(this.props.track); }
+  addToQueue() { this.props.addTrackToSpotifyQueue(this.props.track); }
 
   render() {
     // TODO fix this piece of logic
@@ -231,18 +231,16 @@ class Song extends React.Component {
             style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
             data-tip="View Album Art"
           />
-          <div>
-            <i
-              className="SongHover__add-que fa fa-plus fa-2x fa-fw"
-              onClick={this.addToQueue}
-              style={{ right: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
-            />
-            <i
-              className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
-              onClick={this.handleFavoritesClick}
-              style={{ left: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
-            />
-          </div>
+          <i
+            className="SongHover__add-que fa fa-plus fa-2x fa-fw"
+            onClick={this.addToQueue}
+            style={{ right: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
+          />
+          <i
+            className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
+            onClick={this.handleFavoritesClick}
+            style={{ left: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
+          />
           <div className="Song__container">
             <span
               className="Song__this.props.ranking"
