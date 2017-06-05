@@ -1,64 +1,30 @@
 export function togglePlay(src = '') {
-  return {
-    type: 'TOGGLE_PLAY',
-    src,
-  };
+  return { type: 'TOGGLE_PLAY', src };
 }
 
 export function setPlaylist(playlist) {
-  return {
-    type: 'SET_PLAYLIST',
-    playlist,
-  };
+  return { type: 'SET_PLAYLIST', playlist };
 }
 
 export function setCurrentCountry(country) {
-  return {
-    type: 'SET_CURRENT_COUNTRY',
-    country,
-  };
+  return { type: 'SET_CURRENT_COUNTRY', country };
 }
 
 export function setCurrentTrend(trend) {
-  return {
-    type: 'SET_CURRENT_TREND',
-    trend,
-  };
+  return { type: 'SET_CURRENT_TREND', trend };
 }
 
 export function setWindowSize() {
-  return {
-    type: 'WINDOW_RESIZE',
-  };
-}
-
-export function openSongMenu(index) {
-  return {
-    type: 'OPEN_SONG_MENU',
-    index,
-  };
-}
-
-export function closeSongMenu() {
-  return {
-    type: 'CLOSE_SONG_MENU',
-  };
+  return { type: 'WINDOW_RESIZE' };
 }
 
 export function showAboutEvent() {
-  return {
-    type: 'SHOW_ABOUT',
-  };
+  return { type: 'SHOW_ABOUT' };
 }
 
 export function setFavorites(favorites) {
-  return {
-    type: 'SET_FAVORITES',
-    favorites,
-  };
+  return { type: 'SET_FAVORITES', favorites };
 }
-
-/* player */
 
 export function playSpotifyPlayer(currentTrack) {
   return { type: 'PLAY_SPOTIFY_PLAYER', currentTrack };
@@ -69,16 +35,11 @@ export function setSpotifyPlayerVolume(volume) {
 }
 
 export function setSpotifyPlayerCurrentTrackIdx(currentTrackIdx) {
-  return {
-    type: 'SET_CURRENT_TRACK_IDX',
-    currentTrackIdx,
-  };
+  return { type: 'SET_CURRENT_TRACK_IDX', currentTrackIdx };
 }
 
 export function pauseSpotifyPlayer(track) {
-  return {
-    type: 'PAUSE_SPOTIFY_PLAYER',
-  };
+  return { type: 'PAUSE_SPOTIFY_PLAYER' };
 }
 
 export function addTrackToSpotifyQueue(track) {
@@ -102,10 +63,7 @@ export function setSpotifyPlayerInterval(interval) {
 }
 
 export function showLightbox(src) {
-  return {
-    type: 'SHOW_LIGHTBOX',
-    src,
-  };
+  return { type: 'SHOW_LIGHTBOX', src };
 }
 
 export function setSpotifyPlayerCurrentTrack(track) {
