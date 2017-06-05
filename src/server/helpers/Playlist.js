@@ -142,7 +142,7 @@ Playlist.getPlaylist = (req, res) => {
         .whereIn('track_id', curatedTracks)
         .then((data) => {
           data = removeAlbumDuplicates(data);
-          data = makeSureWeCanPlayTheTracks(data);
+          // data = makeSureWeCanPlayTheTracks(data);
           data = _.shuffle(data);
           if (data.length + 1 > props.limit) data = data.slice(0, props.limit);
           res.status(200).send(data);

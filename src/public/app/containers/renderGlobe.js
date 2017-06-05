@@ -1,7 +1,7 @@
 // import * as d3 from 'd3';
 // import * as topojson from 'topojson-client';
 // import * as queue from 'd3-queue';
-import availableCountries from '../constance/availableCountries';
+import availableCountries from '../constants/availableCountries';
 import store from '../index';
 import { setCurrentCountry } from '../actions';
 // import activateGlobe from '../helpers/globeBehavior';

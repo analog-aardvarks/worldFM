@@ -24,10 +24,17 @@ function currentSong(state = {}, action) {
 
 function currentCountry(state = 'World', action) {
   switch (action.type) {
-    case 'SET_CURRENT_COUNTRY':
-      return action.country;
-    default:
-      return state;
+    case 'SET_CURRENT_COUNTRY': return action.country;
+    case 'CLEAR_CURRENT_COUNTRY': return null;
+    default: return state;
+  }
+}
+
+function currentGenre(state = null, action) {
+  switch (action.type) {
+    case 'SET_CURRENT_GENRE': return action.genre;
+    case 'CLEAR_CURRENT_GENRE': return null;
+    default: return state;
   }
 }
 
@@ -238,6 +245,7 @@ const reducer = combineReducers({
   favorites,
   showAbout,
   showTopMenu,
+  currentGenre,
 });
 
 export default reducer;
