@@ -227,7 +227,7 @@ class Song extends React.Component {
           />
           <i
             className="SongHover__expand fa fa-expand fa-2x fa-fw"
-            onClick={() => this.props.handleExpandClick(track.track_album_image)}
+            onClick={() => this.props.handleExpandClick(this.props.track.track_album_image)}
             style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
             data-tip="View Album Art"
           />
