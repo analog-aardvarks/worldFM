@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu, removeTrackFromSpotifyQueue } from '../actions';
-import availableCountries from '../constance/availableCountries';
-import availableTrends from '../constance/availableTrends';
+import availableCountries from '../constants/availableCountries';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
 import FavoritesMenu from '../components/FavoritesMenu';
@@ -18,6 +17,7 @@ const mapStateToProps = state => ({
   windowWidth: state.windowWidth,
   auth: state.auth,
   currentCountry: state.currentCountry,
+  currentGenre: state.currentGenre,
   currentTrend: state.currentTrend,
   showTrackInfo: state.showTrackInfo,
   showSpotifyPlaylist: state.showSpotifyPlaylist,
@@ -44,7 +44,6 @@ const mapDispatchToProps = dispatch => ({
   hideCountryMenuEvent: () => dispatch({ type: 'HIDE_COUNTRY_MENU' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
-  closeSongMenu: () => dispatch(closeSongMenu()),
   showSideMenuEvent: () => dispatch({ type: 'SHOW_SIDE_MENU' }),
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
   showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
@@ -70,7 +69,6 @@ class Menu extends React.Component {
     this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
-    // console.log(props.auth);
   }
 
   componentDidMount() {
@@ -78,13 +76,10 @@ class Menu extends React.Component {
   }
 
   componentDidUpdate(prev) {
-    // only getPlaylist if necessary
     if (prev.currentCountry !== this.props.currentCountry) {
       this.getPlaylist();
-      this.props.closeSongMenu();
-    } else if (prev.currentTrend !== this.props.currentTrend) {
+    } else if (prev.currentGenre !== this.props.currentGenre) {
       this.getPlaylist();
-      this.props.closeSongMenu();
     }
   }
 
@@ -96,14 +91,15 @@ class Menu extends React.Component {
     this.props.setCurrentTrend(e.target.value);
   }
 
-  getPlaylist(e) {
-    fetch(`playlist?country=${this.props.currentCountry}&trend=${this.props.currentTrend}`)
-      .then(res => res.json())
-      .then((res) => {
-        // console.log(JSON.stringify(res));
-        this.props.setPlaylist(res);
-      })
-      .catch(err => console.log(err));
+  getPlaylist() {
+    console.log(this.props.currentGenre, this.props.currentCountry)
+    const url = this.props.currentGenre === null ?
+      `country=${this.props.currentCountry}` :
+      `genre=${this.props.currentGenre}`;
+    fetch(url)
+    .then(res => res.json())
+    .then((res) => this.props.setPlaylist(res))
+    .catch(err => console.log(err));
   }
 
   toggleTrackInfo() {
@@ -138,6 +134,7 @@ class Menu extends React.Component {
   }
 
   toggleFavoritesMenu() {
+    console.log('toggle')
     if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
     if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
   }
@@ -159,32 +156,10 @@ class Menu extends React.Component {
     return (
       <div>
         <TopMenu
-          auth={this.props.auth}
-          toggleCountryMenu={this.toggleCountryMenu}
-          toggleQueueMenu={this.toggleQueueMenu}
-          toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
-          toggleTrackInfo={this.toggleTrackInfo}
-          toggleSideMenu={this.toggleSideMenu}
-          toggleFavoritesMenu={this.toggleFavoritesMenu}
-          availableCountries={this.props.availableCountries}
-          handleCountryChange={this.handleCountryChange}
-          currentCountry={this.props.currentCountry}
-          windowHeight={this.props.windowHeight}
-          windowWidth={this.props.windowWidth}
           toggleTopMenu={this.toggleTopMenu}
-          showTopMenu={this.props.showTopMenu}
+          toggleFavoritesMenu={this.toggleFavoritesMenu}
         />
-        {/* <CountryMenu
-          availableCountries={this.props.availableCountries}
-          availableTrends={this.props.availableTrends}
-          currentCountry={this.props.currentCountry}
-          currentTrend={this.props.currentTrend}
-          handleCountryChange={this.handleCountryChange}
-          handleTrendChange={this.handleTrendChange}
-          showCountryMenu={this.props.showCountryMenu}
-          toggleTrackInfo={this.toggleTrackInfo}
-          toggleCountryMenu={this.toggleCountryMenu}
-        /> */}
+
         <FavoritesMenu
           showFavoritesMenu={this.props.showFavoritesMenu}
           favorites={this.props.favorites}
