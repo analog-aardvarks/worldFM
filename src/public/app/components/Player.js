@@ -495,7 +495,7 @@ class Player extends React.Component {
 
             <div className="QueueMenu--toggle">
               <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
-              <span>que</span>
+              <span>queue</span>
             </div>
 
           </div>
@@ -567,7 +567,7 @@ class Player extends React.Component {
             <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
           </div>
 
-          <div className="CurrentSongTime">
+          <div className="Player__CurrentSongTime">
             <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
           </div>
         </div>
