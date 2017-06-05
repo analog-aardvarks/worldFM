@@ -3,77 +3,98 @@ import Select from 'react-select';
 import { connect } from 'react-redux';
 import SweetScroll from 'sweet-scroll';
 
+import SelectGenre from './SelectGenre';
+import SelectCountry from './SelectCountry';
+
 const mapStateToProps = state => ({
+  auth: state.auth,
   showTopMenu: state.showTopMenu,
-  windowHeight: state.windowHeight,
+  currentCountry: state.currentCountry,
+  currentGenre: state.currentGenre,
 })
 
 const mapDispatchToProps = dispatch => ({
-
+  handleSetCountry: (country) => dispatch({ type: 'SET_CURRENT_COUNTRY', country }),
+  handleClearCountry: () => dispatch({ type: 'CLEAR_CURRENT_COUNTRY' }),
+  handleSetGenre: (genre) => dispatch({ type: 'SET_CURRENT_GENRE', genre }),
+  handleClearGenre: () => dispatch({ type: 'CLEAR_CURRENT_GENRE' }),
 })
 
-const TopMenu = ({ windowHeight, oggleCountryMenu, toggleQueueMenu, toggleFavoritesMenu, toggleSpotifyPlaylist, toggleSideMenu, availableCountries, handleCountryChange, currentCountry, auth, toggleTopMenu, showTopMenu }) => {
-
-  const countries = availableCountries.reduce((acc, country) => {
-      acc.push({value:country, label:country})
-      return acc;
-    }, []);
+const TopMenu = ({
+  auth,
+  showTopMenu,
+  toggleTopMenu,
+  toggleFavoritesMenu,
+  toggleSideMenu,
+  currentCountry,
+  currentGenre,
+  handleSetCountry,
+  handleClearCountry,
+  handleSetGenre,
+  handleClearGenre,
+  }) => {
 
   const scrollUp = () => {
     const sweetScroll = new SweetScroll();
-    // sweetScroll.toElement(document.getElementsByClassName('globeMenu'));
-    console.log('scrolling up');
     sweetScroll.to(0, 0);
   };
 
   let height = window.innerHeight - 63;
 
   window.onscroll = () => {
-    if (window.pageYOffset >= height && showTopMenu === false) {
-      toggleTopMenu();
-    }
-    else if (window.pageYOffset < height && showTopMenu === true) {
-      toggleTopMenu();
-    }
+    if (window.pageYOffset >= height && showTopMenu === false) toggleTopMenu();
+    else if (window.pageYOffset < height && showTopMenu === true) toggleTopMenu();
   }
 
   return (
-    <div className="TopMenu" style={{ background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #080808)' : 'rgba(0, 0, 0, 0)' }}>
-
-      <i className="Mobile--icon fa fa-bars fa-2x fa-fw" onClick={toggleSideMenu}></i>
-
-      <a className='Menu--logo' href="/">world.fm</a>
-      <div className="TopMenu__content">
-        <Select
-          className="TopMenu--CountryDropdown"
-          value={currentCountry}
-          options={countries}
-          onChange={handleCountryChange}
-          clearable={false}
+    <div
+      className="TopMenu"
+      style={{ background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #080808)' : 'rgba(0, 0, 0, 0)' }}
+    >
+      <i
+        className="Mobile--icon fa fa-bars fa-2x fa-fw"
+        onClick={toggleSideMenu}
       />
 
-      <div className="GlobeView--toggle" onClick={scrollUp}>
-        <i className="fa fa fa-globe fa-lg fa-fw" />
-        <span>globe</span>
-      </div>
-
-      <div className="FavoritesMenu--toggle">
-        <i className="fa fa fa-heart fa-lg fa-fw" onClick={toggleFavoritesMenu} />
-        <span>faves</span>
-      </div>
-
-      <a className="TopMenu--login" href="/auth/spotify">
-        <i className="fa fa fa-spotify fa-lg fa-fw" style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}/>
-        <span>connect with spotify</span>
+      <a
+        className="Menu--logo"
+        href="/"
+      >
+        World.FM
       </a>
+      <div className="TopMenu__content">
 
-      {/* CURRENTLY UNUSED */}
-      {/* <span className="CountryMenu--stoggle" onClick={toggleCountryMenu}> <i className="fa fa fa-globe fa-lg fa-fw" /></span> */}
-      {/* <span><img src="../../assets/icon-fire.png" className="FireIcon" width="26px" /></span> */}
-      {/* <span className="SpotifyPlaylist--toggle" onClick={toggleSpotifyPlaylist}>Playlist</span> */}
-      {/* <span className="QueueMenu--toggle" onClick={toggleQueueMenu}>Queue</span> */}
-      {/* <a className="Menu--login" href="/auth/spotify">Login</a> */}
+        <SelectGenre
+          currentGenre={currentGenre}
+          handleSetGenre={handleSetGenre}
+          handleClearCountry={handleClearCountry}
+        />
+        <SelectCountry
+          currentCountry={currentCountry}
+          handleSetCountry={handleSetCountry}
+          handleClearGenre={handleClearGenre}
+        />
 
+        <div className="GlobeView--toggle TopMenu__icon">
+          <i
+            className="fa fa fa-globe fa-lg fa-fw"
+            onClick={scrollUp}
+          />
+        </div>
+
+        <div className="FavoritesMenu--toggle TopMenu__icon">
+          <i
+            className="fa fa fa-heart fa-lg fa-fw"
+            onClick={toggleFavoritesMenu}
+          />
+        </div>
+
+        <a className="TopMenu--login TopMenu__icon" href="/auth/spotify">
+          <i
+            className="fa fa fa-spotify fa-lg fa-fw"
+            style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
+          />
+        </a>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { togglePlay } from '../actions';
-import availableCountries from '../constance/availableCountries';
+import availableCountries from '../constants/availableCountries';
 
 const mapStateToProps = state => ({
   currentSong: state.currentSong,

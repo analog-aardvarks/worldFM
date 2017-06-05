@@ -26,6 +26,10 @@ build/
 dist/
 /src/public/build/
 /src/public/dist/
+/package-lock.json
+
+/src/server/worker/playlistData.js
+/src/server/worker/playlistIndexData.js
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:

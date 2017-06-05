@@ -104,7 +104,25 @@ const makeSureWeCanPlayTheTracks = (tracks) => {
 // API Endpoint
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Read file 'routes.js' for details on how to use
+// getGenrePlaylist = (res, max, genre) => {
+//   knex('playlists')
+//   .select('*')
+//   .where('playlist_name', 'like', `%The Sound of ${genre}`)
+//   .then(playlist => console.log(playlist))
+//   .catch(res => res.status(400).send());
+// }
+//
+// Playlist.getPlaylist = (req, res) => {
+//   const max = 100;
+//   const country = req.query.country;
+//   const genre = req.query.genre;
+//   if(country === undefined) {
+//     getGenrePlaylist(res, max, genre);
+//   } else {
+//     // getCountryPlaylist(res, max, genre);
+//     res.send()
+//   }
+// }
 
 // GET /playlist/info
 Playlist.getPlaylist = (req, res) => {
@@ -157,6 +175,7 @@ Playlist.getPlaylist = (req, res) => {
       res.status(404).send('Something went wrong!', err);
     });
 };
+
 
 // GET /playlist/info
 Playlist.getPlaylistInfo = (req, res) => {

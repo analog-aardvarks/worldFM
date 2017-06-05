@@ -42,6 +42,8 @@
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.5",
     "react-tooltip": "^3.3.0",
+    "react-select-fast-filter-options": "^0.2.1",
+    "react-virtualized-select": "^3.0.1",
     "redux": "^3.6.0",
     "redux-burger-menu": "^0.2.0",
     "request": "^2.81.0",

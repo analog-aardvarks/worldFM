@@ -24,10 +24,17 @@ function currentSong(state = {}, action) {
 
 function currentCountry(state = 'World', action) {
   switch (action.type) {
-    case 'SET_CURRENT_COUNTRY':
-      return action.country;
-    default:
-      return state;
+    case 'SET_CURRENT_COUNTRY': return action.country;
+    case 'CLEAR_CURRENT_COUNTRY': return null;
+    default: return state;
+  }
+}
+
+function currentGenre(state = null, action) {
+  switch (action.type) {
+    case 'SET_CURRENT_GENRE': return action.genre;
+    case 'CLEAR_CURRENT_GENRE': return null;
+    default: return state;
   }
 }
 
@@ -131,83 +138,54 @@ function showVolumeGauge(state = false, action) {
 }
 
 function showAvailableDevices(state = false, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_AVAILABLE_DEVICES': return true;
     case 'HIDE_AVAILABLE_DEVICES': return false;
     default: return state;
   }
 }
 
-function availableDevices(state = [
-      {
-          "id": "91c40a4713eda00d55ac0160034cd7e56efc44a4",
-          "is_active": false,
-          "is_restricted": false,
-          "name": "Anthony’s MacBook Air",
-          "type": "Computer",
-          "volume_percent": 31
-      },
-      {
-          "id": "7532fb3520e0a576ea4d7b93f54930c96cd413ed",
-          "is_active": true,
-          "is_restricted": false,
-          "name": "Anthony's iPhone",
-          "type": "Smartphone",
-          "volume_percent": null
-      }
-  ], action) {
+function availableDevices(state = [], action) {
   switch (action.type) {
-    case 'SET_DEVICES':
-      return action.devices;
-    default:
-      return state;
+    case 'SET_DEVICES': return action.devices;
+    default: return state;
   }
 }
-
-// function previewPlayer(state = {}, action) {
-//
-// };
 
 function spotifyPlayer(state = {
   queue: [],
   currentTrack: null,
   currentTrackIdx: null,
-  isPaused: true,
+  isPaused: undefined,
   volume: 0,
-  repeat: false,
-  shuffle: false,
   mute: false,
   ellapsed: 0,
-  $seeker: null,
-  interval: null,
+  interval: undefined,
 }, action) {
   switch (action.type) {
-    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: true };
-    case 'PLAY_SPOTIFY_PLAYER':
-        console.log('this is the song', state)
-      return {
-        ...state,
-        isPaused: false,
-        currentTrack: action.currentTrack || state.currentTrack,
-      };
     case 'SET_CURRENT_TRACK_IDX':
       console.log('this is the idx', state)
     return { ...state, currentTrackIdx: action.currentTrackIdx };
+
+    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
+    case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };
+
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
     case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
-      const q = [...state.queue];
-      q.push(action.track);
-      return { ...state, queue: q };
+      const queueAdd = [...state.queue];
+      queueAdd.push(action.track);
+      return { ...state, queue: queueAdd };
+
     case 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE':
-      const queue = [...state.queue];
+      const queueRemove = [...state.queue];
       const idx = action.track;
-      queue.splice(idx, 1);
-      return { ...state, queue: queue };
+      queueRemove.splice(idx, 1);
+      return { ...state, queue: queueRemove };
+
     case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
-    case 'SET_SPOTIFY_PLAYER_SEEKER_EL': return { ...state, $seeker: action.el };
     case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
     case 'SET_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: action.interval };
-    case 'CLEAR_SPOTIFY_PLAYER_CLEAR': return { ...state, interval: null };
+    case 'CLEAR_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: clearInterval(state.interval) };
     default: return state;
   }
 }
@@ -241,11 +219,24 @@ function lightbox(state = { show: false, src: null }, action) {
       return { show: true, src: action.src };
     case 'HIDE_LIGHTBOX':
       return { ...state, show: false };
+
+function sync(state = 0, action) {
+  switch (action.type) {
+    case 'SET_SPOTIFY_SYNC': return 1;
+    default: return state;
+  }
+}
+
+function activeDevice(state = {}, action) {
+  switch (action.type) {
+    case 'SET_ACTIVE_DEVICE': return action.device;
     default: return state;
   }
 }
 
 const reducer = combineReducers({
+  activeDevice,
+  sync,
   playlist,
   currentSong,
   currentCountry,
@@ -260,7 +251,6 @@ const reducer = combineReducers({
   songMenu,
   showSideMenu,
   auth,
-  // previewPlayer,
   spotifyPlayer,
   showVolumeGauge,
   availableDevices,
@@ -269,6 +259,7 @@ const reducer = combineReducers({
   showAbout,
   showTopMenu,
   lightbox,
+  currentGenre,
 });
 
 export default reducer;
