@@ -6,7 +6,7 @@ const playlistExceptions = require('./playlistExceptions.js');
 
 const TRACK_DEBUG = true;
 const startingTime = Date.now();
-const token = 'BQAlZuhnQ768Eki5NXVxx7LaZYbnX9LrYCNg-vKcchbI1bXU7jsTL1-SG-XdPzfnvrGDkAF8JgNbfdVyN0RJIY-aGlDTPaHSKnjzWxk7oovW7LEwkizX8LbgJROOp1gi9IarCc2St4BJepPXEB9X_SuARGC1ZdnRD3eZg0LsHGmOhnIsGVqSZXu2BDFEJ-uLS8bhQB5m37YDt0i4wN8xZG6ZmJTvLTLQ3Zi5KDwW1UNvBdomXMbZKpgeCj7HClUEeI2LLDXq9r1RxYluXR3dATL5pdKae60_3O7_PTqtm5O2rAnXzSlVKGcquqW35KbfQV6naA';
+const token = 'BQDKGaxd39yCDyXwmJxJlCwdbbzmzGcm13s_4ZxCpfdh6x-CIGWG5wTlkPPyDCuMEPv-4Ar-LVhyVOVtAyyYqPPwc1vmjOgLd_qB49EgVAR5C1oRel4mfNP5qB9meEoaSs9LbfhWqfZrlp_LUvDGzjhoJqrrv_IkOTYtnMyej_Hvw8egNJTDYOSLMYmfq9JxtMs4ks-vwfoucMiYzQFJo4gZ50VxPxWSjsjsV9UIl7Z4sjh8YOrgBTPHIX_JY84-lHmgR0NjST10sBt5meL1PJFpXXKHjqtiL-zNta65MzwgTNzMY5UkxmTepp2QHVbIYWdOww';
 const owner = 'thesoundsofspotify';
 const maxTracksPerPlaylist = 200;
 
@@ -43,7 +43,7 @@ const saveTrackInDatabase = track =>
         })
         .catch(err => reject(err));
       } else {
-        if (TRACK_DEBUG) console.log(`[${Date.now() - startingTime}ms] TRACK ALREADY IN DATABASE`);
+        // if (TRACK_DEBUG) console.log(`[${Date.now() - startingTime}ms] TRACK ALREADY IN DATABASE`);
         resolve();
       }
     })
@@ -74,7 +74,6 @@ const getPlaylistTrackData = (id, offset, limit) =>
           track_album_name: t.album.name,
           track_album_type: t.album.type,
           track_album_image: t.album.images[0] !== undefined ? t.album.images[0].url : null,
-          // track_available_markets: JSON.stringify(t.available_markets),
           track_popularity: t.popularity,
           track_length: t.duration_ms,
           track_position: t.track_number,
@@ -153,13 +152,13 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET COUNTRIES
-getMultiplePlaylists(playlistData.splice(0, playlistIndexData.endingIndexCountries - 1))
-.then(() => {
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-  console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-})
-.catch(err => console.log(err));
+// getMultiplePlaylists(playlistData.splice(0, playlistIndexData.endingIndexCountries - 1))
+// .then(() => {
+//   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+//   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
+//   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+// })
+// .catch(err => console.log(err));
 
 // GET CITIES
 // getMultiplePlaylists(
@@ -173,10 +172,10 @@ getMultiplePlaylists(playlistData.splice(0, playlistIndexData.endingIndexCountri
 // .catch(err => console.log(err));
 
 // GET GENRES
-// getMultiplePlaylists(playlistData.splice(playlistIndexData.endingIndexCities - 1))
-// .then(() => {
-//   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
-//   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-// })
-// .catch(err => console.log(err));
+getMultiplePlaylists(playlistData.splice(4276))
+.then(() => {
+  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+  console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
+  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+})
+.catch(err => console.log(err));
