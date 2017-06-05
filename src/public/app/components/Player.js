@@ -383,14 +383,8 @@ class Player extends React.Component {
     .catch(err => console.log(err));
   }
 
-  render() {
-    let playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
-    if (this.props.spotifyPlayer.isPaused === undefined) playIcon = 'play';
-    let volumeIcon = 'up';
-    if (this.props.spotifyPlayer.volume < 70) volumeIcon = 'down';
-    if (this.props.spotifyPlayer.volume < 20) volumeIcon = 'off';
-
-    return (
+  render(){
+  return (
       <div className="Player">
 
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
@@ -404,7 +398,6 @@ class Player extends React.Component {
           max={this.props.spotifyPlayer.currentTrack.track_length}
           step="250"
         /> }
-
 
         <div className="Player__leftPortion">
 
@@ -426,8 +419,10 @@ class Player extends React.Component {
               <span>export</span>
             </div>
 
-          <div className="Player__devices">
-
+            <div className="Player__devicesToggle">
+              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
+              <span>devices</span>
+            </div>
             {this.props.showAvailableDevices ?
             <div className="Device__selector">
               <div
@@ -453,8 +448,8 @@ class Player extends React.Component {
               ))}
             </div> : null}
 
-            { /*
-            <div className="Player__devicesToggle">
+
+            {/* <div className="Player__devicesToggle">
               <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
               <span>devices</span>
             </div>
@@ -467,8 +462,7 @@ class Player extends React.Component {
                   <span>{device.name}</span>
                 </div>
               ))}
-            </div> : null}
-            */ }
+            </div> : null} */}
 
             <div className="QueueMenu--toggle">
               <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
@@ -476,7 +470,6 @@ class Player extends React.Component {
             </div>
 
           </div>
-
         </div>
 
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
@@ -558,8 +551,9 @@ class Player extends React.Component {
           </div>
         </div>
         }
+
       </div>
-    );
+    )
   }
 }
 
