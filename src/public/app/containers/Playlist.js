@@ -1,23 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setWindowWidth } from '../actions';
+import { setWindowSize } from '../actions';
 import Song from './Song';
 
 const mapStateToProps = state => ({
   playlist: state.playlist,
-  favoritesmenu: state.favoritesmenu,
+  showFavoritesMenu: state.showFavoritesMenu,
   windowWidth: state.windowWidth,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onWindowResize: () => dispatch(setWindowWidth()),
+  onWindowResize: () => dispatch(setWindowSize()),
 });
 
 class Playlist extends React.Component {
   constructor(props) {
     super(props);
     window.onresize = () => this.props.onWindowResize();
+  }
+
+  render() {
     this.songWidth = 0;
     this.playlistWidth =
       this.props.showFavoritesMenu ?
@@ -28,9 +31,7 @@ class Playlist extends React.Component {
     else if (this.playlistWidth < 1100) this.songWidth = this.playlistWidth / 4;
     else if (this.playlistWidth < 1450) this.songWidth = this.playlistWidth / 5;
     else this.songWidth = this.playlistWidth / 6;
-  }
 
-  render() {
     return (
       <div
         className="Playlist"

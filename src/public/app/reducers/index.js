@@ -61,8 +61,7 @@ function windowHeight(state = window.innerHeight, action) {
 
 function showTrackInfo(state = false, action) {
   switch (action.type) {
-    case 'SHOW_TRACK_INFO': return true;
-    case 'HIDE_TRACK_INFO': return false;
+    case 'TOGGLE_TRACK_INFO': return !state;
     default: return state;
   }
 }

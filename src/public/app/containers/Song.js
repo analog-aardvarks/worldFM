@@ -206,17 +206,20 @@ class Song extends React.Component {
       icon = 'pause';
     }
   }
-
     return (
       <div
         className="Song"
         style={{
           backgroundImage: `url(${this.props.track.track_album_image})`,
-          width: this.netSize,
-          height: this.netSize,
+          maxWidth: this.props.size - this.borderWidth,
+          maxHeight: this.props.size - this.borderWidth,
+          minWidth: this.props.size - this.borderWidth,
+          minHeight: this.props.size - this.borderWidth,
         }}
       >
-        <div className="Song__wrapper">
+        <div
+          className="Song__wrapper"
+        >
           <i
             className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
             onClick={this.handlePlayClick}
@@ -228,18 +231,25 @@ class Song extends React.Component {
             style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
             data-tip="View Album Art"
           />
-          <i
-            className="SongHover__add-que fa fa-plus fa-2x fa-fw"
-            onClick={this.addToQueue}
-            style={{ right: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
-          />
-          <i
-            className="SongHover__add-this.props.favorites fa fa-heart fa-2x fa-fw"
-            onClick={this.handleFavoritesClick}
-            style={{ left: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
-          />
+          <div>
+            <i
+              className="SongHover__add-que fa fa-plus fa-2x fa-fw"
+              onClick={this.addToQueue}
+              style={{ right: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
+            />
+            <i
+              className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
+              onClick={this.handleFavoritesClick}
+              style={{ left: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
+            />
+          </div>
           <div className="Song__container">
-            <span className="Song__this.props.ranking">{this.props.ranking < 10 ? `0${this.props.ranking}` : this.props.ranking}</span>
+            <span
+              className="Song__this.props.ranking"
+              style={{ fontFamily: 'Permanent Marker' }}
+            >
+            {this.props.ranking < 10 ? `0${this.props.ranking}` : this.props.ranking}
+            </span>
             <div className="Song__info">
               <span className="Song__name">{this.props.track.track_name}</span>
               <span className="Song__artist">{JSON.parse(this.props.track.track_artist_name).join(', ')}</span>
