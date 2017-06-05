@@ -86,8 +86,30 @@ class Player extends React.Component {
 
   componentDidUpdate(prev) {
     if (this.$seekerInput &&
-        prev.spotifyPlayer.ellapsed !== this.props.spotifyPlayer.ellapsed) {
-      this.$seekerInput.value = this.props.spotifyPlayer.ellapsed;
+      prev.spotifyPlayer.ellapsed !== this.props.spotifyPlayer.ellapsed) {
+      let ellapsed = this.props.spotifyPlayer.ellapsed;
+      if (ellapsed >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+        const nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
+        const nextTrack = this.props.playlist[nextIdx];
+        this.pauseTrack()
+        .then(() => {
+          this.props.pauseSpotifyPlayerHandler(true);
+          this.stopInterval();
+          if(nextTrack) {
+            this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
+            this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+            this.playTrack()
+            .then(() => {
+              this.props.pauseSpotifyPlayerHandler(false);
+              this.resetInterval();
+            })
+            .catch(err => console.log(err));
+          }
+        })
+        .catch(err => console.log(err));
+      }  else {
+        this.$seekerInput.value = this.props.spotifyPlayer.ellapsed;
+      }
     }
   }
 
@@ -231,30 +253,8 @@ class Player extends React.Component {
 
   updateEllapsed() {
     let ellapsed = this.props.spotifyPlayer.ellapsed;
-    if (ellapsed >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
-      const nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
-      const nextTrack = this.props.playlist[nextIdx];
-      console.log(nextIdx, nextTrack)
-      this.pauseTrack()
-      .then(() => {
-        this.props.pauseSpotifyPlayerHandler(true);
-        this.stopInterval();
-        if(nextTrack) {
-          this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
-          this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
-          this.playTrack()
-          .then(() => {
-            this.props.pauseSpotifyPlayerHandler(false);
-            this.resetInterval();
-          })
-          .catch(err => console.log(err));
-        }
-      })
-      .catch(err => console.log(err));
-    } else {
-      ellapsed += 250;
-      this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
-    }
+    ellapsed += 250;
+    this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
   }
 
   handleSeekerChange(e) {
