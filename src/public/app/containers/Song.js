@@ -176,8 +176,6 @@ class Song extends React.Component {
     } else this.addFavorite();
   }
 
-
-
   addToQueue() { this.addTrackToSpotifyQueue(this.props.track); }
 
   render() {
@@ -193,7 +191,6 @@ class Song extends React.Component {
     } else if (this.props.spotifyPlayer.isPaused) {
       icon = 'play';
     }
-
     return (
       <div
         className="Song"
@@ -212,7 +209,7 @@ class Song extends React.Component {
           <i
             className="SongHover__expand fa fa-expand fa-2x fa-fw"
             onClick={() => this.props.handleExpandClick(track.track_album_image)}
-            style={{ left: ((netSize-100)/10), top:((netSize-70)/10) }}
+            style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
             data-tip="View Album Art"
           />
           <i

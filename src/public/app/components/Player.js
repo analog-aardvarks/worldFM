@@ -384,6 +384,12 @@ class Player extends React.Component {
   }
 
   render(){
+    let playIcon = this.props.spotifyPlayer.isPaused ? 'play' : 'pause';
+    if (this.props.spotifyPlayer.isPaused === undefined) playIcon = 'play';
+    let volumeIcon = 'up';
+    if (this.props.spotifyPlayer.volume < 70) volumeIcon = 'down';
+    if (this.props.spotifyPlayer.volume < 20) volumeIcon = 'off';
+
   return (
       <div className="Player">
 

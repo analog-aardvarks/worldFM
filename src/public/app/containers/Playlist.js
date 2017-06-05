@@ -11,13 +11,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onWindowResize: newSize => dispatch(setWindowWidth(newSize)),
+  onWindowResize: () => dispatch(setWindowWidth()),
 });
 
 class Playlist extends React.Component {
   constructor(props) {
     super(props);
-    window.onresize = () => this.props.onWindowResize(window.innerWidth);
+    window.onresize = () => this.props.onWindowResize();
     this.songWidth = 0;
     this.playlistWidth =
       this.props.showFavoritesMenu ?

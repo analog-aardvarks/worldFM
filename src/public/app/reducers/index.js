@@ -1,15 +1,13 @@
 import { combineReducers } from 'redux';
-// import {reducer as burgerMenu} from 'redux-burger-menu';
 
 function playlist(state = [], action) {
   switch (action.type) {
-    case 'SET_PLAYLIST':
-      return action.playlist;
-    default:
-      return state;
+    case 'SET_PLAYLIST': return action.playlist;
+    default: return state;
   }
 }
 
+// TODO previewPlayer
 function currentSong(state = {}, action) {
   switch (action.type) {
     case 'TOGGLE_PLAY':
@@ -38,30 +36,26 @@ function currentGenre(state = null, action) {
   }
 }
 
-function currentTrend(state = 'Mix', action) {
-  switch (action.type) {
-    case 'SET_CURRENT_TREND':
-      return action.trend;
-    default:
-      return state;
-  }
-}
+// function currentTrend(state = 'Mix', action) {
+//   switch (action.type) {
+//     case 'SET_CURRENT_TREND':
+//       return action.trend;
+//     default:
+//       return state;
+//   }
+// }
 
 function windowWidth(state = window.innerWidth, action) {
   switch (action.type) {
-    case 'WINDOW_RESIZE':
-      return window.innerWidth;
-    default:
-      return state;
+    case 'WINDOW_RESIZE': return window.innerWidth;
+    default: return state;
   }
 }
 
 function windowHeight(state = window.innerHeight, action) {
   switch (action.type) {
-    case 'WINDOW_RESIZE':
-      return window.innerHeight;
-    default:
-      return state;
+    case 'WINDOW_RESIZE': return window.innerHeight;
+    default: return state;
   }
 }
 
@@ -215,10 +209,9 @@ function showTopMenu(state = false, action) {
 
 function lightbox(state = { show: false, src: null }, action) {
   switch (action.type) {
-    case 'SHOW_LIGHTBOX':
-      return { show: true, src: action.src };
-    case 'HIDE_LIGHTBOX':
-      return { ...state, show: false };
+    case 'SHOW_LIGHTBOX': return { show: true, src: action.src };
+    case 'HIDE_LIGHTBOX': return { ...state, show: false };
+    default: return state;
   }
 }
 
@@ -242,7 +235,7 @@ const reducer = combineReducers({
   playlist,
   currentSong,
   currentCountry,
-  currentTrend,
+  // currentTrend,
   windowWidth,
   windowHeight,
   showTrackInfo,
@@ -265,13 +258,3 @@ const reducer = combineReducers({
 });
 
 export default reducer;
-
-// STATE TREE:
-// {
-//   playlist: [], SET_PLAYLIST
-//   currentSong: { src: URL, isPlaying: bool }, SET_CURRENT_SONG
-//   isPlaying: false, PLAY_PLAYER, PAUSE_PLAYER
-//   windowSize: { w: 100, h: 100 }, RESIZE_WINDOW
-//   currentCountry: 'World', SET_CURRENT_COUNTRY
-//   currentTrend: 'Mix', SET_CURRENT_TREND
-// }
