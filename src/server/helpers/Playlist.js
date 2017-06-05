@@ -104,59 +104,77 @@ const makeSureWeCanPlayTheTracks = (tracks) => {
 // API Endpoint
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Read file 'routes.js' for details on how to use
+getGenrePlaylist = (res, max, genre) => {
+  knex('playlists')
+  .select('*')
+  .where('playlist_name', 'like', `%The Sound of ${genre}`)
+  .then(playlist => console.log(playlist))
+  .catch(res => res.status(400).send());
+}
+
+Playlist.getPlaylist = (req, res) => {
+  const max = 100;
+  const country = req.query.country;
+  const genre = req.query.genre;
+  if(country === undefined) {
+    getGenrePlaylist(res, max, genre);
+  } else {
+    // getCountryPlaylist(res, max, genre);
+    res.send()
+  }
+}
 
 // GET /playlist/info
-Playlist.getPlaylist = (req, res) => {
-  const max = 200;
-  const min = 0; // not being used currently
-  // parse query string
-  const props = parseGetPlaylistReq(req, min, max);
-  // let randomize = false;
-  // if (props.random === true) randomize = true;
-  console.log(`Country: ${props.country}, Trend: ${props.trend}, Limit: ${props.limit}, Random: ${props.random}`);
-
-  // get all playlists from the database
-  knex('playlists').select('*')
-    .then((playlists) => {
-      console.log(`Retrieved ${playlists.length} playlists from database!`);
-      // filter playlists
-      let curatedPlaylists = playlists;
-      curatedPlaylists = filterPlaylistsByCountries(curatedPlaylists, props.country);
-      curatedPlaylists = filterPlaylistsByTrends(curatedPlaylists, props.trend);
-
-      // if (curatedPlaylists.length > 1) randomize = true;
-      // create an array of tracks ids with no duplicates
-      let curatedTracks = curatedPlaylists.reduce((acc, playlist) =>
-         acc.concat(JSON.parse(playlist.playlist_tracks)), []);
-      curatedTracks = Array.from(new Set(curatedTracks));
-      // curatedTracks = makeSureWeCanPlayTheTracks(curatedTracks);
-      // TODO! check lower limit
-      // console.log(curatedTracks.length, _.uniq(curatedTracks).length)
-
-      console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
-
-      // get all tracks from the database included in the tracks array
-      knex('tracks')
-        .groupBy('track_id') // removes duplicate id's (not necessary in theory, yet it is)
-        .whereIn('track_id', curatedTracks)
-        .then((data) => {
-          data = removeAlbumDuplicates(data);
-          // data = makeSureWeCanPlayTheTracks(data);
-          data = _.shuffle(data);
-          if (data.length + 1 > props.limit) data = data.slice(0, props.limit);
-          res.status(200).send(data);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(404).send('Something went wrong!', err);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).send('Something went wrong!', err);
-    });
-};
+// Playlist.getPlaylist = (req, res) => {
+//   const max = 200;
+//   const min = 0; // not being used currently
+//   // parse query string
+//   const props = parseGetPlaylistReq(req, min, max);
+//   // let randomize = false;
+//   // if (props.random === true) randomize = true;
+//   console.log(`Country: ${props.country}, Trend: ${props.trend}, Limit: ${props.limit}, Random: ${props.random}`);
+//
+//   // get all playlists from the database
+//   knex('playlists').select('*')
+//     .then((playlists) => {
+//       console.log(`Retrieved ${playlists.length} playlists from database!`);
+//       // filter playlists
+//       let curatedPlaylists = playlists;
+//       curatedPlaylists = filterPlaylistsByCountries(curatedPlaylists, props.country);
+//       curatedPlaylists = filterPlaylistsByTrends(curatedPlaylists, props.trend);
+//
+//       // if (curatedPlaylists.length > 1) randomize = true;
+//       // create an array of tracks ids with no duplicates
+//       let curatedTracks = curatedPlaylists.reduce((acc, playlist) =>
+//          acc.concat(JSON.parse(playlist.playlist_tracks)), []);
+//       curatedTracks = Array.from(new Set(curatedTracks));
+//       // curatedTracks = makeSureWeCanPlayTheTracks(curatedTracks);
+//       // TODO! check lower limit
+//       // console.log(curatedTracks.length, _.uniq(curatedTracks).length)
+//
+//       console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
+//
+//       // get all tracks from the database included in the tracks array
+//       knex('tracks')
+//         .groupBy('track_id') // removes duplicate id's (not necessary in theory, yet it is)
+//         .whereIn('track_id', curatedTracks)
+//         .then((data) => {
+//           data = removeAlbumDuplicates(data);
+//           // data = makeSureWeCanPlayTheTracks(data);
+//           data = _.shuffle(data);
+//           if (data.length + 1 > props.limit) data = data.slice(0, props.limit);
+//           res.status(200).send(data);
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//           res.status(404).send('Something went wrong!', err);
+//         });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(404).send('Something went wrong!', err);
+//     });
+// };
 
 // GET /playlist/info
 Playlist.getPlaylistInfo = (req, res) => {

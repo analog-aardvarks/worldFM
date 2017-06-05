@@ -6,7 +6,7 @@ const playlistExceptions = require('./playlistExceptions.js');
 
 const TRACK_DEBUG = true;
 const startingTime = Date.now();
-const token = 'BQDKGaxd39yCDyXwmJxJlCwdbbzmzGcm13s_4ZxCpfdh6x-CIGWG5wTlkPPyDCuMEPv-4Ar-LVhyVOVtAyyYqPPwc1vmjOgLd_qB49EgVAR5C1oRel4mfNP5qB9meEoaSs9LbfhWqfZrlp_LUvDGzjhoJqrrv_IkOTYtnMyej_Hvw8egNJTDYOSLMYmfq9JxtMs4ks-vwfoucMiYzQFJo4gZ50VxPxWSjsjsV9UIl7Z4sjh8YOrgBTPHIX_JY84-lHmgR0NjST10sBt5meL1PJFpXXKHjqtiL-zNta65MzwgTNzMY5UkxmTepp2QHVbIYWdOww';
+const token = 'BQBFSGn9CSa_3QPSf_ZYnEo-KfhMPMYyFnNc37gGPUXvdHdffnY6LK76utHSkrZrbZY9luaxTNlu4061myQxwGOk7E7cMtztjR8Jjbd8ss2vn6ppzbzT1SY1oMvdTqOqAROrargEr6hIST9KxjKCshLwSD8b9DtAXtBpupWEqOSshaWBDYFIvmLlsT5_Wxk3ob3lu6xYIZ7JqDo-BtMP4A1BSVBPaa_tseCd2zbSUGxesnCcrRqG3xU8yIsA0DwEzVcSawPaVXfBS37iLiedeUWciFLlrUbpdIqUfp0LZi7adp8_PpXMuM2TvDB2WgMYBoF04g';
 const owner = 'thesoundsofspotify';
 const maxTracksPerPlaylist = 200;
 
@@ -96,7 +96,7 @@ const getAllPlaylistTrackData = playlist =>
     }
 
     const serial = funcs =>
-    funcs.reduce((promise, func) =>
+      funcs.reduce((promise, func) =>
         promise.then(result =>
           func().then(Array.prototype.concat.bind(result))), Promise.resolve([]));
 
@@ -172,7 +172,7 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(4276))
+getMultiplePlaylists(playlistData.splice(4400))
 .then(() => {
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);

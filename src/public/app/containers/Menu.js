@@ -11,8 +11,6 @@ import About from '../components/About';
 
 
 const mapStateToProps = state => ({
-  availableCountries,
-  availableTrends,
   windowHeight: state.windowHeight,
   windowWidth: state.windowWidth,
   auth: state.auth,
@@ -94,8 +92,8 @@ class Menu extends React.Component {
   getPlaylist() {
     console.log(this.props.currentGenre, this.props.currentCountry)
     const url = this.props.currentGenre === null ?
-      `country=${this.props.currentCountry}` :
-      `genre=${this.props.currentGenre}`;
+      `playlist?country=${this.props.currentCountry}` :
+      `playlist?genre=${this.props.currentGenre}`;
     fetch(url)
     .then(res => res.json())
     .then((res) => this.props.setPlaylist(res))
