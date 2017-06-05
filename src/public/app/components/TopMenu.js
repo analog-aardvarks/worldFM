@@ -64,23 +64,17 @@ const TopMenu = ({
       </a>
       <div className="TopMenu__content">
 
-        <SelectGenre
-          currentGenre={currentGenre}
-          handleSetGenre={handleSetGenre}
-          handleClearCountry={handleClearCountry}
-        />
         <SelectCountry
           currentCountry={currentCountry}
           handleSetCountry={handleSetCountry}
           handleClearGenre={handleClearGenre}
         />
-
-        <div className="GlobeView--toggle TopMenu__icon">
-          <i
-            className="fa fa fa-globe fa-lg fa-fw"
-            onClick={scrollUp}
-          />
-        </div>
+        
+        <SelectGenre
+          currentGenre={currentGenre}
+          handleSetGenre={handleSetGenre}
+          handleClearCountry={handleClearCountry}
+        />
 
         <div className="FavoritesMenu--toggle TopMenu__icon">
           <i
@@ -89,13 +83,22 @@ const TopMenu = ({
           />
         </div>
 
-        <a className="TopMenu--login TopMenu__icon" href="/auth/spotify">
-          <i
-            className="fa fa fa-spotify fa-lg fa-fw"
-            style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
-          />
-        </a>
       </div>
+
+      <div className="GlobeView--toggle TopMenu__icon">
+        <i
+          className="fa fa fa-globe fa-2x fa-fw"
+          onClick={scrollUp}
+        />
+      </div>
+
+      <a className="TopMenu--login TopMenu__icon" href="/auth/spotify">
+        <i
+          className="fa fa fa-spotify fa-lg fa-fw"
+          style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
+        />
+      </a>
+
     </div>
   )
 }
