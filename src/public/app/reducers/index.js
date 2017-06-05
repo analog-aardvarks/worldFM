@@ -157,25 +157,19 @@ function spotifyPlayer(state = {
   interval: undefined,
 }, action) {
   switch (action.type) {
-    case 'SET_CURRENT_TRACK_IDX':
-      console.log('this is the idx', state)
-    return { ...state, currentTrackIdx: action.currentTrackIdx };
-
+    case 'SET_CURRENT_TRACK_IDX': return { ...state, currentTrackIdx: action.currentTrackIdx };
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
     case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };
-
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
     case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
       const queueAdd = [...state.queue];
       queueAdd.push(action.track);
       return { ...state, queue: queueAdd };
-
     case 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE':
       const queueRemove = [...state.queue];
       const idx = action.track;
       queueRemove.splice(idx, 1);
       return { ...state, queue: queueRemove };
-
     case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
     case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
     case 'SET_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: action.interval };

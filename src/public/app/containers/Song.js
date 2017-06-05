@@ -8,6 +8,7 @@ import {
   addTrackToSpotifyQueue,
   setSpotifyPlayerCurrentTrack,
   showLightbox,
+  setSpotifyPlayerCurrentTrackIdx,
 } from '../actions';
 
 const mapStateToProps = state => ({ ...state });
@@ -22,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
   handleExpandClick: src => dispatch(showLightbox(src)),
   togglePreviewHandler: src => dispatch({ type: 'TOGGLE_PLAY', src }),
+  setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
 });
 
 class Song extends React.Component {
@@ -118,6 +120,7 @@ class Song extends React.Component {
     if (this.props.auth) {
       if (this.props.spotifyPlayer.currentTrack === null ||
           this.props.spotifyPlayer.currentTrack.track_id !== this.props.track.track_id) {
+        this.props.setSpotifyPlayerCurrentTrackIdx(this.props.ranking - 1);
         this.props.setSpotifyPlayerCurrentTrackHandler(this.props.track);
         this.playTrack(this.props.track)
         .then(() => {

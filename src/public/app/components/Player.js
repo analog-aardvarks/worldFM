@@ -115,7 +115,7 @@ class Player extends React.Component {
   setActiveDevice(device) {
     this.props.setActiveDeviceHandler(device);
     this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
-    this.$volumeInput.value = device.volume_percent;
+    // this.$volumeInput.value = device.volume_percent;
   }
 
   handlePlayClick() {
@@ -229,30 +229,32 @@ class Player extends React.Component {
     });
   }
 
-  // TODO
-  // updateSeeker() {
-  //   let e = this.props.spotifyPlayer.ellapsed;
-  //   if (e >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
-  //     console.log('song ended');
-  //     clearInterval(this.props.spotifyPlayer.interval);
-  //     this.props.clearSpotifyPlayerIntervalHandler();
-  //     this.props.setSpotifyPlayerEllapsedHandler(0);
-  //     this.$seekerInput.value = 0;
-  //     console.log('current song idx', this.props.spotifyPlayer.currentTrackIdx);
-  //     if(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
-  //       this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
-  //       this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
-  //     }
-  //   } else {
-  //     e += 500;
-  //     this.$seekerInput.value = e;
-  //     this.props.setSpotifyPlayerEllapsedHandler(e);
-  //   }
-
   updateEllapsed() {
     let ellapsed = this.props.spotifyPlayer.ellapsed;
-    ellapsed += 250;
-    this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
+    if (ellapsed >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+      const nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
+      const nextTrack = this.props.playlist[nextIdx];
+      console.log(nextIdx, nextTrack)
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.stopInterval();
+        if(nextTrack) {
+          this.playTrack(nextTrack)
+          .then(() => {
+            this.props.pauseSpotifyPlayerHandler(false);
+            this.props.setSpotifyPlayerCurrentTrackHandler(nextIdx);
+            this.props.setSpotifyPlayerCurrentTrackIdx(nextTrack);
+            this.resetInterval();
+          })
+          .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+    } else {
+      ellapsed += 250;
+      this.props.setSpotifyPlayerEllapsedHandler(ellapsed);
+    }
   }
 
   handleSeekerChange(e) {
@@ -304,25 +306,45 @@ class Player extends React.Component {
     }
   }
 
-  // TODO
   handlePreviousClick() {
-    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]) {
-      clearInterval(this.props.spotifyPlayer.interval);
-      this.props.clearSpotifyPlayerIntervalHandler();
-      this.props.setSpotifyPlayerEllapsedHandler(0);
-      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx - 1]);
-      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx - 1);
+    const prevIdx = this.props.spotifyPlayer.currentTrackIdx - 1;
+    const prevTrack = this.props.playlist[prevIdx];
+    if (prevTrack) {
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.stopInterval();
+          this.playTrack(prevTrack)
+          .then(() => {
+            this.props.pauseSpotifyPlayerHandler(false);
+            this.props.setSpotifyPlayerCurrentTrackHandler(prevTrack);
+            this.props.setSpotifyPlayerCurrentTrackIdx(prevIdx);
+            this.resetInterval();
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
     }
   }
 
-  // TODO
   handleNextClick() {
-    if (this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]) {
-      clearInterval(this.props.spotifyPlayer.interval);
-      this.props.clearSpotifyPlayerIntervalHandler();
-      this.props.setSpotifyPlayerEllapsedHandler(0);
-      this.props.playSpotifyPlayer(this.props.playlist[this.props.spotifyPlayer.currentTrackIdx + 1]);
-      this.props.setSpotifyPlayerCurrentTrackIdx(this.props.spotifyPlayer.currentTrackIdx + 1);
+    const nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
+    const nextTrack = this.props.playlist[nextIdx];
+    if (nextTrack) {
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.stopInterval();
+          this.playTrack(nextTrack)
+          .then(() => {
+            this.props.pauseSpotifyPlayerHandler(false);
+            this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
+            this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+            this.resetInterval();
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
     }
   }
 
@@ -397,6 +419,7 @@ class Player extends React.Component {
         <input
           defaultValue="0"
           className="Player__mobile__seeker__input"
+          onMouseDown={this.stopInterval}
           onMouseUp={e => this.handleSeekerChange(e)}
           ref={(el) => { this.$seekerInput = el; }}
           type="range"
@@ -486,15 +509,7 @@ class Player extends React.Component {
           </div> */}
           {/* Desktop only! */}
           {/* <input
-            defaultValue="0"
-            className="Player__seeker__input"
-            onMouseDown={this.stopInterval}
-            onMouseUp={e => this.handleSeekerChange(e)}
-            ref={(el) => { this.$seekerInput = el; }}
-            type="range"
-            min="0"
-            max={this.props.spotifyPlayer.currentTrack.track_length}
-            step="250"
+
           /> */}
           {/* <div className="Player__seeker__total">
             <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
