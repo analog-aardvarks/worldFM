@@ -240,11 +240,11 @@ class Player extends React.Component {
         this.props.pauseSpotifyPlayerHandler(true);
         this.stopInterval();
         if(nextTrack) {
-          this.playTrack(nextTrack)
+          this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
+          this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+          this.playTrack()
           .then(() => {
             this.props.pauseSpotifyPlayerHandler(false);
-            this.props.setSpotifyPlayerCurrentTrackHandler(nextIdx);
-            this.props.setSpotifyPlayerCurrentTrackIdx(nextTrack);
             this.resetInterval();
           })
           .catch(err => console.log(err));
@@ -314,11 +314,11 @@ class Player extends React.Component {
       .then(() => {
         this.props.pauseSpotifyPlayerHandler(true);
         this.stopInterval();
-          this.playTrack(prevTrack)
+          this.props.setSpotifyPlayerCurrentTrackHandler(prevTrack);
+          this.props.setSpotifyPlayerCurrentTrackIdx(prevIdx);
+          this.playTrack()
           .then(() => {
             this.props.pauseSpotifyPlayerHandler(false);
-            this.props.setSpotifyPlayerCurrentTrackHandler(prevTrack);
-            this.props.setSpotifyPlayerCurrentTrackIdx(prevIdx);
             this.resetInterval();
           })
           .catch(err => console.log(err));
@@ -335,14 +335,14 @@ class Player extends React.Component {
       .then(() => {
         this.props.pauseSpotifyPlayerHandler(true);
         this.stopInterval();
-          this.playTrack(nextTrack)
-          .then(() => {
-            this.props.pauseSpotifyPlayerHandler(false);
-            this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
-            this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
-            this.resetInterval();
-          })
-          .catch(err => console.log(err));
+        this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
+        this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+        this.playTrack(nextTrack)
+        .then(() => {
+          this.props.pauseSpotifyPlayerHandler(false);
+          this.resetInterval();
+        })
+        .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
     }
