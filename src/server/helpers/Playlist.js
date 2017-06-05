@@ -104,78 +104,72 @@ const makeSureWeCanPlayTheTracks = (tracks) => {
 // API Endpoint
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// getGenrePlaylist = (res, max, genre) => {
-//   knex('playlists')
-//   .select('*')
-//   .where('playlist_name', 'like', `%The Sound of ${genre}`)
-//   .then(playlist => console.log(playlist))
-//   .catch(res => res.status(400).send());
-// }
-//
-// Playlist.getPlaylist = (req, res) => {
-//   const max = 100;
-//   const country = req.query.country;
-//   const genre = req.query.genre;
-//   if(country === undefined) {
-//     getGenrePlaylist(res, max, genre);
-//   } else {
-//     // getCountryPlaylist(res, max, genre);
-//     res.send()
-//   }
-// }
+getGenrePlaylist = (genre) =>
+  new Promise((resolve, reject) => {
+    knex('playlists')
+    .select('*')
+    .where('playlist_name', 'like', `%${genre}`)
+    .then(playlist => resolve(playlist))
+    .catch(err => reject(err));
+  });
 
-// GET /playlist/info
-Playlist.getPlaylist = (req, res) => {
-  const max = 200;
-  const min = 0; // not being used currently
-  // parse query string
-  const props = parseGetPlaylistReq(req, min, max);
-  // let randomize = false;
-  // if (props.random === true) randomize = true;
-  console.log(`Country: ${props.country}, Trend: ${props.trend}, Limit: ${props.limit}, Random: ${props.random}`);
+getCountryPlaylist = (country) =>
+  new Promise((resolve, reject) => {
+    if(country === 'World') {
+      knex('playlists')
+      .select('*')
+      .where('playlist_name', 'like', '[COUNTRY%')
+      .whereNot('playlist_name', 'like', '% / %')
+      .whereNot('playlist_name', 'like', '%The Sound of%')
+      .then(playlists => resolve(playlists))
+      .catch(err => reject(err));
+    } else {
+      knex('playlists')
+      .select('*')
+      .where('playlist_name', 'like', `%${country}%`)
+      .where('playlist_name', 'like', '[COUNTRY%')
+      // alias
+      .then(playlists => resolve(playlists))
+      .catch(err => reject(err));
+    }
+  });
 
-  // get all playlists from the database
-  knex('playlists').select('*')
-    .then((playlists) => {
-      console.log(`Retrieved ${playlists.length} playlists from database!`);
-      // filter playlists
-      let curatedPlaylists = playlists;
-      curatedPlaylists = filterPlaylistsByCountries(curatedPlaylists, props.country);
-      curatedPlaylists = filterPlaylistsByTrends(curatedPlaylists, props.trend);
-
-      // if (curatedPlaylists.length > 1) randomize = true;
-      // create an array of tracks ids with no duplicates
-      let curatedTracks = curatedPlaylists.reduce((acc, playlist) =>
-         acc.concat(JSON.parse(playlist.playlist_tracks)), []);
-      curatedTracks = Array.from(new Set(curatedTracks));
-      // curatedTracks = makeSureWeCanPlayTheTracks(curatedTracks);
-      // TODO! check lower limit
-      // console.log(curatedTracks.length, _.uniq(curatedTracks).length)
-
-      console.log(`Sending a list of ${curatedTracks.length} curated tracks!`);
-
-      // get all tracks from the database included in the tracks array
+Playlist.getPlaylist = (req, response) => {
+  const max = 100;
+  const country = req.query.country;
+  const genre = req.query.genre;
+  const startingTime = Date.now();
+  if(genre === undefined) {
+    getCountryPlaylist(country)
+    .then(res => res.map(p => JSON.parse(p.playlist_tracks)))
+    .then(res => _.flatten(res))
+    .then(res => _.uniq(res))
+    .then(res => _.shuffle(res))
+    .then(res => res.splice(0, max))
+    .then(res => {
       knex('tracks')
-        .groupBy('track_id') // removes duplicate id's (not necessary in theory, yet it is)
-        .whereIn('track_id', curatedTracks)
-        .then((data) => {
-          data = removeAlbumDuplicates(data);
-          // data = makeSureWeCanPlayTheTracks(data);
-          data = _.shuffle(data);
-          if (data.length + 1 > props.limit) data = data.slice(0, props.limit);
-          res.status(200).send(data);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(404).send('Something went wrong!', err);
-        });
+      .whereIn('track_id', res)
+      .then((data) => removeAlbumDuplicates(data))
+      .then(data => response.status(200).send(data))
+      .catch((err) => response.status(400).send(err));
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).send('Something went wrong!', err);
-    });
-};
-
+    .catch((err) => response.status(400).send(err));
+  } else {
+    getGenrePlaylist(genre)
+    .then(res => res[0])
+    .then(res => JSON.parse(res.playlist_tracks))
+    .then(res => _.shuffle(res))
+    .then(res => res.splice(0, max))
+    .then(res => {
+      knex('tracks')
+      .whereIn('track_id', res)
+      .then((data) => removeAlbumDuplicates(data))
+      .then(data => response.status(200).send(data))
+      .catch((err) => response.status(400).send(err));
+    })
+    .catch((err) => response.status(400).send(err));
+  }
+}
 
 // GET /playlist/info
 Playlist.getPlaylistInfo = (req, res) => {

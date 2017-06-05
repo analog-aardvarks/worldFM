@@ -74,10 +74,15 @@ class Menu extends React.Component {
   }
 
   componentDidUpdate(prev) {
-    if (prev.currentCountry !== this.props.currentCountry) {
-      this.getPlaylist();
-    } else if (prev.currentGenre !== this.props.currentGenre) {
-      this.getPlaylist();
+    if(this.props.currentCountry ===  this.props.currentGenre &&
+    this.props.currentCountry === null &&
+    this.props.currentGenre === null) {
+    } else {
+      if (prev.currentCountry !== this.props.currentCountry) {
+        this.getPlaylist();
+      } else if (prev.currentGenre !== this.props.currentGenre) {
+        this.getPlaylist();
+      }
     }
   }
 
