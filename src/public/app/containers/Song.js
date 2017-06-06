@@ -220,7 +220,7 @@ class Song extends React.Component {
         }}
       >
         <div
-          className="Song__wrapper"
+          className="Song__wrapper" style={{ border: icon === "play" ? "" : "3px solid #1ed760"  }}
         >
           <i
             className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
