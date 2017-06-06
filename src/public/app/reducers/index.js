@@ -124,6 +124,14 @@ function showUserMenu(state = false, action) {
   }
 }
 
+function showCountryDropdown(state = true, action) {
+  switch (action.type) {
+    case 'SHOW_COUNTRY_DROPDOWN': return true;
+    case 'HIDE_COUNTRY_DROPDOWN': return false;
+    default: return state;
+  }
+}
+
 function showAbout(state = false, action) {
   switch (action.type) {
     case 'SHOW_ABOUT': return true;
@@ -251,6 +259,7 @@ const reducer = combineReducers({
   songMenu,
   showSideMenu,
   showUserMenu,
+  showCountryDropdown,
   auth,
   spotifyPlayer,
   showVolumeGauge,

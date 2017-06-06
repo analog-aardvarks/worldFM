@@ -22,6 +22,7 @@ const mapStateToProps = state => ({
   showCountryMenu: state.showCountryMenu,
   showSideMenu: state.showSideMenu,
   showUserMenu: state.showUserMenu,
+  showCountryDropdown: state.showCountryDropdown,
   showQueueMenu: state.showQueueMenu,
   favorites: state.favorites,
   showAbout: state.showAbout,
@@ -47,6 +48,8 @@ const mapDispatchToProps = dispatch => ({
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
   showUserMenuEvent: () => dispatch({ type: 'SHOW_USER_MENU' }),
   hideUserMenuEvent: () => dispatch({ type: 'HIDE_USER_MENU' }),
+  showCountryDropdownEvent: () => dispatch({ type: 'SHOW_COUNTRY_DROPDOWN' }),
+  hideCountryDropdownEvent: () => dispatch({ type: 'HIDE_COUNTRY_DROPDOWN' }),
   showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
   hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
   showFavoritesMenuEvent: () => dispatch({ type: 'SHOW_FAVORITES_MENU' }),
@@ -67,6 +70,7 @@ class Menu extends React.Component {
     this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
     this.toggleUserMenu = this.toggleUserMenu.bind(this);
+    this.toggleCountryDropdown = this.toggleCountryDropdown.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     this.toggleAbout = this.toggleAbout.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
@@ -142,6 +146,11 @@ class Menu extends React.Component {
   toggleUserMenu() {
     if (this.props.showUserMenu) this.props.hideUserMenuEvent();
     if (!this.props.showUserMenu) this.props.showUserMenuEvent();
+  }
+
+  toggleCountryDropdown() {
+    if (this.props.showCountryDropdown) this.props.hideCountryDropdownEvent();
+    if (!this.props.showCountryDropdown) this.props.showCountryDropdownEvent();
   }
 
   toggleQueueMenu() {

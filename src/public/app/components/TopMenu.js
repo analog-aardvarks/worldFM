@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   auth: state.auth,
   showTopMenu: state.showTopMenu,
   showUserMenu: state.showUserMenu,
+  showCountryDropdown: state.showCountryDropdown,
   currentCountry: state.currentCountry,
   currentGenre: state.currentGenre,
 })
@@ -19,6 +20,8 @@ const mapDispatchToProps = dispatch => ({
   handleClearCountry: () => dispatch({ type: 'CLEAR_CURRENT_COUNTRY' }),
   handleSetGenre: (genre) => dispatch({ type: 'SET_CURRENT_GENRE', genre }),
   handleClearGenre: () => dispatch({ type: 'CLEAR_CURRENT_GENRE' }),
+  handleHideCountryDropdown: () => dispatch({ type: 'HIDE_COUNTRY_DROPDOWN' }),
+  handleShowCountryDropdown: () => dispatch({ type: 'SHOW_COUNTRY_DROPDOWN' }),
 })
 
 const TopMenu = ({
@@ -26,6 +29,7 @@ const TopMenu = ({
   showTopMenu,
   showFavoritesMenu,
   showUserMenu,
+  showCountryDropdown,
   toggleTopMenu,
   toggleFavoritesMenu,
   toggleSideMenu,
@@ -34,6 +38,8 @@ const TopMenu = ({
   currentGenre,
   handleSetCountry,
   handleClearCountry,
+  handleHideCountryDropdown,
+  handleShowCountryDropdown,
   handleSetGenre,
   handleClearGenre,
   }) => {
@@ -67,8 +73,6 @@ const TopMenu = ({
       </a>
 
 
-
-
       <div className="TopMenu__content">
 
         <div
@@ -85,6 +89,20 @@ const TopMenu = ({
           />
         </div>
 
+        <div className="TopMenu__dropdownOptions">
+          <span
+            onClick={handleShowCountryDropdown}
+            style={{ color: showCountryDropdown ? 'rgb(30, 215, 96)' : 'grey' }}
+            data-tip="Browse trending traks by country" >COUNTRY
+          </span>
+          <span
+            onClick={handleHideCountryDropdown}
+            style={{ color: !showCountryDropdown ? 'rgb(30, 215, 96)' : 'grey' }}
+            data-tip="Explore a world of genres" >GENRE
+          </span>
+        </div>
+
+        { showCountryDropdown ?
         <div className="TopMenu--CountryDropdown">
           <SelectCountry
             currentCountry={currentCountry}
@@ -92,20 +110,25 @@ const TopMenu = ({
             handleClearGenre={handleClearGenre}
           />
         </div>
+        : null }
 
-       <SelectGenre
-          currentGenre={currentGenre}
-          handleSetGenre={handleSetGenre}
-          handleClearCountry={handleClearCountry}
-        />
+        { !showCountryDropdown ?
+        <div className="TopMenu--GenreDropdown">
+          <SelectGenre
+            currentGenre={currentGenre}
+            handleSetGenre={handleSetGenre}
+            handleClearCountry={handleClearCountry}
+          />
+        </div>
+        : null }
 
-         {/* <div className="FavoritesMenu--toggle TopMenu__icon">
+        <div className="FavoritesMenu--toggle TopMenu__icon">
           <i
             className="fa fa fa-heart fa-lg fa-fw"
             onClick={toggleFavoritesMenu}
             data-tip="View Favorites"
           />
-        </div> */}
+        </div>
 
         <a className="TopMenu--login TopMenu__icon" href="/auth/spotify">
           <i
