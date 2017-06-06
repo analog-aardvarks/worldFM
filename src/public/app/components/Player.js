@@ -182,7 +182,7 @@ class Player extends React.Component {
         return res.json();
       })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         this.props.setUserFavoritesHandler(res.favs || []);
         this.props.setSyncStatusHandler(res.sync);
         this.updateDeviceInfo(res.devices);
@@ -461,7 +461,6 @@ class Player extends React.Component {
   return (
       <div className="Player">
 
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <input
           defaultValue="0"
           className="Player__mobile__seeker__input"
@@ -470,9 +469,9 @@ class Player extends React.Component {
           ref={(el) => { this.$seekerInput = el; }}
           type="range"
           min="0"
-          max={this.props.spotifyPlayer.currentTrack.track_length}
+          max={this.props.spotifyPlayer.currentTrack ? this.props.spotifyPlayer.currentTrack.track_length : 100}
           step="250"
-        /> }
+        />
 
         <div className="Player__leftPortion">
 
@@ -483,86 +482,62 @@ class Player extends React.Component {
           </div>
 
           <div className="Player__extraButtons">
-
-            {this.props.auth && (
-                <div
-                className="Player__playslistExportToggle"
-                display={this.props.auth || 'none'}
-                >
-                  <i className="fa fa fa-download fa-lg fa-fw"
-                  onClick={() => {
-                    if(this.props.auth) this.savePlaylist();
-                  }}
+            <div
+              className={`Player__extraButtons__button Player__playslistExportToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
+              display={this.props.auth || 'none'}
+            >
+              <i className="fa fa fa-download fa-2x fa-fw"
+                onClick={() => { if(this.props.auth) this.savePlaylist() }}
                   data-tip="Export current playlist to Spotify"
-                  />
-                  <span>export</span>
-                </div>
-              )}
+              />
+              <span>Export</span>
+              </div>
 
-                <div className="Player__devicesToggle" display={this.props.auth || 'none'}>
-                  <i className="fa fa fa-mobile fa-1x fa-fw"
+              <div className={`Player__extraButtons__button Player__devicesToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
+                <i
+                  className="fa fa fa-mobile fa-2x fa-fw"
                   onClick={this.toggleAvailableDevices}
                   data-tip="Listen on another device"
+                />
+                <span>Devices</span>
+              </div>
+
+              {this.props.showAvailableDevices &&
+              <div className="Device__selector">
+                <div className="Device__selector__top">
+                  <i
+                    className="fa fa-refresh fa-fw"
+                    onClick={this.refreshDevices}
                   />
-                  <span>devices</span>
-                </div>
-
-                {this.props.showAvailableDevices && (
-
-                  <div className="Device__selector">
-                  <div
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between}' }}
-                  >
-                    <i className="fa fa-refresh fa-2x fa-fw"
-                      onClick={this.refreshDevices}
-                    />
-                  <div className="Player__devicesTitle">Devices</div>
-                    <i className="fa fa fa-times fa-1 fa-fw"
+                <div className="Player__devicesTitle">Devices</div>
+                  <i className="fa fa fa-times fa-fw"
                       onClick={this.toggleAvailableDevices}
-                    />
+                  />
+                </div>
+                  {this.props.availableDevices.map((device, idx) => (
+                  <div
+                    className="Player__devicesDevice"
+                    style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
+                    key={idx}
+                    onClick={() => this.handleDeviceClick(device)}
+                  >
+                    <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
+                    <span>{device.name}</span>
                   </div>
-                    {this.props.availableDevices.map((device, idx) => (
-                      <div
-                        className="Player__devicesDevice"
-                        style={{ color: device.id === this.props.activeDevice.id ? 'green' : 'white', cursor: 'pointer' }}
-                        key={idx}
-                        onClick={() => this.handleDeviceClick(device)}
-                      >
-                        <i className={`fa fa-${this.deviceIcon(device)} fa-2x fa-fw`} />
-                        <span>{device.name}</span>
-                    </div>
                   ))}
-                  </div>
-            )}
+              </div>
+              }
 
-            <div className="QueueMenu--toggle">
+            <div className={`Player__extraButtons__button QueueMenu--toggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
               <i
-                className="fa fa fa-list fa-1x fa-fw"
+                className="fa fa fa-list fa-2x fa-fw"
                 onClick={this.toggleQueueMenu}
                 data-tip="Show Queue"
               />
-              <span>queue</span>
+              <span>Queue</span>
             </div>
-
           </div>
         </div>
-
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="Player__seeker">
-
-          {/* <div className="Player__seeker__ellapsed">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)}</span>
-          </div> */}
-          {/* Desktop only! */}
-          {/* <input
-
-          /> */}
-          {/* <div className="Player__seeker__total">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div> */}
-
-        </div>
-        }
 
         {!this.props.spotifyPlayer.isPaused || this.props.currentSong.isPlaying && <div className="Equalizer">
         <img src="http://rs558.pbsrc.com/albums/ss30/mem72/equalizer.gif~c200" height= {60} />
