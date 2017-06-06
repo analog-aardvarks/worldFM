@@ -1,6 +1,6 @@
 .Player {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.85);
+  color: rgb(230, 230, 230);
+  background-color: rgba(0, 0, 0, 0.90);
   border: 20px;
   bottom: 0px;
   height: 64px;
@@ -41,7 +41,7 @@
 .fa-play:hover,
 .fa-step-forward:hover,
 .fa-random:hover  {
-  color: white;
+  color: rgb(230, 230, 230);
   opacity: 0.75;
   text-decoration: none;
 }
@@ -105,7 +105,7 @@
   width: 100px;
   position: absolute;
   bottom: 101px;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.90);
   display: flex;
   align-items: center;
 }
@@ -130,7 +130,7 @@
   position: absolute;
   left: 114px;
   bottom: 64px;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.90);
   display: flex;
   padding: 10px;
   flex-direction: column;
