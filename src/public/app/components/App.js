@@ -9,7 +9,7 @@ import '../styles/main.scss';
 import About from './About';
 import Lightbox from './Lightbox';
 
-const showGlobe = false;
+const showGlobe = true;
 
 const App = () => (
   <div>

@@ -137,9 +137,12 @@ class Menu extends React.Component {
   }
 
   toggleFavoritesMenu() {
-    console.log('toggle')
-    if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
-    if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
+    if (this.props.auth) {
+      if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
+      else if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
+    } else {
+      alert('Please log in to view favorites');
+    }
   }
 
   removeTrackFromQueue(track) {

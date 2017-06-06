@@ -21,9 +21,9 @@ Devices.getDevices = profile =>
       headers: { Authorization: `Bearer ${profile.accessToken}` },
     })
     .then((response) => {
-      profile.devices = JSON.parse(response).devices;
-      profile.activeDevice = profile.devices.filter(d => d.is_active)[0];
-      resolve(profile);
+      const devices = JSON.parse(response).devices;
+      // const activeDevice = devices.filter(d => d.is_active)[0];
+      resolve(devices);
     })
     .catch(err => reject(err));
   });

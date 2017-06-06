@@ -19,8 +19,6 @@ User.login = profile =>
     User.getUser(profile)
     .then((userData) => {
       if (userData) {
-        console.log('USER DATA: ', userData)
-        console.log(`user ${userData.id} already exists!`);
         resolve(profile);
       } else {
         const newUser = {
@@ -43,9 +41,10 @@ User.login = profile =>
 
 User.getFavoriteTracks = user =>
   new Promise((resolve, reject) => {
+    console.log('user: ', user);
     knex('tracks')
     .join('favorites', 'tracks.track_id', '=', 'favorites.track')
-    .where('favorites.user', 0)
+    .where('favorites.user', user.id)
     .then(favs => resolve(favs))
     .catch(err => reject(err));
   });
@@ -64,7 +63,7 @@ User.removeFavorite = (req, res) => {
   knex('favorites')
   .where('user', req.user.id).andWhere('track', req.body.track_id)
   .del()
-  .then(() => User.getFavoriteTracks())
+  .then(() => User.getFavoriteTracks(req.user))
   .then(updatedFavs => res.send(updatedFavs))
   .catch(err => console.log(err));
 };
@@ -91,36 +90,36 @@ User.toggleSync = (req, res) => {
 User.info = (req, res) => {
   if (req.user) {
     const info = {};
-    knex('user')
-    .where('id', req.user.id)
+    knex('users')
+    .where('user_id', req.user.id)
     .then(users => users[0])
     .then((user) => {
       info.sync = user.user_sync;
-      knex('tracks')
-      .groupBy('track_id')
-      .whereIn('track_id', user.user_favorites.split(','))
-      .then((userFavorites) => {
-        const orderedFavorites = [];
-        user.user_favorites.split(',').forEach((f) => {
-          userFavorites.forEach((t) => { if (t.track_id === f) orderedFavorites.push(t); });
-        });
-        return orderedFavorites;
-      })
+      // knex('tracks')
+      // .groupBy('track_id')
+      // .whereIn('track_id', user.user_favorites.split(','))
+      // .then((userFavorites) => {
+      //   const orderedFavorites = [];
+      //   user.user_favorites.split(',').forEach((f) => {
+      //     userFavorites.forEach((t) => { if (t.track_id === f) orderedFavorites.push(t); });
+      //   });
+      //   return orderedFavorites;
+      // })
+      User.getFavoriteTracks(req.user)
       .then((orderedFavorites) => {
         info.favs = orderedFavorites;
-        Devices
-        .getDevices(req.user)
+        Devices.getDevices(req.user)
         .then((devices) => {
-          info.devices = devices;
+          // info.devices = devices;
           res.status(200).send(info);
         })
-        .catch(err => res.status(201).send(err));
+        .catch(err => console.log(err));
       })
-      .catch(err => res.status(201).send(err));
+      .catch(err => console.log(err));
     })
-    .catch(err => res.status(201).send(err));
+    .catch(err => console.log(err));
   } else {
-    res.status(201).send();
+    res.status(204).send();
   }
 };
 
