@@ -13,35 +13,32 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackF
 
   return (
 
-    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }} onMouseLeave={toggleQueueMenu}>
+    <div className="QueueMenu" style={{ display: showQueueMenu ? "block" : "none" }}>
 
       <div className="QueueMenu__topBar">
+        {/* do not remove */}
+        <i className="fa fa fa-thumb-tack fa-1 fa-fw" style={{ opacity: '0' }}/>
+        <span>Queue</span>
         <i className="fa fa fa-times fa-1 fa-fw" onClick={toggleQueueMenu} />
       </div>
 
       <div className="QueueMenu__songList">
-        {spotifyPlayer.queue.map((track, idx) => (
-            <div className="QueueMenu__indivdualSong" key={idx}>
-              <span className="QueueMenu__position" >{idx+1}</span>
-              <div className="QueueMenu__indivdualSong__songInfoAndPicture">
-                <img
-                  src={track.track_album_image}
-                  width="46"
-                  height="46"
-                />
-                <div className="QueueMenu__indivdualSong__songInfo">
-                  <span className="QueueMenu__songName">{track.track_name}</span>
-                  <span className="QueueMenu__songArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
-                </div>
-              </div>
-              <i className="fa fa-minus fa-lg fa-fw" onClick={ () => removeTrackFromQueue(idx) }/>
-            </div>
-          ))}
-
+      {spotifyPlayer.queue.map((track, idx) => (
+      <div className="QueueMenu__indivdualSong" key={idx}>
+        {/*<div className="absclear">
+          <i className="fa fa-times-circle-o fa-lg fa-fw" onClick={ () => removeTrackFromQueue(idx) }/>
+        </div>*/}
+        <img src={track.track_album_image} />
+        <div className="QueueMenu__indivdualSong__songInfo">
+          <span className="QueueMenu__songName">{track.track_name}</span>
+          <span className="QueueMenu__songArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
+        </div>
       </div>
-
+      ))}
+      </div>
     </div>
   )
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(QueueMenu);

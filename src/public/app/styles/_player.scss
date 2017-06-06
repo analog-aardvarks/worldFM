@@ -3,11 +3,10 @@
   background-color: rgba(0, 0, 0, 0.95);
   border: 20px;
   bottom: 0px;
-  height: 80px;
+  height: 65px;
   position: fixed;
   width: 100%;
   z-index: 15;
-  padding: 0px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,43 +16,74 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 290px;
-  // margin-left: 40px;
-  // input {
-  //   width: 60px;
-  // }
+  width: 260px;
+  height: 100%;
+  margin-left: 40px;
 }
 
 .Player__controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 130px;
+  width: 120px;
+  height: 100%;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
 }
 
 .Player__extraButtons {
+  color: rgb(230, 230, 230);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  width: 130px;
-  margin-left: 20px;
-}
-
-.fa-step-backwards:hover,
-.fa-play:hover,
-.fa-step-forward:hover,
-.fa-random:hover  {
-  color: rgb(230, 230, 230);
-  opacity: 0.75;
-  text-decoration: none;
-}
-
-.fa-step-backward:active,
-.fa-play:active,
-.fa-step-forward:active,
-.fa-random:active{
+  width: 120px;
   opacity: 1;
-  color: rgb(30, 215, 96);
+}
+
+.Player__extraButtons__button {
+  color: rgb(230, 230, 230);
+  // opacity: 0.75;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  cursor: pointer;
+  user-select: none;
+  i {
+    font-size: 20px;
+  }
+  span {
+    font-size: 10px;
+  }
+}
+
+.Player__extraButtons__button:hover {
+  opacity: 0.75;
+}
+
+.Player__extraButtons__button:active {
+  color: $spotifyGreen;
+}
+
+.Player__extraButtons__button--disabled {
+  cursor: default;
+  opacity: 0.50;
+}
+
+.Player__extraButtons__button--disabled:hover {
+  cursor: default;
+  opacity: 0.50;
 }
 
 .CurrentSong {
@@ -67,16 +97,12 @@
 
 .CurrentSongInfo {
   font-family: 'Permanent Marker', cursive;
-  margin: 4px;
-  margin-left: 20px;
+  margin-left: 40px;
+  max-width: 100px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  // text-overflow: ellipsis;
-  // overflow: hidden;
-  // overflow-x: hidden;
-  // overflow-y: hidden;
-  // white-space: nowrap;
 }
 
 .Player__seeker {
@@ -114,110 +140,6 @@
   align-items: center;
 }
 
-.Player__devicesToggle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  span {
-    font-size: 8pt;
-    opacity: 0.6;
-  }
-  i {
-    font-size: 18pt;
-    opacity: 0.6;
-  }
-}
-
-.Device__selector {
-  height: 140px;
-  width: 200px;
-  position: absolute;
-  left: 114px;
-  bottom: 64px;
-  background-color: rgba(0, 0, 0, 0.90);
-  display: flex;
-  padding: 10px;
-  flex-direction: column;
-  align-items: center;
-  font-size: 8pt;
-  i {
-    position: inherit;
-    right: 8px;
-    top: 10px;
-  }
-}
-
-.Device__selector {
-  i:hover {
-    opacity: 0.7;
-  }
-}
-
-.Player__devicesTitle {
-  display: flex;
-  justify-content: center;
-  font-size: 11pt;
-  font-family: 'Permanent Marker', cursive;
-  margin-bottom: 6px;
-}
-
-
-
-
-.Player__playslistExportToggle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-    span {
-      font-size: 8pt;
-      opacity: 0.6;
-    }
-    i {
-      font-size: 16pt;
-      margin-bottom: 2px;
-      opacity: 0.6;
-    }
-}
-
-.Player__devicesDevice {
-  display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  justify-content: space-between;
-  align-items: center;
-  width: 170px;
-  span {
-    display: flex;
-    justify-content: flex-start;
-    margin-left: 10px;
-    width: inherit;
-  }
-}
-
-.Player__devicesDevice:hover {
-  color: grey;
-  i {
-    opacity: 1;
-    color: $spotifyGreen;
-  }
-}
-
-.QueueMenu--toggle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-    span {
-      font-size: 8pt;
-      opacity: 0.6;
-    }
-    i {
-      font-size: 16pt;
-      opacity: 0.6;
-    }
-}
-
-
 .Player__likeButton {
   display: flex;
   justify-content: center;
@@ -234,7 +156,7 @@
 
 .Player__mobile__seeker__input {
   position: absolute;
-  bottom: 64px;
+  bottom: 65px;
 }
 
 /*Chrome*/
@@ -245,7 +167,7 @@
       width: 100%;
       height: 8px;
       -webkit-appearance: none;
-      background-color: rgba(90,90, 90, 0.6);
+      background-color: rgba(0, 0, 0, 0.75);
     }
 
     input[type='range']::-webkit-slider-runnable-track {
@@ -259,7 +181,6 @@
       width: 10px;
       -webkit-appearance: none;
       height: 10px;
-      cursor: ew-resize;
       background: #434343;
       box-shadow: -1000px 0 0 1000px $spotifyGreen;
     }
@@ -269,12 +190,68 @@ input[type="range"]::-moz-range-progress {
   background-color: $spotifyGreen;
 }
 input[type="range"]::-moz-range-track {
-  background-color: rgba(90,90, 90, 0.6);
+  // background-color: rgba(90,90, 90, 0.6);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 /* IE*/
 input[type="range"]::-ms-fill-lower {
   background-color: $spotifyGreen;
 }
 input[type="range"]::-ms-fill-upper {
-  background-color: rgba(90,90, 90, 0.6);
+  // background-color: rgba(90,90, 90, 0.6);
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* device selector */
+
+.Player__devicesTitle {
+  user-select: none;
+}
+
+.Device__selector {
+  min-height: 152px;
+  min-width: 200px;
+  position: absolute;
+  left: 0px;
+  bottom: 73px;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+}
+
+.Device__selector__top {
+  width: 100%;
+  height: 28px;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.90);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.Player__devicesDevice {
+  display: flex;
+  margin: 5px 0;
+  padding: 15px;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  span {
+    margin-left: 10px;
+    user-select: none;
+  }
+}
+
+.Player__devicesDevice:hover {
+  opacity: 0.75;
 }
