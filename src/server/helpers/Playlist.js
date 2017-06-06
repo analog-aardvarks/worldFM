@@ -1,6 +1,7 @@
 const knex = require('../db/db');
 const request = require('request-promise-native');
 const _ = require('underscore');
+const User = require('./User');
 
 const abbreviation = require('../data/abbreviation');
 
@@ -224,9 +225,8 @@ Playlist.sync = (user, favs) => {
   // console.log('Sync -> userId: ', userId);
   if (DEBUG_MODE) console.log(`229 [${Date.now() - TIME_START}ms] -> RECEIVED ${tracks.length} TRACKS!`);
   if (DEBUG_MODE) console.log(`230 [${Date.now() - TIME_START}ms] -> LOOKING FOR THE USER'S PLAYLIST ID IN THE DATABASE...`);
-  knex('users')
-    .where('user_id', userId)
-    .then(users => users[0].user_playlist)
+  User.getUser(user)
+    .then(userData => userData.playlist)
     .then((userPlaylist) => {
       if (DEBUG_MODE) console.log(`235 [${Date.now() - TIME_START}ms] -> FOUND PLAYLIST ID ${userPlaylist} FOR USER ${userId}`);
       if (userPlaylist === null) {

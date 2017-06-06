@@ -17,7 +17,6 @@ passport.use(new SpotifyStrategy({
 },
   (accessToken, refreshToken, profile, done) => {
     profile.accessToken = accessToken;
-    console.log('profile: ',profile)
     User.login(profile)
       .then(userInfo => done(null, userInfo))
       .catch(err => console.log(err));

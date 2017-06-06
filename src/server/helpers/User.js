@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const knex = require('../db/db');
 const Playlist = require('./Playlist');
 const Devices = require('./Devices');
@@ -38,10 +37,8 @@ User.login = profile =>
     .catch(err => reject(err));
   });
 
-
 User.getFavoriteTracks = user =>
   new Promise((resolve, reject) => {
-    console.log('user: ', user);
     knex('tracks')
     .join('favorites', 'tracks.track_id', '=', 'favorites.track')
     .where('favorites.user', user.id)
@@ -72,12 +69,12 @@ User.toggleSync = (req, res) => {
   User.getUser(req.user)
     .then((userData) => {
       if (userData.user_sync !== req.body.sync) {
-        knex('user').where('id', req.user.id).update({
-          user_sync: req.body.sync,
+        knex('usertest').where('id', req.user.id).update({
+          sync: req.body.sync,
         })
         .then(() => res.send(req.body.sync));
         if (req.body.sync === true) {
-          User.getFavoriteTracks(req.user.id)
+          User.getFavoriteTracks(req.user)
             .then(favs => Playlist.sync(req.user, favs))
             .catch(err => console.log(err));
         }
@@ -89,37 +86,18 @@ User.toggleSync = (req, res) => {
 
 User.info = (req, res) => {
   if (req.user) {
-    const info = {};
-    knex('users')
-    .where('user_id', req.user.id)
-    .then(users => users[0])
-    .then((user) => {
-      info.sync = user.user_sync;
-      // knex('tracks')
-      // .groupBy('track_id')
-      // .whereIn('track_id', user.user_favorites.split(','))
-      // .then((userFavorites) => {
-      //   const orderedFavorites = [];
-      //   user.user_favorites.split(',').forEach((f) => {
-      //     userFavorites.forEach((t) => { if (t.track_id === f) orderedFavorites.push(t); });
-      //   });
-      //   return orderedFavorites;
-      // })
-      User.getFavoriteTracks(req.user)
-      .then((orderedFavorites) => {
-        info.favs = orderedFavorites;
-        Devices.getDevices(req.user)
-        .then((devices) => {
-          // info.devices = devices;
-          res.status(200).send(info);
-        })
-        .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
+    Promise.all([
+      User.getUser(req.user),
+      User.getFavoriteTracks(req.user),
+      Devices.getDevices(req.user),
+    ])
+    .then(([user, favs, devices]) => {
+      const info = { sync: user.sync, favs, devices };
+      res.send(info);
     })
     .catch(err => console.log(err));
   } else {
-    res.status(204).send();
+    res.status(403).send();
   }
 };
 
