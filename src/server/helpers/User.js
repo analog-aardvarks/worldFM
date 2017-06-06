@@ -22,9 +22,9 @@ User.login = profile =>
       } else {
         const newUser = {
           id: profile.id,
-          username: profile.username,
+          displayName: profile.displayName,
           profile_url: profile.profileUrl,
-          // user_image: user.photos[0],
+          image: profile.photos[0],
           sync: false,
         };
         knex('usertest').insert(newUser)
@@ -50,7 +50,17 @@ User.addFavorite = (req, res) => {
   knex('favorites').insert({ user: req.user.id, track: req.body.track_id })
   .then(() => {
     User.getFavoriteTracks(req.user)
-    .then(updatedFavs => res.send(updatedFavs))
+    .then((updatedFavs) => {
+      res.send(updatedFavs);
+      return updatedFavs;
+    })
+    .then((updatedFavs) => {
+      User.getUser(req.user)
+      .then((userData) => {
+        if (userData.sync) Playlist.sync(req.user, updatedFavs);
+      })
+      .catch(err => console.log(err));
+    })
     .catch(err => console.log(err));
   })
   .catch(err => console.log(err));
@@ -61,7 +71,21 @@ User.removeFavorite = (req, res) => {
   .where('user', req.user.id).andWhere('track', req.body.track_id)
   .del()
   .then(() => User.getFavoriteTracks(req.user))
-  .then(updatedFavs => res.send(updatedFavs))
+  .then((updatedFavs) => {
+    res.send(updatedFavs);
+    return updatedFavs;
+  })
+  .then((updatedFavs) => {
+    User.getUser(req.user)
+    .then((userData) => {
+      if (userData.sync) {
+        Playlist.nuke(req.user)
+        .then(() => Playlist.sync(req.user, updatedFavs))
+        .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
+  })
   .catch(err => console.log(err));
 };
 
@@ -74,9 +98,10 @@ User.toggleSync = (req, res) => {
         })
         .then(() => res.send(req.body.sync));
         if (req.body.sync === true) {
-          User.getFavoriteTracks(req.user)
-            .then(favs => Playlist.sync(req.user, favs))
-            .catch(err => console.log(err));
+          Playlist.nuke(req.user)
+          .then(() => User.getFavoriteTracks(req.user))
+          .then(favs => Playlist.sync(req.user, favs))
+          .catch(err => console.log(err));
         }
       } else {
         res.send(req.body.sync);

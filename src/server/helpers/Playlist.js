@@ -3,6 +3,15 @@ const request = require('request-promise-native');
 const _ = require('underscore');
 const User = require('./User');
 
+User.getUser = user =>
+  new Promise((resolve, reject) =>
+    knex('usertest').where('id', user.id)
+      .then((userData) => {
+        if (userData.length > 0) resolve(userData[0]);
+        else resolve(false);
+      })
+      .catch(err => reject(err)));
+
 const abbreviation = require('../data/abbreviation');
 
 const Playlist = {};
@@ -214,7 +223,7 @@ Playlist.getPlaylistNames = (req, res) => {
 
 Playlist.sync = (user, favs) => {
   // AKA PROMISE HELL!
-  const DEBUG_MODE = true;
+  const DEBUG_MODE = false;
   const TIME_START = Date.now();
 
   if (DEBUG_MODE) console.log(`223 [${Date.now() - TIME_START}ms] -> AUTHENTICATED!`);
@@ -244,9 +253,9 @@ Playlist.sync = (user, favs) => {
           .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
           .then((newPlaylistId) => {
             if (DEBUG_MODE) console.log(`250 [${Date.now() - TIME_START}ms] -> PLAYLIST CREATED WITH ID ${newPlaylistId}`);
-            knex('users')
-            .where('user_id', userId)
-            .update({ user_playlist: newPlaylistId })
+            knex('usertest')
+            .where('id', userId)
+            .update({ playlist: newPlaylistId })
             .catch(err => console.log(err));
             if (DEBUG_MODE) console.log(`255 [${Date.now() - TIME_START}ms] -> SAVED PLAYLIST ${newPlaylistId} IN DATABASE!`);
             if (DEBUG_MODE) console.log(`256 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
@@ -380,9 +389,9 @@ Playlist.sync = (user, favs) => {
             .then(parsedNewPlaylistData => parsedNewPlaylistData.id)
             .then((newPlaylistId) => {
               if (DEBUG_MODE) console.log(`368 [${Date.now() - TIME_START}ms] -> PLAYLIST CREATED WITH ID ${newPlaylistId}`);
-              knex('users')
-              .where('user_id', userId)
-              .update({ user_playlist: newPlaylistId })
+              knex('user')
+              .where('id', userId)
+              .update({ playlist: newPlaylistId })
               .catch(err => console.log(err));
               if (DEBUG_MODE) console.log(`392 [${Date.now() - TIME_START}ms] -> SAVED PLAYLIST ${newPlaylistId} IN DATABASE!`);
               if (DEBUG_MODE) console.log(`393 [${Date.now() - TIME_START}ms] -> SYNCING PLAYLIST...`);
@@ -418,13 +427,12 @@ Playlist.sync = (user, favs) => {
 Playlist.nuke = user =>
   new Promise((resolve, reject) => {
     const userId = user.id;
-    knex('users')
-      .where('user_id', userId)
-      .then(users => users[0].user_playlist)
-      .then((userPlaylist) => {
-        if (userPlaylist === null) {
+    User.getUser(user)
+      .then((userData) => {
+        if (userData.playlist === null) {
           resolve(true);
         } else {
+          user.playlist = userData.playlist;
           request({
             method: 'GET',
             url: `https://api.spotify.com/v1/users/${userId}/playlists?limit=50`,
@@ -432,12 +440,12 @@ Playlist.nuke = user =>
           })
           .then(userPlaylistsData => JSON.parse(userPlaylistsData))
           .then(parsedUserPlaylistsData => parsedUserPlaylistsData.items.map(i => i.id))
-          .then(mappedUserPlaylistsData => _.contains(mappedUserPlaylistsData, userPlaylist))
+          .then(mappedUserPlaylistsData => _.contains(mappedUserPlaylistsData, user.playlist))
           .then((playlistIsInSpotify) => {
             if (playlistIsInSpotify) {
               request({
                 method: 'GET',
-                url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}?fields=tracks(total)`,
+                url: `https://api.spotify.com/v1/users/${userId}/playlists/${user.playlist}?fields=tracks(total)`,
                 headers: { Authorization: `Bearer ${user.accessToken}` },
               })
               .then(playlistData => JSON.parse(playlistData))
@@ -448,7 +456,7 @@ Playlist.nuke = user =>
                   p.push(
                     request({
                       method: 'GET',
-                      url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks?offset=${i}&limit=100`,
+                      url: `https://api.spotify.com/v1/users/${userId}/playlists/${user.playlist}/tracks?offset=${i}&limit=100`,
                       headers: { Authorization: `Bearer ${user.accessToken}` },
                     }));
                 }
@@ -466,7 +474,7 @@ Playlist.nuke = user =>
                     removeP.push(
                       request({
                         method: 'DELETE',
-                        url: `https://api.spotify.com/v1/users/${userId}/playlists/${userPlaylist}/tracks`,
+                        url: `https://api.spotify.com/v1/users/${userId}/playlists/${user.playlist}/tracks`,
                         headers: { Authorization: `Bearer ${user.accessToken}` },
                         body: JSON.stringify({ tracks: tracksToRemove }),
                       }));
