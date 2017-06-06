@@ -116,6 +116,14 @@ function showSideMenu(state = false, action) {
   }
 }
 
+function showUserMenu(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_USER_MENU': return true;
+    case 'HIDE_USER_MENU': return false;
+    default: return state;
+  }
+}
+
 function showAbout(state = false, action) {
   switch (action.type) {
     case 'SHOW_ABOUT': return true;
@@ -242,6 +250,7 @@ const reducer = combineReducers({
   showFavoritesMenu,
   songMenu,
   showSideMenu,
+  showUserMenu,
   auth,
   spotifyPlayer,
   showVolumeGauge,

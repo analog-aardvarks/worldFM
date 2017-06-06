@@ -21,6 +21,7 @@ const mapStateToProps = state => ({
   showSpotifyPlaylist: state.showSpotifyPlaylist,
   showCountryMenu: state.showCountryMenu,
   showSideMenu: state.showSideMenu,
+  showUserMenu: state.showUserMenu,
   showQueueMenu: state.showQueueMenu,
   favorites: state.favorites,
   showAbout: state.showAbout,
@@ -44,6 +45,8 @@ const mapDispatchToProps = dispatch => ({
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   showSideMenuEvent: () => dispatch({ type: 'SHOW_SIDE_MENU' }),
   hideSideMenuEvent: () => dispatch({ type: 'HIDE_SIDE_MENU' }),
+  showUserMenuEvent: () => dispatch({ type: 'SHOW_USER_MENU' }),
+  hideUserMenuEvent: () => dispatch({ type: 'HIDE_USER_MENU' }),
   showAboutEvent: () => dispatch({ type: 'SHOW_ABOUT' }),
   hideAboutEvent: () => dispatch({ type: 'HIDE_ABOUT' }),
   showFavoritesMenuEvent: () => dispatch({ type: 'SHOW_FAVORITES_MENU' }),
@@ -63,6 +66,7 @@ class Menu extends React.Component {
     this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
     this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
+    this.toggleUserMenu = this.toggleUserMenu.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     this.toggleAbout = this.toggleAbout.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
@@ -135,6 +139,11 @@ class Menu extends React.Component {
     if (!this.props.showSideMenu) this.props.showSideMenuEvent();
   }
 
+  toggleUserMenu() {
+    if (this.props.showUserMenu) this.props.hideUserMenuEvent();
+    if (!this.props.showUserMenu) this.props.showUserMenuEvent();
+  }
+
   toggleQueueMenu() {
     if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
     if (!this.props.showQueueMenu) this.props.showQueueMenuEvent();
@@ -144,7 +153,6 @@ class Menu extends React.Component {
     if (this.props.showAbout) this.props.hideAboutEvent();
     if (!this.props.showAbout) this.props.showAboutEvent();
   }
-
 
   removeTrackFromQueue(track) {
     this.props.removeTrackFromSpotifyQueue(track);
@@ -166,6 +174,8 @@ class Menu extends React.Component {
           toggleTopMenu={this.toggleTopMenu}
           toggleFavoritesMenu={this.toggleFavoritesMenu}
           toggleSideMenu={this.toggleSideMenu}
+          toggleUserMenu={this.toggleUserMenu}
+          showFavoritesMenu={this.props.showFavoritesMenu}
         />
 
         <FavoritesMenu
