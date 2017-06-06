@@ -5,7 +5,7 @@ import availableCountries from '../constants/availableCountries';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
 import FavoritesMenu from '../components/FavoritesMenu';
-import BurgerMenu from '../components/BurgerMenu';
+import SideMenu from '../components/SideMenu';
 import QueueMenu from '../components/QueueMenu';
 import About from '../components/About';
 import SweetScroll from 'sweet-scroll';
@@ -61,10 +61,10 @@ class Menu extends React.Component {
     this.toggleTrackInfo = this.toggleTrackInfo.bind(this);
     this.toggleSpotifyPlaylist = this.toggleSpotifyPlaylist.bind(this);
     this.toggleCountryMenu = this.toggleCountryMenu.bind(this);
+    this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     this.toggleAbout = this.toggleAbout.bind(this);
-    this.toggleFavoritesMenu = this.toggleFavoritesMenu.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
   }
@@ -120,8 +120,12 @@ class Menu extends React.Component {
     if (!this.props.showCountryMenu) this.props.showCountryMenuEvent();
   }
 
+  toggleFavoritesMenu() {
+    if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
+    if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
+  }
+
   toggleSideMenu() {
-    console.log(this.props.showSideMenu);
     if (this.props.showSideMenu) this.props.hideSideMenuEvent();
     if (!this.props.showSideMenu) this.props.showSideMenuEvent();
   }
@@ -136,11 +140,6 @@ class Menu extends React.Component {
     if (!this.props.showAbout) this.props.showAboutEvent();
   }
 
-  toggleFavoritesMenu() {
-    console.log('toggle')
-    if (this.props.showFavoritesMenu) this.props.hideFavoritesMenuEvent();
-    if (!this.props.showFavoritesMenu) this.props.showFavoritesMenuEvent();
-  }
 
   removeTrackFromQueue(track) {
     this.props.removeTrackFromSpotifyQueue(track);
@@ -161,6 +160,7 @@ class Menu extends React.Component {
         <TopMenu
           toggleTopMenu={this.toggleTopMenu}
           toggleFavoritesMenu={this.toggleFavoritesMenu}
+          toggleSideMenu={this.toggleSideMenu}
         />
 
         <FavoritesMenu
@@ -175,11 +175,14 @@ class Menu extends React.Component {
           spotifyPlayer={this.props.spotifyPlayer}
           removeTrackFromQueue={this.removeTrackFromQueue}
         />
-        {this.props.showSideMenu ? <BurgerMenu
-          toggleAbout={this.toggleAbout}
-          toggleCountryMenu={this.toggleCountryMenu}
-          toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
-          toggleQueueMenu={this.toggleQueueMenu}
+        {this.props.showSideMenu ? <SideMenu
+          // toggleAbout={this.toggleAbout}
+          // toggleCountryMenu={this.toggleCountryMenu}
+          // toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
+          // toggleQueueMenu={this.toggleQueueMenu}
+          showQueueMenu={this.props.showQueueMenu}
+          toggleFavoritesMenu={this.toggleFavoritesMenu}
+          windowHeight={this.props.windowHeight}
         /> : null}
       </div>
     );

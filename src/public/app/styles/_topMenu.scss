@@ -48,6 +48,28 @@ i:active {
   color: rgb(30, 215, 96)
 }
 
+
+.Mobile--icon {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 18px;
+  margin-left: 18px;
+}
+
+.Mobile--icon:hover {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.Mobile--icon:active {
+  opacity: 1;
+  color: rgb(30, 215, 96);
+}
+
+
 .TopMenu--CountryDropdown,
 .TopMenu--GenreDropdown {
   min-width: 200px;
