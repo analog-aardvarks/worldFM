@@ -81,6 +81,7 @@ const TopMenu = ({
           <i
             className="fa fa fa-globe fa-4x fa-fw"
             onClick={scrollUp}
+            data-tip="Select a new country"
           />
         </div>
 
@@ -102,6 +103,7 @@ const TopMenu = ({
           <i
             className="fa fa fa-heart fa-lg fa-fw"
             onClick={toggleFavoritesMenu}
+            data-tip="View Favorites"
           />
         </div> */}
 
@@ -110,6 +112,7 @@ const TopMenu = ({
             className="fa fa fa-spotify fa-lg fa-fw"
             // style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
             style={{ display: auth ? 'none' : 'block' }}
+            data-tip="Connect with Spotify"
           />
         </a>
 
