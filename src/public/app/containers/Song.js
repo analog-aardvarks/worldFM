@@ -216,10 +216,12 @@ class Song extends React.Component {
           maxHeight: this.netSize,
           minWidth: this.netSize,
           minHeight: this.netSize,
+          border: icon === "play" ? "" : "3px solid #1ed760",
         }}
       >
         <div
-          className="Song__wrapper" style={{ border: icon === "play" ? "" : "3px solid #1ed760"  }}
+          className="Song__wrapper"
+          style={{ border: icon === "play" ? "" : "3px solid #1ed760" }}
         >
           <i
             className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
