@@ -539,58 +539,23 @@ class Player extends React.Component {
           </div>
         </div>
 
-        {!this.props.spotifyPlayer.isPaused || this.props.currentSong.isPlaying && <div className="Equalizer">
-        <img src="http://rs558.pbsrc.com/albums/ss30/mem72/equalizer.gif~c200" height= {60} />
-        </div>}
-        {/* current song when authenticated */}
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
         <div className="CurrentSong">
-
-        <div className="Player__volume">
-          <i
-            className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
-            onClick={this.handleVolumeClick}
-            onMouseOver={this.props.showVolumeGaugeEvent}
-          />
-
-          <div
-            className="Player__volumeGauge"
-            onMouseOver={this.props.showVolumeGaugeEvent}
-            style={{ bottom: this.props.showVolumeGauge ? 94 : -1000 }}
-          >
-            <input
-              ref={(el) => { this.$volumeInput = el; }}
-              onMouseOver={this.props.showVolumeGaugeEvent}
-              onMouseOut={this.props.hideVolumeGaugeEvent}
-              onMouseUp={(e) => {
-                e.persist();
-                this.handleVolumeChange(e);
-              }}
-              type="range"
-              min="0"
-              max="100"
-            />
-          </div>
-        </div>
-
           <img
             className="CurrentSongPic"
             alt="track_album_image"
             src={this.props.spotifyPlayer.currentTrack.track_album_image}
-            width="46"
-            height="46"
             onClick={() => {
               this.props.handlePicClick(this.props.spotifyPlayer.currentTrack.track_album_image);
             }}
           />
           <div className="CurrentSongInfo">
-            <span>{this.props.spotifyPlayer.currentTrack.track_name}</span>
-            <span>{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
+            <span className="CurrentSongName">{this.props.spotifyPlayer.currentTrack.track_name}</span>
+            <span className="CurrentSongArtist">{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
           </div>
-
-          <div className="Player__CurrentSongTime">
+          {/*<div className="Player__CurrentSongTime">
             <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div>
+          </div>*/}
         </div>
         }
 
@@ -601,3 +566,32 @@ class Player extends React.Component {
 
 Player = connect(mapStateToProps, mapDispatchToProps)(Player);
 export default Player;
+
+/*
+<div className="Player__volume">
+  <i
+    className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
+    onClick={this.handleVolumeClick}
+    onMouseOver={this.props.showVolumeGaugeEvent}
+  />
+
+  <div
+    className="Player__volumeGauge"
+    onMouseOver={this.props.showVolumeGaugeEvent}
+    style={{ bottom: this.props.showVolumeGauge ? 94 : -1000 }}
+  >
+    <input
+      ref={(el) => { this.$volumeInput = el; }}
+      onMouseOver={this.props.showVolumeGaugeEvent}
+      onMouseOut={this.props.hideVolumeGaugeEvent}
+      onMouseUp={(e) => {
+        e.persist();
+        this.handleVolumeChange(e);
+      }}
+      type="range"
+      min="0"
+      max="100"
+    />
+  </div>
+</div>
+*/
