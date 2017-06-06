@@ -30,7 +30,6 @@ class Song extends React.Component {
   constructor(props) {
     super(props);
     this.borderWidth = 3; // px
-    this.netSize = this.props.size - this.borderWidth;
     this.updateEllapsed = this.updateEllapsed.bind(this);
     this.handlePlayClick = this.handlePlayClick.bind(this);
     this.handlePlayClick = _.throttle(this.handlePlayClick, 750);
@@ -183,6 +182,7 @@ class Song extends React.Component {
   addToQueue() { this.props.addTrackToSpotifyQueue(this.props.track); }
 
   render() {
+    this.netSize = this.props.size - this.borderWidth;
     // TODO fix this piece of logic
     let icon = 'play';
     if(this.props.auth) {
@@ -206,15 +206,17 @@ class Song extends React.Component {
       icon = 'pause';
     }
   }
+
+
     return (
       <div
         className="Song"
         style={{
           backgroundImage: `url(${this.props.track.track_album_image})`,
-          maxWidth: this.props.size - this.borderWidth,
-          maxHeight: this.props.size - this.borderWidth,
-          minWidth: this.props.size - this.borderWidth,
-          minHeight: this.props.size - this.borderWidth,
+          maxWidth: this.netSize,
+          maxHeight: this.netSize,
+          minWidth: this.netSize,
+          minHeight: this.netSize,
         }}
       >
         <div
@@ -239,7 +241,7 @@ class Song extends React.Component {
           <i
             className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
             onClick={this.handleFavoritesClick}
-            style={{ left: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
+            style={{ right: ((this.netSize - 100) / 10) * (this.netSize < 200 ? 5 : 3.5), top: ((this.netSize - 70) / 10) }}
           />
           <div className="Song__container">
             <span

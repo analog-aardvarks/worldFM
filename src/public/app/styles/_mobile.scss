@@ -20,7 +20,10 @@
   .Menu {
     justify-content: center;
   }
-  .Mobile--icon {
+  .Menu--logo {
+    display: none;
+  }
+  .Hamburger--icon {
     display: block;
   }
   .Player {

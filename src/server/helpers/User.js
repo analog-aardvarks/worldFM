@@ -152,6 +152,8 @@ User.info = (req, res) => {
     .where('user_id', req.user.id)
     .then(users => users[0])
     .then((user) => {
+      // info.userImage = user.user_image;
+      // info.userName = user.user_name;
       info.sync = user.user_sync;
       knex('tracks')
       .groupBy('track_id')
