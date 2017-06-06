@@ -98,6 +98,7 @@ class Player extends React.Component {
         this.goToNextTrack();
       }
     }
+    ReactTooltip.rebuild();
   }
 
   goToNextTrack() {
@@ -184,7 +185,7 @@ class Player extends React.Component {
         console.log(res)
         this.props.setUserFavoritesHandler(res.favs || []);
         this.props.setSyncStatusHandler(res.sync);
-        this.updateDeviceInfo(res.devices.devices);
+        this.updateDeviceInfo(res.devices);
       })
       .catch(err => console.log(err));
   }
@@ -483,63 +484,63 @@ class Player extends React.Component {
 
           <div className="Player__extraButtons">
 
-            <div className="Player__playslistExportToggle">
-              <i
-                className="fa fa fa-download fa-lg fa-fw"
-                onClick={() => {
-                  if(this.props.auth) this.savePlaylist();
-                }}
-              />
-              <span>export</span>
-            </div>
-
-            <div className="Player__devicesToggle">
-              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
-              <span>devices</span>
-            </div>
-            {this.props.showAvailableDevices ?
-            <div className="Device__selector">
-              <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between}' }}
-              >
-                <i
-                  className="fa fa-refresh fa-2x fa-fw"
-                  onClick={this.refreshDevices}
-                />
-                <div className="Player__devicesTitle">Devices</div>
-                <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
-              </div>
-              {this.props.availableDevices.map((device, idx) => (
+            {this.props.auth && (
                 <div
-                  className="Player__devicesDevice"
-                  style={{ color: device.id === this.props.activeDevice.id ? 'green' : 'white', cursor: 'pointer' }}
-                  key={idx}
-                  onClick={() => this.handleDeviceClick(device)}
+                className="Player__playslistExportToggle"
+                display={this.props.auth || 'none'}
                 >
-                  <i className={`fa fa-${this.deviceIcon(device)} fa-2x fa-fw`} />
-                  <span>{device.name}</span>
+                  <i className="fa fa fa-download fa-lg fa-fw"
+                  onClick={() => {
+                    if(this.props.auth) this.savePlaylist();
+                  }}
+                  data-tip="Export current playlist to Spotify"
+                  />
+                  <span>export</span>
                 </div>
-              ))}
-            </div> : null}
+              )}
 
-
-            {/* <div className="Player__devicesToggle">
-              <i className="fa fa fa-mobile fa-1x fa-fw" onClick={this.toggleAvailableDevices} />
-              <span>devices</span>
-            </div>
-            {this.props.showAvailableDevices ? <div className="Device__selector">
-              <div className="Player__devicesTitle">Devices</div>
-              <i className="fa fa fa-times fa-1 fa-fw" onClick={this.toggleAvailableDevices} />
-              {this.props.availableDevices.map((device, idx) => (
-                <div className="Player__devicesDevice" key={idx}>
-                  <i className={`fa fa-${deviceIcon(device.type)} fa-2x fa-fw`} />
-                  <span>{device.name}</span>
+                <div className="Player__devicesToggle" display={this.props.auth || 'none'}>
+                  <i className="fa fa fa-mobile fa-1x fa-fw"
+                  onClick={this.toggleAvailableDevices}
+                  data-tip="Listen on another device"
+                  />
+                  <span>devices</span>
                 </div>
-              ))}
-            </div> : null} */}
+
+                {this.props.showAvailableDevices && (
+
+                  <div className="Device__selector">
+                  <div
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between}' }}
+                  >
+                    <i className="fa fa-refresh fa-2x fa-fw"
+                      onClick={this.refreshDevices}
+                    />
+                  <div className="Player__devicesTitle">Devices</div>
+                    <i className="fa fa fa-times fa-1 fa-fw"
+                      onClick={this.toggleAvailableDevices}
+                    />
+                  </div>
+                    {this.props.availableDevices.map((device, idx) => (
+                      <div
+                        className="Player__devicesDevice"
+                        style={{ color: device.id === this.props.activeDevice.id ? 'green' : 'white', cursor: 'pointer' }}
+                        key={idx}
+                        onClick={() => this.handleDeviceClick(device)}
+                      >
+                        <i className={`fa fa-${this.deviceIcon(device)} fa-2x fa-fw`} />
+                        <span>{device.name}</span>
+                    </div>
+                  ))}
+                  </div>
+            )}
 
             <div className="QueueMenu--toggle">
-              <i className="fa fa fa-list fa-1x fa-fw" onClick={this.toggleQueueMenu}/>
+              <i
+                className="fa fa fa-list fa-1x fa-fw"
+                onClick={this.toggleQueueMenu}
+                data-tip="Show Queue"
+              />
               <span>queue</span>
             </div>
 
