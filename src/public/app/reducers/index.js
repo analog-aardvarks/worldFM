@@ -212,9 +212,9 @@ function showTopMenu(state = false, action) {
   }
 }
 
-function lightbox(state = { show: false, src: null }, action) {
+function lightbox(state = { show: false, src: null, name: null, artist: null }, action) {
   switch (action.type) {
-    case 'SHOW_LIGHTBOX': return { show: true, src: action.src };
+    case 'SHOW_LIGHTBOX': return { show: true, src: action.src.image, name: action.src.name, artist: action.src.artist };
     case 'HIDE_LIGHTBOX': return { ...state, show: false };
     default: return state;
   }
