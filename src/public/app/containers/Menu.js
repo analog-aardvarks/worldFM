@@ -70,7 +70,12 @@ class Menu extends React.Component {
   }
 
   componentDidMount() {
-    this.getPlaylist();
+    const storedPlaylist = window.sessionStorage.getItem('playlist');
+    if(storedPlaylist === null) {
+      this.getPlaylist();
+    } else {
+      this.props.setPlaylist(JSON.parse(storedPlaylist));
+    }
   }
 
   componentDidUpdate(prev) {

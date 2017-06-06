@@ -2,7 +2,9 @@ import { combineReducers } from 'redux';
 
 function playlist(state = [], action) {
   switch (action.type) {
-    case 'SET_PLAYLIST': return action.playlist;
+    case 'SET_PLAYLIST':
+      window.sessionStorage.setItem('playlist', JSON.stringify(action.playlist));
+      return action.playlist;
     default: return state;
   }
 }

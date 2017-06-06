@@ -95,48 +95,68 @@ class Player extends React.Component {
     if (this.$seekerInput && prev.spotifyPlayer.ellapsed !== this.props.spotifyPlayer.ellapsed)  {
       this.$seekerInput.value = this.props.spotifyPlayer.ellapsed;
       if (this.props.spotifyPlayer.ellapsed >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
-        this.props.setSpotifyPlayerEllapsedHandler(-1000);
-        this.props.clearSpotifyPlayerIntervalHandler();
-        this.pauseTrack()
-        .then(() => {
-          this.props.pauseSpotifyPlayerHandler(false);
-          this.props.setSpotifyPlayerEllapsedHandler(0);
-          let nextIdx;
-          let nextTrack;
+        this.goToNextTrack();
+      }
+    }
+  }
 
-          if(this.props.spotifyPlayer.mode === 'playlist') {
-            if (this.props.spotifyPlayer.queue.length === 0) {
+  goToNextTrack() {
+    return new Promise((resolve, reject) => {
+      this.props.setSpotifyPlayerEllapsedHandler(-1000);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.props.setSpotifyPlayerEllapsedHandler(0);
+        let nextIdx = this.props.spotifyPlayer.currentTrackIdx;
+        let nextTrack;
+
+        if(this.props.spotifyPlayer.mode === 'playlist') {
+          // no queue and no change in playlist!
+          if (this.props.spotifyPlayer.queue.length === 0) {
+            if(this.props.spotifyPlayer.currentTrack === this.props.playlist[this.props.spotifyPlayer.currentTrackIdx]) {
+              // playlist is the same
               nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
               nextTrack = this.props.playlist[nextIdx] || null;
             } else {
-              this.props.setSpotifyModeHandler('queue');
+              // playlist changed
               nextIdx = 0;
-              nextTrack = this.props.spotifyPlayer.queue[0];
+              nextTrack = this.props.playlist[nextIdx] || null;
             }
           } else {
-            this.props.removeTrackFromSpotifyQueue(0);
-            if (this.props.spotifyPlayer.queue[0]) {
-              nextTrack = this.props.spotifyPlayer.queue[0];
-            } else {
-              this.props.setSpotifyModeHandler('playlist');
-              this.props.setSpotifyPlayerCurrentTrackIdx(null);
-              nextTrack = null;
-            }
+            // move to queue!
+            this.props.setSpotifyModeHandler('queue');
+            nextTrack = this.props.spotifyPlayer.queue[0];
           }
-          if (nextTrack !== null) {
-            this.playTrack(nextTrack)
-            .then(() => {
-              this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
-              this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
-              this.props.pauseSpotifyPlayerHandler(false);
-              this.startInterval();
-            })
-            .catch(err => console.log(err));
+        } else {
+          // remove from queue!
+          this.props.removeTrackFromSpotifyQueue(0);
+          if (this.props.spotifyPlayer.queue[0]) {
+            // next in queue!
+            nextTrack = this.props.spotifyPlayer.queue[0];
+          } else {
+            // back to playlist!
+            this.props.setSpotifyModeHandler('playlist');
+            nextIdx = 0;
+            nextTrack = null;
           }
-        })
-        .catch(err => console.log(err));
-      }
-    }
+        }
+        this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+        this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
+        if (nextTrack !== null) {
+          this.playTrack(nextTrack)
+          .then(() => {
+            this.props.pauseSpotifyPlayerHandler(false);
+            this.startInterval();
+            resolve();
+          })
+          .catch(err => reject(err));
+        } else {
+          resolve();
+        }
+      })
+      .catch(err => reject(err));
+    });
   }
 
   stopTrack() {
@@ -369,24 +389,7 @@ class Player extends React.Component {
   }
 
   handleNextClick() {
-    const nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
-    const nextTrack = this.props.playlist[nextIdx];
-    if (nextTrack) {
-      this.pauseTrack()
-      .then(() => {
-        this.props.pauseSpotifyPlayerHandler(true);
-        this.stopInterval();
-        this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
-        this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
-        this.playTrack(nextTrack)
-        .then(() => {
-          this.props.pauseSpotifyPlayerHandler(false);
-          this.resetInterval();
-        })
-        .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
-    }
+    this.goToNextTrack();
   }
 
   toggleVolumeDisplay() {
