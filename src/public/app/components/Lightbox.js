@@ -14,8 +14,8 @@ const mapDispatchToProps = dispatch => ({
 const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
   let size = 640;
 
-  if (windowWidth < 700 || windowHeight < 700) {
-    size = Math.min(windowWidth, windowHeight - 120) * 0.9;
+  if (windowWidth < 900 || windowHeight < 900) {
+    size = Math.min(windowWidth, windowHeight - 120) * 0.8;
   }
 
   return (
@@ -24,13 +24,19 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
       className="Lightbox"
       onClick={hideLightbox}
       >
-      <img
-        className="FullAlbumArt"
-        src={lightbox.src}
-        alt="Album Art"
-        width={size}
-        height={size}
-      />
+        <div className="Lightbox__content">
+          <img
+            className="Lightbox__contentFullAlbumArt"
+            src={lightbox.src}
+            alt="Album Art"
+            width={size}
+            height={size}
+          />
+          <div className="Lightbox__contentAlbumInfo">
+            <span>{lightbox.name}</span>
+            <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{lightbox.artist}</span>
+          </div>
+        </div>
       </div>
     ) : null
   );
