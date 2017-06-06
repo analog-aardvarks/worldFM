@@ -124,6 +124,14 @@ function showUserMenu(state = false, action) {
   }
 }
 
+function showCountryDropdown(state = true, action) {
+  switch (action.type) {
+    case 'SHOW_COUNTRY_DROPDOWN': return true;
+    case 'HIDE_COUNTRY_DROPDOWN': return false;
+    default: return state;
+  }
+}
+
 function showAbout(state = false, action) {
   switch (action.type) {
     case 'SHOW_ABOUT': return true;
@@ -212,9 +220,9 @@ function showTopMenu(state = false, action) {
   }
 }
 
-function lightbox(state = { show: false, src: null }, action) {
+function lightbox(state = { show: false, src: null, name: null, artist: null }, action) {
   switch (action.type) {
-    case 'SHOW_LIGHTBOX': return { show: true, src: action.src };
+    case 'SHOW_LIGHTBOX': return { show: true, src: action.src.image, name: action.src.name, artist: action.src.artist };
     case 'HIDE_LIGHTBOX': return { ...state, show: false };
     default: return state;
   }
@@ -251,6 +259,7 @@ const reducer = combineReducers({
   songMenu,
   showSideMenu,
   showUserMenu,
+  showCountryDropdown,
   auth,
   spotifyPlayer,
   showVolumeGauge,
