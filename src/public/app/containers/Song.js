@@ -207,7 +207,6 @@ class Song extends React.Component {
     }
   }
 
-
     return (
       <div
         className="Song"
@@ -217,10 +216,12 @@ class Song extends React.Component {
           maxHeight: this.netSize,
           minWidth: this.netSize,
           minHeight: this.netSize,
+          border: icon === "play" ? "" : "3px solid #1ed760",
         }}
       >
         <div
           className="Song__wrapper"
+          style={{ border: icon === "play" ? "" : "3px solid #1ed760" }}
         >
           <i
             className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
@@ -229,23 +230,33 @@ class Song extends React.Component {
           />
           <i
             className="SongHover__expand fa fa-expand fa-2x fa-fw"
-            onClick={() => this.props.handleExpandClick(this.props.track.track_album_image)}
+            onClick={() => this.props.handleExpandClick({ image: this.props.track.track_album_image, name: this.props.track.track_name, artist: JSON.parse(this.props.track.track_artist_name).join(', '), })}
             style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
             data-tip="View Album Art"
           />
           <i
             className="SongHover__add-que fa fa-plus fa-2x fa-fw"
             onClick={this.addToQueue}
-            style={{ right: ((this.netSize - 100) / 10), top: ((this.netSize - 70) / 10) }}
+            data-tip="Add To Queue"
+            style={{
+              right: ((this.netSize - 100) / 10),
+              top: ((this.netSize - 70) / 10),
+              color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.props.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)")
+            }}
           />
           <i
             className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
             onClick={this.handleFavoritesClick}
-            style={{ right: ((this.netSize - 100) / 10) * (this.netSize < 200 ? 5 : 3.5), top: ((this.netSize - 70) / 10) }}
+            data-tip="Add To Favorites"
+            style={{
+              right: ((this.netSize - 100) / 10) * (this.netSize < 200 ? 5 : 3.5),
+              top: ((this.netSize - 70) / 10),
+              color: (this.props.favorites.some(track => track.track_id === this.props.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
+            }}
           />
           <div className="Song__container">
             <span
-              className="Song__this.props.ranking"
+              className="Song__ranking"
               style={{ fontFamily: 'Permanent Marker' }}
             >
             {this.props.ranking < 10 ? `0${this.props.ranking}` : this.props.ranking}
