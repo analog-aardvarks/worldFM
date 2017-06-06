@@ -236,9 +236,10 @@
 /*Chrome*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input[type='range'] {
+      cursor: pointer;
       overflow: hidden;
       width: 100%;
-      height: 4px;
+      height: 8px;
       -webkit-appearance: none;
       background-color: rgba(90,90, 90, 0.6);
     }

@@ -147,6 +147,7 @@ function availableDevices(state = [], action) {
 
 function spotifyPlayer(state = {
   queue: [],
+  mode: 'playlist',
   currentTrack: null,
   currentTrackIdx: null,
   isPaused: undefined,
@@ -156,6 +157,7 @@ function spotifyPlayer(state = {
   interval: undefined,
 }, action) {
   switch (action.type) {
+    case 'SET_SPOTIFY_MODE': return { ...state, mode: action.mode };
     case 'SET_CURRENT_TRACK_IDX': return { ...state, currentTrackIdx: action.currentTrackIdx };
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
     case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };

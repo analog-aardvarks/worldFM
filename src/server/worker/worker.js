@@ -192,7 +192,7 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(4489))
+getMultiplePlaylists(playlistData.splice(4573))
 .then(() => {
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);

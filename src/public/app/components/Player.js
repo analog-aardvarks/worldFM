@@ -11,11 +11,14 @@ import {
   clearSpotifyPlayerInterval,
   setSpotifyPlayerCurrentTrackIdx,
   showLightbox,
-  setSpotifyPlayerCurrentTrack } from '../actions';
+  setSpotifyPlayerCurrentTrack,
+  removeTrackFromSpotifyQueue } from '../actions';
 
 const millisToMinutesAndSeconds = (millis) => {
-  const minutes = Math.floor(millis / 60000);
-  const seconds = ((millis % 60000) / 1000).toFixed(0);
+  if (millis <= 0) return '0:00';
+  const d = new Date(millis);
+  const minutes = d.getUTCMinutes();
+  const seconds = d.getUTCSeconds();
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
@@ -53,6 +56,10 @@ const mapDispatchToProps = dispatch => ({
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
   handlePicClick: src => dispatch(showLightbox(src)),
+
+  //queue
+  setSpotifyModeHandler: mode => dispatch({ type: 'SET_SPOTIFY_MODE', mode }),
+  removeTrackFromSpotifyQueue: idx => dispatch(removeTrackFromSpotifyQueue(idx)),
 });
 
 class Player extends React.Component {
@@ -85,32 +92,66 @@ class Player extends React.Component {
   }
 
   componentDidUpdate(prev) {
-    if (this.$seekerInput &&
-      prev.spotifyPlayer.ellapsed !== this.props.spotifyPlayer.ellapsed) {
-      let ellapsed = this.props.spotifyPlayer.ellapsed;
-      if (ellapsed >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
-        const nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
-        const nextTrack = this.props.playlist[nextIdx];
+    if (this.$seekerInput && prev.spotifyPlayer.ellapsed !== this.props.spotifyPlayer.ellapsed)  {
+      this.$seekerInput.value = this.props.spotifyPlayer.ellapsed;
+      if (this.props.spotifyPlayer.ellapsed >= this.props.spotifyPlayer.currentTrack.track_length - 500) {
+        this.props.setSpotifyPlayerEllapsedHandler(-1000);
+        this.props.clearSpotifyPlayerIntervalHandler();
         this.pauseTrack()
         .then(() => {
-          this.props.pauseSpotifyPlayerHandler(true);
-          this.stopInterval();
-          if(nextTrack) {
-            this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
-            this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
-            this.playTrack()
+          this.props.pauseSpotifyPlayerHandler(false);
+          this.props.setSpotifyPlayerEllapsedHandler(0);
+          let nextIdx;
+          let nextTrack;
+
+          if(this.props.spotifyPlayer.mode === 'playlist') {
+            if (this.props.spotifyPlayer.queue.length === 0) {
+              nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
+              nextTrack = this.props.playlist[nextIdx] || null;
+            } else {
+              this.props.setSpotifyModeHandler('queue');
+              nextIdx = 0;
+              nextTrack = this.props.spotifyPlayer.queue[0];
+            }
+          } else {
+            this.props.removeTrackFromSpotifyQueue(0);
+            if (this.props.spotifyPlayer.queue[0]) {
+              nextTrack = this.props.spotifyPlayer.queue[0];
+            } else {
+              this.props.setSpotifyModeHandler('playlist');
+              this.props.setSpotifyPlayerCurrentTrackIdx(null);
+              nextTrack = null;
+            }
+          }
+          if (nextTrack !== null) {
+            this.playTrack(nextTrack)
             .then(() => {
+              this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+              this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
               this.props.pauseSpotifyPlayerHandler(false);
-              this.resetInterval();
+              this.startInterval();
             })
             .catch(err => console.log(err));
           }
         })
         .catch(err => console.log(err));
-      }  else {
-        this.$seekerInput.value = this.props.spotifyPlayer.ellapsed;
       }
     }
+  }
+
+  stopTrack() {
+    return new Promise((resolve, reject) => {
+      this.props.setSpotifyPlayerCurrentTrackIdx(null);
+      this.props.setSpotifyPlayerCurrentTrackHandler(null);
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(false);
+        this.props.clearSpotifyPlayerIntervalHandler();
+        this.props.setSpotifyPlayerEllapsedHandler(0);
+        resolve();
+      })
+      .catch(err => reject(err));
+    })
   }
 
   getUserInfo() {
