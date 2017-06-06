@@ -98,6 +98,7 @@ class Player extends React.Component {
         return res.json();
       })
       .then((res) => {
+        console.log(res)
         this.props.setUserFavoritesHandler(res.favs || []);
         this.props.setSyncStatusHandler(res.sync);
         this.updateDeviceInfo(res.devices.devices);
