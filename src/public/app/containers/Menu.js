@@ -37,6 +37,7 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showTopMenu: state.showTopMenu,
   showAvailableDevices: state.showAvailableDevices,
+  showPlayerMobileOptions: state.showPlayerMobileOptions,
   sync: state.sync,
   helperFuncs: state.helperFuncs,
 });
@@ -212,6 +213,7 @@ class Menu extends React.Component {
           showQueueMenu={this.props.showQueueMenu}
           windowHeight={this.props.windowHeight}
           showAvailableDevices={this.props.showAvailableDevices}
+          showPlayerMobileOptions={this.props.showPlayerMobileOptions}
           toggleFavoritesMenu={this.toggleFavoritesMenu}
           sync={this.props.sync}
           setSpotifySyncHandler={this.props.setSpotifySyncHandler}

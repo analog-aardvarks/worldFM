@@ -114,13 +114,6 @@
   opacity: 0.50;
 }
 
-// .Player__likeButton {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   margin-left: 20px;
-// }
-
 // .Player__CurrentSongTime {
 //   min-width: 80px;
 //   display: flex;
@@ -131,13 +124,14 @@
 .Player__seeker {
   position: absolute;
   bottom: 65px;
+  left: 0px;
 }
 /*Chrome*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input[type='range'] {
       cursor: pointer;
       overflow: hidden;
-      width: 100%;
+      // width: 100%;
       height: 8px;
       -webkit-appearance: none;
       background-color: rgba(0, 0, 0, 0.75);
@@ -181,10 +175,9 @@ input[type="range"]::-ms-fill-upper {
 }
 .Device__selector {
   min-height: 152px;
-  min-width: 350px;
   position: absolute;
   right: -2px;
-  bottom: 61px;
+  bottom: 73px;
   background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
@@ -262,4 +255,51 @@ input[type="range"]::-ms-fill-upper {
   /* display: flex; */
   /* align-items: center; */
   width: 80px;
+}
+
+// Extra buttons mobile view
+.Player__extraButtonsMobileToggle {
+  display: none;
+}
+.Player__extraButtonsMobile {
+  min-height: 152px;
+  position: absolute;
+  right: 0px;
+  bottom: 73px;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+}
+.Player__extraButtonsMobileTop {
+  user-select: none;
+  width: 100%;
+  height: 28px;
+  display: flex;
+  background-color: $bgGreyMedium;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  i {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 7px;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+.Player__extraButtonsMobileContent {
+  display: flex;
+  justify-content: space-around;
+  padding: 38px;
+}
+.Player__extraButtonsMobileButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
