@@ -581,7 +581,11 @@ class Player extends React.Component {
           >
             <i
               className="fa fa fa-mobile fa-2x fa-fw"
-              onClick={this.toggleAvailableDevices}
+              onClick={() => {
+                if(this.props.auth) {
+                  this.toggleAvailableDevices();
+                  this.props.hideQueueMenuEvent();
+                }}}
             />
             <span>Devices</span>
           </div>
@@ -594,7 +598,7 @@ class Player extends React.Component {
               />
               <div className="Player__devicesTitle">Devices</div>
               <i className="fa fa fa-times fa-fw"
-                  onClick={this.toggleAvailableDevices}
+                  onClick={() => this.toggleAvailableDevices()}
               />
             </div>
             {this.props.availableDevices.map((device, idx) => (
@@ -616,7 +620,11 @@ class Player extends React.Component {
             >
             <i
               className="fa fa fa-list fa-2x fa-fw"
-              onClick={this.toggleQueueMenu}
+              onClick={() => {
+                if(this.props.auth) {
+                this.toggleQueueMenu();
+                this.props.hideAvailableDevicesEvent();
+              }}}
             />
             <span>Queue</span>
           </div>
