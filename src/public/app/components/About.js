@@ -7,14 +7,14 @@ const About = ({ toggleAbout, showAbout }) => (
         About World.FM
       </div>
       <div className="worldfmDesc">
-        <p className="about-body">
+        <div className="about-body">
           World.FM is an international music discovery application. With the use of the Spotify API,
           World.FM is designed to deliver the music of trending and up and coming artists in a specified
           country to it's users. Sign-in using your Spotify credntials and create playists of your favorite tracks.
           World.FM can be experienced on multipe devices. You can use World.FM to control your Spotify on your
           mobile device and vice versa.
 
-        </p>
+        </div>
       </div>
     </div>
     <div>
