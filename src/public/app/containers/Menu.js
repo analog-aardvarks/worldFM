@@ -129,11 +129,13 @@ class Menu extends React.Component {
     .then(res => res.json())
     .then((res) => this.props.setPlaylist(res))
     .then(() => {
-      const sweetScroll = new SweetScroll();
-      console.log('scrolling down')
-      const height = this.props.windowHeight - 62;
-      console.log([0, this.props.windowHeight - 62]);
-      sweetScroll.to(height, 0);
+      if (this.props.currentCountry !== 'World') {
+        const sweetScroll = new SweetScroll();
+        console.log('scrolling down')
+        const height = this.props.windowHeight - 62;
+        console.log([0, this.props.windowHeight - 62]);
+        setTimeout(() => sweetScroll.to(height, 0), 300)
+      }
     })
     .catch(err => console.log(err));
   }

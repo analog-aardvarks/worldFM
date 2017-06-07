@@ -40,8 +40,9 @@ User.login = profile =>
 User.getFavoriteTracks = user =>
   new Promise((resolve, reject) => {
     knex('trackstest')
-    .join('favorites', 'tracks.track_id', '=', 'favorites.track')
+    .join('favorites', 'trackstest.track_id', '=', 'favorites.track')
     .where('favorites.user', user.id)
+    .orderBy('created_at')
     .then(favs => resolve(favs))
     .catch(err => reject(err));
   });
