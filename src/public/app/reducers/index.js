@@ -246,6 +246,16 @@ function activeDevice(state = {}, action) {
   }
 }
 
+function helperFuncs(state = [], action) {
+  switch (action.type) {
+    case 'SET_HELPER_FUNC':
+      state[action.name] = action.func;
+      return state;
+    default: return state;
+
+  }
+}
+
 const reducer = combineReducers({
   activeDevice,
   sync,
@@ -274,6 +284,7 @@ const reducer = combineReducers({
   showTopMenu,
   lightbox,
   currentGenre,
+  helperFuncs,
 });
 
 export default reducer;

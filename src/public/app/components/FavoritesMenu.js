@@ -13,7 +13,8 @@ const FavoritesMenu = ({
   setSpotifySyncHandler,
   addTrackToSpotifyQueue,
   handleExpandClick,
-  sync }) => {
+  sync,
+  helperFuncs }) => {
 
   const removeFavorite = (track) => {
     fetch('/favorites', {
@@ -49,7 +50,7 @@ const FavoritesMenu = ({
     .then(() => store.dispatch(setFavorites([])))
     .catch(err => console.log(err));
   }
-
+  // console.log(helperFuncs)
   return (
     <div
       className="FavoritesMenu"
@@ -80,16 +81,16 @@ const FavoritesMenu = ({
             </div>
             <div className="absclear">
               <div className="FavoritesMenu__hover">
+                <div className="FavoritesMenu__indivdualSong__play">
+                  <i className="fa fa-play fa-fw"
+                    onClick={() => helperFuncs.playExternalTrack(track)}
+                    style={{ marginBottom: '5px' }}/>
+                  <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
+                </div>
                 <div
                   className="FavoritesMenu__indivdualSong__Lightbox"
                   onClick={() => handleExpandClick(track)}
                 />
-                <div className="FavoritesMenu__indivdualSong__play">
-                  <i className="fa fa-play fa-fw"
-                    onClick={() => removeFavorite(track)}
-                    style={{ marginBottom: '5px' }}/>
-                  <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
-                </div>
                 <div className="FavoritesMenu__indivdualSong__actions">
                   <i className="fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
                 </div>

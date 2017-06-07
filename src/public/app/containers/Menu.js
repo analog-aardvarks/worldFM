@@ -38,6 +38,7 @@ const mapStateToProps = state => ({
   showTopMenu: state.showTopMenu,
   showAvailableDevices: state.showAvailableDevices,
   sync: state.sync,
+  helperFuncs: state.helperFuncs,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -216,6 +217,7 @@ class Menu extends React.Component {
           setSpotifySyncHandler={this.props.setSpotifySyncHandler}
           addTrackToSpotifyQueue={this.props.addTrackToSpotifyQueue}
           handleExpandClick={this.props.handleExpandClick}
+          helperFuncs={this.props.helperFuncs}
 
         />
         <QueueMenu

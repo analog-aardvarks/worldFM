@@ -56,6 +56,7 @@ const mapDispatchToProps = dispatch => ({
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
   handlePicClick: track => dispatch(showLightbox(track)),
+  setStateHelperFunc: (name, func) => dispatch({ type: 'SET_HELPER_FUNC', name, func}),
 
   //queue
   setSpotifyModeHandler: mode => dispatch({ type: 'SET_SPOTIFY_MODE', mode }),
@@ -85,6 +86,10 @@ class Player extends React.Component {
     this.handleNextClick = this.handleNextClick.bind(this);
     this.updateEllapsed = this.updateEllapsed.bind(this);
     this.stopInterval = this.stopInterval.bind(this);
+    this.playExternalTrack = this.playExternalTrack.bind(this);
+    this.playExternalTrack = _.throttle(this.playExternalTrack, 750);
+
+    this.props.setStateHelperFunc('playExternalTrack', this.playExternalTrack);
   }
 
   componentWillMount() {
@@ -449,6 +454,34 @@ class Player extends React.Component {
     })
     .then()
     .catch(err => console.log(err));
+  }
+
+  playExternalTrack(track) {
+    if (!this.props.spotifyPlayer.currentTrack) {
+      this.props.setSpotifyPlayerCurrentTrackHandler(track);
+      this.playTrack(track)
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(false);
+        this.resetInterval();
+      })
+      .catch(err => console.log(err));
+    } else {
+      this.props.setSpotifyPlayerEllapsedHandler(-1000);
+      this.props.clearSpotifyPlayerIntervalHandler();
+      this.pauseTrack()
+      .then(() => {
+        this.props.pauseSpotifyPlayerHandler(true);
+        this.props.setSpotifyPlayerEllapsedHandler(0);
+        this.props.setSpotifyPlayerCurrentTrackHandler(track);
+        this.playTrack(track)
+        .then(() => {
+          this.props.pauseSpotifyPlayerHandler(false);
+          this.startInterval();
+        })
+        .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+    }
   }
 
   render(){
