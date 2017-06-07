@@ -9,6 +9,7 @@ $bgGreyMedium: #282828;
 
 body {
   background-color: $mainColor;
+  overflow-x: hidden;
 }
 
 @import "menu";

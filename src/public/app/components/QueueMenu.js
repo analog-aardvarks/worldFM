@@ -17,7 +17,7 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackF
 
       <div className="QueueMenu__topBar">
         {/* do not remove */}
-        <i className="fa fa fa-thumb-tack fa-1 fa-fw" style={{ opacity: '0' }}/>
+        <i className="fa fa-trash fa-fw" />
         <span>Queue</span>
         <i className="fa fa fa-times fa-1 fa-fw" onClick={toggleQueueMenu} />
       </div>
