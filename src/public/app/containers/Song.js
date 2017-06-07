@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
   handleExpandClick: track => dispatch(showLightbox(track)),
   togglePreviewHandler: src => dispatch({ type: 'TOGGLE_PLAY', src }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
+  setStateHelperFunc: (name, func) => dispatch({ type: 'SET_HELPER_FUNC', name, func}),
 });
 
 class Song extends React.Component {
@@ -37,6 +38,12 @@ class Song extends React.Component {
     this.handleFavoritesClick = _.throttle(this.handleFavoritesClick, 750);
     this.addToQueue = this.addToQueue.bind(this);
     this.addToQueue = _.throttle(this.addToQueue, 750);
+  }
+
+  componentWillMount() {
+    if (this.props.ranking === 1 && this.props.helperFuncs.setStateHelperFunc === undefined) {
+      this.props.setStateHelperFunc('addFavorite', this.handleFavoritesClick);
+    }
   }
 
   updateEllapsed() {
@@ -149,34 +156,34 @@ class Song extends React.Component {
     }
   }
 
-  addFavorite() {
+  addFavorite(track) {
     fetch('/favorites', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(this.props.track),
+      body: JSON.stringify(track),
     })
     .then(res => res.json())
     .then(favs => this.props.handleFavoritesChange(favs))
     .catch(err => console.log(err));
   }
 
-  removeFavorite() {
+  removeFavorite(track) {
     fetch('/favorites', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify(this.props.track),
+      body: JSON.stringify(track),
     })
     .then(res => res.json())
     .then(favs => this.props.handleFavoritesChange(favs))
     .catch(err => console.log(err));
   }
 
-  handleFavoritesClick() {
-    if (this.props.favorites.some(fav => fav.track_id === this.props.track.track_id)) {
-      this.removeFavorite();
-    } else this.addFavorite();
+  handleFavoritesClick(track) {
+    if (this.props.favorites.some(fav => fav.track_id === track.track_id)) {
+      this.removeFavorite(track);
+    } else this.addFavorite(track);
   }
 
   addToQueue() { this.props.addTrackToSpotifyQueue(this.props.track); }
@@ -250,7 +257,7 @@ class Song extends React.Component {
           />
           <i
             className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
-            onClick={this.handleFavoritesClick}
+            onClick={() => this.handleFavoritesClick(this.props.track)}
             data-tip="Add To Favorites"
             style={{
               right: ((this.netSize - 100) / 10) * (this.netSize < 200 ? 5 : 3.5),

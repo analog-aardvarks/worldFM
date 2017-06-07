@@ -188,6 +188,7 @@ function spotifyPlayer(state = {
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
     case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
+    case 'REMOVE_ALL_FROM_SPOTIFY_QUEUE': return { ...state, queue: [] };
     case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
       const queueAdd = [...state.queue];
       queueAdd.push(action.track);
@@ -230,12 +231,17 @@ function showTopMenu(state = false, action) {
 
 function lightbox(state = { show: false, src: null, name: null, artist: null }, action) {
   switch (action.type) {
-    case 'SHOW_LIGHTBOX': return {
-      show: true, src: action.track.track_album_image,
-      name: action.track.track_name,
-      artist: JSON.parse(action.track.track_artist_name),
-      album: action.track.track_album_name };
-    case 'HIDE_LIGHTBOX': return { ...state, show: false };
+    case 'SET_LIGHTBOX' return state;
+    case 'SHOW_LIGHTBOX':
+      document.body.style.overflow='hidden'
+      return {
+        show: true, src: action.track.track_album_image,
+        name: action.track.track_name,
+        artist: JSON.parse(action.track.track_artist_name),
+        album: action.track.track_album_name };
+    case 'HIDE_LIGHTBOX':
+      document.body.style.overflow='auto'
+      return { ...state, show: false };
     default: return state;
   }
 }

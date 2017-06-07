@@ -30,7 +30,7 @@
 
 .FavoritesMenu__top {
   user-select: none;
-  height: 28px;
+  min-height: 28px;
   width: 100%;
   background-color: $bgGreyMedium;
   display: flex;
@@ -125,7 +125,7 @@
 .FavoritesMenu__sync {
   margin-top: 10px;
   user-select: none;
-  height: 28px;
+  min-height: 28px;
   width: 100%;
   background-color: $bgGreyMedium;
   display: flex;

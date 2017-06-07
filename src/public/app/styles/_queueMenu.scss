@@ -43,12 +43,13 @@
 }
 
 .QueueMenu__indivdualSong {
+  // background-color: blue;
   display: flex;
   border-radius: 3px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0);
+  // background-color: rgba(0, 0, 0, 0);
   margin-left: 10px;
   min-width: 78px;
   min-height: 108px;
@@ -59,9 +60,9 @@
   }
   i {
     cursor: pointer;
-    position: relative;
-    top: -10px;
-    left: 22px;
+    // position: relative;
+    // top: -10px;
+    // left: 22px;
   }
   i:hover {
     opacity: 0.75;
@@ -104,4 +105,60 @@
 
 .QueueMenu__songName {
   font-weight: bold;
+}
+
+.QueueMenu__hover {
+  // background-color: rgba(255,0,0,.5);
+  min-width: 78px;
+  min-height: 108px;
+  position: absolute;
+  left: -39px;
+  top: -104px;
+  opacity: 0;
+}
+
+.QueueMenu__hover:hover {
+  opacity: 1;
+}
+
+.QueueMenu__close {
+  position: absolute;
+  /* top: -25px; */
+  /* right: 30px; */
+  top: 0px;
+  padding: 2.5px;
+  left: 0px;
+  background-color: rgba(0,0,0,0.70);
+  border-radius: 2.5px;
+}
+
+.QueueMenu__close:hover {
+  background-color: rgba(0,0,0,0.93);
+}
+
+.QueueMenu__light {
+  // background-color: rgba(0,255,0,.5);
+  height: 70px;
+  width: 70px;
+  // background: green;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.QueueMenu__actions {
+  // background-color: rgba(255,0,255,.5);
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.70);
+  border-radius: 2.5px;
+  padding: 5px;
+
+  i {
+    position: relative;
+    top: 0px;
+    left: 0px;
+  }
 }

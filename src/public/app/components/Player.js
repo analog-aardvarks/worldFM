@@ -35,6 +35,7 @@ const mapStateToProps = state => ({
   currentSong: state.currentSong,
   activeDevice: state.activeDevice,
   windowWidth: state.windowWidth,
+  helperFuncs: state.helperFuncs,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -93,12 +94,13 @@ class Player extends React.Component {
     this.stopInterval = this.stopInterval.bind(this);
     this.playExternalTrack = this.playExternalTrack.bind(this);
     this.playExternalTrack = _.throttle(this.playExternalTrack, 750);
-
-    this.props.setStateHelperFunc('playExternalTrack', this.playExternalTrack);
   }
 
   componentWillMount() {
     this.getUserInfo();
+    if (this.props.helperFuncs.playExternalTrack === undefined) {
+      this.props.setStateHelperFunc('playExternalTrack', this.playExternalTrack);
+    }
   }
 
   componentDidUpdate(prev) {
@@ -592,7 +594,12 @@ class Player extends React.Component {
           >
             <i
               className="fa fa fa-mobile fa-2x fa-fw"
-              onClick={this.toggleAvailableDevices}
+              onClick={() => {
+                if(this.props.auth) {
+                  this.toggleAvailableDevices();
+                  this.props.hideQueueMenuEvent();
+                }
+              }}
             />
             <span>Devices</span>
           </div>
@@ -603,7 +610,12 @@ class Player extends React.Component {
             >
             <i
               className="fa fa fa-list fa-2x fa-fw"
-              onClick={this.toggleQueueMenu}
+              onClick={() => {
+                if(this.props.auth) {
+                  this.toggleQueueMenu();
+                  this.props.hideAvailableDevicesEvent();
+                }
+              }}
             />
             <span>Queue</span>
           </div>

@@ -4,12 +4,20 @@ import { connect } from 'react-redux';
 const mapStateToProps = state => ({
   showQueueMenu: state.showQueueMenu,
   spotifyPlayer: state.spotifyPlayer,
+  helperFuncs: state.helperFuncs,
 })
 
 const mapDispatchToProps = dispatch => ({
+  removeAllFromQueue: () => dispatch({ type: 'REMOVE_ALL_FROM_SPOTIFY_QUEUE' }),
 })
 
-const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackFromQueue }) => {
+const QueueMenu = ({
+  showQueueMenu,
+  toggleQueueMenu,
+  spotifyPlayer,
+  removeTrackFromQueue,
+  removeAllFromQueue,
+  helperFuncs}) => {
 
   return (
 
@@ -17,7 +25,9 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackF
 
       <div className="QueueMenu__topBar">
         {/* do not remove */}
-        <i className="fa fa-trash fa-fw" />
+        <i
+          className="fa fa-trash fa-fw"
+          onClick={removeAllFromQueue}/>
         <span>Queue</span>
         <i className="fa fa fa-times fa-1 fa-fw" onClick={toggleQueueMenu} />
       </div>
@@ -25,14 +35,35 @@ const QueueMenu = ({ showQueueMenu, toggleQueueMenu, spotifyPlayer, removeTrackF
       <div className="QueueMenu__songList">
       {spotifyPlayer.queue.map((track, idx) => (
       <div className="QueueMenu__indivdualSong" key={idx}>
-        {/*<div className="absclear">
-          <i className="fa fa-times-circle-o fa-lg fa-fw" onClick={ () => removeTrackFromQueue(idx) }/>
-        </div>*/}
+
         <img src={track.track_album_image} />
+
         <div className="QueueMenu__indivdualSong__songInfo">
           <span className="QueueMenu__songName">{track.track_name}</span>
           <span className="QueueMenu__songArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
         </div>
+
+        <div className="absclear">
+          <div className="QueueMenu__hover">
+            <div className="QueueMenu__light">
+              <i
+                className="QueueMenu__close fa fa fa-times fa-1 fa-fw"
+                onClick={() => removeTrackFromQueue(idx)}
+              />
+              <div className="QueueMenu__actions">
+                <i
+                  className="fa fa fa-play fa-1 fa-fw"
+                  onClick={() => helperFuncs.playExternalTrack(track)}
+                />
+                <i
+                  className="fa fa fa-heart fa-1 fa-fw"
+                  onClick={() => helperFuncs.addFavorite(track)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
       ))}
       </div>
