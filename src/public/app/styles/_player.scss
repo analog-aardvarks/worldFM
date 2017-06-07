@@ -263,3 +263,19 @@ input[type="range"]::-ms-fill-upper {
   /* align-items: center; */
   width: 80px;
 }
+
+.Player__extraButtonsMobileToggle {
+  display: none;
+}
+.Player__extraButtonsMobile {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  bottom: 73px;
+  color: #e6e6e6;
+  display: none;
+  height: 80px;
+  justify-content: space-around;
+  left: 0px;
+  padding: 40px;
+  position: fixed;
+}

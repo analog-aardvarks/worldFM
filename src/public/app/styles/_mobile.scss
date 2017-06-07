@@ -14,41 +14,25 @@
   .CurrentSongInfo {
     display: none;
   }
-  .CurrentSongPic {
-    bottom: 9px;
-    position: absolute;
-    right: 9px;
-  }
-  .Device__selector {
-    bottom: 63px;
-    left: -8px;
-  }
-  .Player {
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .PlayerControls {
-    margin-left: 0;
-    position: absolute;
-  }
-  .Player__CurrentSongTime {
-    display: none;
-  }
+  // .Device__selector {
+  //   bottom: 63px;
+  //   left: -8px;
+  // }
   .Player__extraButtons {
-    align-items: center;
-    bottom: 10px;
-    display: flex;
-    justify-content: center;
-    right: 10px;
-    position: absolute;
-  }
-  .Player__leftPortion {
-    margin-left: 0px;
-    width: 130px;
+    display: none;
   }
   .Player__volume {
     display: none;
+  }
+  .Player__extraButtonsMobileToggle {
+    display: block;
+    right: 0px;
+    bottom: 17px;
+    position: fixed;
+    opacity: 0.6;
+  }
+  .Player__extraButtonsMobile {
+    display: flex;
   }
 
   //Side Menu

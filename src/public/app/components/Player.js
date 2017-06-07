@@ -590,6 +590,35 @@ class Player extends React.Component {
 
         </div>
 
+        <i
+          className="Player__extraButtonsMobileToggle fa fa fa-ellipsis-v fa-2x fa-fw "
+          data-tip="Options"
+        />
+        <div className="Player__extraButtonsMobile" style={{ width: this.props.windowWidth }}>
+
+          <div>
+            <i
+              className="fa fa fa-download fa-2x fa-fw"
+              onClick={() => { if(this.props.auth) this.savePlaylist() }}
+            />
+          </div>
+
+          <div>
+            <i
+              className="fa fa fa-mobile fa-2x fa-fw"
+              onClick={this.toggleAvailableDevices}
+            />
+          </div>
+
+          <div>
+            <i
+              className="fa fa fa-list fa-2x fa-fw"
+              onClick={this.toggleQueueMenu}
+            />
+          </div>
+
+        </div>
+
       </div>
     )
   }
