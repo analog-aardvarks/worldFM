@@ -33,6 +33,7 @@ const mapStateToProps = state => ({
   currentCountry: state.currentCountry,
   currentSong: state.currentSong,
   activeDevice: state.activeDevice,
+  windowWidth: state.windowWidth,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -459,11 +460,11 @@ class Player extends React.Component {
     if (this.props.spotifyPlayer.volume < 20) volumeIcon = 'off';
 
   return (
-      <div className="Player">
+      <div className="Player" style={{ width: this.props.windowWidth }}>
 
         <input
           defaultValue="0"
-          className="Player__mobile__seeker__input"
+          className="Player__seeker"
           onMouseDown={this.stopInterval}
           onMouseUp={e => this.handleSeekerChange(e)}
           ref={(el) => { this.$seekerInput = el; }}
@@ -473,21 +474,35 @@ class Player extends React.Component {
           step="250"
         />
 
-
-
-          <div className="Player__controls">
-            <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
-            <i className={`fa fa-${playIcon} fa-2x fa-fw`} onClick={this.handlePlayClick} />
-            <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
+        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
+        <div className="CurrentSong">
+          <img
+            className="CurrentSongPic"
+            alt="track_album_image"
+            src={this.props.spotifyPlayer.currentTrack.track_album_image}
+            onClick={() => {
+              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack);
+            }}
+          />
+          <div className="CurrentSongInfo">
+            <span className="CurrentSongName">{this.props.spotifyPlayer.currentTrack.track_name}</span>
+            <span className="CurrentSongArtist">{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
           </div>
+          {/* <div className="Player__CurrentSongTime">
+            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
+          </div> */}
+        </div>}
 
+        <div className="Player__controls">
 
-        <div className="Player__VolumeAndOptions">
+          <i className="fa fa-random fa-1x fa-fw" style={{opacity: 0.6}} />
+          <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
+          <i className={`fa fa-${playIcon} fa-3x fa-fw`} onClick={this.handlePlayClick} />
+          <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
+          <i className="fa fa-repeat fa-1x fa-fw" style={{opacity: 0.6}} />
+        </div>
 
-          <div className="Player__Options">
-            <i className="fa fa-random fa-lg fa-fw" />
-            <i className="fa fa-repeat fa-lg fa-fw" />
-          </div>
+        <div className="Player__extraButtons">
 
           <div className="Player__volume">
             <i
@@ -495,7 +510,6 @@ class Player extends React.Component {
               onClick={this.handleVolumeClick}
               onMouseOver={this.props.showVolumeGaugeEvent}
             />
-
             <div
               className="Player__volumeGauge"
               onMouseOver={this.props.showVolumeGaugeEvent}
@@ -515,83 +529,65 @@ class Player extends React.Component {
             </div>
           </div>
 
-        </div>
-
-        {this.props.auth && this.props.spotifyPlayer.currentTrack &&
-        <div className="CurrentSong">
-          <img
-            className="CurrentSongPic"
-            alt="track_album_image"
-            src={this.props.spotifyPlayer.currentTrack.track_album_image}
-            onClick={() => {
-              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack);
-            }}
-          />
-          <div className="CurrentSongInfo">
-            <span className="CurrentSongName">{this.props.spotifyPlayer.currentTrack.track_name}</span>
-            <span className="CurrentSongArtist">{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
-          </div>
-          {/*<div className="Player__CurrentSongTime">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div>*/}
-        </div>
-        }
-
-        <div className="Player__extraButtons">
           <div
-            className={`Player__extraButtons__button Player__playslistExportToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
+            className={`Player__playslistExportToggle
+              Player__extraButtons__button ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
             display={this.props.auth || 'none'}
+            data-tip="Export current playlist to Spotify"
           >
-            <i className="fa fa fa-download fa-2x fa-fw"
+            <i
+              className="fa fa fa-download fa-2x fa-fw"
               onClick={() => { if(this.props.auth) this.savePlaylist() }}
             />
-            {/*data-tip="Export current playlist to Spotify"*/}
             <span>Export</span>
-            </div>
+          </div>
 
-            <div className={`Player__extraButtons__button Player__devicesToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
+          <div
+            className={`Player__devicesToggle Player__extraButtons__button  ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
+            data-tip="Export current playlist to Spotify"
+          >
+            <i
+              className="fa fa fa-mobile fa-2x fa-fw"
+              onClick={this.toggleAvailableDevices}
+            />
+            <span>Devices</span>
+          </div>
+          {this.props.showAvailableDevices &&
+          <div className="Device__selector">
+            <div className="Device__selector__top">
               <i
-                className="fa fa fa-mobile fa-2x fa-fw"
-                onClick={this.toggleAvailableDevices}
+                className="fa fa-refresh fa-fw"
+                onClick={this.refreshDevices}
               />
-              {/*data-tip="Export current playlist to Spotify"*/}
-              <span>Devices</span>
-            </div>
-
-            {this.props.showAvailableDevices &&
-            <div className="Device__selector">
-              <div className="Device__selector__top">
-                <i
-                  className="fa fa-refresh fa-fw"
-                  onClick={this.refreshDevices}
-                />
               <div className="Player__devicesTitle">Devices</div>
-                <i className="fa fa fa-times fa-fw"
-                    onClick={this.toggleAvailableDevices}
-                />
-              </div>
-                {this.props.availableDevices.map((device, idx) => (
-                <div
-                  className="Player__devicesDevice"
-                  style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
-                  key={idx}
-                  onClick={() => this.handleDeviceClick(device)}
-                >
-                  <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
-                  <span>{device.name}</span>
-                </div>
-                ))}
+              <i className="fa fa fa-times fa-fw"
+                  onClick={this.toggleAvailableDevices}
+              />
             </div>
-            }
+            {this.props.availableDevices.map((device, idx) => (
+              <div
+                className="Player__devicesDevice"
+                style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
+                key={idx}
+                onClick={() => this.handleDeviceClick(device)}
+              >
+                <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
+                <span>{device.name}</span>
+              </div>
+            ))}
+          </div>}
 
-          <div className={`Player__extraButtons__button QueueMenu--toggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
+          <div
+            className={`QueueMenu--toggle Player__extraButtons__button ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
+            data-tip="Show Queue"
+            >
             <i
               className="fa fa fa-list fa-2x fa-fw"
               onClick={this.toggleQueueMenu}
             />
-            {/*data-tip="Show Queue"*/}
             <span>Queue</span>
           </div>
+
         </div>
 
       </div>
