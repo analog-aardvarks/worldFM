@@ -11,6 +11,8 @@ const FavoritesMenu = ({
   windowHeight,
   toggleFavoritesMenu,
   setSpotifySyncHandler,
+  addTrackToSpotifyQueue,
+  handleExpandClick,
   sync }) => {
 
   const removeFavorite = (track) => {
@@ -76,8 +78,22 @@ const FavoritesMenu = ({
               <span className="FavoritesMenu__SongName">{track.track_name}</span>
               <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
-            <div className="FavoritesMenu__indivdualSong__actions">
-              <i className="fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+            <div className="absclear">
+              <div className="FavoritesMenu__hover">
+                <div
+                  className="FavoritesMenu__indivdualSong__Lightbox"
+                  onClick={() => handleExpandClick(track)}
+                />
+                <div className="FavoritesMenu__indivdualSong__play">
+                  <i className="fa fa-play fa-fw"
+                    onClick={() => removeFavorite(track)}
+                    style={{ marginBottom: '5px' }}/>
+                  <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
+                </div>
+                <div className="FavoritesMenu__indivdualSong__actions">
+                  <i className="fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+                </div>
+              </div>
             </div>
           </div>
           ))}
