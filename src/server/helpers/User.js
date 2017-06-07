@@ -39,7 +39,7 @@ User.login = profile =>
 
 User.getFavoriteTracks = user =>
   new Promise((resolve, reject) => {
-    knex('tracks')
+    knex('trackstest')
     .join('favorites', 'tracks.track_id', '=', 'favorites.track')
     .where('favorites.user', user.id)
     .then(favs => resolve(favs))

@@ -1,7 +1,7 @@
 exports.up = (knex, Promise) =>
   Promise.all([
-    knex.schema.createTableIfNotExists('playlists', (table) => {
-      table.string('playlist_id');
+    knex.schema.createTableIfNotExists('playliststest', (table) => {
+      table.string('playlist_id').primary();
       table.string('playlist_name');
       table.string('playlist_tracks', 5500);
       table.integer('playlist_tracks_total');
@@ -10,7 +10,7 @@ exports.up = (knex, Promise) =>
       console.log('table \'playlists\' successfully created!');
     }),
 
-    knex.schema.createTableIfNotExists('tracks', (table) => {
+    knex.schema.createTableIfNotExists('trackstest', (table) => {
       table.string('track_id');
       table.string('track_artist_id');
       table.string('track_artist_name', 500).collate('utf8_general_ci');
@@ -44,7 +44,7 @@ exports.up = (knex, Promise) =>
 
 exports.down = (knex, Promise) =>
   Promise.all([
-    knex.schema.dropTableIfExists('playlists'),
-    knex.schema.dropTableIfExists('tracks'),
+    knex.schema.dropTableIfExists('playliststest'),
+    // knex.schema.dropTableIfExists('trackstest'),
     // knex.schema.dropTable('users'),
   ]);

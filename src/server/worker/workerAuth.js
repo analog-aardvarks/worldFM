@@ -217,7 +217,7 @@ const runWorkers = () => {
 runWorkers();
 // runExtraWorker();
 // Object.keys(extraPlaylists).forEach((country) => {
-//   knex('playlists')
+//   knex('playliststest')
 //   .where('playlist_name', `${country} : Metal & Rock`)
 //   .del()
 //   .then(data => console.log(data));

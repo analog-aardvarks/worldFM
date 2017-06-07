@@ -116,7 +116,7 @@ const makeSureWeCanPlayTheTracks = (tracks) => {
 
 getGenrePlaylist = (genre) =>
   new Promise((resolve, reject) => {
-    knex('playlists')
+    knex('playliststest')
     .select('*')
     .where('playlist_name', 'like', `%${genre}`)
     .then(playlist => resolve(playlist))
@@ -126,7 +126,7 @@ getGenrePlaylist = (genre) =>
 getCountryPlaylist = (country) =>
   new Promise((resolve, reject) => {
     if(country === 'World') {
-      knex('playlists')
+      knex('playliststest')
       .select('*')
       .where('playlist_name', 'like', '[COUNTRY%')
       .whereNot('playlist_name', 'like', '% / %')
@@ -134,7 +134,7 @@ getCountryPlaylist = (country) =>
       .then(playlists => resolve(playlists))
       .catch(err => reject(err));
     } else {
-      knex('playlists')
+      knex('playliststest')
       .select('*')
       .where('playlist_name', 'like', `%${country}%`)
       .where('playlist_name', 'like', '[COUNTRY%')
@@ -157,7 +157,7 @@ Playlist.getPlaylist = (req, response) => {
     .then(res => _.shuffle(res))
     .then(res => res.splice(0, max))
     .then(res => {
-      knex('tracks')
+      knex('trackstest')
       .whereIn('track_id', res)
       .then((data) => removeAlbumDuplicates(data))
       .then(data => response.status(200).send(data))
@@ -171,7 +171,7 @@ Playlist.getPlaylist = (req, response) => {
     .then(res => _.shuffle(res))
     .then(res => res.splice(0, max))
     .then(res => {
-      knex('tracks')
+      knex('trackstest')
       .whereIn('track_id', res)
       .then((data) => removeAlbumDuplicates(data))
       .then(data => response.status(200).send(data))
@@ -186,12 +186,12 @@ Playlist.getPlaylistInfo = (req, res) => {
   const id = req.query.id;
   if (!id) {
     // return all playlists
-    knex('playlists').select('*')
+    knex('playliststest').select('*')
       .then(playlists => res.status(200).send(playlists))
       .catch(err => console.log(err));
   } else {
     // return one playlist
-    knex('playlists').where('playlist_id', id)
+    knex('playliststest').where('playlist_id', id)
       .then(playlist => res.status(200).send(playlist))
       .catch(err => console.log(err));
   }
@@ -199,13 +199,13 @@ Playlist.getPlaylistInfo = (req, res) => {
 
 // GET /playlist/length
 Playlist.getPlaylistLength = (req, res) => {
-  knex('playlists').select('*')
+  knex('playliststest').select('*')
     .then(playlist => res.status(200).send([playlist.length]))
     .catch(err => console.log(err));
 };
 
 Playlist.getPlaylistNames = (req, res) => {
-  knex('playlists').select('*')
+  knex('playliststest').select('*')
     .then((playlist) => {
       let s = '';
       _.each(playlist, (p) => {
@@ -557,12 +557,12 @@ Playlist.save = (req, res) => {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Playlist.postPlaylist = (playlist) => {
-  knex('playlists').where('playlist_id', playlist.playlist_id)
+  knex('playliststest').where('playlist_id', playlist.playlist_id)
     .then((data) => {
       if (data.length > 0) {
         console.log('Playlist already exists!');
       } else {
-        knex('playlists').insert(playlist)
+        knex('playliststest').insert(playlist)
           .then(() => console.log(`Playlist ${playlist.playlist_name} successfully added!`))
           .catch(err => console.log(err));
       }

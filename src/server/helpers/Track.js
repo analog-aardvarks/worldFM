@@ -13,12 +13,12 @@ Track.getTrack = (req, res) => {
   const id = req.query.id;
   if (!id) {
     // return all tracks
-    knex('tracks').select('*')
+    knex('trackstest').select('*')
       .then(tracks => res.status(200).send(tracks))
       .catch(err => console.log(err));
   } else {
     // return one track
-    knex('tracks').where('track_id', id)
+    knex('trackstest').where('track_id', id)
       .then(track => res.status(200).send(track))
       .catch(err => console.log(err));
   }
@@ -26,7 +26,7 @@ Track.getTrack = (req, res) => {
 
 // GET /track/length
 Track.getTrackLength = (req, res) => {
-  knex('tracks').select('*')
+  knex('trackstest').select('*')
     .then(tracks => res.status(200).send([tracks.length]))
     .catch(err => console.log(err));
 };
@@ -36,12 +36,12 @@ Track.getTrackLength = (req, res) => {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Track.postTrack = (track) => {
-  knex('tracks').where('track_id', track.track_id)
+  knex('trackstest').where('track_id', track.track_id)
     .then((data) => {
       if (data.length > 0) {
         console.log('Track already exists!');
       } else {
-        knex('tracks').insert(track)
+        knex('trackstest').insert(track)
           .then(() => console.log(`Track ${track.track_name} successfully added!`))
           .catch(err => console.log(err));
       }

@@ -28,11 +28,11 @@ const getAuth = () =>
 
 const savePlaylistInDatabase = playlist =>
   new Promise((resolve, reject) => {
-    knex('playlists')
+    knex('playliststest')
     .where('playlist_id', playlist.playlist_id)
     .del()
     .then(() => {
-      knex('playlists')
+      knex('playliststest')
       .insert(playlist)
       .then(() => {
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
@@ -47,11 +47,11 @@ const savePlaylistInDatabase = playlist =>
 
 const saveTrackInDatabase = track =>
   new Promise((resolve, reject) => {
-    knex('tracks')
+    knex('trackstest')
     .where('track_id', track.track_id)
     .then((res) => {
       if (res.length === 0) {
-        knex('tracks')
+        knex('trackstest')
         .insert(track)
         .then(() => {
           if (TRACK_DEBUG) console.log(`[${Date.now() - startingTime}ms] SAVED TRACK ${track.track_name}`);
@@ -71,7 +71,7 @@ const saveTrackInDatabaseGenerator = track => () => saveTrackInDatabase(track);
 const getPlaylistTrackData = (id, offset, limit) =>
   new Promise((resolve, reject) => {
     getAuth()
-    .then(token => {
+    .then((token) => {
       const fields = 'items(track(album(type,name,id,images),artists(name,id),available_markets,duration_ms,name,id,preview_url,track_number,popularity))';
       request(`https://api.spotify.com/v1/users/${owner}/playlists/${id}/tracks?fields=${fields}&limit=${limit}&offset=${offset}`,
       { headers: { Authorization: `Bearer ${token}` } })
@@ -103,7 +103,7 @@ const getPlaylistTrackData = (id, offset, limit) =>
       .then(res => resolve(res))
       .catch(err => reject(err));
     })
-    .catch(err => console.log(err));
+    .catch(err => reject(err));
   });
 
 const getPlaylistTrackDataGenerator = (id, offset) => () => getPlaylistTrackData(id, offset, 100);
@@ -192,7 +192,7 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(4573))
+getMultiplePlaylists(playlistData.splice(0, 10))
 .then(() => {
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
