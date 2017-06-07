@@ -34,7 +34,7 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
           />
           <div className="Lightbox__contentAlbumInfo">
             <span>{lightbox.name}</span>
-            <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{lightbox.artist}</span>
+            <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{lightbox.artist.join(', ')}</span>
           </div>
         </div>
       </div>

@@ -225,7 +225,7 @@ function lightbox(state = { show: false, src: null, name: null, artist: null }, 
     case 'SHOW_LIGHTBOX': return {
       show: true, src: action.track.track_album_image,
       name: action.track.track_name,
-      artist: action.track.track_artist_name,
+      artist: JSON.parse(action.track.track_artist_name),
       album: action.track.track_album_name };
     case 'HIDE_LIGHTBOX': return { ...state, show: false };
     default: return state;
