@@ -28,6 +28,7 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showVolumeGauge: state.showVolumeGauge,
   showAvailableDevices: state.showAvailableDevices,
+  showPlayerMobileOptions: state.showPlayerMobileOptions,
   availableDevices: state.availableDevices,
   showQueueMenu: state.showQueueMenu,
   currentCountry: state.currentCountry,
@@ -53,6 +54,8 @@ const mapDispatchToProps = dispatch => ({
   hideVolumeGaugeEvent: () => dispatch({ type: 'HIDE_VOLUME_GAUGE' }),
   showAvailableDevicesEvent: () => dispatch({ type: 'SHOW_AVAILABLE_DEVICES' }),
   hideAvailableDevicesEvent: () => dispatch({ type: 'HIDE_AVAILABLE_DEVICES' }),
+  showPlayerMobileOptionsEvent: () => dispatch({ type: 'SHOW_PLAYER_MOBILE_OPTIONS' }),
+  hidePlayerMobileOptionsEvent: () => dispatch({ type: 'HIDE_PLAYER_MOBILE_OPTIONS' }),
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
@@ -82,6 +85,7 @@ class Player extends React.Component {
     this.handleDeviceClick = this.handleDeviceClick.bind(this);
     this.handleDeviceClick = _.throttle(this.handleDeviceClick, 750);
     this.toggleAvailableDevices = this.toggleAvailableDevices.bind(this);
+    this.togglePlayerMobileOptions = this.togglePlayerMobileOptions.bind(this);
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     this.handlePreviousClick = this.handlePreviousClick.bind(this);
     this.handleNextClick = this.handleNextClick.bind(this);
@@ -410,6 +414,11 @@ class Player extends React.Component {
     else this.props.showAvailableDevicesEvent();
   }
 
+  togglePlayerMobileOptions() {
+    if (this.props.showPlayerMobileOptions) this.props.hidePlayerMobileOptionsEvent();
+    else this.props.showPlayerMobileOptionsEvent();
+  }
+
   toggleQueueMenu() {
     if (this.props.showQueueMenu) this.props.hideQueueMenuEvent();
     else this.props.showQueueMenuEvent();
@@ -502,6 +511,8 @@ class Player extends React.Component {
           onMouseUp={e => this.handleSeekerChange(e)}
           ref={(el) => { this.$seekerInput = el; }}
           type="range"
+          width={this.props.windowWidth}
+          style={{width: this.props.windowWidth}}
           min="0"
           max={this.props.spotifyPlayer.currentTrack ? this.props.spotifyPlayer.currentTrack.track_length : 100}
           step="250"
@@ -585,30 +596,6 @@ class Player extends React.Component {
             />
             <span>Devices</span>
           </div>
-          {this.props.showAvailableDevices &&
-          <div className="Device__selector">
-            <div className="Device__selector__top">
-              <i
-                className="fa fa-refresh fa-fw"
-                onClick={this.refreshDevices}
-              />
-              <div className="Player__devicesTitle">Devices</div>
-              <i className="fa fa fa-times fa-fw"
-                  onClick={this.toggleAvailableDevices}
-              />
-            </div>
-            {this.props.availableDevices.map((device, idx) => (
-              <div
-                className="Player__devicesDevice"
-                style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
-                key={idx}
-                onClick={() => this.handleDeviceClick(device)}
-              >
-                <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
-                <span>{device.name}</span>
-              </div>
-            ))}
-          </div>}
 
           <div
             className={`QueueMenu--toggle Player__extraButtons__button ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
@@ -622,6 +609,93 @@ class Player extends React.Component {
           </div>
 
         </div>
+
+        <i
+          className="Player__extraButtonsMobileToggle fa fa fa-ellipsis-v fa-2x fa-fw "
+          onClick={this.togglePlayerMobileOptions}
+          data-tip="Options"
+        />
+        { this.props.showPlayerMobileOptions ?
+        <div className="Player__extraButtonsMobile" style={{ width: this.props.windowWidth }}>
+
+          <div className="Player__extraButtonsMobileTop">
+            <div>Options</div>
+            <i className="fa fa fa-times fa-fw"
+                onClick={this.togglePlayerMobileOptions}
+            />
+          </div>
+
+          <div className="Player__extraButtonsMobileContent">
+
+            <div className="Player__volume">
+              <i
+                className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
+                onClick={this.handleVolumeClick}
+                onMouseOver={this.props.showVolumeGaugeEvent}
+              />
+              <div
+                className="Player__volumeGauge"
+                onMouseOver={this.props.showVolumeGaugeEvent}
+              >
+                <input
+                  ref={(el) => { this.$volumeInput = el; }}
+                  onMouseOver={this.props.showVolumeGaugeEvent}
+                  onMouseOut={this.props.hideVolumeGaugeEvent}
+                  onMouseUp={(e) => {
+                    e.persist();
+                    this.handleVolumeChange(e);
+                  }}
+                  type="range"
+                  min="0"
+                  max="100"
+                />
+              </div>
+            </div>
+
+            <div className="Player__extraButtonsMobileButtons" onClick={() => { if(this.props.auth) this.savePlaylist(); this.togglePlayerMobileOptions()}}>
+              <i className="fa fa fa-download fa-2x fa-fw" />
+              <span>Export</span>
+            </div>
+
+            <div className="Player__extraButtonsMobileButtons" onClick={() => {this.toggleAvailableDevices(); this.togglePlayerMobileOptions()}}>
+              <i className="fa fa fa-mobile fa-2x fa-fw" />
+              <span>Devices</span>
+            </div>
+
+            <div className="Player__extraButtonsMobileButtons" onClick={() => {this.toggleQueueMenu(); this.togglePlayerMobileOptions()}}>
+              <i className="fa fa fa-list fa-2x fa-fw" />
+              <span>Queue</span>
+            </div>
+
+          </div>
+
+        </div>
+        : null }
+
+        {this.props.showAvailableDevices &&
+        <div className="Device__selector" style={{ minWidth: this.props.windowWidth < 580 ? this.props.windowWidth : 350 }}>
+          <div className="Device__selector__top">
+            <i
+              className="fa fa-refresh fa-fw"
+              onClick={this.refreshDevices}
+            />
+            <div className="Player__devicesTitle">Devices</div>
+            <i className="fa fa fa-times fa-fw"
+                onClick={this.toggleAvailableDevices}
+            />
+          </div>
+          {this.props.availableDevices.map((device, idx) => (
+            <div
+              className="Player__devicesDevice"
+              style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
+              key={idx}
+              onClick={() => this.handleDeviceClick(device)}
+            >
+              <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
+              <span>{device.name}</span>
+            </div>
+          ))}
+        </div>}
 
       </div>
     )
