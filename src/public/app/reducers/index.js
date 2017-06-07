@@ -92,10 +92,10 @@ function showQueueMenu(state = false, action) {
   }
 }
 
-function showFavoritesMenu(state = true, action) {
+function showFavoritesMenu(state = false, action) {
   switch(action.type) {
     case 'SHOW_FAVORITES_MENU': return true;
-    case 'HIDE_FAVORITES_MENU': return true;
+    case 'HIDE_FAVORITES_MENU': return false;
     default: return state;
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import store from '../index';
 import { setFavorites } from '../actions';
 
-const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeight }) => {
+const FavoritesMenu = ({ showAvailableDevices, showFavoritesMenu, favorites, showQueueMenu, windowHeight }) => {
   const removeFavorite = (track) => {
     fetch('/favorites', {
       method: 'DELETE',
@@ -29,7 +29,7 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu ? windowHeight - 277 - 16: windowHeight - 133,
+        height: showQueueMenu || showAvailableDevices ? windowHeight - 277 - 16: windowHeight - 133,
       }}>
       <div className="FavoritesMenu__wrapper">
         <div className="FavoritesMenu__top">
