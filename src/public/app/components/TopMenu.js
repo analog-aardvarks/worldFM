@@ -77,10 +77,10 @@ const TopMenu = ({
 
         <div
           className="GlobeView--toggle TopMenu__icon"
-          style={{
-            display: showTopMenu ? "block" : "none",
-            // right: (window.innerWidth/2) - 31
-          }}
+          // style={{
+          //   display: showTopMenu ? "block" : "none",
+          //   // right: (window.innerWidth/2) - 31
+          //}}
           >
           <i
             className="fa fa fa-globe fa-4x fa-fw"
@@ -133,25 +133,23 @@ const TopMenu = ({
         <a className="TopMenu--login TopMenu__icon" href="/auth/spotify">
           <i
             className="fa fa fa-spotify fa-lg fa-fw"
-            // style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
-            style={{ display: auth ? 'none' : 'block' }}
+            style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
             data-tip="Connect with Spotify"
           />
         </a>
 
-        { auth ?
+
+        {/* { auth ?
           <div className="TopMenu--user">
-            {/* <img src="https://res.cloudinary.com/teepublic/image/private/s--qOgRk5e6--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1446245688/production/designs/302097_1.jpg" height= {40} /> */}
             <i
               className="TopMenu--login fa fa fa-spotify fa-2x fa-fw"
               style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
-              // style={{ display: auth ? 'none' : 'block' }}
             />
             <i className= {showUserMenu ? "fa fa fa-chevron-up fa-1x fa-fw TopMenu__icon" : "fa fa fa-chevron-down fa-1x fa-fw TopMenu__icon" } onClick={toggleUserMenu} />
           </div> : null}
 
         {
-          // !showFavoritesMenu &&
+
           showUserMenu ?
           <div className="TopMenu--userMenu" style={{ backgroundColor: showTopMenu ? '#080808' : 'rgba(0, 0, 0, 0)' }}>
             <div onClick={toggleFavoritesMenu} className="TopMenu__icon">
@@ -165,7 +163,7 @@ const TopMenu = ({
               </a>
             </div>
           </div>
-        : null }
+        : null } */}
 
       </div>
     </div>

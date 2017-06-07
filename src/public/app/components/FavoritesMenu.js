@@ -29,7 +29,7 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu ? windowHeight - 200 : windowHeight - 124,
+        height: showQueueMenu ? windowHeight - 260 : windowHeight - 124,
       }}>
       <i
         className="fa fa-info-circle fa-lg fa-fw"
