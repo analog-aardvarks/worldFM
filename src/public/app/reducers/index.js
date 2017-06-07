@@ -141,7 +141,7 @@ function showAbout(state = false, action) {
 }
 
 function showVolumeGauge(state = true, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_VOLUME_GAUGE': return true;
     case 'HIDE_VOLUME_GAUGE': return true;
     default: return state;
@@ -152,6 +152,14 @@ function showAvailableDevices(state = false, action) {
   switch (action.type) {
     case 'SHOW_AVAILABLE_DEVICES': return true;
     case 'HIDE_AVAILABLE_DEVICES': return false;
+    default: return state;
+  }
+}
+
+function showPlayerMobileOptions(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_PLAYER_MOBILE_OPTIONS': return true;
+    case 'HIDE_PLAYER_MOBILE_OPTIONS': return false;
     default: return state;
   }
 }
@@ -269,6 +277,7 @@ const reducer = combineReducers({
   showVolumeGauge,
   availableDevices,
   showAvailableDevices,
+  showPlayerMobileOptions,
   favorites,
   showAbout,
   showTopMenu,

@@ -20,7 +20,7 @@ const App = () => (
     <Player />
     {/* <About /> */}
     <Lightbox />
-    <ReactTooltip />
+    {window.innerWidth > 580 ? <ReactTooltip /> : null}
   </div>
 );
 

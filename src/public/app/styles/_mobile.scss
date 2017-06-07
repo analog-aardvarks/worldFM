@@ -14,14 +14,21 @@
   .CurrentSongInfo {
     display: none;
   }
-  // .Device__selector {
-  //   bottom: 63px;
-  //   left: -8px;
+  // .Player__volume {
+  //   display: none;
   // }
+
+  //Side Menu
+  // .Hamburger--icon {
+  //   display: block;
+  // }
+  // .SideMenu {
+  //   display: flex;
+  // }
+}
+
+@media (max-width: 765px)  {
   .Player__extraButtons {
-    display: none;
-  }
-  .Player__volume {
     display: none;
   }
   .Player__extraButtonsMobileToggle {
@@ -34,12 +41,4 @@
   .Player__extraButtonsMobile {
     display: flex;
   }
-
-  //Side Menu
-  // .Hamburger--icon {
-  //   display: block;
-  // }
-  // .SideMenu {
-  //   display: flex;
-  // }
 }
