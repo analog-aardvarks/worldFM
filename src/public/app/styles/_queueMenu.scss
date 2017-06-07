@@ -15,6 +15,7 @@
 }
 
 .QueueMenu__topBar {
+  user-select: none;
   height: 28px;
   width: 100%;
   background-color: $bgGreyMedium;

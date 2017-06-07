@@ -1,64 +1,155 @@
 .FavoritesMenu {
   z-index: 4;
-  padding: 11px;
+  // padding: 11px;
   position: fixed;
   top: 60px;
-  right: 0%;
-  width: 300px;
-  color: white;
+  right: 0px;
+  width: 350px;
+  color: $mainWhite;
   background-color: rgba(0, 0, 0, 0.75);
+  // background-color: yellow;
   overflow: auto;
 }
 
-.FavoritesMenu__syncButton {
+.FavoritesMenu__top {
+  user-select: none;
+  height: 28px;
+  width: 100%;
+  background-color: $bgGreyMedium;
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  div {
-    width: 150px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 4px;
-    margin-bottom: 12px;
-  }
+  justify-content: space-between;
+  padding: 0 15px;
   i {
-    color: $spotifyGreen;
+    cursor: pointer;
   }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+  margin-bottom: 10px;
 }
 
 .FavoritesMenu__indivdualSong {
+  // border-radius: 2.5px;
+  // margin-left: 5px;
+  // background-color: $bgGreyMedium;
+  // min-width: 400px;
+  // max-width: 400px;
+  height: 55px;
+  // margin-right: 40px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  border-top: 1px solid $devider;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  max-height: 67px;
   img {
-    margin-right: 10px;
+    margin-left: 15px;
+    max-width: 50px;
+    max-height: 50px;
+    cursor: pointer;
   }
-  i {
-    position: relative;
-  }
-}
-
-.FavoritesMenu__indivdualSong__songInfoAndPicture {
-  display: flex;
-  align-items: flex-start;
 }
 
 .FavoritesMenu__indivdualSong__songInfo {
+  margin-left: 15px;
+  // padding-left: 15px;
+  // max-width: 328px;
+  width: 100%;
+  min-width: 220px;
   display: flex;
   flex-direction: column;
-  overflow: auto;
-  max-height: 40px;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-.FavoritesMenu__SongName {
-
+.FavoritesMenu__SongName,
+.FavoritesMenu__SongArtist {
+  cursor: default;
+  user-select: none;
+  padding-right: 15px;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.FavoritesMenu__ArtistName {
-  font-style: italic;
+.FavoritesMenu__SongArtist {
+  font-family: 'Permanent Marker', cursive;
 }
+
+.FavoritesMenu__indivdualSong__actions {
+  width: 40px;
+  // margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+
+//
+// .FavoritesMenu__syncButton {
+//   display: flex;
+//   justify-content: space-around;
+//   align-items: center;
+//   div {
+//     width: 150px;
+//     display: flex;
+//     justify-content: space-around;
+//     align-items: center;
+//     margin: 4px;
+//     margin-bottom: 12px;
+//   }
+//   i {
+//     color: $spotifyGreen;
+//   }
+// }
+//
+// .FavoritesMenu__indivdualSong {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   border-top: 1px solid $devider;
+//   padding-bottom: 10px;
+//   padding-top: 10px;
+//   max-height: 67px;
+//   img {
+//     margin-right: 10px;
+//   }
+//   i {
+//     position: relative;
+//   }
+// }
+//
+// .FavoritesMenu__indivdualSong__songInfoAndPicture {
+//   display: flex;
+//   align-items: flex-start;
+// }
+//
+// .FavoritesMenu__indivdualSong__songInfo {
+//   display: flex;
+//   flex-direction: column;
+//   overflow: auto;
+//   max-height: 40px;
+// }
+//
+// .FavoritesMenu__SongName {
+//
+// }
+//
+// .FavoritesMenu__ArtistName {
+//   font-style: italic;
+// }
