@@ -55,7 +55,7 @@ const mapDispatchToProps = dispatch => ({
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
-  handlePicClick: src => dispatch(showLightbox(src)),
+  handlePicClick: track => dispatch(showLightbox(track)),
 
   //queue
   setSpotifyModeHandler: mode => dispatch({ type: 'SET_SPOTIFY_MODE', mode }),
@@ -200,7 +200,7 @@ class Player extends React.Component {
   setActiveDevice(device) {
     this.props.setActiveDeviceHandler(device);
     this.props.setSpotifyPlayerVolumeHandler(device.volume_percent);
-    // this.$volumeInput.value = device.volume_percent;
+    this.$volumeInput.value = device.volume_percent;
   }
 
   handlePlayClick() {
@@ -473,7 +473,7 @@ class Player extends React.Component {
           step="250"
         />
 
-        <div className="Player__leftPortion">
+    
 
           <div className="Player__controls">
             <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
@@ -481,62 +481,98 @@ class Player extends React.Component {
             <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
           </div>
 
-          <div className="Player__extraButtons">
-            <div
-              className={`Player__extraButtons__button Player__playslistExportToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
-              display={this.props.auth || 'none'}
-            >
-              <i className="fa fa fa-download fa-2x fa-fw"
-                onClick={() => { if(this.props.auth) this.savePlaylist() }}
-                  data-tip="Export current playlist to Spotify"
-              />
-              <span>Export</span>
-              </div>
 
-              <div className={`Player__extraButtons__button Player__devicesToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
-                <i
-                  className="fa fa fa-mobile fa-2x fa-fw"
-                  onClick={this.toggleAvailableDevices}
-                  data-tip="Listen on another device"
-                />
-                <span>Devices</span>
-              </div>
 
-              {this.props.showAvailableDevices &&
-              <div className="Device__selector">
-                <div className="Device__selector__top">
-                  <i
-                    className="fa fa-refresh fa-fw"
-                    onClick={this.refreshDevices}
-                  />
-                <div className="Player__devicesTitle">Devices</div>
-                  <i className="fa fa fa-times fa-fw"
-                      onClick={this.toggleAvailableDevices}
-                  />
-                </div>
-                  {this.props.availableDevices.map((device, idx) => (
-                  <div
-                    className="Player__devicesDevice"
-                    style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
-                    key={idx}
-                    onClick={() => this.handleDeviceClick(device)}
-                  >
-                    <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
-                    <span>{device.name}</span>
-                  </div>
-                  ))}
-              </div>
-              }
+        <div className="Player__extraButtons">
+          <div
+            className={`Player__extraButtons__button Player__playslistExportToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
+            display={this.props.auth || 'none'}
+          >
+            <i className="fa fa fa-download fa-2x fa-fw"
+              onClick={() => { if(this.props.auth) this.savePlaylist() }}
+            />
+            {/*data-tip="Export current playlist to Spotify"*/}
+            <span>Export</span>
+            </div>
 
-            <div className={`Player__extraButtons__button QueueMenu--toggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
+            <div className={`Player__extraButtons__button Player__devicesToggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
               <i
-                className="fa fa fa-list fa-2x fa-fw"
-                onClick={this.toggleQueueMenu}
-                data-tip="Show Queue"
+                className="fa fa fa-mobile fa-2x fa-fw"
+                onClick={this.toggleAvailableDevices}
               />
-              <span>Queue</span>
+              {/*data-tip="Export current playlist to Spotify"*/}
+              <span>Devices</span>
+            </div>
+
+            {this.props.showAvailableDevices &&
+            <div className="Device__selector">
+              <div className="Device__selector__top">
+                <i
+                  className="fa fa-refresh fa-fw"
+                  onClick={this.refreshDevices}
+                />
+              <div className="Player__devicesTitle">Devices</div>
+                <i className="fa fa fa-times fa-fw"
+                    onClick={this.toggleAvailableDevices}
+                />
+              </div>
+                {this.props.availableDevices.map((device, idx) => (
+                <div
+                  className="Player__devicesDevice"
+                  style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
+                  key={idx}
+                  onClick={() => this.handleDeviceClick(device)}
+                >
+                  <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
+                  <span>{device.name}</span>
+                </div>
+                ))}
+            </div>
+            }
+
+          <div className={`Player__extraButtons__button QueueMenu--toggle ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}>
+            <i
+              className="fa fa fa-list fa-2x fa-fw"
+              onClick={this.toggleQueueMenu}
+            />
+            {/*data-tip="Show Queue"*/}
+            <span>Queue</span>
+          </div>
+        </div>
+
+        <div className="Player__VolumeAndOptions">
+
+          <div className="Player__Options">
+            <i className="fa fa-random fa-lg fa-fw" />
+            <i className="fa fa-repeat fa-lg fa-fw" />
+          </div>
+
+          <div className="Player__volume">
+            <i
+              className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
+              onClick={this.handleVolumeClick}
+              onMouseOver={this.props.showVolumeGaugeEvent}
+            />
+
+            <div
+              className="Player__volumeGauge"
+              onMouseOver={this.props.showVolumeGaugeEvent}
+            >
+              <input
+                ref={(el) => { this.$volumeInput = el; }}
+                onMouseOver={this.props.showVolumeGaugeEvent}
+                onMouseOut={this.props.hideVolumeGaugeEvent}
+                onMouseUp={(e) => {
+                  e.persist();
+                  this.handleVolumeChange(e);
+                }}
+                type="range"
+                min="0"
+                max="100"
+              />
             </div>
           </div>
+
         </div>
 
         {this.props.auth && this.props.spotifyPlayer.currentTrack &&
@@ -546,7 +582,7 @@ class Player extends React.Component {
             alt="track_album_image"
             src={this.props.spotifyPlayer.currentTrack.track_album_image}
             onClick={() => {
-              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack.track_album_image);
+              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack);
             }}
           />
           <div className="CurrentSongInfo">
@@ -566,32 +602,3 @@ class Player extends React.Component {
 
 Player = connect(mapStateToProps, mapDispatchToProps)(Player);
 export default Player;
-
-/*
-<div className="Player__volume">
-  <i
-    className={`fa fa-volume-${volumeIcon} fa-lg fa-fw`}
-    onClick={this.handleVolumeClick}
-    onMouseOver={this.props.showVolumeGaugeEvent}
-  />
-
-  <div
-    className="Player__volumeGauge"
-    onMouseOver={this.props.showVolumeGaugeEvent}
-    style={{ bottom: this.props.showVolumeGauge ? 94 : -1000 }}
-  >
-    <input
-      ref={(el) => { this.$volumeInput = el; }}
-      onMouseOver={this.props.showVolumeGaugeEvent}
-      onMouseOut={this.props.hideVolumeGaugeEvent}
-      onMouseUp={(e) => {
-        e.persist();
-        this.handleVolumeChange(e);
-      }}
-      type="range"
-      min="0"
-      max="100"
-    />
-  </div>
-</div>
-*/

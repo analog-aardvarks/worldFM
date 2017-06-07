@@ -1,6 +1,6 @@
 .Player {
   color: rgb(230, 230, 230);
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: $bgGreyMedium;
   border: 20px;
   bottom: 0px;
   height: 65px;
@@ -12,14 +12,14 @@
   justify-content: space-between;
 }
 
-.Player__leftPortion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 260px;
-  height: 100%;
-  margin-left: 40px;
-}
+// .Player__leftPortion {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   width: 260px;
+//   height: 100%;
+//   margin-left: 40px;
+// }
 
 .Player__controls {
   display: flex;
@@ -96,29 +96,6 @@
 .Player__seeker__input {
   min-width: 250px;
   margin: 0 10px;
-}
-
-.Player__volume {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.Player__volumeGauge {
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
-  transform: rotate(270deg);
-  height: 28px;
-  width: 120px;
-  padding: 16px;
-  position: absolute;
-  bottom: 101px;
-  background-color: rgba(0, 0, 0, 0.90);
-  display: flex;
-  align-items: center;
 }
 
 .Player__likeButton {
@@ -204,7 +181,7 @@ input[type="range"]::-ms-fill-upper {
   width: 100%;
   height: 28px;
   display: flex;
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
@@ -240,17 +217,21 @@ input[type="range"]::-ms-fill-upper {
 /* current song */
 
 .CurrentSong {
+  border-radius: 2.5px;
+  margin-left: 5px;
+  background-color: $bgGreyDark;
   min-width: 400px;
   max-width: 400px;
-  height: 100%;
+  height: 55px;
   margin-right: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   img {
-    max-width: 57px;
-    max-height: 57px;
+    margin-left: 10px;
+    max-width: 50px;
+    max-height: 50px;
   }
 }
 
@@ -265,16 +246,54 @@ input[type="range"]::-ms-fill-upper {
 
 .CurrentSongName,
 .CurrentSongArtist {
+  padding-right: 10px;
   width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  // height: 28px;
-  // display: flex;
-  // align-items: center;
-  // justify-content: flex-start;
 }
 
 .CurrentSongArtist {
   font-family: 'Permanent Marker', cursive;
+}
+
+/* volume and options */
+.Player__VolumeAndOptions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  i {
+    cursor: pointer;
+    margin-left: 12px;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.Player__volume {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.Player__volumeGauge {
+  // -webkit-transform: rotate(270deg);
+  // -moz-transform: rotate(270deg);
+  // -o-transform: rotate(270deg);
+  // -ms-transform: rotate(270deg);
+  // transform: rotate(270deg);
+  height: 28px;
+  width: 100px;
+  padding: 10px;
+  // position: absolute;
+  // bottom: 101px;
+  background-color: $bgGreyMedium;
+  display: flex;
+  align-items: center;
 }

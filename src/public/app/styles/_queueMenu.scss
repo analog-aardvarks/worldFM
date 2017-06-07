@@ -17,7 +17,7 @@
 .QueueMenu__topBar {
   height: 28px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -72,7 +72,7 @@
 }
 
 .QueueMenu__indivdualSong--selected {
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
   img {
     border: 2px solid $spotifyGreen;
   }
@@ -83,7 +83,7 @@
 }
 
 .QueueMenu__indivdualSong:hover {
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
 }
 
 .QueueMenu__indivdualSong__songInfo {

@@ -21,7 +21,7 @@ const mapDispatchToProps = dispatch => ({
   clearSpotifyPlayerIntervalHandler: () => dispatch({ type: 'CLEAR_SPOTIFY_PLAYER_INTERVAL' }),
   handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
-  handleExpandClick: src => dispatch(showLightbox(src)),
+  handleExpandClick: track => dispatch(showLightbox(track)),
   togglePreviewHandler: src => dispatch({ type: 'TOGGLE_PLAY', src }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
 });
@@ -230,7 +230,7 @@ class Song extends React.Component {
           />
           <i
             className="SongHover__expand fa fa-expand fa-2x fa-fw"
-            onClick={() => this.props.handleExpandClick({ image: this.props.track.track_album_image, name: this.props.track.track_name, artist: JSON.parse(this.props.track.track_artist_name).join(', '), })}
+            onClick={() => this.props.handleExpandClick(this.props.track)}
             style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
             data-tip="View Album Art"
           />
