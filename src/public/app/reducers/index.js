@@ -188,6 +188,7 @@ function spotifyPlayer(state = {
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
     case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
+    case 'REMOVE_ALL_FROM_SPOTIFY_QUEUE': return { ...state, queue: [] };
     case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
       const queueAdd = [...state.queue];
       queueAdd.push(action.track);

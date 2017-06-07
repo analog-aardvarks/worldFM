@@ -85,7 +85,8 @@ const FavoritesMenu = ({
                 <div
                   className="FavoritesMenu__indivdualSong__Lightbox"
                   onClick={() => handleExpandClick(track)}
-                />
+                >
+                </div>
 
                 <div className="FavoritesMenu__indivdualSong__play">
                   <i className="fa fa-play fa-fw"
