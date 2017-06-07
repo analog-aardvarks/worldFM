@@ -51,6 +51,8 @@ routes.route('/favorites')
   .put(User.addFavorite)
   .delete(User.removeFavorite);
 
+routes.put('/favorites/deleteAll', User.removeAllFavorites);
+
 routes.get('/sync', User.toggleSync);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

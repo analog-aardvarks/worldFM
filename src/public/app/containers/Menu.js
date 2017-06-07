@@ -31,6 +31,7 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showTopMenu: state.showTopMenu,
   showAvailableDevices: state.showAvailableDevices,
+  sync: state.sync,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -58,6 +59,7 @@ const mapDispatchToProps = dispatch => ({
   removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
   showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }),
   hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }),
+  setSpotifySyncHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
 });
 
 class Menu extends React.Component {
@@ -201,6 +203,9 @@ class Menu extends React.Component {
           showQueueMenu={this.props.showQueueMenu}
           windowHeight={this.props.windowHeight}
           showAvailableDevices={this.props.showAvailableDevices}
+          toggleFavoritesMenu={this.toggleFavoritesMenu}
+          sync={this.props.sync}
+          setSpotifySyncHandler={this.props.setSpotifySyncHandler}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}

@@ -234,7 +234,7 @@ function lightbox(state = { show: false, src: null, name: null, artist: null }, 
 
 function sync(state = 0, action) {
   switch (action.type) {
-    case 'SET_SPOTIFY_SYNC': return 1;
+    case 'SET_SPOTIFY_SYNC': return action.sync;
     default: return state;
   }
 }

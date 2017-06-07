@@ -89,11 +89,34 @@ User.removeFavorite = (req, res) => {
   .catch(err => console.log(err));
 };
 
+User.removeAllFavorites = (req, res) => {
+  console.log('DELETING ALL')
+  knex('favorites')
+  .where('user', req.user.id)
+  .del()
+  .then(response => {
+    res.status(200).send();
+    console.log(response);
+    knex('user')
+    .where('id', req.user.id)
+    .then(users => users[0])
+    .then(user => user.sync)
+    .then(sync => {
+      if (sync) {
+        Playlist.nuke(req.user);
+      }
+    })
+  })
+  .catch(err => console.log(err));
+}
+
 User.toggleSync = (req, res) => {
   User.getUser(req.user)
     .then((userData) => {
-      if (userData.user_sync !== req.body.sync) {
-        knex('user').where('id', req.user.id).update({
+      if (userData.sync !== req.body.sync) {
+        knex('user')
+        .where('id', req.user.id)
+        .update({
           sync: req.body.sync,
         })
         .then(() => res.send(req.body.sync));
