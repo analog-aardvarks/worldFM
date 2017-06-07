@@ -30,6 +30,7 @@ const mapStateToProps = state => ({
   showQueueMenu: state.showQueueMenu,
   spotifyPlayer: state.spotifyPlayer,
   showTopMenu: state.showTopMenu,
+  showAvailableDevices: state.showAvailableDevices,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -199,6 +200,7 @@ class Menu extends React.Component {
           favorites={this.props.favorites}
           showQueueMenu={this.props.showQueueMenu}
           windowHeight={this.props.windowHeight}
+          showAvailableDevices={this.props.showAvailableDevices}
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
