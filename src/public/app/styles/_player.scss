@@ -223,7 +223,7 @@ input[type="range"]::-ms-fill-upper {
   min-width: 400px;
   max-width: 400px;
   height: 55px;
-  margin-right: 40px;
+  // margin-right: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -232,6 +232,7 @@ input[type="range"]::-ms-fill-upper {
     margin-left: 10px;
     max-width: 50px;
     max-height: 50px;
+    cursor: pointer;
   }
 }
 
@@ -246,6 +247,8 @@ input[type="range"]::-ms-fill-upper {
 
 .CurrentSongName,
 .CurrentSongArtist {
+  cursor: default;
+  user-select: none;
   padding-right: 10px;
   width: 100%;
   text-overflow: ellipsis;
