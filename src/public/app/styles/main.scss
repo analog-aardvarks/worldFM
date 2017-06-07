@@ -3,9 +3,13 @@ $mainfontColor: rgb(230, 230, 230);
 $devider: rgba(175, 175, 175, 0.1);
 $spotifyGreen: rgb(30, 215, 96);
 $mainTitleFont: 'Permanent Marker', cursive;
+$mainWhite: rgb(230, 230, 230);
+$bgGreyDark: #202020;
+$bgGreyMedium: #282828;
 
 body {
   background-color: $mainColor;
+  overflow-x: hidden;
 }
 
 @import "menu";

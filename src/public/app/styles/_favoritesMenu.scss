@@ -1,64 +1,196 @@
 .FavoritesMenu {
   z-index: 4;
-  padding: 11px;
   position: fixed;
   top: 60px;
-  right: 0%;
-  width: 300px;
-  color: white;
+  right: 0px;
+  width: 350px;
+  color: $mainWhite;
   background-color: rgba(0, 0, 0, 0.75);
-  overflow: auto;
 }
 
-.FavoritesMenu__syncButton {
+.FavoritesMenu__wrapper {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
-  div {
-    width: 150px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 4px;
-    margin-bottom: 12px;
-  }
+  justify-content: space-between;
+}
+
+.FavoritesMenu__allSongs {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.FavoritesMenu__top {
+  user-select: none;
+  height: 28px;
+  width: 100%;
+  background-color: $bgGreyMedium;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
   i {
-    color: $spotifyGreen;
+    cursor: pointer;
   }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+  margin-bottom: 10px;
 }
 
 .FavoritesMenu__indivdualSong {
+  // border-radius: 2.5px;
+  // margin-left: 5px;
+  // background-color: $bgGreyMedium;
+  // min-width: 400px;
+  // max-width: 400px;
+  min-height: 55px;
+  // margin-right: 40px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  border-top: 1px solid $devider;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  max-height: 67px;
   img {
-    margin-right: 10px;
+    margin-left: 15px;
+    max-width: 50px;
+    max-height: 50px;
+    cursor: pointer;
   }
-  i {
-    position: relative;
-  }
-}
-
-.FavoritesMenu__indivdualSong__songInfoAndPicture {
-  display: flex;
-  align-items: flex-start;
 }
 
 .FavoritesMenu__indivdualSong__songInfo {
+  margin-left: 15px;
+  // padding-left: 15px;
+  // max-width: 328px;
+  min-width: 220px;
+  max-width: 220px;
   display: flex;
   flex-direction: column;
-  overflow: auto;
-  max-height: 40px;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-.FavoritesMenu__SongName {
-
+.FavoritesMenu__SongName,
+.FavoritesMenu__SongArtist {
+  cursor: default;
+  user-select: none;
+  padding-right: 15px;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.FavoritesMenu__ArtistName {
-  font-style: italic;
+.FavoritesMenu__SongArtist {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.FavoritesMenu__indivdualSong__actions {
+  width: 40px;
+  // margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.FavoritesMenu__sync {
+  margin-top: 10px;
+  user-select: none;
+  height: 28px;
+  width: 100%;
+  background-color: $bgGreyMedium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  span {
+    margin-right: 15px;
+  }
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  // display: inline-block;
+  width: 32px;
+  height: 22px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 5px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $mainWhite;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  top: 2px;
+  background-color: $bgGreyMedium;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: $spotifyGreen;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px $spotifyGreen;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 18px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.FavoritesMenu__slider {
+  display: flex;
+  align-items: center;
 }

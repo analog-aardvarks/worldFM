@@ -15,9 +15,10 @@
 }
 
 .QueueMenu__topBar {
+  user-select: none;
   height: 28px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,8 +49,8 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0);
-  margin-left: 8px;
-  max-width: 78px;
+  margin-left: 10px;
+  min-width: 78px;
   min-height: 108px;
   max-height: 108px;
   img {
@@ -72,7 +73,7 @@
 }
 
 .QueueMenu__indivdualSong--selected {
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
   img {
     border: 2px solid $spotifyGreen;
   }
@@ -83,7 +84,7 @@
 }
 
 .QueueMenu__indivdualSong:hover {
-  background-color: rgba(0, 0, 0, 0.90);
+  background-color: $bgGreyMedium;
 }
 
 .QueueMenu__indivdualSong__songInfo {

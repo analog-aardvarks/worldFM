@@ -17,7 +17,7 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
   if (windowWidth < 900 || windowHeight < 900) {
     size = Math.min(windowWidth, windowHeight - 120) * 0.8;
   }
-
+  console.log(lightbox);
   return (
     lightbox.show ? (
       <div

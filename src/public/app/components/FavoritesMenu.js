@@ -29,36 +29,52 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu ? windowHeight - 260 : windowHeight - 124,
+        height: showQueueMenu ? windowHeight - 277 - 16: windowHeight - 133,
       }}>
-      <i
-        className="fa fa-info-circle fa-lg fa-fw"
-        onClick={() => store.dispatch({ type: 'SET_PLAYLIST', playlist: favorites })}
-      />
-      <div className="FavoritesMenu__syncButton">
-        <div onClick={toggleSync}>
-          <span>sync with spotify</span>
-          <i className="fa fa-refresh fa-lg fa-fw" />
+      <div className="FavoritesMenu__wrapper">
+        <div className="FavoritesMenu__top">
+          {/*<div onClick={toggleSync}>
+            <i className="fa fa-refresh fa-fw" />
+          </div>*/}
+          <i className="fa fa-trash fa-fw" />
+          <span>Favorites</span>
+          <i className="fa fa-times fa-fw" />
         </div>
-      </div>
-      {favorites.map((track, idx) => (
+
+        <div className="FavoritesMenu__allSongs">
+          {favorites.map((track, idx) => (
           <div className="FavoritesMenu__indivdualSong" key={idx}>
-            <div className="FavoritesMenu__indivdualSong__songInfoAndPicture">
-              <img
-                src={track.track_album_image}
-                width="46"
-                height="46"
-              />
-              <div className="FavoritesMenu__indivdualSong__songInfo">
-                <span className="FavoritesMenu__SongName">{track.track_name}</span>
-                <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
-              </div>
+            <img src={track.track_album_image} />
+            <div className="FavoritesMenu__indivdualSong__songInfo">
+              <span className="FavoritesMenu__SongName">{track.track_name}</span>
+              <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
-            <i className="fa fa-minus fa-lg fa-fw" onClick={() => removeFavorite(track)}/>
+            <div className="FavoritesMenu__indivdualSong__actions">
+              <i className="fa fa-times-circle-o fa-fw" onClick={() => removeFavorite(track)}/>
+              {/*<i className="fa fa-minus fa-play fa-fw" onClick={() => removeFavorite(track)}/>*/}
+            </div>
           </div>
-        ))}
+          ))}
+        </div>
+
+          <div className="FavoritesMenu__sync">
+            <span>Sync with Spotify</span>
+            <div className="FavoritesMenu__slider">
+              <label className="switch">
+                <input type="checkbox" />
+                <div className="slider round"/>
+              </label>
+            </div>
+          </div>
+
+      </div>
     </div>
   )
 }
+
+/*
+  for displaying playlists
+  onClick={() => store.dispatch({ type: 'SET_PLAYLIST', playlist: favorites })}
+*/
 
 export default FavoritesMenu;

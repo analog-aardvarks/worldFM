@@ -92,10 +92,10 @@ function showQueueMenu(state = false, action) {
   }
 }
 
-function showFavoritesMenu(state = false, action) {
+function showFavoritesMenu(state = true, action) {
   switch(action.type) {
     case 'SHOW_FAVORITES_MENU': return true;
-    case 'HIDE_FAVORITES_MENU': return false;
+    case 'HIDE_FAVORITES_MENU': return true;
     default: return state;
   }
 }
@@ -140,10 +140,10 @@ function showAbout(state = false, action) {
   }
 }
 
-function showVolumeGauge(state = false, action) {
+function showVolumeGauge(state = true, action) {
   switch(action.type) {
     case 'SHOW_VOLUME_GAUGE': return true;
-    case 'HIDE_VOLUME_GAUGE': return false;
+    case 'HIDE_VOLUME_GAUGE': return true;
     default: return state;
   }
 }
@@ -222,7 +222,11 @@ function showTopMenu(state = false, action) {
 
 function lightbox(state = { show: false, src: null, name: null, artist: null }, action) {
   switch (action.type) {
-    case 'SHOW_LIGHTBOX': return { show: true, src: action.src.image, name: action.src.name, artist: action.src.artist };
+    case 'SHOW_LIGHTBOX': return {
+      show: true, src: action.track.track_album_image,
+      name: action.track.track_name,
+      artist: action.track.track_artist_name,
+      album: action.track.track_album_name };
     case 'HIDE_LIGHTBOX': return { ...state, show: false };
     default: return state;
   }
