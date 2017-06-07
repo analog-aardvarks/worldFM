@@ -4,6 +4,7 @@ const playlistExceptions = [
   '[COUNTRY - 422] Julmusik 50',
   '[COUNTRY - 552] The Sounds of Countries',
   '[GENRE - 3398] The Sounds of Cities',
+  'The Pine Needle',
 ];
 
 module.exports = playlistExceptions;

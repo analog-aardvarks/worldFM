@@ -93,28 +93,11 @@ const removeAlbumDuplicates = (tracks) => {
   return curatedTracks;
 };
 
-const makeSureWeCanPlayTheTracks = (tracks) => {
-  const original = tracks.length;
-  // console.log('<82> ORIGINAL -> ', tracks.length);
-  const curatedTracks = _.filter(tracks, (track) => {
-    const hasPreviewURL = track.track_preview_url !== null;
-    let isAvailableInTheUS;
-    if (track.track_available_markets[track.track_available_markets.length - 1] === ']') {
-      isAvailableInTheUS = JSON.parse(track.track_available_markets).includes('US');
-    } else {
-      isAvailableInTheUS = false;
-    }
-    return hasPreviewURL && isAvailableInTheUS;
-  });
-  // console.log('<88> FILTER -> ', curatedTracks.length);
-  return curatedTracks;
-};
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // API Endpoint
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-getGenrePlaylist = (genre) =>
+const getGenrePlaylist = (genre) =>
   new Promise((resolve, reject) => {
     knex('playliststest')
     .select('*')
@@ -123,7 +106,7 @@ getGenrePlaylist = (genre) =>
     .catch(err => reject(err));
   });
 
-getCountryPlaylist = (country) =>
+const getCountryPlaylist = (country) =>
   new Promise((resolve, reject) => {
     if(country === 'World') {
       knex('playliststest')
@@ -134,13 +117,20 @@ getCountryPlaylist = (country) =>
       .then(playlists => resolve(playlists))
       .catch(err => reject(err));
     } else {
-      knex('playliststest')
-      .select('*')
-      .where('playlist_name', 'like', `%${country}%`)
-      .where('playlist_name', 'like', '[COUNTRY%')
-      // alias
-      .then(playlists => resolve(playlists))
-      .catch(err => reject(err));
+      knex('track').select('*')
+      .join('playlist_track', 'playlist_track.track', '=', 'track.id')
+      .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
+      .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
+      .where('playlist_country.country', country)
+      .then(tracks => resolve(tracks))
+      .catch(err => console.log(err));
+      // knex('playliststest')
+      // .select('*')
+      // .where('playlist_name', 'like', `%${country}%`)
+      // .where('playlist_name', 'like', '[COUNTRY%')
+      // // alias
+      // .then(playlists => resolve(playlists))
+      // .catch(err => reject(err));
     }
   });
 
@@ -149,21 +139,22 @@ Playlist.getPlaylist = (req, response) => {
   const country = req.query.country;
   const genre = req.query.genre;
   const startingTime = Date.now();
-  if(genre === undefined) {
+  if (genre === undefined) {
     getCountryPlaylist(country)
-    .then(res => res.map(p => JSON.parse(p.playlist_tracks)))
-    .then(res => _.flatten(res))
-    .then(res => _.uniq(res))
+    .then(res => console.log('getCountryPlaylist OUTPUT: ', res))
+    // .then(res => res.map(p => JSON.parse(p.playlist_tracks)))
+    // .then(res => _.flatten(res))
+    // .then(res => _.uniq(res))
     .then(res => _.shuffle(res))
     .then(res => res.splice(0, max))
-    .then(res => {
-      knex('trackstest')
-      .whereIn('track_id', res)
-      .then((data) => removeAlbumDuplicates(data))
+    // .then(res => {
+    //   knex('trackstest')
+    //   .whereIn('track_id', res)
+    //   .then((data) => removeAlbumDuplicates(data))
       .then(data => response.status(200).send(data))
       .catch((err) => response.status(400).send(err));
-    })
-    .catch((err) => response.status(400).send(err));
+    // })
+    // .catch((err) => response.status(400).send(err));
   } else {
     getGenrePlaylist(genre)
     .then(res => res[0])

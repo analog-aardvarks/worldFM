@@ -4,11 +4,13 @@ const playlistData = require('./playlistData.js');
 const playlistIndexData = require('./playlistIndexData.js');
 const playlistExceptions = require('./playlistExceptions.js');
 const config = require('../../../config');
+const availableCountries = require('../data/availableCountries');
+const abbreviation = require('../data/abbreviation');
 
 const TRACK_DEBUG = true;
 const startingTime = Date.now();
 const owner = 'thesoundsofspotify';
-const maxTracksPerPlaylist = 200;
+const maxTracksPerPlaylist = 2000;
 
 const getAuth = () =>
   new Promise((resolve, reject) => {
@@ -46,20 +48,42 @@ const savePlaylistInDatabase = playlist =>
     .catch(err => reject(err));
   });
 
-const mapTracksToPlaylist = (tracks, playlistId) => {
-  knex('playlist_track').where('playlist', playlistId).del()
+const mapTracksToPlaylist = (tracks, playlist) => {
+  knex('playlist_track').where('playlist', playlist.id).del()
   .then(() => {
     tracks.forEach((track) => {
       knex('playlist_track')
-      .insert({ track: track.id, playlist: playlistId })
+      .insert({ track: track.id, playlist: playlist.id })
       .catch(err => console.log(err));
     });
   });
 };
 
-const mapTracksToCountry = (tracks, playlistId) => {
-
-}
+const mapPlaylistToCountry = (tracks, playlist) => {
+  let country;
+  for (let i = 0; i < availableCountries.length; i++) {
+    country = availableCountries[i];
+    // Start checking playlist names from several characters in
+    // to avoid tagging CITY as Italy and COUNTRY as Colombia
+    if (playlist.name.substring(6).includes(country)
+      || playlist.name.substring(6).includes(abbreviation[country])) {
+      // Patch for India/Indiana
+      if (country === 'India' && playlist.name.includes('Indiana')) continue;
+      let addCount = 0;
+      let dupeCount = 0;
+      tracks.forEach((t) => {
+        knex('track_country')
+        .insert({ track: t.id, country })
+        .then(() => addCount++)
+        .catch(() => dupeCount++);
+      });
+      knex('playlist_country').insert({ playlist: playlist.id, country })
+      .then(() => console.log(`${playlist.name} mapped to ${country}.`))
+      .catch(err => console.log(err));
+      return;
+    }
+  }
+};
 
 const saveTrackInDatabase = track =>
   new Promise((resolve, reject) => {
@@ -153,7 +177,8 @@ const getAndSavePlaylist = playlist =>
         // tracks: JSON.stringify(tracks.map(t => t.track_id)),
       })
       .then(() => {
-        mapTracksToPlaylist(tracks, playlist.id);
+        mapTracksToPlaylist(tracks, playlist);
+        mapPlaylistToCountry(tracks, playlist);
         const saveTrackInDatabasePromises = [];
         tracks.forEach(t => saveTrackInDatabasePromises.push(saveTrackInDatabaseGenerator(t)));
         saveTrackInDatabasePromises.push(resolve);
@@ -170,7 +195,13 @@ const getMultiplePlaylists = playlistBatch =>
   new Promise((resolve) => {
     const getAndSavePlaylistPromises = [];
     playlistBatch.forEach((playlist) => {
-      if (!playlistExceptions.includes(playlist.name)) {
+      let save = true;
+      playlistExceptions.forEach((exception) => {
+        if (playlist.name.includes(exception)) {
+          save = false;
+        }
+      });
+      if (save) {
         getAndSavePlaylistPromises.push(getAndSavePlaylistGenerator(playlist));
       }
     });
@@ -208,7 +239,7 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(0, 10))
+getMultiplePlaylists(playlistData.splice(0, 1000))
 .then(() => {
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
