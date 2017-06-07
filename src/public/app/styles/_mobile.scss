@@ -1,78 +1,61 @@
-@media (max-width: 700px) {
-  .CurrentSongInfo {
-    display: none;
-  }
-  .CurrentSongPic {
-    position: absolute;
-    right: 9px;
-    bottom: 9px;
-  }
-  .FavoritesMenu--toggle {
-    display: flex !important;
-  }
-  .GlobeView--toggle  {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: 18px;
-    margin-right: 18px;
-  }
-  .Menu {
-    justify-content: center;
+@media (max-width: 580px) {
+  //Top Menu
+  .FavoritesMenu {
+    width: 100%;
   }
   .Menu--logo {
     display: none;
   }
-  .Hamburger--icon {
-    display: block;
+  .TopMenu {
+    justify-content: center;
+  }
+
+  //Player
+  .CurrentSongInfo {
+    display: none;
+  }
+  .CurrentSongPic {
+    bottom: 9px;
+    position: absolute;
+    right: 9px;
+  }
+  .Device__selector {
+    bottom: 63px;
+    left: -8px;
   }
   .Player {
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-  .Player__extraButtons {
-    display: none;
+    justify-content: center;
   }
   .PlayerControls {
     margin-left: 0;
     position: absolute;
   }
-  .Player__leftPortion {
-    width: 130px;
-    margin-left: 0px;
-  }
-  .Player__volume {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 25px;
-    bottom: 25px;
-  }
   .Player__CurrentSongTime {
     display: none;
   }
-  .RandomButton {
-    position: fixed;
-    left: -3%;
-  }
-  .SideMenu {
+  .Player__extraButtons {
+    align-items: center;
+    bottom: 10px;
     display: flex;
-  }
-  .SpotifyPlaylist {
-    width: 80vw;
-    height: 50vh;
-    top: 22%;
-    left: 22%;
-  }
-  .TopMenu {
     justify-content: center;
+    left: 10px;
+    position: absolute;
   }
-  .TopMenu__content {
+  .Player__leftPortion {
+    margin-left: 0px;
+    width: 130px;
+  }
+  .Player__volume {
     display: none;
   }
-  .TopMenu--login {
-    display: none;
-  }
+
+  //Side Menu
+  // .Hamburger--icon {
+  //   display: block;
+  // }
+  // .SideMenu {
+  //   display: flex;
+  // }
 }

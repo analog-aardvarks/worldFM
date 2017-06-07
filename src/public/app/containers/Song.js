@@ -221,7 +221,11 @@ class Song extends React.Component {
       >
         <div
           className="Song__wrapper"
-          style={{ border: icon === "play" ? "" : "3px solid #1ed760" }}
+          style={{
+            border: icon === "play" ? "" : "3px solid #1ed760",
+            width: this.netSize - 6,
+            height: this.netSize - 6,
+          }}
         >
           <i
             className={`SongHover__play-button fa fa-${icon}-circle-o fa-5x fa-fw`}
@@ -257,7 +261,9 @@ class Song extends React.Component {
           <div className="Song__container">
             <span
               className="Song__ranking"
-              style={{ fontFamily: 'Permanent Marker' }}
+              style={{
+                fontFamily: 'Permanent Marker',
+              }}
             >
             {this.props.ranking < 10 ? `0${this.props.ranking}` : this.props.ranking}
             </span>
