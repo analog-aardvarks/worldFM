@@ -18,7 +18,7 @@ const App = () => (
     <Menu />
     <Playlist />
     <Player />
-    <About />
+    {/* <About /> */}
     <Lightbox />
     <ReactTooltip />
   </div>

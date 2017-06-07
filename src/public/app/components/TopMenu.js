@@ -59,7 +59,7 @@ const TopMenu = ({
   return (
     <div
       className="TopMenu"
-      style={{ background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #080808)' : 'rgba(0, 0, 0, 0)' }}
+      style={{ background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #1C1C1C)' : 'rgba(0, 0, 0, 0)' }}
     >
       <i
         className="Hamburger--icon TopMenu__icon fa fa-bars fa-2x fa-fw"
