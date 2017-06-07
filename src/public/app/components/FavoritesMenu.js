@@ -29,7 +29,7 @@ const FavoritesMenu = ({ showFavoritesMenu, favorites, showQueueMenu, windowHeig
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu ? windowHeight - 277: windowHeight - 133,
+        height: showQueueMenu ? windowHeight - 277 - 16: windowHeight - 133,
       }}>
       <div className="FavoritesMenu__wrapper">
         <div className="FavoritesMenu__top">
