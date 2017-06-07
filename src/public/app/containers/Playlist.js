@@ -22,8 +22,7 @@ class Playlist extends React.Component {
 
   render() {
     this.songWidth = 0;
-    this.playlistWidth =
-      this.props.showFavoritesMenu ?
+    this.playlistWidth = this.props.showFavoritesMenu && this.props.windowWidth > 580 ?
       this.props.windowWidth - 290 :
       this.props.windowWidth;
     if (this.playlistWidth < 500) this.songWidth = this.playlistWidth / 2;
