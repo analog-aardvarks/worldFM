@@ -6,6 +6,7 @@ import { setFavorites } from '../actions';
 const FavoritesMenu = ({
   showAvailableDevices,
   showFavoritesMenu,
+  showPlayerMobileOptions,
   favorites,
   showQueueMenu,
   windowHeight,
@@ -56,7 +57,7 @@ const FavoritesMenu = ({
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu || showAvailableDevices ? windowHeight - 277 - 16: windowHeight - 133,
+        height: showQueueMenu || showAvailableDevices || showPlayerMobileOptions ? windowHeight - 277 - 16: windowHeight - 133,
       }}>
       <div className="FavoritesMenu__wrapper">
         <div className="FavoritesMenu__top">
@@ -85,7 +86,7 @@ const FavoritesMenu = ({
                   className="FavoritesMenu__indivdualSong__Lightbox"
                   onClick={() => handleExpandClick(track)}
                 />
-                
+
                 <div className="FavoritesMenu__indivdualSong__play">
                   <i className="fa fa-play fa-fw"
                     onClick={() => helperFuncs.playExternalTrack(track)}
