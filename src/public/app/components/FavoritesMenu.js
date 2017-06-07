@@ -1,8 +1,21 @@
 import React from 'react';
 import store from '../index';
+import _ from 'underscore';
 import { setFavorites } from '../actions';
 
-const FavoritesMenu = ({ showAvailableDevices, showFavoritesMenu, favorites, showQueueMenu, windowHeight }) => {
+const FavoritesMenu = ({
+  showAvailableDevices,
+  showFavoritesMenu,
+  favorites,
+  showQueueMenu,
+  windowHeight,
+  toggleFavoritesMenu,
+  setSpotifySyncHandler,
+  addTrackToSpotifyQueue,
+  handleExpandClick,
+  sync,
+  helperFuncs }) => {
+
   const removeFavorite = (track) => {
     fetch('/favorites', {
       method: 'DELETE',
@@ -20,10 +33,24 @@ const FavoritesMenu = ({ showAvailableDevices, showFavoritesMenu, favorites, sho
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ sync: true }),
-    });
+      body: JSON.stringify({ sync: !sync }),
+    })
+    .then(res => res.json())
+    .then(res => setSpotifySyncHandler(res))
+    .catch(err => console.log(err));
   };
+  // toggleSync = _.throttle(toggleSync, 1000);
 
+  const removeAllFavorites = () => {
+    fetch('/favorites/deleteAll', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    })
+    .then(() => store.dispatch(setFavorites([])))
+    .catch(err => console.log(err));
+  }
+  // console.log(helperFuncs)
   return (
     <div
       className="FavoritesMenu"
@@ -33,12 +60,15 @@ const FavoritesMenu = ({ showAvailableDevices, showFavoritesMenu, favorites, sho
       }}>
       <div className="FavoritesMenu__wrapper">
         <div className="FavoritesMenu__top">
-          {/*<div onClick={toggleSync}>
-            <i className="fa fa-refresh fa-fw" />
-          </div>*/}
-          <i className="fa fa-trash fa-fw" />
+          <i
+            className="fa fa-trash fa-fw"
+            onClick={removeAllFavorites}
+            />
           <span>Favorites</span>
-          <i className="fa fa-times fa-fw" />
+          <i
+            className="fa fa-times fa-fw"
+            onClick={toggleFavoritesMenu}
+          />
         </div>
 
         <div className="FavoritesMenu__allSongs">
@@ -49,9 +79,24 @@ const FavoritesMenu = ({ showAvailableDevices, showFavoritesMenu, favorites, sho
               <span className="FavoritesMenu__SongName">{track.track_name}</span>
               <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
-            <div className="FavoritesMenu__indivdualSong__actions">
-              <i className="fa fa-times-circle-o fa-fw" onClick={() => removeFavorite(track)}/>
-              {/*<i className="fa fa-minus fa-play fa-fw" onClick={() => removeFavorite(track)}/>*/}
+            <div className="absclear">
+              <div className="FavoritesMenu__hover">
+                <div
+                  className="FavoritesMenu__indivdualSong__Lightbox"
+                  onClick={() => handleExpandClick(track)}
+                />
+                
+                <div className="FavoritesMenu__indivdualSong__play">
+                  <i className="fa fa-play fa-fw"
+                    onClick={() => helperFuncs.playExternalTrack(track)}
+                    style={{ marginBottom: '5px' }}/>
+                  <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
+                </div>
+
+                <div className="FavoritesMenu__indivdualSong__actions">
+                  <i className="fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+                </div>
+              </div>
             </div>
           </div>
           ))}
@@ -61,20 +106,23 @@ const FavoritesMenu = ({ showAvailableDevices, showFavoritesMenu, favorites, sho
             <span>Sync with Spotify</span>
             <div className="FavoritesMenu__slider">
               <label className="switch">
-                <input type="checkbox" />
+                {sync === 1 ?
+                <input
+                  checked
+                  type="checkbox"
+                  onChange={toggleSync}/>
+                :
+                <input
+                  type="checkbox"
+                  onChange={toggleSync}/>
+                }
                 <div className="slider round"/>
               </label>
             </div>
           </div>
-
       </div>
     </div>
   )
 }
-
-/*
-  for displaying playlists
-  onClick={() => store.dispatch({ type: 'SET_PLAYLIST', playlist: favorites })}
-*/
 
 export default FavoritesMenu;

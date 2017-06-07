@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setPlaylist, setCurrentCountry, setCurrentTrend, closeSongMenu, removeTrackFromSpotifyQueue } from '../actions';
+import { setPlaylist,
+  setCurrentCountry,
+  setCurrentTrend,
+  closeSongMenu,
+  removeTrackFromSpotifyQueue,
+  addTrackToSpotifyQueue,
+  showLightbox} from '../actions';
 import availableCountries from '../constants/availableCountries';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
@@ -31,6 +37,8 @@ const mapStateToProps = state => ({
   spotifyPlayer: state.spotifyPlayer,
   showTopMenu: state.showTopMenu,
   showAvailableDevices: state.showAvailableDevices,
+  sync: state.sync,
+  helperFuncs: state.helperFuncs,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -58,6 +66,9 @@ const mapDispatchToProps = dispatch => ({
   removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
   showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }),
   hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }),
+  setSpotifySyncHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
+  addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
+  handleExpandClick: track => dispatch(showLightbox(track)),
 });
 
 class Menu extends React.Component {
@@ -201,6 +212,13 @@ class Menu extends React.Component {
           showQueueMenu={this.props.showQueueMenu}
           windowHeight={this.props.windowHeight}
           showAvailableDevices={this.props.showAvailableDevices}
+          toggleFavoritesMenu={this.toggleFavoritesMenu}
+          sync={this.props.sync}
+          setSpotifySyncHandler={this.props.setSpotifySyncHandler}
+          addTrackToSpotifyQueue={this.props.addTrackToSpotifyQueue}
+          handleExpandClick={this.props.handleExpandClick}
+          helperFuncs={this.props.helperFuncs}
+
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}

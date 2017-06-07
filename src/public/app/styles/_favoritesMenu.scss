@@ -53,15 +53,16 @@
 .FavoritesMenu__indivdualSong {
   // border-radius: 2.5px;
   // margin-left: 5px;
-  // background-color: $bgGreyMedium;
+  // background-color: red;
   // min-width: 400px;
   // max-width: 400px;
+  min-width: 345px;
   min-height: 55px;
   // margin-right: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   img {
     margin-left: 15px;
     max-width: 50px;
@@ -70,8 +71,12 @@
   }
 }
 
+.FavoritesMenu__indivdualSong:hover {
+  // background-color: $bgGreyMedium;
+}
+
 .FavoritesMenu__indivdualSong__songInfo {
-  margin-left: 15px;
+  padding-left: 30px;
   // padding-left: 15px;
   // max-width: 328px;
   min-width: 220px;
@@ -87,6 +92,7 @@
   cursor: default;
   user-select: none;
   padding-right: 15px;
+  padding-left: 5px;
   width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -192,5 +198,71 @@ input:checked + .slider:before {
 
 .FavoritesMenu__slider {
   display: flex;
+  align-items: center;
+}
+
+.FavoritesMenu__hover {
+  position: relative;
+  // background-color: rgba(0,0,255,0.5);
+  background-color: rgba(0, 0, 0, 0);
+  left: -280px;
+  bottom: 27.5px;
+  min-width: 345px;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  opacity: 0;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.FavoritesMenu__hover:hover {
+  opacity: 1;
+}
+
+.FavoritesMenu__indivdualSong__actions {
+  // align-self: flex-end;
+  position: relative;
+  left: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FavoritesMenu__indivdualSong__Lightbox {
+  min-width: 50px;
+  min-height: 50px;
+  // background-color: rgba(0, 0, 0, 0.50);
+  cursor: pointer;
+  // border: 4px solid $bgGreyMedium;
+  // border-radius: 2.5px;
+}
+
+.FavoritesMenu__indivdualSong__play {
+  background-color: $bgGreyMedium;
+  border-top-right-radius: 2.5px;
+  border-bottom-right-radius: 2.5px;
+  // background-color: rgba(0,255,255,0.5);
+  // background-color: rgba(0, 0, 0, 0.50);
+  // min-width: 50px;
+  // min-height: 50px;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  min-width: 30px;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
