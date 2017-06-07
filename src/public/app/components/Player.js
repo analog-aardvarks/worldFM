@@ -612,7 +612,7 @@ class Player extends React.Component {
 
         <i
           className="Player__extraButtonsMobileToggle fa fa fa-ellipsis-v fa-2x fa-fw "
-          onClick={this.togglePlayerMobileOptions}
+          onClick={() => {this.togglePlayerMobileOptions(); this.props.hideAvailableDevicesEvent(); this.props.hideQueueMenuEvent() }}
           data-tip="Options"
         />
         { this.props.showPlayerMobileOptions ?
