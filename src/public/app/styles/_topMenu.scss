@@ -54,7 +54,6 @@
   border-left: 1px solid rgba(175, 175, 175, 0.1);
 }
 
-
 .TopMenu--CountryDropdown,
 .TopMenu--GenreDropdown {
   min-width: 200px;
@@ -63,35 +62,19 @@
   padding-right: 11px;
   margin-left: 6px;
 }
-
+.Select-menu-outer {
+  width: 189px;
+  padding: 11px;
+}
 // selected value font
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-  color: rgb(30, 215, 96);
-    font-family: 'Lato';
+  color: $spotifyGreen;
+  font-family: 'Lato';
 }
 //border
 .Select-control {
   border-color: #171717;
-}
-// selected view
-.Select-value {
-  // background: linear-gradient(#171717, #353535, #171717);;
-  // border: none;
-}
-.Select-option {
-	background-color: $mainfontColor;
-	color: #171717;
-	cursor: pointer;
-  font-family: 'Lato';
-	display: block;
-	&.is-selected {
-		background-color: rgb(30, 215, 96);
-		color: $mainfontColor;
-	}
-	&.is-focused {
-		background-color: rgb(30, 215, 96);
-		color: $mainfontColor;
-	}
+  color: $spotifyGreen;
 }
 
 .FavoritesMenu--toggle,

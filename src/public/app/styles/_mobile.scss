@@ -1,3 +1,19 @@
+@media (max-width: 765px)  {
+  .Player__extraButtons {
+    display: none;
+  }
+  .Player__extraButtonsMobileToggle {
+    display: block;
+    right: 0px;
+    bottom: 17px;
+    position: fixed;
+    opacity: 0.6;
+  }
+  .Player__extraButtonsMobile {
+    display: flex;
+  }
+}
+
 @media (max-width: 580px) {
   //Top Menu
   .FavoritesMenu {
@@ -8,6 +24,21 @@
   }
   .TopMenu {
     justify-content: center;
+  }
+  .TopMenu__icon {
+    margin-left: 6px;
+  }
+  .TopMenu__dropdownOptions {
+    border: none;
+    margin-left: 6px;
+  }
+  .TopMenu--CountryDropdown,
+  .TopMenu--GenreDropdown {
+    min-width: 170px;
+    max-width: 170px;
+  }
+  .Select-menu-outer {
+    width: 159px;
   }
 
   //Player
@@ -27,18 +58,20 @@
   // }
 }
 
-@media (max-width: 765px)  {
-  .Player__extraButtons {
-    display: none;
+@media (max-width: 380px) {
+  .TopMenu__dropdownOptions {
+    border: none;
+    margin-left: 0px;
+    }
+  .Player__extraButtonsMobileContent {
+    padding: 41px;
+    font-size: 12px;
   }
-  .Player__extraButtonsMobileToggle {
-    display: block;
-    right: 0px;
-    bottom: 17px;
-    position: fixed;
-    opacity: 0.6;
+  .Player__volume {
+    margin-right: 2px;
   }
-  .Player__extraButtonsMobile {
-    display: flex;
-  }
+}
+
+@media (max-width: 325px) {
+
 }
