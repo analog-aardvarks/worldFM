@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
   showCountryDropdown: state.showCountryDropdown,
   currentCountry: state.currentCountry,
   currentGenre: state.currentGenre,
+  windowWidth: state.windowWidth,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -42,6 +43,7 @@ const TopMenu = ({
   handleShowCountryDropdown,
   handleSetGenre,
   handleClearGenre,
+  windowWidth,
   }) => {
 
   const scrollUp = () => {
@@ -59,7 +61,10 @@ const TopMenu = ({
   return (
     <div
       className="TopMenu"
-      style={{ background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #1C1C1C)' : 'rgba(0, 0, 0, 0)' }}
+      style={{
+        background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #1C1C1C)' : 'rgba(0, 0, 0, 0)',
+        width: windowWidth
+      }}
     >
       <i
         className="Hamburger--icon TopMenu__icon fa fa-bars fa-2x fa-fw"
@@ -73,7 +78,7 @@ const TopMenu = ({
       </a>
 
 
-      <div className="TopMenu__content">
+      <div className="TopMenu__content" style={{ width: windowWidth }}>
 
         <div
           className="GlobeView--toggle TopMenu__icon"
