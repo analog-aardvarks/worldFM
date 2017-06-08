@@ -75,34 +75,55 @@ class Lightbox extends React.Component {
             onClick={this.props.hideLightbox}
           >
             <div className="Lightbox__content">
-              <button onClick={(e) => {
-                e.stopPropagation();
-                this.prevImage();
-              }}
-              >
-                Previous
-              </button>
-              {console.log('TRACK AT RENDER: ', this.track)}
-              <img
-                className="Lightbox__contentFullAlbumArt"
-                src={this.track.track_album_image}
-                alt="Album Art"
-                width={this.size}
-                height={this.size}
-              />
-              <button onClick={(e) => {
-                e.stopPropagation();
-                this.nextImage();
-              }}
-              >
-                Next
-              </button>
-              <div className="Lightbox__contentAlbumInfo">
+
+              <div className="Lightbox__contentArtButtons">
+
+                <i
+                  className="fa fa fa-chevron-left fa-2x fa-fw"
+                  style={{ opacity: "0.4" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.prevImage();
+                  }}
+                />
+
+                {console.log('TRACK AT RENDER: ', this.track)}
+
+                <div className="Lightbox__contentFullAlbumArtButtons">
+                  <img
+                    className="Lightbox__contentFullAlbumArt"
+                    src={this.track.track_album_image}
+                    alt="Album Art"
+                    width={this.size}
+                    height={this.size}
+                  />
+                  <div className="Lightbox__contentHover" style={{ width:this.size, height:this.size }}>
+                    <i className="fa fa-play fa-2x fa-fw" />
+                    <div className="Lightbox__contentHoverRight">
+                      <i className="fa fa-heart fa-2x fa-fw" />
+                      <i className="fa fa-plus fa-2x fa-fw" />
+                    </div>
+                  </div>
+                </div>
+
+                <i
+                  className="fa fa fa-chevron-right fa-2x fa-fw"
+                  style={{ opacity: "0.4" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.nextImage();
+                  }}
+                />
+
+              </div>
+
+              <div className="Lightbox__contentAlbumInfo" style={{ width:this.size }}>
                 <span>{this.track.track_name}</span>
                 <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{this.artists}</span>
-                {this.countries && <span>Trending in: {this.countries}</span>}
+                {this.countries && <span>Trending in:  {this.countries}</span>}
               </div>
             </div>
+
           </div>
         </div>
       ) : null
