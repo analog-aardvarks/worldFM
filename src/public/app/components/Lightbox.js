@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {
+  addTrackToSpotifyQueue,
+} from '../actions';
 
 const mapStateToProps = ({ lightbox, windowWidth, windowHeight }) => ({
   lightbox,
@@ -14,6 +17,7 @@ const mapDispatchToProps = dispatch => ({
     console.log('TRACK: ', track);
     console.log('LIST: ', list);
   },
+  addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
 });
 
 class Lightbox extends React.Component {
@@ -25,6 +29,7 @@ class Lightbox extends React.Component {
     }
     this.handleKeyDown = this.handleKeyDown.bind(this);
     window.addEventListener('keydown', this.handleKeyDown);
+    this.addToQueue = this.addToQueue.bind(this);
   }
 
   componentWillUpdate(nextProps) {
@@ -66,6 +71,8 @@ class Lightbox extends React.Component {
     this.props.changeImage(this.list[index], this.list);
   }
 
+  addToQueue() { this.props.addTrackToSpotifyQueue(this.track); }
+
   render() {
     return (
       this.props.lightbox.show ? (
@@ -90,6 +97,7 @@ class Lightbox extends React.Component {
                 {console.log('TRACK AT RENDER: ', this.track)}
 
                 <div className="Lightbox__contentFullAlbumArtButtons">
+
                   <img
                     className="Lightbox__contentFullAlbumArt"
                     src={this.track.track_album_image}
@@ -98,12 +106,19 @@ class Lightbox extends React.Component {
                     height={this.size}
                   />
                   <div className="Lightbox__contentHover" style={{ width:this.size, height:this.size }}>
-                    <i className="fa fa-play fa-2x fa-fw" />
-                    <div className="Lightbox__contentHoverRight">
-                      <i className="fa fa-heart fa-2x fa-fw" />
-                      <i className="fa fa-plus fa-2x fa-fw" />
+
+                    <div className="Lightbox__contentHoverButtons">
+
+                      <i className="fa fa-play fa-2x fa-fw" />
+                      <div className="Lightbox__contentHoverRight">
+                        <i className="fa fa-heart fa-2x fa-fw" />
+                        <i className="fa fa-plus fa-2x fa-fw" onClick={this.addToQueue} />
+                      </div>
+
                     </div>
+
                   </div>
+
                 </div>
 
                 <i

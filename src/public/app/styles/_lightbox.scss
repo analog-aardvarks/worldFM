@@ -51,18 +51,21 @@
   align-items: flex-end;
   display: flex;
   justify-content: space-between;
-  opacity: 0;
-  padding: 20px;
+  opacity: 0; //TODO
   position: absolute;
   z-index: 81;
   i {
     opacity: 0.4;
   }
 }
-.Lightbox__contentHover:hover {
-  opacity: 1;
+.Lightbox__contentHoverButtons {
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.Lightbox__contentHoverRight {
-
+.Lightbox__contentHover:hover {
+  opacity: 1;
 }
