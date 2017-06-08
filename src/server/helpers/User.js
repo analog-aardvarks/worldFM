@@ -44,10 +44,11 @@ User.getFavoriteTracks = user =>
     knex('track')
     .select(Track.mapToTrackObj)
     .join('favorites', 'track.id', '=', 'favorites.track')
-    .join('track_country', 'track.id', '=', 'track_country.track')
+    .leftJoin('track_country', 'track.id', '=', 'track_country.track')
     .where('favorites.user', user.id)
     .groupBy('track.id')
-    .orderBy('created_at', 'desc')
+    .orderBy('favorites.created_at', 'desc')
+    .then((favs) => { console.log('favs: ', favs); return favs; })
     .then(favs => resolve(favs))
     .catch(err => reject(err));
   });

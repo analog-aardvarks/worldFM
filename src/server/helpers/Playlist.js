@@ -10,6 +10,7 @@ const limit = 100;
 // Initialize 'World' playlist for faster page load
 let worldPlaylist;
 const updateWorldPlaylist = () => {
+  console.log('getting world playlist...');
   const startTime = Date.now();
   knex('track')
   .select(Track.mapToTrackObj)
@@ -24,7 +25,7 @@ const updateWorldPlaylist = () => {
   .then(() => console.log(`World Playlist Loaded in ${Date.now() - startTime}ms`))
   .catch(err => console.log(err));
   // Update landing playlist every hour
-  setTimeout(updateWorldPlaylist, 600000);
+  setTimeout(updateWorldPlaylist, 3600000);
 };
 updateWorldPlaylist();
 
