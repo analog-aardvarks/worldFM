@@ -7,6 +7,27 @@ const Track = require('./Track');
 // Set length of playlist
 const limit = 100;
 
+// initialize 'World' playlist for faster page load
+let worldPlaylist;
+const updateWorldPlaylist = () => {
+  const startTime = Date.now();
+  knex('track')
+  .select(Track.mapToTrackObj)
+  .join('playlist_track', 'playlist_track.track', '=', 'track.id')
+  .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
+  .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
+  .join('track_country', 'track_country.track', '=', 'track.id')
+  .groupBy('track.id')
+  .orderBy(knex.raw('Rand()'))
+  .limit(1000)
+  .then((tracks) => { worldPlaylist = tracks; })
+  .then(() => console.log(`World Playlist Loaded in ${Date.now() - startTime}ms`))
+  .catch(err => console.log(err));
+  // Update landing playlist every hour
+  setTimeout(updateWorldPlaylist, 600000);
+};
+updateWorldPlaylist();
+
 User.getUser = user =>
   new Promise((resolve, reject) =>
     knex('user').where('id', user.id)
@@ -110,27 +131,22 @@ const getGenrePlaylist = (genre) =>
   });
 
 const getCountryPlaylist = country =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     if (country === 'World') {
-      knex('playliststest')
-      .select('*')
-      .where('playlist_name', 'like', '[COUNTRY%')
-      .whereNot('playlist_name', 'like', '% / %')
-      .whereNot('playlist_name', 'like', '%The Sound of%')
-      .then(playlists => resolve(playlists))
-      .catch(err => reject(err));
+      const playlist = _.shuffle(worldPlaylist).slice(0, 100);
+      resolve(playlist);
+      // .where('playlist_name', 'like', '[COUNTRY%')
+      // .whereNot('playlist_name', 'like', '% / %')
+      // .whereNot('playlist_name', 'like', '%The Sound of%')
     } else {
-      // Get songs associated with querried country
-      // Rename variables to fit front end
-      // knex('track')
-      // .select(trackObject)
-      // .join('playlist_track', 'playlist_track.track', '=', 'track.id')
-      // .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
-      // .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
-      // .join('track_country', 'track_country.track', '=', 'track.id')
-      // .where('playlist_country.country', country)
-      // .groupBy('track.id')
-      Track.getTracksWhere('playlist_country.country', country)
+      knex('track')
+      .select(Track.mapToTrackObj)
+      .join('playlist_track', 'playlist_track.track', '=', 'track.id')
+      .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
+      .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
+      .join('track_country', 'track_country.track', '=', 'track.id')
+      .where('playlist_country.country', country)
+      .groupBy('track.id')
       .orderBy(knex.raw('Rand()'))
       .limit(100)
       .then(tracks => resolve(tracks))

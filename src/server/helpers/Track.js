@@ -23,14 +23,6 @@ Track.mapToTrackObj = knex.raw(`track.id as track_id,
                 GROUP_CONCAT(DISTINCT track_country.country SEPARATOR ', ') as track_countries
                 `);
 
-Track.getTracksWhere = (column, value) => knex('track')
-      .select(Track.mapToTrackObj)
-      .join('playlist_track', 'playlist_track.track', '=', 'track.id')
-      .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
-      .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
-      .join('track_country', 'track_country.track', '=', 'track.id')
-      .where(column, value)
-      .groupBy('track.id');
 
 // GET /track
 Track.getTrack = (req, res) => {

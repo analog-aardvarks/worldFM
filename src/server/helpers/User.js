@@ -1,8 +1,8 @@
 const knex = require('../db/db');
 const Playlist = require('./Playlist');
 const Devices = require('./Devices');
+const Track = require('./Track');
 
-const trackObject = require('./Track').sqlToJs;
 
 const User = {};
 
@@ -42,10 +42,11 @@ User.login = profile =>
 User.getFavoriteTracks = user =>
   new Promise((resolve, reject) => {
     knex('track')
-    .select(trackObject)
+    .select(Track.mapToTrackObj)
     .join('favorites', 'track.id', '=', 'favorites.track')
     .join('track_country', 'track.id', '=', 'track_country.track')
     .where('favorites.user', user.id)
+    .groupBy('track.id')
     .orderBy('created_at', 'desc')
     .then(favs => resolve(favs))
     .catch(err => reject(err));
