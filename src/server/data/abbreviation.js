@@ -29,6 +29,10 @@ const abbreviation = {
   Turkey: 'TR',
   Belgium: 'BE',
   Peru: 'PE',
+  Indonesia: 'ID',
+  Poland: 'PL',
+  Bolivia: 'BO',
+  Finland: 'FI',
 };
 
 module.exports = abbreviation;

@@ -17,7 +17,7 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
   if (windowWidth < 900 || windowHeight < 900) {
     size = Math.min(windowWidth, windowHeight - 120) * 0.8;
   }
-  // console.log(lightbox);
+  
   return (
     lightbox.show ? (
       <div
@@ -35,6 +35,7 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
           <div className="Lightbox__contentAlbumInfo">
             <span>{lightbox.name}</span>
             <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{lightbox.artist.join(', ')}</span>
+            <span>Trending in </span>
           </div>
         </div>
       </div>

@@ -8,17 +8,31 @@ const Track = {};
 
 // Read file 'routes.js' for details on how to use
 
+Track.sqlToJs = knex.raw(`track.id as track_id,
+                track.name as track_name,
+                track.album_id as track_album_id,
+                track.album_image as track_album_image,
+                track.album_name as track_album_name,
+                track.album_type as track_album_type,
+                track.artist_id as track_artist_id,
+                track.artist_name as track_artist_name,
+                track.length as track_length,
+                track.popularity as track_popularity,
+                track.position as track_position,
+                track.preview_url as track_preview_url,
+                track_country.country as track_countries`);
+
 // GET /track
 Track.getTrack = (req, res) => {
   const id = req.query.id;
   if (!id) {
     // return all tracks
-    knex('trackstest').select('*')
+    knex('tracks').select('*')
       .then(tracks => res.status(200).send(tracks))
       .catch(err => console.log(err));
   } else {
     // return one track
-    knex('trackstest').where('track_id', id)
+    knex('tracks').where('track_id', id)
       .then(track => res.status(200).send(track))
       .catch(err => console.log(err));
   }
@@ -26,8 +40,8 @@ Track.getTrack = (req, res) => {
 
 // GET /track/length
 Track.getTrackLength = (req, res) => {
-  knex('trackstest').select('*')
-    .then(tracks => res.status(200).send([tracks.length]))
+  knex('tracks').count('*')
+    .then(count => res.status(200).send(count))
     .catch(err => console.log(err));
 };
 
@@ -36,12 +50,12 @@ Track.getTrackLength = (req, res) => {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Track.postTrack = (track) => {
-  knex('trackstest').where('track_id', track.track_id)
+  knex('tracks').where('track_id', track.track_id)
     .then((data) => {
       if (data.length > 0) {
         console.log('Track already exists!');
       } else {
-        knex('trackstest').insert(track)
+        knex('tracks').insert(track)
           .then(() => console.log(`Track ${track.track_name} successfully added!`))
           .catch(err => console.log(err));
       }

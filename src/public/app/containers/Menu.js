@@ -127,7 +127,10 @@ class Menu extends React.Component {
       `playlist?genre=${this.props.currentGenre}`;
     fetch(url)
     .then(res => res.json())
-    .then((res) => this.props.setPlaylist(res))
+    .then((res) => {
+      console.log('TRACKS FROM SERVER: ', res)
+      this.props.setPlaylist(res)
+    })
     .then(() => {
       if (this.props.currentCountry !== 'World') {
         const sweetScroll = new SweetScroll();

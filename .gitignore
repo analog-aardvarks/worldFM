@@ -40,3 +40,4 @@ bower_components/
 config.js
 
 credentialsTest.js
+.vscode/
