@@ -7,7 +7,7 @@ const Track = require('./Track');
 // Set length of playlist
 const limit = 100;
 
-// initialize 'World' playlist for faster page load
+// Initialize 'World' playlist for faster page load
 let worldPlaylist;
 const updateWorldPlaylist = () => {
   const startTime = Date.now();
@@ -123,9 +123,19 @@ const removeAlbumDuplicates = (tracks) => {
 
 const getGenrePlaylist = (genre) =>
   new Promise((resolve, reject) => {
-    knex('tracks')
-    .select(trackObject)
-    .where('playlist_name', 'like', `%${genre}`)
+    knex('playlist')
+    .select(Track.mapToTrackObj)
+    .join('playlist_track', 'playlist_track.playlist', '=', 'playlist.id')
+    .join('track', 'track.id', '=', 'playlist_track.track')
+    .leftJoin('track_country', 'track.id', '=', 'track_country.track')
+    .where('playlist.name', 'like', `%${genre}`)
+    .groupBy('track.id')
+    .orderBy(knex.raw('Rand()'))
+    .limit(limit)
+    .then(playlist => {
+      console.log(playlist)
+      return playlist
+    })
     .then(playlist => resolve(playlist))
     .catch(err => reject(err));
   });
@@ -166,20 +176,14 @@ Playlist.getPlaylist = (req, res) => {
     });
   } else {
     getGenrePlaylist(genre)
-    .then(res => res[0])
-    .then(res => JSON.parse(res.playlist_tracks))
-    .then(res => _.shuffle(res))
-    .then(res => res.splice(0, max))
-    .then(res => {
-      knex('trackstest')
-      .whereIn('track_id', res)
-      .then((data) => removeAlbumDuplicates(data))
-      .then(data => response.status(200).send(data))
-      .catch((err) => response.status(400).send(err));
-    })
-    .catch((err) => response.status(400).send(err));
+    // .then(data => removeAlbumDuplicates(data))
+    .then(data => res.status(200).send(data))
+    .catch((err) => {
+      res.status(500).send();
+      console.log(err);
+    });
   }
-}
+};
 
 // GET /playlist/info
 Playlist.getPlaylistInfo = (req, res) => {
