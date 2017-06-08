@@ -12,9 +12,12 @@
   height: 152px;
   background-color: rgba(0, 0, 0, 0.75);
   color: rgb(230, 230, 230);
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
 .QueueMenu__topBar {
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   user-select: none;
   height: 28px;
   width: 100%;
@@ -55,6 +58,7 @@
   min-height: 108px;
   max-height: 108px;
   img {
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
     max-width: 70px;
     max-height: 70px;

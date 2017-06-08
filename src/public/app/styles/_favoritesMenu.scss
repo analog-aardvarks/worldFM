@@ -1,11 +1,22 @@
 .FavoritesMenu {
   z-index: 4;
   position: fixed;
-  top: 68px;
+  top: 73px;
   right: 0px;
   width: 350px;
   color: $mainWhite;
   background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.FavoritesMenu::before {
+  min-height: 8px;
+  content: '';
+  background-color: rgba(0, 0, 0, 0.75);
+  width: 3000px;
+  position: absolute;
+  top: -8px;
 }
 
 .FavoritesMenu__wrapper {
@@ -29,6 +40,7 @@
 }
 
 .FavoritesMenu__top {
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   user-select: none;
   min-height: 28px;
   width: 100%;
@@ -69,6 +81,7 @@
     max-width: 70px;
     max-height: 70px;
     cursor: pointer;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   }
   margin-bottom: 10px;
 }
@@ -137,6 +150,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 15px;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   span {
     margin-right: 15px;
   }
@@ -144,6 +158,7 @@
 
 /* The switch - the box around the slider */
 .switch {
+  // box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   position: relative;
   // display: inline-block;
   width: 32px;
@@ -155,6 +170,7 @@
 
 /* The slider */
 .slider {
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   position: absolute;
   cursor: pointer;
   top: 5px;

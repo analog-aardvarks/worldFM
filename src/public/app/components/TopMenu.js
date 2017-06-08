@@ -58,15 +58,24 @@ const TopMenu = ({
     else if (window.pageYOffset < height && showTopMenu === true) toggleTopMenu();
   }
 
+  /*
+  style={{
+    background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #1C1C1C)' : 'rgba(0, 0, 0, 0)',
+    width: windowWidth
+  }}
+  */
+
   return (
     <div
       className="TopMenu"
-      style={{
-        background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #1C1C1C)' : 'rgba(0, 0, 0, 0)',
-        width: windowWidth
-      }}
+
     >
-      <i
+
+      <div className="TopMenu__logo">
+        <img src="../../assets/worldfm4.svg" />
+      </div>
+
+      {/*<i
         className="Hamburger--icon TopMenu__icon fa fa-bars fa-2x fa-fw"
         onClick={toggleSideMenu}
       />
@@ -75,7 +84,7 @@ const TopMenu = ({
         href="/"
       >
         World.FM
-      </a>
+      </a>*/}
 
 
       <div className="TopMenu__content" style={{ width: windowWidth }}>
