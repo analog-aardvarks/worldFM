@@ -92,10 +92,10 @@ function showQueueMenu(state = false, action) {
   }
 }
 
-function showFavoritesMenu(state = true, action) {
+function showFavoritesMenu(state = false, action) {
   switch(action.type) {
     case 'SHOW_FAVORITES_MENU': return true;
-    case 'HIDE_FAVORITES_MENU': return true;
+    case 'HIDE_FAVORITES_MENU': return false;
     default: return state;
   }
 }
@@ -181,8 +181,16 @@ function spotifyPlayer(state = {
   mute: false,
   ellapsed: 0,
   interval: undefined,
+  shuffle: false,
+  repeat: false,
 }, action) {
   switch (action.type) {
+
+    case 'SET_SPOTIFY_REPEAT_TRUE': return { ...state, repeat: true };
+    case 'SET_SPOTIFY_REPEAT_FALSE': return { ...state, repeat: false };
+    case 'SET_SPOTIFY_SHUFFLE_TRUE': return { ...state, shuffle: true };
+    case 'SET_SPOTIFY_SHUFFLE_FALSE': return { ...state, shuffle: false };
+
     case 'SET_SPOTIFY_MODE': return { ...state, mode: action.mode };
     case 'SET_CURRENT_TRACK_IDX': return { ...state, currentTrackIdx: action.currentTrackIdx };
     case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
