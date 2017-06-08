@@ -4,6 +4,7 @@ import _ from 'underscore';
 import { setFavorites } from '../actions';
 
 const FavoritesMenu = ({
+  spotifyPlayer,
   showAvailableDevices,
   showFavoritesMenu,
   showPlayerMobileOptions,
@@ -15,6 +16,7 @@ const FavoritesMenu = ({
   addTrackToSpotifyQueue,
   handleExpandClick,
   sync,
+  setSpotifyModeHandler,
   helperFuncs }) => {
 
   const removeFavorite = (track) => {
@@ -51,7 +53,9 @@ const FavoritesMenu = ({
     .then(() => store.dispatch(setFavorites([])))
     .catch(err => console.log(err));
   }
-  // console.log(helperFuncs)
+
+  const isActive = (idx) => spotifyPlayer.mode === 'favs' && spotifyPlayer.currentTrackIdx === idx;
+
   return (
     <div
       className="FavoritesMenu"
@@ -74,10 +78,10 @@ const FavoritesMenu = ({
 
         <div className="FavoritesMenu__allSongs">
           {favorites.map((track, idx) => (
-          <div className="FavoritesMenu__indivdualSong" key={idx}>
+          <div className={`FavoritesMenu__indivdualSong ${isActive(idx) ? 'FavoritesMenu__indivdualSong--selected' : ''}`} key={idx}>
             <img src={track.track_album_image} />
             <div className="FavoritesMenu__indivdualSong__songInfo">
-              <span className="FavoritesMenu__songName">{track.track_name}</span>
+              <span className={`FavoritesMenu__songName ${isActive(idx) ? 'FavoritesMenu__songName--selected' : ''}`}>{track.track_name}</span>
               <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
             <div className="absclear">
@@ -86,7 +90,7 @@ const FavoritesMenu = ({
                   <i className="FavoritesMenu__expand fa fa-expand fa-fw" onClick={() => handleExpandClick(track, favorites)}/>
                   <i className="FavoritesMenu__close fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
                   <div className="FavoritesMenu__indivdualSong__play">
-                    <i className="fa fa-play fa-fw" onClick={() => helperFuncs.playExternalTrack(track)}/>
+                    <i className="fa fa-play fa-fw" onClick={() => helperFuncs.playExternalTrack(track, 'favs', idx)}/>
                     <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
                   </div>
                 </div>

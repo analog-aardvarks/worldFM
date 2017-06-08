@@ -36,6 +36,7 @@ const mapStateToProps = state => ({
   activeDevice: state.activeDevice,
   windowWidth: state.windowWidth,
   helperFuncs: state.helperFuncs,
+  favorites: state.favorites,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -115,48 +116,60 @@ class Player extends React.Component {
 
   goToNextTrack() {
     return new Promise((resolve, reject) => {
+      let mode = this.props.spotifyPlayer.mode;
+      let idx = this.props.spotifyPlayer.currentTrackIdx;
+      if (mode !== 'queue' && this.props.spotifyPlayer.queue.length > 0) {
+        mode = 'queue';
+        idx = queue.length - 1;
+      }
+      let currentPlaylist;
+      switch (mode) {
+        case 'queue':
+          currentPlaylist = this.props.spotifyPlayer.queue;
+          break;
+        case 'favs':
+          currentPlaylist = this.props.favorites;
+          break;
+        default: currentPlaylist = this.props.playlist;
+      }
+
       this.props.setSpotifyPlayerEllapsedHandler(-1000);
       this.props.clearSpotifyPlayerIntervalHandler();
       this.pauseTrack()
       .then(() => {
         this.props.pauseSpotifyPlayerHandler(true);
         this.props.setSpotifyPlayerEllapsedHandler(0);
-        let nextIdx = this.props.spotifyPlayer.currentTrackIdx;
-        let nextTrack;
+        let nextIdx = idx + 1;
+        if (nextIdx >= currentPlaylist.length) nextIdx = 0;
 
-        if(this.props.spotifyPlayer.mode === 'playlist') {
-          // no queue and no change in playlist!
-          if (this.props.spotifyPlayer.queue.length === 0) {
-            if(this.props.spotifyPlayer.currentTrack === this.props.playlist[this.props.spotifyPlayer.currentTrackIdx]) {
-              // playlist is the same
-              nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
-              nextTrack = this.props.playlist[nextIdx] || null;
-            } else {
-              // playlist changed
-              nextIdx = 0;
-              nextTrack = this.props.playlist[nextIdx] || null;
+        // repeat
+          // if repeat === true
+          // next idx === idx
+        // suffle
+          // if shuffle === true
+          // pic random index
+
+          if (mode === 'queue') {
+            if (currentPlaylist.length === 0 || idx === currentPlaylist.length - 1) {
+              nextIdx = null;
             }
-          } else {
-            // move to queue!
-            this.props.setSpotifyModeHandler('queue');
-            nextTrack = this.props.spotifyPlayer.queue[0];
           }
-        } else {
-          // remove from queue!
-          this.props.removeTrackFromSpotifyQueue(0);
-          if (this.props.spotifyPlayer.queue[0]) {
-            // next in queue!
-            nextTrack = this.props.spotifyPlayer.queue[0];
-          } else {
-            // back to playlist!
-            this.props.setSpotifyModeHandler('playlist');
-            nextIdx = 0;
-            nextTrack = null;
+
+          if (mode === 'playlist' &&
+          this.props.spotifyPlayer.currentTrack.track_id !== this.props.playlist[idx].track_id) {
+            nextIdx = null;
           }
-        }
-        this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
-        this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
-        if (nextTrack !== null) {
+
+          if(mode === 'favs') {
+            nextIdx = this.isCurrentTrackInFavs() ? nextIdx : null;
+          }
+
+          let nextTrack = currentPlaylist[nextIdx];
+
+        if (nextTrack !== undefined) {
+          this.props.setSpotifyModeHandler(mode);
+          this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+          this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
           this.playTrack(nextTrack)
           .then(() => {
             this.props.pauseSpotifyPlayerHandler(false);
@@ -165,12 +178,79 @@ class Player extends React.Component {
           })
           .catch(err => reject(err));
         } else {
-          resolve();
+          this.props.setSpotifyModeHandler('playlist');
+          this.props.setSpotifyPlayerCurrentTrackIdx(null);
+          this.props.setSpotifyPlayerCurrentTrackHandler(null);
         }
       })
       .catch(err => reject(err));
-    });
+    })
   }
+
+  isCurrentTrackInFavs() {
+    const currentId = this.props.spotifyPlayer.currentTrack.track_id;
+    const favsIds = this.props.favorites.map(t => t.track_id);
+    return favsIds.includes(currentId);
+  }
+  //
+  // goToNextTrack() {
+  //   return new Promise((resolve, reject) => {
+  //     this.props.setSpotifyPlayerEllapsedHandler(-1000);
+  //     this.props.clearSpotifyPlayerIntervalHandler();
+  //     this.pauseTrack()
+  //     .then(() => {
+  //       this.props.pauseSpotifyPlayerHandler(true);
+  //       this.props.setSpotifyPlayerEllapsedHandler(0);
+  //       let nextIdx = this.props.spotifyPlayer.currentTrackIdx;
+  //       let nextTrack;
+  //
+  //       if(this.props.spotifyPlayer.mode === 'playlist') {
+  //         // no queue and no change in playlist!
+  //         if (this.props.spotifyPlayer.queue.length === 0) {
+  //           if(this.props.spotifyPlayer.currentTrack === this.props.playlist[this.props.spotifyPlayer.currentTrackIdx]) {
+  //             // playlist is the same
+  //             nextIdx = this.props.spotifyPlayer.currentTrackIdx + 1;
+  //             nextTrack = this.props.playlist[nextIdx] || null;
+  //           } else {
+  //             // playlist changed
+  //             nextIdx = 0;
+  //             nextTrack = this.props.playlist[nextIdx] || null;
+  //           }
+  //         } else {
+  //           // move to queue!
+  //           this.props.setSpotifyModeHandler('queue');
+  //           nextTrack = this.props.spotifyPlayer.queue[0];
+  //         }
+  //       } else {
+  //         // remove from queue!
+  //         this.props.removeTrackFromSpotifyQueue(0);
+  //         if (this.props.spotifyPlayer.queue[0]) {
+  //           // next in queue!
+  //           nextTrack = this.props.spotifyPlayer.queue[0];
+  //         } else {
+  //           // back to playlist!
+  //           this.props.setSpotifyModeHandler('playlist');
+  //           nextIdx = 0;
+  //           nextTrack = null;
+  //         }
+  //       }
+  //       this.props.setSpotifyPlayerCurrentTrackIdx(nextIdx);
+  //       this.props.setSpotifyPlayerCurrentTrackHandler(nextTrack);
+  //       if (nextTrack !== null) {
+  //         this.playTrack(nextTrack)
+  //         .then(() => {
+  //           this.props.pauseSpotifyPlayerHandler(false);
+  //           this.startInterval();
+  //           resolve();
+  //         })
+  //         .catch(err => reject(err));
+  //       } else {
+  //         resolve();
+  //       }
+  //     })
+  //     .catch(err => reject(err));
+  //   });
+  // }
 
   stopTrack() {
     return new Promise((resolve, reject) => {
@@ -468,8 +548,13 @@ class Player extends React.Component {
     .catch(err => console.log(err));
   }
 
-  playExternalTrack(track) {
+  playExternalTrack(track, mode = undefined, idx = undefined) {
+    console.log(mode, idx)
     if (!this.props.spotifyPlayer.currentTrack) {
+      if (mode !== undefined) this.props.setSpotifyModeHandler(mode);
+      if (idx !== undefined) {
+        this.props.setSpotifyPlayerCurrentTrackIdx(idx);
+      }
       this.props.setSpotifyPlayerCurrentTrackHandler(track);
       this.playTrack(track)
       .then(() => {
@@ -484,6 +569,8 @@ class Player extends React.Component {
       .then(() => {
         this.props.pauseSpotifyPlayerHandler(true);
         this.props.setSpotifyPlayerEllapsedHandler(0);
+        if (mode !== undefined) this.props.setSpotifyModeHandler(mode);
+        if (idx !== undefined) this.props.setSpotifyPlayerCurrentTrackIdx(idx);
         this.props.setSpotifyPlayerCurrentTrackHandler(track);
         this.playTrack(track)
         .then(() => {
