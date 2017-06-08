@@ -51,21 +51,28 @@
   align-items: flex-end;
   display: flex;
   justify-content: space-between;
-  opacity: 0; //TODO
+  opacity: 0;
   position: absolute;
   z-index: 81;
   i {
-    opacity: 0.4;
+    opacity: 0.5;
+  }
+  i:hover {
+    opacity: 1;
+  }
+  i:active {
+    color: $spotifyGreen;
   }
 }
+
+.Lightbox__contentHover:hover {
+  opacity: 1;
+}
+
 .Lightbox__contentHoverButtons {
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
   padding: 20px;
   display: flex;
   justify-content: space-between;
-}
-
-.Lightbox__contentHover:hover {
-  opacity: 1;
 }
