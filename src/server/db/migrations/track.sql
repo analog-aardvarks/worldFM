@@ -7,7 +7,7 @@ CREATE TABLE track
   name        varchar(500)
     CHARACTER SET utf8
     COLLATE utf8_general_ci,
-  artist_id   varchar(255)
+  artist_id   varchar(255),
   artist_name varchar(500)
     CHARACTER SET utf8
     COLLATE utf8_general_ci,

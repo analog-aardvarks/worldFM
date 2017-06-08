@@ -1,9 +1,10 @@
 USE worldfmdb;
 
-DROP TABLE IF EXISTS playlist_tracks
+DROP TABLE IF EXISTS playlist_track;
+CREATE TABLE playlist_track
 (
-  playlist  varchar(255)
-  track     varchar(255)
+  playlist  varchar(255),
+  track     varchar(255),
 
   PRIMARY KEY (playlist, track)
 )
