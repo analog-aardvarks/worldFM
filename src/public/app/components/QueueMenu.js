@@ -17,7 +17,8 @@ const QueueMenu = ({
   spotifyPlayer,
   removeTrackFromQueue,
   removeAllFromQueue,
-  helperFuncs}) => {
+  helperFuncs,
+  handleExpandClick }) => {
 
   return (
 
@@ -49,6 +50,10 @@ const QueueMenu = ({
               <i
                 className="QueueMenu__close fa fa fa-times fa-1 fa-fw"
                 onClick={() => removeTrackFromQueue(idx)}
+              />
+              <i
+                className="QueueMenu__expand fa fa fa-expand fa-1 fa-fw"
+                onClick={() => handleExpandClick(track)}
               />
               <div className="QueueMenu__actions">
                 <i

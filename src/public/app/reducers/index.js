@@ -231,7 +231,7 @@ function showTopMenu(state = false, action) {
 
 function lightbox(state = { show: false, src: null, name: null, artist: null }, action) {
   switch (action.type) {
-    case 'SET_LIGHTBOX' return state;
+    case 'SET_LIGHTBOX': return state;
     case 'SHOW_LIGHTBOX':
       document.body.style.overflow='hidden'
       return {

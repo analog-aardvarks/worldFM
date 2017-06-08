@@ -227,6 +227,7 @@ class Menu extends React.Component {
           favorites={this.props.favorites}
           spotifyPlayer={this.props.spotifyPlayer}
           removeTrackFromQueue={this.removeTrackFromQueue}
+          handleExpandClick={this.props.handleExpandClick}
         />
         {this.props.showSideMenu ? <SideMenu
           // toggleAbout={this.toggleAbout}

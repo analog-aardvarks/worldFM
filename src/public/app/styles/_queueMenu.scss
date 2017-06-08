@@ -121,15 +121,23 @@
   opacity: 1;
 }
 
+.QueueMenu__expand,
 .QueueMenu__close {
   position: absolute;
   /* top: -25px; */
   /* right: 30px; */
   top: 0px;
   padding: 2.5px;
-  left: 0px;
+
   background-color: rgba(0,0,0,0.70);
   border-radius: 2.5px;
+}
+.QueueMenu__close {
+  left: 0px;
+}
+
+.QueueMenu__expand {
+  right: 0px;
 }
 
 .QueueMenu__close:hover {
