@@ -243,6 +243,7 @@ function lightbox(state = {}, action) {
       return state;
     case 'SHOW_LIGHTBOX':
       document.body.style.overflow = 'hidden';
+      // document.body.style.position = 'fixed';
       return {
         show: true,
         track: action.track,
