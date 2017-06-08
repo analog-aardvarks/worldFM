@@ -60,7 +60,7 @@ const mapDispatchToProps = dispatch => ({
   showQueueMenuEvent: () => dispatch({ type: 'SHOW_QUEUE_MENU' }),
   hideQueueMenuEvent: () => dispatch({ type: 'HIDE_QUEUE_MENU' }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
-  handlePicClick: track => dispatch(showLightbox(track)),
+  handlePicClick: (track, list) => dispatch(showLightbox(track, list)),
   setStateHelperFunc: (name, func) => dispatch({ type: 'SET_HELPER_FUNC', name, func}),
 
   //queue
@@ -527,7 +527,7 @@ class Player extends React.Component {
             alt="track_album_image"
             src={this.props.spotifyPlayer.currentTrack.track_album_image}
             onClick={() => {
-              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack);
+              this.props.handlePicClick(this.props.spotifyPlayer.currentTrack, this.props.spotifyPlayer.queue);
             }}
           />
           <div className="CurrentSongInfo">

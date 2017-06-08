@@ -53,7 +53,7 @@ const QueueMenu = ({
               />
               <i
                 className="QueueMenu__expand fa fa fa-expand fa-1 fa-fw"
-                onClick={() => handleExpandClick(track)}
+                onClick={() => handleExpandClick(track, spotifyPlayer.queue)}
               />
               <div className="QueueMenu__actions">
                 <i

@@ -83,7 +83,7 @@ const FavoritesMenu = ({
             <div className="absclear">
               <div className="FavoritesMenu__hover">
                 <div className="FavoritesMenu__indivdualSong__Lightbox">
-                  <i className="FavoritesMenu__expand fa fa-expand fa-fw" onClick={() => handleExpandClick(track)}/>
+                  <i className="FavoritesMenu__expand fa fa-expand fa-fw" onClick={() => handleExpandClick(track, favorites)}/>
                   <i className="FavoritesMenu__close fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
                   <div className="FavoritesMenu__indivdualSong__play">
                     <i className="fa fa-play fa-fw" onClick={() => helperFuncs.playExternalTrack(track)}/>
