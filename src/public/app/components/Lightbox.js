@@ -42,7 +42,7 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
           <div className="Lightbox__contentAlbumInfo">
             <span>{lightbox.track.track_name}</span>
             <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{artists}</span>
-            <span>Trending in: {countries}</span>
+            {countries && <span>Trending in: {countries}</span>}
           </div>
         </div>
       </div>

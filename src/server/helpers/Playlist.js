@@ -121,7 +121,7 @@ const removeAlbumDuplicates = (tracks) => {
 // API Endpoint
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const getGenrePlaylist = (genre) =>
+const getGenrePlaylist = genre =>
   new Promise((resolve, reject) => {
     knex('playlist')
     .select(Track.mapToTrackObj)
@@ -132,10 +132,6 @@ const getGenrePlaylist = (genre) =>
     .groupBy('track.id')
     .orderBy(knex.raw('Rand()'))
     .limit(limit)
-    .then(playlist => {
-      console.log(playlist)
-      return playlist
-    })
     .then(playlist => resolve(playlist))
     .catch(err => reject(err));
   });

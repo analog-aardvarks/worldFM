@@ -23,20 +23,20 @@ Track.mapToTrackObj = knex.raw(`track.id as track_id,
                 GROUP_CONCAT(DISTINCT track_country.country SEPARATOR ', ') as track_countries
                 `);
 
-Track.genreTrackObj = knex.raw(`
-                track.id as track_id,
-                track.name as track_name,
-                track.album_id as track_album_id,
-                track.album_image as track_album_image,
-                track.album_name as track_album_name,
-                track.album_type as track_album_type,
-                track.artist_id as track_artist_id,
-                track.artist_name as track_artist_name,
-                track.length as track_length,
-                track.popularity as track_popularity,
-                track.position as track_position,
-                track.preview_url as track_preview_url
-                `);
+// Track.genreTrackObj = knex.raw(`
+//                 track.id as track_id,
+//                 track.name as track_name,
+//                 track.album_id as track_album_id,
+//                 track.album_image as track_album_image,
+//                 track.album_name as track_album_name,
+//                 track.album_type as track_album_type,
+//                 track.artist_id as track_artist_id,
+//                 track.artist_name as track_artist_name,
+//                 track.length as track_length,
+//                 track.popularity as track_popularity,
+//                 track.position as track_position,
+//                 track.preview_url as track_preview_url
+//                 `);
 
 
 // GET /track
