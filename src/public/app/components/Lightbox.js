@@ -12,17 +12,19 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
+  const artists = JSON.parse(lightbox.tr)
+
   let size = 640;
 
   if (windowWidth < 900 || windowHeight < 900) {
     size = Math.min(windowWidth, windowHeight - 120) * 0.8;
   }
-  
+
   return (
     lightbox.show ? (
       <div
-      className="Lightbox"
-      onClick={hideLightbox}
+        className="Lightbox"
+        onClick={hideLightbox}
       >
         <div className="Lightbox__content">
           <img
@@ -41,6 +43,6 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
       </div>
     ) : null
   );
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Lightbox);
