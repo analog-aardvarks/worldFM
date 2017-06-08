@@ -77,7 +77,7 @@ const FavoritesMenu = ({
           <div className="FavoritesMenu__indivdualSong" key={idx}>
             <img src={track.track_album_image} />
             <div className="FavoritesMenu__indivdualSong__songInfo">
-              <span className="FavoritesMenu__SongName">{track.track_name}</span>
+              <span className="FavoritesMenu__songName">{track.track_name}</span>
               <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
             <div className="absclear">

@@ -55,6 +55,7 @@
   min-height: 108px;
   max-height: 108px;
   img {
+    box-sizing: border-box;
     max-width: 70px;
     max-height: 70px;
   }
@@ -73,10 +74,14 @@
   }
 }
 
-.QueueMenu__indivdualSong--selected {
+.QueueMenu__indivdualSong--selected,
+.QueueMenu__indivdualSong:hover {
   background-color: $bgGreyMedium;
   img {
     border: 2px solid $spotifyGreen;
+  }
+  .QueueMenu__songName {
+    color: $spotifyGreen;
   }
 }
 

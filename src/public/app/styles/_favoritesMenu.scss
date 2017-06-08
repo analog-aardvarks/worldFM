@@ -64,6 +64,7 @@
   align-items: center;
   justify-content: flex-start;
   img {
+    box-sizing: border-box;
     margin-left: 15px;
     max-width: 70px;
     max-height: 70px;
@@ -100,8 +101,11 @@
   white-space: nowrap;
 }
 
-.FavoritesMenu__SongArtist {
-  font-family: 'Permanent Marker', cursive;
+.FavoritesMenu__songName {
+  // font-family: 'Permanent Marker', cursive;
+  // background-color: red;
+  // font-weight: bold;
+  font-weight: bold;
 }
 
 .FavoritesMenu__indivdualSong__actions {
@@ -291,4 +295,22 @@ align-items: center;
 .FavoritesMenu__close:hover,
 .FavoritesMenu__expand:hover {
   background-color: rgba(0,0,0,0.93);
+}
+
+/* selected */
+
+.FavoritesMenu__indivdualSong--selected,
+.FavoritesMenu__indivdualSong:hover {
+  background-color: $bgGreyMedium;
+  img {
+    border: 2px solid $spotifyGreen;
+  }
+  .FavoritesMenu__songName {
+    color: $spotifyGreen;
+  }
+}
+
+.FavoritesMenu__songName--selected {
+// .FavoritesMenu__songName:hover {
+  color: $spotifyGreen;
 }
