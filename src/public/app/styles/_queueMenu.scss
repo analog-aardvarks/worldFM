@@ -140,7 +140,8 @@
   right: 0px;
 }
 
-.QueueMenu__close:hover {
+.QueueMenu__close:hover,
+.QueueMenu__expand:hover {
   background-color: rgba(0,0,0,0.93);
 }
 
