@@ -18,7 +18,10 @@ const QueueMenu = ({
   removeTrackFromQueue,
   removeAllFromQueue,
   helperFuncs,
+  setSpotifyModeHandler,
   handleExpandClick }) => {
+
+  const isActive = (idx) => spotifyPlayer.mode === 'queue' && spotifyPlayer.currentTrackIdx === idx;
 
   return (
 
@@ -35,12 +38,15 @@ const QueueMenu = ({
 
       <div className="QueueMenu__songList">
       {spotifyPlayer.queue.map((track, idx) => (
-      <div className="QueueMenu__indivdualSong" key={idx}>
+      <div
+        className={`QueueMenu__indivdualSong ${isActive(idx) ? 'QueueMenu__indivdualSong--selected' : ''}`}
+        key={idx}
+      >
 
         <img src={track.track_album_image} />
 
         <div className="QueueMenu__indivdualSong__songInfo">
-          <span className="QueueMenu__songName">{track.track_name}</span>
+          <span className={`QueueMenu__songName ${isActive(idx) ? 'QueueMenu__songName--selected' : ''}`}>{track.track_name}</span>
           <span className="QueueMenu__songArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
         </div>
 
@@ -58,7 +64,7 @@ const QueueMenu = ({
               <div className="QueueMenu__actions">
                 <i
                   className="fa fa fa-play fa-1 fa-fw"
-                  onClick={() => helperFuncs.playExternalTrack(track)}
+                  onClick={() => helperFuncs.playExternalTrack(track, 'queue', idx)}
                 />
                 <i
                   className="fa fa fa-heart fa-1 fa-fw"

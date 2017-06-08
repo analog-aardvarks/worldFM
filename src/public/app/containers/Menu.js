@@ -6,7 +6,8 @@ import { setPlaylist,
   closeSongMenu,
   removeTrackFromSpotifyQueue,
   addTrackToSpotifyQueue,
-  showLightbox} from '../actions';
+  showLightbox,
+  setSpotifyPlayerCurrentTrackIdx } from '../actions';
 import availableCountries from '../constants/availableCountries';
 import TopMenu from '../components/TopMenu';
 import CountryMenu from '../components/CountryMenu';
@@ -70,6 +71,8 @@ const mapDispatchToProps = dispatch => ({
   setSpotifySyncHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
   handleExpandClick: (track, favorites) => dispatch(showLightbox(track, favorites)),
+  setSpotifyModeHandler: mode => dispatch({ type: 'SET_SPOTIFY_MODE', mode }),
+  setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
 });
 
 class Menu extends React.Component {
@@ -189,8 +192,17 @@ class Menu extends React.Component {
     if (!this.props.showAbout) this.props.showAboutEvent();
   }
 
-  removeTrackFromQueue(track) {
-    this.props.removeTrackFromSpotifyQueue(track);
+  removeTrackFromQueue(idx) {
+    this.props.removeTrackFromSpotifyQueue(idx);
+    const currentIdx = this.props.spotifyPlayer.currentTrackIdx;
+    if(this.props.spotifyPlayer.mode === 'queue' && currentIdx !== null) {
+      // console.log(this.props.spotifyPlayer.currentTrackIdx, idx)
+      if (currentIdx === idx) {
+        this.props.setSpotifyPlayerCurrentTrackIdx(null);
+      } else if (currentIdx > idx){
+        this.props.setSpotifyPlayerCurrentTrackIdx(currentIdx - 1);
+      }
+    }
   }
 
   toggleTopMenu() {
@@ -215,6 +227,7 @@ class Menu extends React.Component {
         />
 
         <FavoritesMenu
+          spotifyPlayer={this.props.spotifyPlayer}
           showFavoritesMenu={this.props.showFavoritesMenu}
           favorites={this.props.favorites}
           showQueueMenu={this.props.showQueueMenu}
@@ -227,7 +240,6 @@ class Menu extends React.Component {
           addTrackToSpotifyQueue={this.props.addTrackToSpotifyQueue}
           handleExpandClick={this.handleExpandClick}
           helperFuncs={this.props.helperFuncs}
-
         />
         <QueueMenu
           toggleQueueMenu={this.toggleQueueMenu}
@@ -236,15 +248,6 @@ class Menu extends React.Component {
           removeTrackFromQueue={this.removeTrackFromQueue}
           handleExpandClick={this.props.handleExpandClick}
         />
-        {this.props.showSideMenu ? <SideMenu
-          // toggleAbout={this.toggleAbout}
-          // toggleCountryMenu={this.toggleCountryMenu}
-          // toggleSpotifyPlaylist={this.toggleSpotifyPlaylist}
-          // toggleQueueMenu={this.toggleQueueMenu}
-          showQueueMenu={this.props.showQueueMenu}
-          toggleFavoritesMenu={this.toggleFavoritesMenu}
-          windowHeight={this.props.windowHeight}
-        /> : null}
       </div>
     );
   }

@@ -4,6 +4,7 @@ import _ from 'underscore';
 import { setFavorites } from '../actions';
 
 const FavoritesMenu = ({
+  spotifyPlayer,
   showAvailableDevices,
   showFavoritesMenu,
   showPlayerMobileOptions,
@@ -15,6 +16,7 @@ const FavoritesMenu = ({
   addTrackToSpotifyQueue,
   handleExpandClick,
   sync,
+  setSpotifyModeHandler,
   helperFuncs }) => {
 
   const removeFavorite = (track) => {
@@ -51,19 +53,22 @@ const FavoritesMenu = ({
     .then(() => store.dispatch(setFavorites([])))
     .catch(err => console.log(err));
   }
-  // console.log(helperFuncs)
+
+  const isActive = (idx) => spotifyPlayer.mode === 'favs' && spotifyPlayer.currentTrackIdx === idx;
+
   return (
     <div
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu || showAvailableDevices || showPlayerMobileOptions ? windowHeight - 277 - 16: windowHeight - 133,
+        height: showQueueMenu || showAvailableDevices || showPlayerMobileOptions ? windowHeight - 277 - 16 - 8: windowHeight - 133 - 8,
       }}>
       <div className="FavoritesMenu__wrapper">
         <div className="FavoritesMenu__top">
           <i
             className="fa fa-trash fa-fw"
             onClick={removeAllFavorites}
+            data-tip="Remove All Favorites"
             />
           <span>Favorites</span>
           <i
@@ -74,20 +79,32 @@ const FavoritesMenu = ({
 
         <div className="FavoritesMenu__allSongs">
           {favorites.map((track, idx) => (
-          <div className="FavoritesMenu__indivdualSong" key={idx}>
+          <div className={`FavoritesMenu__indivdualSong ${isActive(idx) ? 'FavoritesMenu__indivdualSong--selected' : ''}`} key={idx}>
             <img src={track.track_album_image} />
             <div className="FavoritesMenu__indivdualSong__songInfo">
-              <span className="FavoritesMenu__songName">{track.track_name}</span>
+              <span className={`FavoritesMenu__songName ${isActive(idx) ? 'FavoritesMenu__songName--selected' : ''}`}>{track.track_name}</span>
               <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
             <div className="absclear">
               <div className="FavoritesMenu__hover">
                 <div className="FavoritesMenu__indivdualSong__Lightbox">
-                  <i className="FavoritesMenu__expand fa fa-expand fa-fw" onClick={() => handleExpandClick(track, favorites)}/>
-                  <i className="FavoritesMenu__close fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+                  <i className="FavoritesMenu__expand fa fa-expand fa-fw"
+                    onClick={() => handleExpandClick(track, favorites)}
+                    data-tip="View Album Art"
+                  />
+                  <i className="FavoritesMenu__close fa fa-times fa-fw"
+                    onClick={() => removeFavorite(track)}
+                    data-tip="Remove from Favorites"
+                  />
                   <div className="FavoritesMenu__indivdualSong__play">
-                    <i className="fa fa-play fa-fw" onClick={() => helperFuncs.playExternalTrack(track)}/>
-                    <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
+                    <i className="fa fa-play fa-fw"
+                      onClick={() => helperFuncs.playExternalTrack(track, 'favs', idx)}
+                      data-tip="Play"
+                    />
+                    <i className="fa fa-plus fa-fw"
+                      onClick={() => addTrackToSpotifyQueue(track)}
+                      data-tip="Add to Queue"
+                    />
                   </div>
                 </div>
               </div>
@@ -110,7 +127,7 @@ const FavoritesMenu = ({
                   type="checkbox"
                   onChange={toggleSync}/>
                 }
-                <div className="slider round"/>
+                <div className="slider round" data-tip="Save your favorites to a custom Spotify playlist"/>
               </label>
             </div>
           </div>

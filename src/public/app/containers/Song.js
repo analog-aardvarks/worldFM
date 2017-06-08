@@ -25,6 +25,7 @@ const mapDispatchToProps = dispatch => ({
   togglePreviewHandler: src => dispatch({ type: 'TOGGLE_PLAY', src }),
   setSpotifyPlayerCurrentTrackIdx: idx => dispatch(setSpotifyPlayerCurrentTrackIdx(idx)),
   setStateHelperFunc: (name, func) => dispatch({ type: 'SET_HELPER_FUNC', name, func}),
+  setSpotifyModeHandler: mode => dispatch({ type: 'SET_SPOTIFY_MODE', mode }),
 });
 
 class Song extends React.Component {
@@ -126,6 +127,7 @@ class Song extends React.Component {
     if (this.props.auth) {
       if (this.props.spotifyPlayer.currentTrack === null ||
           this.props.spotifyPlayer.currentTrack.track_id !== this.props.track.track_id) {
+        this.props.setSpotifyModeHandler('playlist');
         this.props.setSpotifyPlayerCurrentTrackIdx(this.props.ranking - 1);
         this.props.setSpotifyPlayerCurrentTrackHandler(this.props.track);
         this.playTrack(this.props.track)
