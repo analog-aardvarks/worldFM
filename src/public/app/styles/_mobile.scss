@@ -1,35 +1,10 @@
-@media (max-width: 580px) {
-  //Top Menu
-  .FavoritesMenu {
-    width: 100%;
-  }
-  .Menu--logo {
-    display: none;
-  }
-  .TopMenu {
-    justify-content: center;
-  }
-
+@media (max-width: 800px)  {
   //Player
-  .CurrentSongInfo {
-    display: none;
-  }
-  // .Player__volume {
-  //   display: none;
-  // }
-
-  //Side Menu
-  // .Hamburger--icon {
-  //   display: block;
-  // }
-  // .SideMenu {
-  //   display: flex;
-  // }
-}
-
-@media (max-width: 765px)  {
   .Player__extraButtons {
     display: none;
+  }
+  .Player__extraButtonsMobile {
+    display: flex;
   }
   .Player__extraButtonsMobileToggle {
     display: block;
@@ -38,7 +13,83 @@
     position: fixed;
     opacity: 0.6;
   }
-  .Player__extraButtonsMobile {
+  //Top Menu
+  .TopMenu__dropdownOptions {
+    margin-left: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  //Favorites Menu
+  .FavoritesMenu {
+    width: 100%;
+  }
+  //Player
+  .CurrentSongInfo {
+    display: none;
+  }
+  .Player__extraButtonsMobileContent {
+    margin-top: 25px;
+    margin-right: 15px;
+    margin-left: 8px;
+  }
+  //Top Menu
+  .Menu--logo {
+    display: none;
+  }
+  .TopMenu {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  .TopMenu__content {
     display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+  }
+  .TopMenu__icon {
+    margin-left: 0px;
+  }
+  .TopMenu__dropdownOptions {
+    margin-left: 0px;
+  }
+  .TopMenu--CountryDropdown,
+  .TopMenu--GenreDropdown {
+    min-width: 170px;
+    max-width: 170px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .Select-menu-outer {
+    width: 170px;
+  }
+}
+
+@media (max-width: 400px) {
+  // Player
+  .Player__extraButtonsMobileContent {
+    font-size: 13px;
+  }
+  .Player__volume {
+    margin-right: 2px;
+  }
+}
+
+@media (max-width: 325px) {
+  //Player
+  .Player__controls {
+    width: 175px;
+  }
+  .Player__extraButtonsMobileContent {
+    font-size: 12px;
+  }
+  // Top Menu
+  .TopMenu--CountryDropdown,
+  .TopMenu--GenreDropdown {
+    min-width: 130px;
+    max-width: 130px;
+  }
+  .Select-menu-outer {
+    width: 130px;
   }
 }

@@ -211,6 +211,7 @@ class Menu extends React.Component {
           toggleSideMenu={this.toggleSideMenu}
           toggleUserMenu={this.toggleUserMenu}
           showFavoritesMenu={this.props.showFavoritesMenu}
+          windowWidth={this.props.windowWidth}
         />
 
         <FavoritesMenu
