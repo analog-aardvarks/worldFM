@@ -77,26 +77,18 @@ const FavoritesMenu = ({
           <div className="FavoritesMenu__indivdualSong" key={idx}>
             <img src={track.track_album_image} />
             <div className="FavoritesMenu__indivdualSong__songInfo">
-              <span className="FavoritesMenu__SongName">{track.track_name}</span>
+              <span className="FavoritesMenu__songName">{track.track_name}</span>
               <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
             <div className="absclear">
               <div className="FavoritesMenu__hover">
-                <div
-                  className="FavoritesMenu__indivdualSong__Lightbox"
-                  onClick={() => handleExpandClick(track)}
-                >
-                </div>
-
-                <div className="FavoritesMenu__indivdualSong__play">
-                  <i className="fa fa-play fa-fw"
-                    onClick={() => helperFuncs.playExternalTrack(track)}
-                    style={{ marginBottom: '5px' }}/>
-                  <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
-                </div>
-
-                <div className="FavoritesMenu__indivdualSong__actions">
-                  <i className="fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+                <div className="FavoritesMenu__indivdualSong__Lightbox">
+                  <i className="FavoritesMenu__expand fa fa-expand fa-fw" onClick={() => handleExpandClick(track)}/>
+                  <i className="FavoritesMenu__close fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+                  <div className="FavoritesMenu__indivdualSong__play">
+                    <i className="fa fa-play fa-fw" onClick={() => helperFuncs.playExternalTrack(track)}/>
+                    <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
+                  </div>
                 </div>
               </div>
             </div>
