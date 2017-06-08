@@ -2,7 +2,7 @@ const knex = require('../db/db');
 const request = require('request-promise-native');
 const _ = require('underscore');
 const User = require('./User');
-const trackObject = require('./Track').sqlToJs;
+const Track = require('./Track');
 
 // Set length of playlist
 const limit = 100;
@@ -122,13 +122,15 @@ const getCountryPlaylist = country =>
     } else {
       // Get songs associated with querried country
       // Rename variables to fit front end
-      knex('track')
-      .select(trackObject)
-      .join('playlist_track', 'playlist_track.track', '=', 'track.id')
-      .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
-      .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
-      .join('track_country', 'track_country.track', '=', 'track.id')
-      .where('playlist_country.country', country)
+      // knex('track')
+      // .select(trackObject)
+      // .join('playlist_track', 'playlist_track.track', '=', 'track.id')
+      // .join('playlist', 'playlist.id', '=', 'playlist_track.playlist')
+      // .join('playlist_country', 'playlist_country.playlist', '=', 'playlist.id')
+      // .join('track_country', 'track_country.track', '=', 'track.id')
+      // .where('playlist_country.country', country)
+      // .groupBy('track.id')
+      Track.getTracksWhere('playlist_country.country', country)
       .orderBy(knex.raw('Rand()'))
       .limit(100)
       .then(tracks => resolve(tracks))

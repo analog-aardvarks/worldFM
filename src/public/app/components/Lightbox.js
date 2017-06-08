@@ -12,7 +12,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
-  const artists = JSON.parse(lightbox.tr)
+  let artists;
+  let countries;
+  if (lightbox.track) {
+    artists = JSON.parse(lightbox.track.track_artist_name).join(', ');
+    countries = lightbox.track.track_countries;
+  }
 
   let size = 640;
 
@@ -29,15 +34,15 @@ const Lightbox = ({ lightbox, hideLightbox, windowWidth, windowHeight }) => {
         <div className="Lightbox__content">
           <img
             className="Lightbox__contentFullAlbumArt"
-            src={lightbox.src}
+            src={lightbox.track.track_album_image}
             alt="Album Art"
             width={size}
             height={size}
           />
           <div className="Lightbox__contentAlbumInfo">
-            <span>{lightbox.name}</span>
-            <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{lightbox.artist.join(', ')}</span>
-            <span>Trending in </span>
+            <span>{lightbox.track.track_name}</span>
+            <span style={{ fontFamily: "'Permanent Marker', cursive" }}>{artists}</span>
+            <span>Trending in: {countries}</span>
           </div>
         </div>
       </div>

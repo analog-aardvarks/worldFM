@@ -44,6 +44,7 @@ User.getFavoriteTracks = user =>
     knex('track')
     .select(trackObject)
     .join('favorites', 'track.id', '=', 'favorites.track')
+    .join('track_country', 'track.id', '=', 'track_country.track')
     .where('favorites.user', user.id)
     .orderBy('created_at', 'desc')
     .then(favs => resolve(favs))
