@@ -47,7 +47,8 @@ User.getFavoriteTracks = user =>
     .leftJoin('track_country', 'track.id', '=', 'track_country.track')
     .where('favorites.user', user.id)
     .groupBy('track.id')
-    .orderBy('created_at', 'desc')
+    .orderBy('favorites.created_at', 'desc')
+    .then((favs) => { console.log('favs: ', favs); return favs; })
     .then(favs => resolve(favs))
     .catch(err => reject(err));
   });
