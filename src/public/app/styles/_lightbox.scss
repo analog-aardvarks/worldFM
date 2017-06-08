@@ -23,6 +23,7 @@
 .Lightbox__contentFullAlbumArt {
   max-width: 640px;
   max-height: 640px;
+  z-index: 1000;
 }
 
 .Lightbox__contentAlbumInfo {

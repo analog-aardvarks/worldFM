@@ -62,8 +62,8 @@ export function setSpotifyPlayerInterval(interval) {
   return { type: 'SET_SPOTIFY_PLAYER_INTERVAL', interval };
 }
 
-export function showLightbox(track) {
-  return { type: 'SHOW_LIGHTBOX', track };
+export function showLightbox(track, list) {
+  return { type: 'SHOW_LIGHTBOX', track, list };
 }
 
 export function setSpotifyPlayerCurrentTrack(track) {

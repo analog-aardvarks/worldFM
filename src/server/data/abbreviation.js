@@ -23,6 +23,16 @@ const abbreviation = {
   Greece: 'GR',
   Paraguay: 'PY',
   Malasya: 'MY',
+  Iceland: 'IS',
+  Netherlands: 'NL',
+  Ecuador: 'EC',
+  Turkey: 'TR',
+  Belgium: 'BE',
+  Peru: 'PE',
+  Indonesia: 'ID',
+  Poland: 'PL',
+  Bolivia: 'BO',
+  Finland: 'FI',
 };
 
 module.exports = abbreviation;

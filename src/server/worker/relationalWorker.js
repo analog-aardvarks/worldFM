@@ -4,11 +4,13 @@ const playlistData = require('./playlistData.js');
 const playlistIndexData = require('./playlistIndexData.js');
 const playlistExceptions = require('./playlistExceptions.js');
 const config = require('../../../config');
+const availableCountries = require('../data/availableCountries');
+const abbreviation = require('../data/abbreviation');
 
 const TRACK_DEBUG = true;
 const startingTime = Date.now();
 const owner = 'thesoundsofspotify';
-const maxTracksPerPlaylist = 200;
+const maxTracksPerPlaylist = 2000;
 
 const getAuth = () =>
   new Promise((resolve, reject) => {
@@ -28,15 +30,16 @@ const getAuth = () =>
 
 const savePlaylistInDatabase = playlist =>
   new Promise((resolve, reject) => {
-    knex('playliststest')
-    .where('playlist_id', playlist.playlist_id)
+    console.log('PLAYLIST: ', playlist)
+    knex('playlist')
+    .where('id', playlist.id)
     .del()
     .then(() => {
-      knex('playliststest')
+      knex('playlist')
       .insert(playlist)
       .then(() => {
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-        console.log(`[${Date.now() - startingTime}ms] SAVED PLAYLIST ${playlist.playlist_name}`);
+        console.log(`[${Date.now() - startingTime}ms] SAVED PLAYLIST ${playlist.name}`);
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
         resolve();
       })
@@ -45,16 +48,53 @@ const savePlaylistInDatabase = playlist =>
     .catch(err => reject(err));
   });
 
+const mapTracksToPlaylist = (tracks, playlist) => {
+  knex('playlist_track').where('playlist', playlist.id).del()
+  .then(() => {
+    tracks.forEach((track) => {
+      knex('playlist_track')
+      .insert({ track: track.id, playlist: playlist.id })
+      .catch(err => console.log(err));
+    });
+  });
+};
+
+const mapPlaylistToCountry = (tracks, playlist) => {
+  let country;
+  for (let i = 0; i < availableCountries.length; i++) {
+    country = availableCountries[i];
+    // Start checking playlist names from several characters in
+    // to avoid tagging CITY as Italy and COUNTRY as Colombia
+    if (playlist.name.substring(6).includes(country)
+      || playlist.name.substring(6).includes(abbreviation[country])) {
+      // Patch for India/Indiana
+      if (country === 'India' && playlist.name.includes('Indiana')) continue;
+      let addCount = 0;
+      let dupeCount = 0;
+      tracks.forEach((t) => {
+        knex('track_country')
+        .insert({ track: t.id, country })
+        .then(() => addCount++)
+        .catch(() => dupeCount++);
+      });
+      knex('playlist_country').insert({ playlist: playlist.id, country })
+      .then(() => console.log(`${playlist.name} mapped to ${country}.`))
+      .catch(err => console.log(err));
+      return;
+    }
+  }
+};
+
 const saveTrackInDatabase = track =>
   new Promise((resolve, reject) => {
-    knex('trackstest')
-    .where('track_id', track.track_id)
+    knex('track')
+    .where('id', track.id)
     .then((res) => {
       if (res.length === 0) {
-        knex('trackstest')
+        knex('track')
         .insert(track)
         .then(() => {
-          if (TRACK_DEBUG) console.log(`[${Date.now() - startingTime}ms] SAVED TRACK ${track.track_name}`);
+          if (TRACK_DEBUG) console.log(`[${Date.now() - startingTime}ms] SAVED TRACK ${track.name}`);
           resolve();
         })
         .catch(err => reject(err));
@@ -83,18 +123,18 @@ const getPlaylistTrackData = (id, offset, limit) =>
           if (t === null) return null;
           else if (!t.available_markets.includes('US')) return null;
           return {
-            track_id: t.id,
-            track_artist_id: JSON.stringify(t.artists.map(artist => artist.id)),
-            track_artist_name: JSON.stringify(t.artists.map(artist => artist.name)),
-            track_name: t.name,
-            track_preview_url: t.preview_url !== undefined ? t.preview_url : null,
-            track_album_id: t.album.id,
-            track_album_name: t.album.name,
-            track_album_type: t.album.type,
-            track_album_image: t.album.images[0] !== undefined ? t.album.images[0].url : null,
-            track_popularity: t.popularity,
-            track_length: t.duration_ms,
-            track_position: t.track_number,
+            id: t.id,
+            artist_id: JSON.stringify(t.artists.map(artist => artist.id)),
+            artist_name: JSON.stringify(t.artists.map(artist => artist.name)),
+            name: t.name,
+            preview_url: t.preview_url !== undefined ? t.preview_url : null,
+            album_id: t.album.id,
+            album_name: t.album.name,
+            album_type: t.album.type,
+            album_image: t.album.images[0] !== undefined ? t.album.images[0].url : null,
+            popularity: t.popularity,
+            length: t.duration_ms,
+            position: t.track_number,
           };
         });
       })
@@ -130,16 +170,17 @@ const getAndSavePlaylist = playlist =>
   new Promise((resolve, reject) => {
     getAllPlaylistTrackData(playlist)
     .then(res => res.splice(0, maxTracksPerPlaylist))
-    .then((data) => {
+    .then((tracks) => {
       savePlaylistInDatabase({
-        playlist_id: playlist.id,
-        playlist_name: playlist.name,
-        playlist_tracks: JSON.stringify(data.map(t => t.track_id)),
-        playlist_tracks_total: data.length,
+        id: playlist.id,
+        name: playlist.name,
+        // tracks: JSON.stringify(tracks.map(t => t.track_id)),
       })
       .then(() => {
+        mapTracksToPlaylist(tracks, playlist);
+        mapPlaylistToCountry(tracks, playlist);
         const saveTrackInDatabasePromises = [];
-        data.forEach(t => saveTrackInDatabasePromises.push(saveTrackInDatabaseGenerator(t)));
+        tracks.forEach(t => saveTrackInDatabasePromises.push(saveTrackInDatabaseGenerator(t)));
         saveTrackInDatabasePromises.push(resolve);
         saveTrackInDatabasePromises.reduce((acc, fn) => acc.then(fn), Promise.resolve());
       })
@@ -154,7 +195,13 @@ const getMultiplePlaylists = playlistBatch =>
   new Promise((resolve) => {
     const getAndSavePlaylistPromises = [];
     playlistBatch.forEach((playlist) => {
-      if (!playlistExceptions.includes(playlist.name)) {
+      let save = true;
+      playlistExceptions.forEach((exception) => {
+        if (playlist.name.includes(exception)) {
+          save = false;
+        }
+      });
+      if (save) {
         getAndSavePlaylistPromises.push(getAndSavePlaylistGenerator(playlist));
       }
     });
@@ -192,10 +239,12 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(0, 10))
+getMultiplePlaylists(playlistData.splice(3800, 200))
 .then(() => {
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 })
 .catch(err => console.log(err));
+
+// console.log(playlistData.length)

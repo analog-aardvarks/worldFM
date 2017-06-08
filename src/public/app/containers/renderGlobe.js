@@ -133,58 +133,60 @@ const renderGlobe = (element, startCoordinates) => {
     const velocity = [0.015, -0];
     let isSpinning = true;
 
-    // function spinningGlobe() {
-    //   const dt = Date.now() - time;
-    //
-    //   // console.log('tick')
-    //
-    //   // get the new position
-    //   projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
-    //
-    //   // update land positions
-    //   svg.selectAll('path.land').attr('d', path);
-    // }
-    //
-    // globe.startSpin = () => {
-    //   time = Date.now();
-    //   rotation = projection.rotate();
-    //   interval.current = setInterval(spinningGlobe, 10);
-    // }
-    // globe.stopSpin = () => {
-    //   clearInterval(interval.current);
-    // }
-    // // Rotate!
-    // svg.on('mouseleave', globe.startSpin)
-    //   .on('mouseover', globe.stopSpin);
-    // globe.startSpin();
+    function spinningGlobe() {
+      const dt = Date.now() - time;
+
+      // console.log('tick')
+
+      // get the new position
+      projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+
+      // update land positions
+      svg.selectAll('path.land').attr('d', path);
+    }
+
+    globe.startSpin = () => {
+      if (window.innerWidth > 580) {
+        time = Date.now();
+        rotation = projection.rotate();
+        interval.current = setInterval(spinningGlobe, 30);
+      }
+    }
+    globe.stopSpin = () => {
+      clearInterval(interval.current);
+    }
+    // Rotate!
+    svg.on('mouseleave', globe.startSpin)
+      .on('mouseover', globe.stopSpin);
+    globe.startSpin();
 
     // //////////////////
     // d3.time implementation
     // //////////////////
 
-    function spinningGlobe(t) {
-      if (isSpinning) {
-        // get the new position
-        projection.rotate([rotation[0] + (velocity[0] * t), rotation[1] + (velocity[1] * t)]);
-
-        // update land positions
-        svg.selectAll('path.land').attr('d', path);
-      }
-    }
-
-    globe.startSpin = () => {
-      rotation = projection.rotate();
-      d3.timer(spinningGlobe);
-      isSpinning = true;
-    };
-    globe.stopSpin = () => {
-      // timer.stop();
-      isSpinning = false;
-    };
-    // Rotate!
-    svg.on('mouseleave', globe.startSpin)
-      .on('mouseover', globe.stopSpin);
-    globe.startSpin();
+    // function spinningGlobe(t) {
+    //   if (isSpinning) {
+    //     // get the new position
+    //     projection.rotate([rotation[0] + (velocity[0] * t), rotation[1] + (velocity[1] * t)]);
+    //
+    //     // update land positions
+    //     svg.selectAll('path.land').attr('d', path);
+    //   }
+    // }
+    //
+    // globe.startSpin = () => {
+    //   rotation = projection.rotate();
+    //   d3.timer(spinningGlobe);
+    //   isSpinning = true;
+    // };
+    // globe.stopSpin = () => {
+    //   // timer.stop();
+    //   isSpinning = false;
+    // };
+    // // Rotate!
+    // svg.on('mouseleave', globe.startSpin)
+    //   .on('mouseover', globe.stopSpin);
+    // globe.startSpin();
 
     // Zoom!
     // const scale0 = (width - 1) / 2 / Math.PI;

@@ -69,7 +69,7 @@ const mapDispatchToProps = dispatch => ({
   hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }),
   setSpotifySyncHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
-  handleExpandClick: track => dispatch(showLightbox(track)),
+  handleExpandClick: (track, favorites) => dispatch(showLightbox(track, favorites)),
 });
 
 class Menu extends React.Component {
@@ -88,6 +88,7 @@ class Menu extends React.Component {
     this.toggleAbout = this.toggleAbout.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
+    this.handleExpandClick = (track, favorites) => props.handleExpandClick(track, favorites).bind(this);
   }
 
   componentDidMount() {
@@ -127,13 +128,18 @@ class Menu extends React.Component {
       `playlist?genre=${this.props.currentGenre}`;
     fetch(url)
     .then(res => res.json())
-    .then((res) => this.props.setPlaylist(res))
+    .then((res) => {
+      console.log('TRACKS FROM SERVER: ', res)
+      this.props.setPlaylist(res)
+    })
     .then(() => {
-      const sweetScroll = new SweetScroll();
-      console.log('scrolling down')
-      const height = this.props.windowHeight - 62;
-      console.log([0, this.props.windowHeight - 62]);
-      sweetScroll.to(height, 0);
+      if (this.props.currentCountry !== 'World') {
+        const sweetScroll = new SweetScroll();
+        console.log('scrolling down')
+        const height = this.props.windowHeight - 62;
+        console.log([0, this.props.windowHeight - 62]);
+        setTimeout(() => sweetScroll.to(height, 0), 300)
+      }
     })
     .catch(err => console.log(err));
   }
@@ -218,7 +224,7 @@ class Menu extends React.Component {
           sync={this.props.sync}
           setSpotifySyncHandler={this.props.setSpotifySyncHandler}
           addTrackToSpotifyQueue={this.props.addTrackToSpotifyQueue}
-          handleExpandClick={this.props.handleExpandClick}
+          handleExpandClick={this.handleExpandClick}
           helperFuncs={this.props.helperFuncs}
 
         />
