@@ -142,11 +142,8 @@ const getGenrePlaylist = genre =>
 const getCountryPlaylist = country =>
   new Promise((resolve) => {
     if (country === 'World') {
-      const playlist = _.shuffle(worldPlaylist).slice(0, 100);
+      const playlist = _.shuffle(worldPlaylist).slice(0, 120);
       resolve(playlist);
-      // .where('playlist_name', 'like', '[COUNTRY%')
-      // .whereNot('playlist_name', 'like', '% / %')
-      // .whereNot('playlist_name', 'like', '%The Sound of%')
     } else {
       knex('track')
       .select(Track.mapToTrackObj)
@@ -176,7 +173,7 @@ Playlist.getPlaylist = (req, res) => {
   } else {
     getGenrePlaylist(genre)
     .then(data => removeAlbumDuplicates(data))
-    .then(data => data.slice(0, 100))
+    .then(data => data.slice(0, 120))
     .then(data => res.status(200).send(data))
     .catch((err) => {
       res.status(500).send();

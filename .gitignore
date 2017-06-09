@@ -41,3 +41,5 @@ config.js
 
 credentialsTest.js
 .vscode/
+aardvark.pem
+worldfm.pem

@@ -239,7 +239,7 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(4600, 50))
+getMultiplePlaylists(playlistData.splice(4650, 500))
 .then(() => knex.destroy()
   .then(() => {
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
