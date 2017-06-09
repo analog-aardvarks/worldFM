@@ -107,14 +107,16 @@ const filterPlaylistsByTrends = (playlists, trends) => {
 };
 
 const removeAlbumDuplicates = (tracks) => {
+  console.log(tracks.length);
   const albums = {};
   const curatedTracks = [];
   tracks.forEach((t) => {
-    albums[t.album_id] = albums[t.album_id] + 1 || 1;
-    if (albums[t.album_id] === 1) {
+    albums[t.track_album_id] = albums[t.track_album_id] + 1 || 1;
+    if (albums[t.track_album_id] === 1) {
       curatedTracks.push(t);
     }
   });
+  console.log('CURRENTLY CURRADTED: ', curatedTracks.length);
   return curatedTracks;
 };
 
@@ -155,7 +157,7 @@ const getCountryPlaylist = country =>
       .where('playlist_country.country', country)
       .groupBy('track.id')
       .orderBy(knex.raw('Rand()'))
-      .limit(100)
+      .limit(200)
       .then(tracks => resolve(tracks))
       .catch(err => console.log(err));
     }
@@ -173,7 +175,8 @@ Playlist.getPlaylist = (req, res) => {
     });
   } else {
     getGenrePlaylist(genre)
-    // .then(data => removeAlbumDuplicates(data))
+    .then(data => removeAlbumDuplicates(data))
+    .then(data => data.slice(0, 100))
     .then(data => res.status(200).send(data))
     .catch((err) => {
       res.status(500).send();

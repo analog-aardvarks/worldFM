@@ -240,7 +240,7 @@ const getMultiplePlaylists = playlistBatch =>
 
 // GET GENRES
 
-getMultiplePlaylists(playlistData.splice(4005, 495))
+getMultiplePlaylists(playlistData.splice(4600, 50))
 .then(() => knex.destroy()
   .then(() => {
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');

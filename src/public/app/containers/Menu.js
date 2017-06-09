@@ -125,15 +125,13 @@ class Menu extends React.Component {
   }
 
   getPlaylist() {
-    console.log(this.props.currentGenre, this.props.currentCountry)
     const url = this.props.currentGenre === null ?
       `playlist?country=${this.props.currentCountry}` :
       `playlist?genre=${this.props.currentGenre}`;
     fetch(url)
     .then(res => res.json())
     .then((res) => {
-      console.log('TRACKS FROM SERVER: ', res)
-      this.props.setPlaylist(res)
+      this.props.setPlaylist(res);
     })
     .then(() => {
       if (this.props.currentCountry !== 'World') {
