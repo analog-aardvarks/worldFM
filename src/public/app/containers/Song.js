@@ -254,7 +254,8 @@ class Song extends React.Component {
             style={{
               right: ((this.netSize - 100) / 10),
               top: ((this.netSize - 70) / 10),
-              color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.props.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)")
+              color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.props.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
+              zIndex: this.props.auth ? 10 : -100,
             }}
           />
           <i
@@ -265,6 +266,7 @@ class Song extends React.Component {
               right: ((this.netSize - 100) / 10) * (this.netSize < 200 ? 5 : 3.5),
               top: ((this.netSize - 70) / 10),
               color: (this.props.favorites.some(track => track.track_id === this.props.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
+              zIndex: this.props.auth ? 10 : -100,
             }}
           />
           <div className="Song__container">

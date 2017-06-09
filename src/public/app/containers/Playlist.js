@@ -5,6 +5,7 @@ import { setWindowSize } from '../actions';
 import Song from './Song';
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   playlist: state.playlist,
   showFavoritesMenu: state.showFavoritesMenu,
   windowWidth: state.windowWidth,
@@ -34,7 +35,10 @@ class Playlist extends React.Component {
     return (
       <div
         className="Playlist"
-        style={{ width: this.playlistWidth }}
+        style={{
+          width: this.playlistWidth,
+          marginBottom: this.props.auth ? '65px' : 0
+        }}
       >
         {this.props.playlist.map((track, idx) => (
           <Song
