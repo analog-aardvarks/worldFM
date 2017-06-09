@@ -129,38 +129,32 @@ class Lightbox extends React.Component {
                 />
                 {/* {console.log('TRACK AT RENDER: ', this.track)} */}
                 <div className="Lightbox__contentFullAlbumArtButtons">
-                  <div className="Lightbox__contentHover" style={{ width:this.size, height:this.size }}>
+                  <div
+                    className="Lightbox__contentHover"
+                    style={{ width:this.size, height:this.size }}
+                    onClick={(e) => e.stopPropagation()}
+                    >
                     <div className="Lightbox__contentHoverButtons">
                       <i
                         className="fa fa-play fa-2x fa-fw"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.props.helperFuncs.playExternalTrack(this.track);
-                        }}
+                        onClick={() => this.props.helperFuncs.playExternalTrack(this.track)}
                       />
                       <div className="Lightbox__contentHoverRight">
                         <i
                           className="fa fa-heart fa-2x fa-fw"
                           style={{ color: (this.props.favorites.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)") }}
                           data-tip="Add To Favorites"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            this.handleFavoritesClick(this.track);
-                          }}
+                          onClick={() => this.handleFavoritesClick(this.track)}
                         />
                         <i
                           className="fa fa-plus fa-2x fa-fw"
                           style={{ color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)") }}
                           data-tip="Add To Queue"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            this.addToQueue();
-                          }}
+                          onClick={this.addToQueue}
                         />
                       </div>
                     </div>
                   </div>
-
                   <img
                     className="Lightbox__contentFullAlbumArt"
                     src={this.track.track_album_image}
@@ -168,7 +162,6 @@ class Lightbox extends React.Component {
                     width={this.size}
                     height={this.size}
                   />
-
                 </div>
                 <i
                   className="fa fa fa-chevron-right fa-2x fa-fw"
