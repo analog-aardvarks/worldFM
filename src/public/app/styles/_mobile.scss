@@ -45,6 +45,26 @@
     margin-right: 15px;
     margin-left: 8px;
   }
+  //Song
+  .Song__name,
+  .Song__artist {
+    font-size: 15px;
+  }
+  .SongHover__expand,
+  .SongHover__add-favorites,
+  .SongHover__add-que {
+    font-size: 24px;
+  }
+  .SongHover__play-button {
+    font-size: 64px;
+    left: 56px !important;
+    bottom: 70px !important;
+  }
+  .Song__ranking {
+    min-width: 35px;
+    padding-right: 0px;
+    font-size: 23px;
+  }
   //Top Menu
   .Menu--logo {
     display: none;
@@ -94,7 +114,16 @@
   //Song
   .Song__name,
   .Song__artist {
-    font-size: 14px;
+    font-size: 13px;
+  }
+  .SongHover__play-button {
+    font-size: 58px;
+    left: 50px !important;
+    bottom: 62px !important;
+  }
+  .Song__ranking {
+    min-width: 33px;
+    font-size: 22px;
   }
 }
 
@@ -120,9 +149,18 @@
   .Song__artist {
     font-size: 13px;
   }
-  .Song__ranking {
+  .SongHover__expand,
+  .SongHover__add-favorites,
+  .SongHover__add-que {
     font-size: 22px;
-    min-width: 35px;
-    padding-right: 10px;
+  }
+  .SongHover__play-button {
+    font-size: 50px;
+    left: 41px !important;
+    bottom: 52px !important;
+  }
+  .Song__ranking {
+    min-width: 28px;
+    font-size: 21px;
   }
 }
