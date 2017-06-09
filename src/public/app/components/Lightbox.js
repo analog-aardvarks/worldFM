@@ -121,11 +121,11 @@ class Lightbox extends React.Component {
               <div className="Lightbox__contentArtButtons">
                 <i
                   className="fa fa fa-chevron-left fa-2x fa-fw"
-                  style={{ opacity: "0.5" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     this.prevImage();
                   }}
+                  data-tip="Previous"
                 />
                 {console.log('TRACK AT RENDER: ', this.track)}
                 <div className="Lightbox__contentFullAlbumArtButtons">
@@ -149,7 +149,7 @@ class Lightbox extends React.Component {
                         <i
                           className="fa fa-heart fa-2x fa-fw"
                           style={{ color: (this.props.favorites.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)") }}
-                          data-tip="Add To Favorites"
+                          data-tip="Add to favorites"
                           onClick={(e) => {
                             e.stopPropagation();
                             this.handleFavoritesClick(this.track);
@@ -158,7 +158,7 @@ class Lightbox extends React.Component {
                         <i
                           className="fa fa-plus fa-2x fa-fw"
                           style={{ color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)") }}
-                          data-tip="Add To Queue"
+                          data-tip="Add to queue"
                           onClick={(e) => {
                             e.stopPropagation();
                             this.addToQueue();
@@ -170,11 +170,11 @@ class Lightbox extends React.Component {
                 </div>
                 <i
                   className="fa fa fa-chevron-right fa-2x fa-fw"
-                  style={{ opacity: "0.5" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     this.nextImage();
                   }}
+                  data-tip="Next"
                 />
               </div>
               <div className="Lightbox__contentAlbumInfo" style={{ width:this.size }}>

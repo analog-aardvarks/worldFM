@@ -245,12 +245,12 @@ class Song extends React.Component {
             className="SongHover__expand fa fa-expand fa-2x fa-fw"
             onClick={() => this.props.handleExpandClick(this.props.track, this.props.playlist)}
             style={{ left: ((this.netSize - 100) / 10), top:((this.netSize - 70) / 10) }}
-            data-tip="View Album Art"
+            data-tip="View album art"
           />
           <i
             className="SongHover__add-que fa fa-plus fa-2x fa-fw"
             onClick={this.addToQueue}
-            data-tip="Add To Queue"
+            data-tip="Add to queue"
             style={{
               right: ((this.netSize - 100) / 10),
               top: ((this.netSize - 70) / 10),
@@ -260,7 +260,7 @@ class Song extends React.Component {
           <i
             className="SongHover__add-favorites fa fa-heart fa-2x fa-fw"
             onClick={() => this.handleFavoritesClick(this.props.track)}
-            data-tip="Add To Favorites"
+            data-tip="Add to favorites"
             style={{
               right: ((this.netSize - 100) / 10) * (this.netSize < 200 ? 5 : 3.5),
               top: ((this.netSize - 70) / 10),
@@ -277,8 +277,10 @@ class Song extends React.Component {
             {this.props.ranking < 10 ? `0${this.props.ranking}` : this.props.ranking}
             </span>
             <div className="Song__info">
-              <span className="Song__name">{this.props.track.track_name}</span>
-              <span className="Song__artist">{JSON.parse(this.props.track.track_artist_name).join(', ')}</span>
+              <span className="Song__name"
+                    data-tip={`Track name: ${this.props.track.track_name}`}>{this.props.track.track_name}</span>
+              <span className="Song__artist"
+                    data-tip={`Artist name: ${JSON.parse(this.props.track.track_artist_name).join(', ')}`}>{JSON.parse(this.props.track.track_artist_name).join(', ')}</span>
             </div>
           </div>
         </div>

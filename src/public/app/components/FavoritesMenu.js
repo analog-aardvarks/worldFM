@@ -61,13 +61,14 @@ const FavoritesMenu = ({
       className="FavoritesMenu"
       style={{
         display:  showFavoritesMenu ? "block" : "none",
-        height: showQueueMenu || showAvailableDevices || showPlayerMobileOptions ? windowHeight - 277 - 16 - 8: windowHeight - 133 - 8,
+        height: showQueueMenu || showAvailableDevices || showPlayerMobileOptions ? windowHeight - 277 - 16 - 13: windowHeight - 133 - 13,
       }}>
       <div className="FavoritesMenu__wrapper">
         <div className="FavoritesMenu__top">
           <i
             className="fa fa-trash fa-fw"
             onClick={removeAllFavorites}
+            data-tip="Remove all tracks from favorites"
             />
           <span>Favorites</span>
           <i
@@ -81,17 +82,35 @@ const FavoritesMenu = ({
           <div className={`FavoritesMenu__indivdualSong ${isActive(idx) ? 'FavoritesMenu__indivdualSong--selected' : ''}`} key={idx}>
             <img src={track.track_album_image} />
             <div className="FavoritesMenu__indivdualSong__songInfo">
-              <span className={`FavoritesMenu__songName ${isActive(idx) ? 'FavoritesMenu__songName--selected' : ''}`}>{track.track_name}</span>
-              <span className="FavoritesMenu__SongArtist">{JSON.parse(track.track_artist_name).join(', ')}</span>
+              <span
+                className={`FavoritesMenu__songName ${isActive(idx) ? 'FavoritesMenu__songName--selected' : ''}`}
+                data-tip={`Track name: ${track.track_name}`}
+              >{track.track_name}</span>
+              <span
+                className="FavoritesMenu__SongArtist"
+                data-tip={`Artists name: ${JSON.parse(track.track_artist_name).join(', ')}`}
+              >{JSON.parse(track.track_artist_name).join(', ')}</span>
             </div>
             <div className="absclear">
               <div className="FavoritesMenu__hover">
                 <div className="FavoritesMenu__indivdualSong__Lightbox">
-                  <i className="FavoritesMenu__expand fa fa-expand fa-fw" onClick={() => handleExpandClick(track, favorites)}/>
-                  <i className="FavoritesMenu__close fa fa-times fa-fw" onClick={() => removeFavorite(track)}/>
+                  <i
+                    className="FavoritesMenu__expand fa fa-expand fa-fw"
+                    onClick={() => handleExpandClick(track, favorites)}
+                    data-tip="View album art"
+                  />
+                  <i
+                    className="FavoritesMenu__close fa fa-times fa-fw"
+                    onClick={() => removeFavorite(track)}
+                    data-tip="Remove this track from favorites"
+                  />
                   <div className="FavoritesMenu__indivdualSong__play">
                     <i className="fa fa-play fa-fw" onClick={() => helperFuncs.playExternalTrack(track, 'favs', idx)}/>
-                    <i className="fa fa-plus fa-fw" onClick={() => addTrackToSpotifyQueue(track)}/>
+                    <i
+                      className="fa fa-plus fa-fw"
+                      onClick={() => addTrackToSpotifyQueue(track)}
+                      data-tip="Add track to queue"
+                    />
                   </div>
                 </div>
               </div>
@@ -108,11 +127,15 @@ const FavoritesMenu = ({
                 <input
                   checked
                   type="checkbox"
-                  onChange={toggleSync}/>
+                  onChange={toggleSync}
+                  data-tip="Sync favorites with your World FM Spotify playlist"
+                />
                 :
                 <input
                   type="checkbox"
-                  onChange={toggleSync}/>
+                  onChange={toggleSync}
+                  data-tip="Sync favorites with your World FM Spotify playlist"
+                />
                 }
                 <div className="slider round"/>
               </label>

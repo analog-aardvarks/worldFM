@@ -10,9 +10,9 @@ import { setPlaylist,
   setSpotifyPlayerCurrentTrackIdx } from '../actions';
 import availableCountries from '../constants/availableCountries';
 import TopMenu from '../components/TopMenu';
-import CountryMenu from '../components/CountryMenu';
+// import CountryMenu from '../components/CountryMenu';
 import FavoritesMenu from '../components/FavoritesMenu';
-import SideMenu from '../components/SideMenu';
+// import SideMenu from '../components/SideMenu';
 import QueueMenu from '../components/QueueMenu';
 import About from '../components/About';
 import SweetScroll from 'sweet-scroll';

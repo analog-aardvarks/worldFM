@@ -1,24 +1,20 @@
-.absclear {
-  position: relative;
-  width: 0;
-  height: 0
-}
-
 .QueueMenu {
   z-index: 15;
   position: fixed;
   bottom: 73px;
   width: 100%;
   height: 152px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: $blackGlassDark;
   color: rgb(230, 230, 230);
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
 .QueueMenu__topBar {
+  @include bg-gradient();
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   user-select: none;
   height: 28px;
   width: 100%;
-  background-color: $bgGreyMedium;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,27 +39,23 @@
 }
 
 .QueueMenu__indivdualSong {
-  // background-color: blue;
   display: flex;
   border-radius: 3px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  // background-color: rgba(0, 0, 0, 0);
   margin-left: 10px;
   min-width: 78px;
   min-height: 108px;
   max-height: 108px;
   img {
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
     max-width: 70px;
     max-height: 70px;
   }
   i {
     cursor: pointer;
-    // position: relative;
-    // top: -10px;
-    // left: 22px;
   }
   i:hover {
     opacity: 0.75;
@@ -113,7 +105,6 @@
 }
 
 .QueueMenu__hover {
-  // background-color: rgba(255,0,0,.5);
   min-width: 78px;
   min-height: 108px;
   position: absolute;
@@ -129,11 +120,8 @@
 .QueueMenu__expand,
 .QueueMenu__close {
   position: absolute;
-  /* top: -25px; */
-  /* right: 30px; */
   top: 0px;
   padding: 2.5px;
-
   background-color: rgba(0,0,0,0.70);
   border-radius: 2.5px;
 }
@@ -151,10 +139,8 @@
 }
 
 .QueueMenu__light {
-  // background-color: rgba(0,255,0,.5);
   height: 70px;
   width: 70px;
-  // background: green;
   margin-top: 4px;
   margin-left: 4px;
   display: flex;
@@ -163,13 +149,11 @@
 }
 
 .QueueMenu__actions {
-  // background-color: rgba(255,0,255,.5);
   display: flex;
   justify-content: center;
   background-color: rgba(0,0,0,0.70);
   border-radius: 2.5px;
   padding: 5px;
-
   i {
     position: relative;
     top: 0px;

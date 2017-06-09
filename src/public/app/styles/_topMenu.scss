@@ -12,8 +12,21 @@
   user-select: none;
   top: 0%;
   position: fixed;
-  height: 60px;
+  height: 65px;
   z-index: 20;
+  // @include bg-gradient();
+  width: 100%;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  // transition: 2s;
+  i{
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  }
+  img {
+    position: relative;
+    // top: 40px;
+    max-width: 155px;
+    // transition: 0.35s;
+  }
 }
 
 .Menu--logo {
@@ -57,14 +70,13 @@
 }
 .Select-menu-outer {
   width: 200px;
-  padding: 11px;
+  height: 240px;
+  padding: 0px 10px;
 }
-// selected value font
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
   color: $spotifyGreen;
   font-family: 'Lato';
 }
-//border
 .Select-control {
   border-color: #171717;
   color: $spotifyGreen;
@@ -123,23 +135,3 @@
 .TopMenu--logout {
   color: $mainColor;
 }
-
-// .TopMenu--userMenu {
-//   width: 124px;
-//   height: 90px;
-//   padding: 10px;
-//   position: fixed;
-//   right: 0;
-//   top: 60px;
-//   div {
-//     border-bottom: 1px solid rgba(175, 175, 175, 0.1);
-//     width: 100%;
-//     margin-bottom: 6px;
-//     padding-bottom: 6px;
-//     display: flex;
-//     justify-content: flex-start;
-//   }
-//   i {
-//     margin: 6px;
-//   }
-// }

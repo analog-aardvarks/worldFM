@@ -1,11 +1,31 @@
 .FavoritesMenu {
   z-index: 4;
   position: fixed;
-  top: 68px;
+  top: 73px;
   right: 0px;
   width: 350px;
   color: $mainWhite;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: $blackGlassDark;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.FavoritesMenu::before {
+  min-height: 8px;
+  content: '';
+  background-color: $blackGlass;
+  width: 3000px;
+  position: absolute;
+  top: -8px;
+}
+
+.FavoritesMenu::after {
+  min-height: 8px;
+  content: '';
+  background-color: $blackGlass;
+  width: 3000px;
+  position: absolute;
+  bottom: -8px;
 }
 
 .FavoritesMenu__wrapper {
@@ -29,10 +49,11 @@
 }
 
 .FavoritesMenu__top {
+  @include bg-gradient();
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   user-select: none;
   min-height: 28px;
   width: 100%;
-  background-color: $bgGreyMedium;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,26 +72,21 @@
 }
 
 .FavoritesMenu__indivdualSong {
-  // border-radius: 2.5px;
-  // margin-left: 5px;
-  // background-color: red;
-  // min-width: 400px;
-  // max-width: 400px;
   min-width: 345px;
-  min-height: 70px;
-  // margin-right: 40px;
+  min-height: 75px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  margin-bottom: 10px;
   img {
     box-sizing: border-box;
     margin-left: 15px;
     max-width: 70px;
     max-height: 70px;
     cursor: pointer;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   }
-  margin-bottom: 10px;
 }
 
 .FavoritesMenu__indivdualSong:hover {
@@ -78,9 +94,7 @@
 }
 
 .FavoritesMenu__indivdualSong__songInfo {
-  // padding-left: 30px;
   padding-left: 15px;
-  // max-width: 328px;
   min-width: 220px;
   max-width: 220px;
   display: flex;
@@ -94,7 +108,6 @@
   cursor: default;
   user-select: none;
   padding-right: 15px;
-  // padding-left: 15px;
   width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -102,15 +115,11 @@
 }
 
 .FavoritesMenu__songName {
-  // font-family: 'Permanent Marker', cursive;
-  // background-color: red;
-  // font-weight: bold;
   font-weight: bold;
 }
 
 .FavoritesMenu__indivdualSong__actions {
   width: 40px;
-  // margin-right: 15px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -128,33 +137,31 @@
 }
 
 .FavoritesMenu__sync {
+  @include bg-gradient();
   margin-top: 10px;
   user-select: none;
   min-height: 28px;
   width: 100%;
-  background-color: $bgGreyMedium;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 15px;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   span {
     margin-right: 15px;
   }
 }
 
-/* The switch - the box around the slider */
 .switch {
   position: relative;
-  // display: inline-block;
   width: 32px;
   height: 22px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {display:none;}
 
-/* The slider */
 .slider {
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   position: absolute;
   cursor: pointer;
   top: 5px;
@@ -192,7 +199,6 @@ input:checked + .slider:before {
   transform: translateX(13px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 18px;
 }
@@ -208,7 +214,6 @@ input:checked + .slider:before {
 
 .FavoritesMenu__hover {
   position: relative;
-  // background-color: rgba(0,0,255,0.5);
   background-color: rgba(0, 0, 0, 0);
   left: -300px;
   bottom: 35.5px;
@@ -236,8 +241,6 @@ input:checked + .slider:before {
 }
 
 .FavoritesMenu__indivdualSong__actions {
-  // align-self: flex-end;
-  background-color: rgba(0,255,0,0.5);
   position: relative;
   left: 200px;
   display: flex;
@@ -248,31 +251,21 @@ input:checked + .slider:before {
 .FavoritesMenu__indivdualSong__Lightbox {
   min-width: 70px;
   min-height: 70px;
-  // background-color: rgba(0,255,255,0.5);
   cursor: pointer;
-  // border: 4px solid $bgGreyMedium;
-  // border-radius: 2.5px;
   display: flex;
-justify-content: center;
-align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .FavoritesMenu__indivdualSong__play {
-  // background-color: rgba(255,0,255,.5);
   display: flex;
   justify-content: center;
   background-color: rgba(0,0,0,0.70);
   border-radius: 2.5px;
   padding: 5px;
   display: flex;
-justify-content: center;
-align-items: center;
-
-  // i {
-  //   position: relative;
-  //   top: 0px;
-  //   left: 0px;
-  // }
+  justify-content: center;
+  align-items: center;
 }
 
 .FavoritesMenu__expand,
@@ -280,7 +273,6 @@ align-items: center;
   position: absolute;
   top: 0px;
   padding: 2.5px;
-
   background-color: rgba(0,0,0,0.70);
   border-radius: 2.5px;
 }
@@ -297,8 +289,6 @@ align-items: center;
   background-color: rgba(0,0,0,0.93);
 }
 
-/* selected */
-
 .FavoritesMenu__indivdualSong--selected,
 .FavoritesMenu__indivdualSong:hover {
   background-color: $bgGreyMedium;
@@ -311,6 +301,5 @@ align-items: center;
 }
 
 .FavoritesMenu__songName--selected {
-// .FavoritesMenu__songName:hover {
   color: $spotifyGreen;
 }

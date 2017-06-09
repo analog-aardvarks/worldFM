@@ -125,7 +125,7 @@ class Player extends React.Component {
       let idx = this.props.spotifyPlayer.currentTrackIdx;
       if (mode !== 'queue' && this.props.spotifyPlayer.queue.length > 0) {
         mode = 'queue';
-        idx = queue.length - 1;
+        idx = -1;
       }
       let currentPlaylist;
       switch (mode) {
@@ -586,14 +586,28 @@ class Player extends React.Component {
             onClick={() => {
               this.props.handlePicClick(this.props.spotifyPlayer.currentTrack, this.props.spotifyPlayer.queue);
             }}
+            data-tip="View album art"
           />
           <div className="CurrentSongInfo">
-            <span className="CurrentSongName">{this.props.spotifyPlayer.currentTrack.track_name}</span>
-            <span className="CurrentSongArtist">{JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}</span>
+            <span
+              className="Player__CurrentSongTime"
+              data-tip="Ellapsed time"
+            >
+              {millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}
+            </span>
+            <span
+              className="CurrentSongName"
+              data-tip={`Track name: ${this.props.spotifyPlayer.currentTrack.track_name}`}
+            >
+              {this.props.spotifyPlayer.currentTrack.track_name}
+            </span>
+            <span
+              className="CurrentSongArtist"
+              data-tip={`Artist name: ${JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}`}
+            >
+              {JSON.parse(this.props.spotifyPlayer.currentTrack.track_artist_name).join(', ')}
+            </span>
           </div>
-          {/* <div className="Player__CurrentSongTime">
-            <span>{millisToMinutesAndSeconds(this.props.spotifyPlayer.ellapsed)} / {millisToMinutesAndSeconds(this.props.spotifyPlayer.currentTrack.track_length)}</span>
-          </div> */}
         </div>}
 
         <div className="Player__controls">
@@ -609,9 +623,10 @@ class Player extends React.Component {
                 this.props.setSpotifyShuffleTrue();
               }
             }}
+            data-tip="Shuffle"
           />
           <i className="fa fa fa-step-backward fa-lg fa-fw" onClick={this.handlePreviousClick} />
-          <i className={`fa fa-${playIcon} fa-2x fa-fw`} onClick={this.handlePlayClick} />
+          <i className={`fa fa-${playIcon} fa-2x fa-fw`} onClick={this.handlePlayClick} style={{fontSize:'2.35em'}}/>
           <i className="fa fa-step-forward fa-lg fa-fw" onClick={this.handleNextClick} />
           <i
             className="fa fa-repeat fa-1x fa-fw"
@@ -624,6 +639,7 @@ class Player extends React.Component {
                 this.props.setSpotifyRepeatTrue();
               }
             }}
+            data-tip="Repeat"
           />
         </div>
 
@@ -670,7 +686,6 @@ class Player extends React.Component {
 
           <div
             className={`Player__devicesToggle Player__extraButtons__button  ${!this.props.auth ? 'Player__extraButtons__button--disabled' : ''}`}
-            data-tip="Export current playlist to Spotify"
           >
             <i
               className="fa fa fa-mobile fa-2x fa-fw"
@@ -681,6 +696,7 @@ class Player extends React.Component {
                   this.props.hideQueueMenuEvent();
                 }
               }}
+              data-tip="Show available devices"
             />
             <span>Devices</span>
           </div>
@@ -698,6 +714,7 @@ class Player extends React.Component {
                   this.props.hideAvailableDevicesEvent();
                 }
               }}
+              data-tip="Open your World FM queue"
             />
             <span>Queue</span>
           </div>
@@ -713,6 +730,9 @@ class Player extends React.Component {
         <div className="Player__extraButtonsMobile" style={{ width: this.props.windowWidth }}>
 
           <div className="Player__extraButtonsMobileTop">
+          <i className="fa fa fa-times fa-fw"
+              style={{opacity:0}}
+          />
             <div>Options</div>
             <i className="fa fa fa-times fa-fw"
                 onClick={this.togglePlayerMobileOptions}
@@ -772,6 +792,7 @@ class Player extends React.Component {
             <i
               className="fa fa-refresh fa-fw"
               onClick={this.refreshDevices}
+              data-tip="Refresh available devices"
             />
             <div className="Player__devicesTitle">Devices</div>
             <i className="fa fa fa-times fa-fw"
@@ -784,6 +805,7 @@ class Player extends React.Component {
               style={{ color: device.id === this.props.activeDevice.id ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)'}}
               key={idx}
               onClick={() => this.handleDeviceClick(device)}
+              data-tip="Activate this device"
             >
               <i className={`fa fa-${this.deviceIcon(device)} fa-lg fa-fw`} />
               <span>{device.name}</span>
