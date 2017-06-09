@@ -45,6 +45,7 @@
   max-width: 640px;
   max-height: 640px;
   z-index: 80;
+      position: relative;
 }
 
 .Lightbox__contentAlbumInfo {
@@ -64,6 +65,7 @@
 
 .Lightbox__contentFullAlbumArtButtons {
   display: flex;
+  position: relative;
 }
 
 .Lightbox__contentHover {
