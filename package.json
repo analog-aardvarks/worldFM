@@ -4,6 +4,7 @@
   "description": "- [Overview](#overview)   - [Duration and Milestones](#duration-and-milestones)   - [Design](#design) - [Bare Minimum Requirements](#bare-minimum-requirements)   - [Group Formation](#group-formation)   - [Role Assignment](#role-assignment)   - [Project Organization](#project-organization)   - [Product Design](#product-design)   - [Project Infrastructure](#project-infrastructure)     - [Project Backlog](#project-backlog)     - [Contribution Guide](#contribution-guide)     - [Style Guide](#style-guide)     - [Project Readme](#project-readme)   - [Continuous Deployment](#continuous-deployment)   - [Team Communication](#team-communication)     - [New Code](#new-code)     - [Speaking to each other](#speaking-to-each-other)   - [Product Development](#product-development) - [Advanced](#advanced)   - [Testing and You](#testing-and-you)   - [Misc.](#misc.) - [Group Assignments](#group-assignments)",
   "main": "src/server/server.js",
   "scripts": {
+    "start": "node src/server/server.js",
     "watch": "webpack -d --w"
   },
   "repository": {
