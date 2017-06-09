@@ -148,7 +148,8 @@ class Lightbox extends React.Component {
                       <div className="Lightbox__contentHoverRight">
                         <i
                           className="fa fa-heart fa-2x fa-fw"
-                          style={{ color: (this.props.favorites.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)") }}
+                          style={{ color: (this.props.favorites.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
+                          zIndex: this.props.auth ? 10 : -100,}}
                           data-tip="Add to favorites"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -157,7 +158,8 @@ class Lightbox extends React.Component {
                         />
                         <i
                           className="fa fa-plus fa-2x fa-fw"
-                          style={{ color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)") }}
+                          style={{ color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
+                          zIndex: this.props.auth ? 10 : -100, }}
                           data-tip="Add to queue"
                           onClick={(e) => {
                             e.stopPropagation();

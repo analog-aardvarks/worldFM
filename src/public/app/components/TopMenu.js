@@ -71,7 +71,7 @@ style={{
                boxShadow: showTopMenu ? '2px 4px 3px rgba(0, 0, 0, 0.3)' : '2px 4px 3px rgba(0, 0, 0, 0)' }}
     >
 
-      <div className="TopMenu__logo">
+      <div className="Menu--logo">
         <img
           src="../../assets/worldfm4.svg"
         />
@@ -122,13 +122,18 @@ style={{
         </div>
         : null }
 
-        <div className="FavoritesMenu--toggle TopMenu__icon">
+        <div
+          className="FavoritesMenu--toggle TopMenu__icon"
+          style={{
+            opacity: auth ? 1 : 0,
+            zIndex: auth ? 10 : -80
+          }}
+        >
           <i
             className="fa fa fa-heart fa-lg fa-fw"
             onClick={() => {
               if(auth) toggleFavoritesMenu();
             }}
-            style={{opacity:`${auth ? 1 : 0.25}`}}
             data-tip="Favorites"
           />
         </div>

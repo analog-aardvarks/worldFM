@@ -561,7 +561,12 @@ class Player extends React.Component {
     if (this.props.spotifyPlayer.volume < 20) volumeIcon = 'off';
 
   return (
-      <div className="Player" style={{ width: this.props.windowWidth }}>
+      <div
+        className="Player"
+        style={{
+          width: this.props.windowWidth,
+          display: this.props.auth ? 'flex' : 'none'
+        }}>
 
         <input
           defaultValue="0"
