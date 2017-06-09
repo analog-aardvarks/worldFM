@@ -4,6 +4,10 @@
   border: 3px solid $blackGlassDark;
   cursor: default;
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  cursor: default;
+  i {
+    cursor: pointer;
+  }
 }
 
 .Song:hover .Song__container {
@@ -47,7 +51,7 @@
 .Song__wrapper:hover .SongHover__add-que:hover,
 .Song__wrapper:hover .SongHover__expand:hover,
 .Song__wrapper:hover .SongHover__add-favorites:hover  {
-  opacity: 0.75;
+  opacity: 0.65;
 }
 
 .Song__container {
