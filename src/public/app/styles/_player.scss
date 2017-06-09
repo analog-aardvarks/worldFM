@@ -21,7 +21,8 @@
   align-items: center;
   justify-content: flex-start;
   position: fixed;
-  left: 2px;
+  left: 30px;
+  bottom: 5px;
   img {
     margin-left: 10px;
     max-width: 50px;
@@ -86,7 +87,7 @@
   justify-content: space-around;
   flex-direction: row;
   opacity: 0.75;
-  right: 2px;
+  right: 25px;
   position: fixed;
   width: 245px;
 }
