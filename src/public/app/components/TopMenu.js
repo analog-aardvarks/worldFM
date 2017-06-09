@@ -58,44 +58,30 @@ const TopMenu = ({
     else if (window.pageYOffset < height && showTopMenu === true) toggleTopMenu();
   }
 
-  /*
-  style={{
-    background: showTopMenu ? 'linear-gradient(#1C1C1C, #212121, #1E1E1E, #1C1C1C)' : 'rgba(0, 0, 0, 0)',
-    width: windowWidth
-  }}
-  */
+/*
+style={{
+  width: showTopMenu ? '160px' : '300px',
+  top: showTopMenu ? '0px' : '40px'}}
+*/
 
   return (
     <div
       className="TopMenu"
-
+      style={{ background: showTopMenu ? 'linear-gradient(to bottom, #202020 0%, #282828 50%, #202020 100%)' : 'rgba(0, 0, 0, 0)',
+               boxShadow: showTopMenu ? '2px 4px 3px rgba(0, 0, 0, 0.3)' : '2px 4px 3px rgba(0, 0, 0, 0)' }}
     >
 
       <div className="TopMenu__logo">
-        <img src="../../assets/worldfm4.svg" />
+        <img
+          src="../../assets/worldfm4.svg"
+        />
       </div>
-
-      {/*<i
-        className="Hamburger--icon TopMenu__icon fa fa-bars fa-2x fa-fw"
-        onClick={toggleSideMenu}
-      />
-      <a
-        className="Menu--logo TopMenu__icon"
-        href="/"
-      >
-        World.FM
-      </a>*/}
-
 
       <div className="TopMenu__content" style={{ width: windowWidth }}>
 
         <div
           className="GlobeView--toggle TopMenu__icon"
-          // style={{
-          //   display: showTopMenu ? "block" : "none",
-          //   // right: (window.innerWidth/2) - 31
-          //}}
-          >
+        >
           <i
             className="fa fa fa-globe fa-4x fa-fw"
             onClick={scrollUp}
@@ -107,12 +93,12 @@ const TopMenu = ({
           <span
             onClick={handleShowCountryDropdown}
             style={{ color: showCountryDropdown ? 'rgb(30, 215, 96)' : 'grey' }}
-            data-tip="Browse trending traks by country" >COUNTRY
+            data-tip="Explore the world of music" >COUNTRY
           </span>
           <span
             onClick={handleHideCountryDropdown}
             style={{ color: !showCountryDropdown ? 'rgb(30, 215, 96)' : 'grey' }}
-            data-tip="Explore a world of genres" >GENRE
+            data-tip="Explore the world of genres" >GENRE
           </span>
         </div>
 
@@ -139,8 +125,11 @@ const TopMenu = ({
         <div className="FavoritesMenu--toggle TopMenu__icon">
           <i
             className="fa fa fa-heart fa-lg fa-fw"
-            onClick={toggleFavoritesMenu}
-            data-tip="View Favorites"
+            onClick={() => {
+              if(auth) toggleFavoritesMenu();
+            }}
+            style={{opacity:`${auth ? 1 : 0.25}`}}
+            data-tip="Favorites"
           />
         </div>
 

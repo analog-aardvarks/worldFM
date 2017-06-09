@@ -14,16 +14,18 @@
   position: fixed;
   height: 65px;
   z-index: 20;
-  @include bg-gradient();
+  // @include bg-gradient();
   width: 100%;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  // transition: 2s;
   i{
     text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   }
   img {
     position: relative;
-    top: 0px;
-    max-width: 160px;
+    // top: 40px;
+    max-width: 155px;
+    // transition: 0.35s;
   }
 }
 
@@ -68,7 +70,8 @@
 }
 .Select-menu-outer {
   width: 200px;
-  padding: 11px;
+  height: 240px;
+  padding: 0px 10px;
 }
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
   color: $spotifyGreen;

@@ -22,8 +22,20 @@
 
 .Lightbox__contentArtButtons {
   display: flex;
-  flex-direction: row;
   align-items: center;
+
+  i {
+    // opacity: 0.5;
+    opacity: 0.85;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+  }
+
+
 }
 
 .Lightbox__contentFullAlbumArt {
@@ -39,7 +51,11 @@
   justify-content: center;
   padding: 12px;
   span {
-    margin-top: 1px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 }
 
@@ -55,10 +71,12 @@
   position: absolute;
   z-index: 81;
   i {
-    opacity: 0.5;
+    // opacity: 0.5;
+    font-size: 1.5em;
+    opacity: 0.85;
   }
   i:hover {
-    opacity: 1;
+    opacity: 0.75;
   }
   i:active {
     color: $spotifyGreen;
@@ -70,7 +88,7 @@
 }
 
 .Lightbox__contentHoverButtons {
-  background: $blackGlassLight;
+  background: $blackGlassDark;
   width: 100%;
   padding: 20px;
   display: flex;

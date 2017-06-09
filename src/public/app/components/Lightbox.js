@@ -121,7 +121,6 @@ class Lightbox extends React.Component {
               <div className="Lightbox__contentArtButtons">
                 <i
                   className="fa fa fa-chevron-left fa-2x fa-fw"
-                  style={{ opacity: "0.5" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     this.prevImage();
@@ -170,7 +169,6 @@ class Lightbox extends React.Component {
                 </div>
                 <i
                   className="fa fa fa-chevron-right fa-2x fa-fw"
-                  style={{ opacity: "0.5" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     this.nextImage();
