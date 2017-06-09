@@ -195,6 +195,7 @@ input[type="range"]::-ms-fill-upper {
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   i {
     cursor: pointer;
   }
@@ -246,6 +247,7 @@ input[type="range"]::-ms-fill-upper {
   // margin-right: 10px;
   max-width: 80px;
   i {
+    cursor: pointer;
     margin-right: 10px;
   }
 }
@@ -276,6 +278,18 @@ input[type="range"]::-ms-fill-upper {
   flex-direction: column;
   justify-content: center;
   // align-items: space-around;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  i{
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
 }
 .Player__extraButtonsMobileTop {
   user-select: none;
@@ -288,6 +302,7 @@ input[type="range"]::-ms-fill-upper {
   padding: 0 15px;
   position: absolute;
   top: 0px;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   i {
     cursor: pointer;
     position: absolute;

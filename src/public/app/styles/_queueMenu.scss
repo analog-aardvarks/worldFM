@@ -4,6 +4,15 @@
   height: 0
 }
 
+@keyframes queueUp {
+  from {
+    bottom: -85px;
+  }
+  to {
+    bottom: 73px;
+  }
+}
+
 .QueueMenu {
   z-index: 15;
   position: fixed;
@@ -14,6 +23,9 @@
   color: rgb(230, 230, 230);
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+
+  animation-duration: 0.35s;
+  animation-name: queueUp;
 }
 
 .QueueMenu__topBar {

@@ -713,6 +713,9 @@ class Player extends React.Component {
         <div className="Player__extraButtonsMobile" style={{ width: this.props.windowWidth }}>
 
           <div className="Player__extraButtonsMobileTop">
+          <i className="fa fa fa-times fa-fw"
+              style={{opacity:0}}
+          />
             <div>Options</div>
             <i className="fa fa fa-times fa-fw"
                 onClick={this.togglePlayerMobileOptions}
