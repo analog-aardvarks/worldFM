@@ -137,7 +137,7 @@ const FavoritesMenu = ({
                   data-tip="Sync favorites with your World FM Spotify playlist"
                 />
                 }
-                <div className="slider round"/>
+                <div className="slider round" data-tip="Save your favorites to a custom Spotify playlist"/>
               </label>
             </div>
           </div>

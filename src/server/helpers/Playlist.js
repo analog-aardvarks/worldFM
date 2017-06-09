@@ -10,6 +10,7 @@ const limit = 100;
 // Initialize 'World' playlist for faster page load
 let worldPlaylist;
 const updateWorldPlaylist = () => {
+  console.log('getting world playlist...');
   const startTime = Date.now();
   knex('track')
   .select(Track.mapToTrackObj)
@@ -24,7 +25,7 @@ const updateWorldPlaylist = () => {
   .then(() => console.log(`World Playlist Loaded in ${Date.now() - startTime}ms`))
   .catch(err => console.log(err));
   // Update landing playlist every hour
-  setTimeout(updateWorldPlaylist, 600000);
+  setTimeout(updateWorldPlaylist, 3600000);
 };
 updateWorldPlaylist();
 
@@ -106,14 +107,16 @@ const filterPlaylistsByTrends = (playlists, trends) => {
 };
 
 const removeAlbumDuplicates = (tracks) => {
+  console.log(tracks.length);
   const albums = {};
   const curatedTracks = [];
   tracks.forEach((t) => {
-    albums[t.album_id] = albums[t.album_id] + 1 || 1;
-    if (albums[t.album_id] === 1) {
+    albums[t.track_album_id] = albums[t.track_album_id] + 1 || 1;
+    if (albums[t.track_album_id] === 1) {
       curatedTracks.push(t);
     }
   });
+  console.log('CURRENTLY CURRADTED: ', curatedTracks.length);
   return curatedTracks;
 };
 
@@ -139,11 +142,8 @@ const getGenrePlaylist = genre =>
 const getCountryPlaylist = country =>
   new Promise((resolve) => {
     if (country === 'World') {
-      const playlist = _.shuffle(worldPlaylist).slice(0, 100);
+      const playlist = _.shuffle(worldPlaylist).slice(0, 120);
       resolve(playlist);
-      // .where('playlist_name', 'like', '[COUNTRY%')
-      // .whereNot('playlist_name', 'like', '% / %')
-      // .whereNot('playlist_name', 'like', '%The Sound of%')
     } else {
       knex('track')
       .select(Track.mapToTrackObj)
@@ -154,7 +154,7 @@ const getCountryPlaylist = country =>
       .where('playlist_country.country', country)
       .groupBy('track.id')
       .orderBy(knex.raw('Rand()'))
-      .limit(100)
+      .limit(200)
       .then(tracks => resolve(tracks))
       .catch(err => console.log(err));
     }
@@ -172,7 +172,8 @@ Playlist.getPlaylist = (req, res) => {
     });
   } else {
     getGenrePlaylist(genre)
-    // .then(data => removeAlbumDuplicates(data))
+    .then(data => removeAlbumDuplicates(data))
+    .then(data => data.slice(0, 120))
     .then(data => res.status(200).send(data))
     .catch((err) => {
       res.status(500).send();

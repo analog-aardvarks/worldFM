@@ -189,7 +189,7 @@ const renderGlobe = (element, startCoordinates) => {
     // globe.startSpin();
 
     // Zoom!
-    // const scale0 = (width - 1) / 2 / Math.PI;
+    // const scale0 = (width - 1)  / Math.PI;
     //
     // const zoom = d3.behavior.zoom()
     //   .translate([width / 2, height / 2])

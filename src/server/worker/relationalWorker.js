@@ -239,12 +239,14 @@ const getMultiplePlaylists = playlistBatch =>
 // .catch(err => console.log(err));
 
 // GET GENRES
-getMultiplePlaylists(playlistData.splice(3800, 200))
-.then(() => {
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-  console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-})
+getMultiplePlaylists(playlistData.splice(4650, 500))
+.then(() => knex.destroy()
+  .then(() => {
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    console.log(`[${Date.now() - startingTime}ms] WORKER SUCCESSFUL!`);
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+  })
+  .catch(err => console.log(err)))
 .catch(err => console.log(err));
 
 // console.log(playlistData.length)
