@@ -1,4 +1,10 @@
 @media (max-width: 800px)  {
+  //Current Song
+  .CurrentSong {
+    min-width: 200px;
+    max-width: 200px;
+    left: 15px;
+  }
   //Lightbox
   .Lightbox__contentArtButtons {
     i {
@@ -14,7 +20,7 @@
   }
   .Player__extraButtonsMobileToggle {
     display: block;
-    right: 0px;
+    right: 6px;
     bottom: 17px;
     position: fixed;
     opacity: 0.6;
@@ -22,6 +28,10 @@
   //Top Menu
   .TopMenu__dropdownOptions {
     margin-left: 6px;
+  }
+  .TopMenu {
+    padding-left: 25px;
+    padding-right: 20px;
   }
 }
 
@@ -39,6 +49,13 @@
   //Player
   .CurrentSongInfo {
     display: none;
+  }
+  .CurrentSong {
+    min-width: 50px;
+    max-width: 50px;
+    img {
+      margin-left: 5px;
+    }
   }
   .Player__extraButtonsMobileContent {
     margin-top: 25px;
@@ -94,6 +111,19 @@
   }
   .Select-menu-outer {
     width: 170px;
+  }
+}
+
+@media (max-width: 500px) {
+  //Player
+  .CurrentSong {
+    left: 10px;
+    img {
+      margin-left: 0px;
+    }
+  }
+  .Player__extraButtonsMobileToggle {
+    right: 0px;
   }
 }
 
