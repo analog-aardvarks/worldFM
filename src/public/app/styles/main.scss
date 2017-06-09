@@ -7,21 +7,36 @@ $mainWhite: rgb(230, 230, 230);
 $bgGreyDark: #202020;
 $bgGreyMedium: #282828;
 
+$blackGlassLighter: rgba(0, 0, 0, 0.5);
+$blackGlassLight: rgba(0, 0, 0, 0.65);
+$blackGlass: rgba(0, 0, 0, 0.75);
+$blackGlassDark: rgba(0, 0, 0, 0.85);
+
+@mixin bg-gradient() {
+  background-image: -ms-linear-gradient(top, #202020 0%, #282828 50%, #202020 100%);
+  background-image: -moz-linear-gradient(top, #202020 0%, #282828 50%, #202020 100%);
+  background-image: -o-linear-gradient(top, #202020 0%, #282828 50%, #202020 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #202020), color-stop(50, #282828), color-stop(100, #202020));
+  background-image: -webkit-linear-gradient(top, #202020 0%, #282828 50%, #202020 100%);
+  background-image: linear-gradient(to bottom, #202020 0%, #282828 50%, #202020 100%);
+}
+
 body {
   background-color: $mainColor;
-  margin-bottom: 73px;
   overflow-x: hidden;
 }
 
-@import "menu";
+.absclear {
+  position: relative;
+  width: 0;
+  height: 0
+}
+
 @import "topMenu";
 @import "globeMenu";
 @import "playlist";
-// @import "spotifyPlaylist";
-@import "countryMenu";
 @import "favoritesMenu";
 @import "queueMenu";
-@import "sideMenu";
 @import "player";
 @import "mobile";
 @import "about";

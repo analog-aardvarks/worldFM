@@ -1,6 +1,5 @@
 .Player {
   color: rgb(230, 230, 230);
-  background-color: $bgGreyMedium;
   border: 20px;
   bottom: 0px;
   height: 65px;
@@ -11,13 +10,10 @@
   justify-content: center;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  @include bg-gradient();
 }
 
-/* current song */
 .CurrentSong {
-  /* border-radius: 2.5px; */
-  /* margin-left: 5px; */
-  /* background-color: #202020; */
   min-width: 300px;
   max-width: 300px;
   height: 55px;
@@ -34,6 +30,7 @@
     box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   }
 }
+
 .CurrentSongInfo {
   margin-left: 15px;
   max-width: 328px;
@@ -42,6 +39,7 @@
   align-items: flex-start;
   justify-content: space-between;
 }
+
 .CurrentSongName,
 .CurrentSongArtist {
   cursor: default;
@@ -52,6 +50,7 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .CurrentSongArtist {
   font-family: 'Permanent Marker', cursive;
 }
@@ -85,6 +84,7 @@
   position: fixed;
   width: 300px;
 }
+
 .Player__extraButtons__button {
   color: rgb(230, 230, 230);
   width: 40px;
@@ -102,27 +102,24 @@
     font-size: 10px;
   }
 }
+
 .Player__extraButtons__button:hover {
   opacity: 0.75;
 }
+
 .Player__extraButtons__button:active {
   color: $spotifyGreen;
 }
+
 .Player__extraButtons__button--disabled {
   cursor: default;
   opacity: 0.50;
 }
+
 .Player__extraButtons__button--disabled:hover {
   cursor: default;
   opacity: 0.50;
 }
-
-// .Player__CurrentSongTime {
-//   min-width: 80px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
 
 .Player__seeker {
   position: absolute;
@@ -134,10 +131,9 @@
     input[type='range'] {
       cursor: pointer;
       overflow: hidden;
-      // width: 100%;
       height: 8px;
       -webkit-appearance: none;
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: $blackGlass;
     }
 
     input[type='range']::-webkit-slider-runnable-track {
@@ -160,38 +156,37 @@ input[type="range"]::-moz-range-progress {
   background-color: $spotifyGreen;
 }
 input[type="range"]::-moz-range-track {
-  // background-color: rgba(90,90, 90, 0.6);
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: $blackGlass;
 }
 /* IE*/
 input[type="range"]::-ms-fill-lower {
   background-color: $spotifyGreen;
 }
 input[type="range"]::-ms-fill-upper {
-  // background-color: rgba(90,90, 90, 0.6);
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: $blackGlass;
 }
 
-/* device selector */
 .Player__devicesTitle {
   user-select: none;
 }
+
 .Device__selector {
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   min-height: 152px;
   position: absolute;
   right: 14px;
   bottom: 73px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: $blackGlass;
   display: flex;
   flex-direction: column;
 }
+
 .Device__selector__top {
+  @include bg-gradient();
   user-select: none;
   width: 100%;
   height: 28px;
   display: flex;
-  background-color: $bgGreyMedium;
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
@@ -207,6 +202,7 @@ input[type="range"]::-ms-fill-upper {
     opacity: 1;
   }
 }
+
 .Player__devicesDevice {
   display: flex;
   margin: 5px 0;
@@ -223,7 +219,6 @@ input[type="range"]::-ms-fill-upper {
   opacity: 0.75;
 }
 
-/* volume and options */
 .Player__VolumeAndOptions {
   display: flex;
   align-items: center;
@@ -244,27 +239,13 @@ input[type="range"]::-ms-fill-upper {
   display: flex;
   justify-content: center;
   align-items: center;
-  // margin-right: 10px;
   max-width: 80px;
   i {
     cursor: pointer;
     margin-right: 10px;
   }
 }
-.Player__volumeGauge {
-  // -webkit-transform: rotate(270deg);
-  // -moz-transform: rotate(270deg);
-  // -o-transform: rotate(270deg);
-  // -ms-transform: rotate(270deg);
-  // transform: rotate(270deg);
-  /* height: 22px; */
-  /* background-color: #282828; */
-  /* display: flex; */
-  /* align-items: center; */
-  max-width: 80px;
-}
 
-// Extra buttons mobile view
 .Player__extraButtonsMobileToggle {
   display: none;
 }
@@ -273,11 +254,10 @@ input[type="range"]::-ms-fill-upper {
   position: absolute;
   right: 0px;
   bottom: 73px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: $blackGlass;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  // align-items: space-around;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   i{
     text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
@@ -296,7 +276,7 @@ input[type="range"]::-ms-fill-upper {
   width: 100%;
   height: 28px;
   display: flex;
-  background-color: #282828;
+  @include bg-gradient();
   align-items: center;
   justify-content: center;
   padding: 0 15px;
