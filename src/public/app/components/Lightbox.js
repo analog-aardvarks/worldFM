@@ -5,24 +5,27 @@ import {
   setFavorites,
 } from '../actions';
 
-const mapStateToProps = ({ lightbox, windowWidth, windowHeight, favorites, helperFuncs, spotifyPlayer }) => ({
+const mapStateToProps = ({ auth,lightbox, windowWidth, windowHeight, favorites, helperFuncs, spotifyPlayer, currentSong }) => ({
   lightbox,
   windowWidth,
   windowHeight,
   favorites,
   helperFuncs,
   spotifyPlayer,
+  currentSong,
+  auth,
 });
 
 const mapDispatchToProps = dispatch => ({
   hideLightbox: () => dispatch({ type: 'HIDE_LIGHTBOX' }),
   changeImage: (track, list) => {
     dispatch({ type: 'SHOW_LIGHTBOX', track, list });
-    console.log('TRACK: ', track);
-    console.log('LIST: ', list);
+    // console.log('TRACK: ', track);
+    // console.log('LIST: ', list);
   },
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
   handleFavoritesChange: favorites => dispatch(setFavorites(favorites)),
+  togglePreviewHandler: src => dispatch({ type: 'TOGGLE_PLAY', src }),
 });
 
 class Lightbox extends React.Component {
@@ -110,6 +113,17 @@ class Lightbox extends React.Component {
   addToQueue() { this.props.addTrackToSpotifyQueue(this.track); }
 
   render() {
+
+    let icon = 'play';
+    if (!this.auth &&
+      this.props.currentSong &&
+      this.track &&
+      this.props.currentSong.src === this.track.track_preview_url &&
+      this.props.currentSong.isPlaying) {
+      console.log('running')
+      icon = 'pause';
+    }
+
     return (
       this.props.lightbox.show ? (
         <div>
@@ -134,23 +148,32 @@ class Lightbox extends React.Component {
                     style={{ width:this.size, height:this.size }}
                     onClick={(e) => e.stopPropagation()}
                     >
-                    <div className="Lightbox__contentHoverButtons">
+                    <div className="Lightbox__contentHoverButtons"
+                    style={{justifyContent: this.props.auth ? 'space-around' : 'center'}}>
                       <i
-                        className="fa fa-play fa-2x fa-fw"
-                        onClick={() => this.props.helperFuncs.playExternalTrack(this.track)}
+                        className={`fa fa-${icon} fa-2x fa-fw`}
+                        onClick={() => {
+                          // TODO
+                          if (this.props.auth) {
+                            this.props.helperFuncs.playExternalTrack(this.track);
+                          }
+                          else {
+                            this.props.togglePreviewHandler(this.track.track_preview_url);
+                          }
+                        }}
                       />
                       <div className="Lightbox__contentHoverRight">
                         <i
                           className="fa fa-heart fa-2x fa-fw"
                           style={{ color: (this.props.favorites.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
-                          zIndex: this.props.auth ? 10 : -100,}}
+                          display: this.props.auth ? 'flex' : 'none',}}
                           data-tip="Add to favorites"
                           onClick={() => this.handleFavoritesClick(this.track)}
                         />
                         <i
                           className="fa fa-plus fa-2x fa-fw"
                           style={{ color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
-                          zIndex: this.props.auth ? 10 : -100, }}
+                          display: this.props.auth ? 'flex' : 'none', }}
                           data-tip="Add to queue"
                           onClick={this.addToQueue}
                         />
