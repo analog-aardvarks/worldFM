@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
-// import {reducer as burgerMenu} from 'redux-burger-menu';
 
 function playlist(state = [], action) {
   switch (action.type) {
     case 'SET_PLAYLIST':
+      window.sessionStorage.setItem('playlist', JSON.stringify(action.playlist));
       return action.playlist;
-    default:
-      return state;
+    default: return state;
   }
 }
 
-function currentSong(state = {}, action) {
+// TODO previewPlayer
+function currentSong(state = { src:null, isPlaying:false }, action) {
   switch (action.type) {
     case 'TOGGLE_PLAY':
       if (state.src === action.src) {
@@ -24,35 +24,46 @@ function currentSong(state = {}, action) {
 
 function currentCountry(state = 'World', action) {
   switch (action.type) {
-    case 'SET_CURRENT_COUNTRY':
-      return action.country;
-    default:
-      return state;
+    case 'SET_CURRENT_COUNTRY': return action.country;
+    case 'CLEAR_CURRENT_COUNTRY': return null;
+    default: return state;
   }
 }
 
-function currentTrend(state = 'Mix', action) {
+function currentGenre(state = null, action) {
   switch (action.type) {
-    case 'SET_CURRENT_TREND':
-      return action.trend;
-    default:
-      return state;
+    case 'SET_CURRENT_GENRE': return action.genre;
+    case 'CLEAR_CURRENT_GENRE': return null;
+    default: return state;
   }
 }
+
+// function currentTrend(state = 'Mix', action) {
+//   switch (action.type) {
+//     case 'SET_CURRENT_TREND':
+//       return action.trend;
+//     default:
+//       return state;
+//   }
+// }
 
 function windowWidth(state = window.innerWidth, action) {
   switch (action.type) {
-    case 'WINDOW_RESIZE':
-      return action.newSize;
-    default:
-      return state;
+    case 'WINDOW_RESIZE': return window.innerWidth;
+    default: return state;
+  }
+}
+
+function windowHeight(state = window.innerHeight, action) {
+  switch (action.type) {
+    case 'WINDOW_RESIZE': return window.innerHeight;
+    default: return state;
   }
 }
 
 function showTrackInfo(state = false, action) {
   switch (action.type) {
-    case 'SHOW_TRACK_INFO': return true;
-    case 'HIDE_TRACK_INFO': return false;
+    case 'TOGGLE_TRACK_INFO': return !state;
     default: return state;
   }
 }
@@ -81,6 +92,14 @@ function showQueueMenu(state = false, action) {
   }
 }
 
+function showFavoritesMenu(state = false, action) {
+  switch(action.type) {
+    case 'SHOW_FAVORITES_MENU': return true;
+    case 'HIDE_FAVORITES_MENU': return false;
+    default: return state;
+  }
+}
+
 function songMenu(state = null, action) {
   switch (action.type) {
     case 'OPEN_SONG_MENU': return action.index;
@@ -97,56 +116,100 @@ function showSideMenu(state = false, action) {
   }
 }
 
-function showVolumeGauge(state = false, action) {
-  switch(action.type) {
+function showUserMenu(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_USER_MENU': return true;
+    case 'HIDE_USER_MENU': return false;
+    default: return state;
+  }
+}
+
+function showCountryDropdown(state = true, action) {
+  switch (action.type) {
+    case 'SHOW_COUNTRY_DROPDOWN': return true;
+    case 'HIDE_COUNTRY_DROPDOWN': return false;
+    default: return state;
+  }
+}
+
+function showAbout(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_ABOUT': return true;
+    case 'HIDE_ABOUT': return false;
+    default: return state;
+  }
+}
+
+function showVolumeGauge(state = true, action) {
+  switch (action.type) {
     case 'SHOW_VOLUME_GAUGE': return true;
-    case 'HIDE_VOLUME_GAUGE': return false;
+    case 'HIDE_VOLUME_GAUGE': return true;
     default: return state;
   }
 }
 
 function showAvailableDevices(state = false, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_AVAILABLE_DEVICES': return true;
     case 'HIDE_AVAILABLE_DEVICES': return false;
     default: return state;
   }
 }
 
-// function previewPlayer(state = {}, action) {
-//
-// };
+function showPlayerMobileOptions(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_PLAYER_MOBILE_OPTIONS': return true;
+    case 'HIDE_PLAYER_MOBILE_OPTIONS': return false;
+    default: return state;
+  }
+}
+
+function availableDevices(state = [], action) {
+  switch (action.type) {
+    case 'SET_DEVICES': return action.devices;
+    default: return state;
+  }
+}
 
 function spotifyPlayer(state = {
   queue: [],
+  mode: 'playlist',
   currentTrack: null,
-  isPaused: true,
+  currentTrackIdx: null,
+  isPaused: undefined,
   volume: 0,
-  repeat: false,
-  shuffle: false,
   mute: false,
   ellapsed: 0,
-  $seeker: null,
-  interval: null,
+  interval: undefined,
+  shuffle: false,
+  repeat: false,
 }, action) {
   switch (action.type) {
-    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: true };
-    case 'PLAY_SPOTIFY_PLAYER':
-      return {
-        ...state,
-        isPaused: false,
-        currentTrack: action.currentTrack || state.currentTrack,
-      };
+
+    case 'SET_SPOTIFY_REPEAT_TRUE': return { ...state, repeat: true };
+    case 'SET_SPOTIFY_REPEAT_FALSE': return { ...state, repeat: false };
+    case 'SET_SPOTIFY_SHUFFLE_TRUE': return { ...state, shuffle: true };
+    case 'SET_SPOTIFY_SHUFFLE_FALSE': return { ...state, shuffle: false };
+
+    case 'SET_SPOTIFY_MODE': return { ...state, mode: action.mode };
+    case 'SET_CURRENT_TRACK_IDX': return { ...state, currentTrackIdx: action.currentTrackIdx };
+    case 'PAUSE_SPOTIFY_PLAYER': return { ...state, isPaused: action.isPaused };
+    case 'SET_SPOTIFY_PLAYER_CURRENT_TRACK': return { ...state, currentTrack: action.track };
     case 'SET_SPOTIFY_PLAYER_VOLUME': return { ...state, volume: action.volume };
-    case 'ADD_SONG_TO_SPOTIFY_QUEUE':
-      return { ...state, queue: [...state.queue].push(action.track) };
-    case 'REMOVE_FROM_SPOTIFY_QUEUE':
-      return { ...state, queue: [...state.queue].splice(action.idx, 1) };
+    case 'REMOVE_ALL_FROM_SPOTIFY_QUEUE': return { ...state, queue: [] };
+    case 'ADD_TRACK_TO_SPOTIFY_QUEUE':
+      const queueAdd = [...state.queue];
+      queueAdd.push(action.track);
+      return { ...state, queue: queueAdd };
+    case 'REMOVE_TRACK_FROM_SPOTIFY_QUEUE':
+      const queueRemove = [...state.queue];
+      const idx = action.track;
+      queueRemove.splice(idx, 1);
+      return { ...state, queue: queueRemove };
     case 'SET_SPOTIFY_PLAYER_MUTE': return { ...state, mute: action.mute };
-    case 'SET_SPOTIFY_PLAYER_SEEKER_EL': return { ...state, $seeker: action.el };
     case 'SET_SPOTIFY_PLAYER_ELLAPSED': return { ...state, ellapsed: action.ellapsed };
     case 'SET_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: action.interval };
-    case 'CLEAR_SPOTIFY_PLAYER_CLEAR': return { ...state, interval: null };
+    case 'CLEAR_SPOTIFY_PLAYER_INTERVAL': return { ...state, interval: clearInterval(state.interval) };
     default: return state;
   }
 }
@@ -158,33 +221,95 @@ function auth(state = false, action) {
   }
 }
 
+function favorites(state = [], action) {
+  switch (action.type) {
+    case 'SET_FAVORITES':
+      return action.favorites;
+    default: return state;
+  }
+}
+
+function showTopMenu(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_TOP_MENU': return true;
+    case 'HIDE_TOP_MENU': return false;
+    default: return state;
+  }
+}
+
+function lightbox(state = {}, action) {
+  switch (action.type) {
+    case 'SET_LIGHTBOX':
+      return state;
+    case 'SHOW_LIGHTBOX':
+      document.body.style.overflow = 'hidden';
+      // document.body.style.position = 'fixed';
+      return {
+        show: true,
+        track: action.track,
+        list: action.list,
+      };
+    case 'HIDE_LIGHTBOX':
+      document.body.style.overflow = 'auto';
+      return { ...state, show: false };
+    default: return state;
+  }
+}
+
+function sync(state = 0, action) {
+  switch (action.type) {
+    case 'SET_SPOTIFY_SYNC': return action.sync;
+    default: return state;
+  }
+}
+
+function activeDevice(state = {}, action) {
+  switch (action.type) {
+    case 'SET_ACTIVE_DEVICE': return action.device;
+    default: return state;
+  }
+}
+
+function helperFuncs(state = [], action) {
+  switch (action.type) {
+    case 'SET_HELPER_FUNC':
+      state[action.name] = action.func;
+      return state;
+    default: return state;
+
+  }
+}
+
 const reducer = combineReducers({
+  activeDevice,
+  sync,
   playlist,
   currentSong,
   currentCountry,
-  currentTrend,
+  // currentTrend,
   windowWidth,
+  windowHeight,
   showTrackInfo,
   showSpotifyPlaylist,
   showCountryMenu,
   showQueueMenu,
+  showFavoritesMenu,
   songMenu,
   showSideMenu,
+  showUserMenu,
+  showCountryDropdown,
   auth,
-  // previewPlayer,
   spotifyPlayer,
   showVolumeGauge,
+  availableDevices,
   showAvailableDevices,
+  showPlayerMobileOptions,
+  favorites,
+  showAbout,
+  showTopMenu,
+  lightbox,
+  currentGenre,
+  helperFuncs,
 });
 
 export default reducer;
-
-// STATE TREE:
-// {
-//   playlist: [], SET_PLAYLIST
-//   currentSong: { src: URL, isPlaying: bool }, SET_CURRENT_SONG
-//   isPlaying: false, PLAY_PLAYER, PAUSE_PLAYER
-//   windowSize: { w: 100, h: 100 }, RESIZE_WINDOW
-//   currentCountry: 'World', SET_CURRENT_COUNTRY
-//   currentTrend: 'Mix', SET_CURRENT_TREND
-// }

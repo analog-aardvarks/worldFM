@@ -1,8 +1,11 @@
 const SpotifyWebApi = require('spotify-web-api-node');
+const request = require('request-promise-native');
 const config = require('../../config');
+const knex = require('./db/db');
 
 const Track = require('./helpers/Track');
 const Playlist = require('./helpers/Playlist');
+const extraPlaylists = require('./data/extraPlaylists');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
@@ -11,11 +14,35 @@ const Playlist = require('./helpers/Playlist');
 // Instructions:
 // Get your own token from https://developer.spotify.com/web-api/console/
 // Add it to the config.js file as a property named 'token'
-const spotifyApi = new SpotifyWebApi({
-  clientId: config.clientId,
-  clientSecret: config.clientSecret,
-});
-spotifyApi.setAccessToken(config.token);
+
+// Get auth token
+
+let spotifyApi;
+
+const getAuth = () =>
+  new Promise((resolve, reject) => {
+    const authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      headers: {
+        Authorization: 'Basic ' + (new Buffer(config.clientID + ':' + config.clientSecret).toString('base64')),
+      },
+      form: {
+        grant_type: 'client_credentials',
+      },
+      json: true,
+    };
+    request.post(authOptions)
+    .then((res) => {
+      console.log('THIS IS THE RES RIGHT HERE: ', res)
+      spotifyApi = new SpotifyWebApi({
+        clientId: config.clientID,
+        clientSecret: config.clientSecret,
+      });
+      spotifyApi.setAccessToken(res.access_token);
+      resolve(spotifyApi);
+    })
+    .catch(err => reject(err));
+  });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Helpers
@@ -27,6 +54,17 @@ const promisifyGetPlaylist = (owner, id) =>
     spotifyApi.getPlaylist(owner, id)
       .then((data) => {
         resolve(data.body.tracks.items);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
+const promisifyGetPlaylistExtraData = (owner, id) =>
+  new Promise((resolve, reject) => {
+    spotifyApi.getPlaylist(owner, id)
+      .then((data) => {
+        resolve(data.body);
       })
       .catch((err) => {
         reject(err);
@@ -57,6 +95,13 @@ const parsePlaylistData = (playlistData, tracksArray) => ({
   playlist_tracks_total: tracksArray.length,
 });
 
+const parsePlaylistDataExtra = (playlistData, tracksArray, country) => ({
+  playlist_id: playlistData.id,
+  playlist_name: `${country} : ${playlistData.name}`,
+  playlist_tracks: JSON.stringify(tracksArray),
+  playlist_tracks_total: tracksArray.length,
+});
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Worker
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,6 +109,7 @@ const parsePlaylistData = (playlistData, tracksArray) => ({
 // Read 'Run' for details
 
 const spotifyWorker = (owner, limit, offset) => {
+  console.log('WOKER ENGAGE! spotifyApi: ', spotifyApi)
   spotifyApi.getUserPlaylists(owner, { limit, offset })
     .then((data) => {
       data.body.items.forEach((playlistData) => {
@@ -95,12 +141,51 @@ const spotifyWorker = (owner, limit, offset) => {
 
 // Read 'Run' for details
 
+
+const runExtraWorker = () => {
+  Object.keys(extraPlaylists).forEach((country) => {
+    extraPlaylists[country].forEach((uri) => {
+      // console.log(`${country}: ${uri}`);
+      const uriArray = uri.split(':');
+      const owner = uriArray[2];
+      const id = uriArray[4];
+      // console.log(`${country}: ${owner}: ${id}`);
+      const p = promisifyGetPlaylistExtraData(owner, id);
+      p.then((data) => {
+        const tracksData = data.tracks.items;
+        const tracksArray = [];
+        tracksData.forEach((singleTrackData) => {
+          // console.log(singleTrackData)
+          // console.log('!?!', singleTrackData.track.album.images.length);
+          if (singleTrackData.track.album.images.length > 0) {
+            tracksArray.push(singleTrackData.track.id);
+            const parsedTrackData = parseTrackData(singleTrackData);
+            // console.log(parsedTrackData);
+            Track.postTrack(parsedTrackData);
+          }
+        });
+        return [tracksArray, data];
+      })
+      .then((tracksTuple) => {
+        const parsedPlaylistData = parsePlaylistDataExtra(tracksTuple[1], tracksTuple[0], country);
+        // console.log(parsedPlaylistData);
+        Playlist.postPlaylist(parsedPlaylistData);
+      })
+      .catch(err => console.log(err));
+    });
+  });
+};
+
 const runWorkers = () => {
-  // spotifyWorker('thesoundsofspotify', 50, 0);
-  // spotifyWorker('thesoundsofspotify', 50, 50);
-  // spotifyWorker('thesoundsofspotify', 50, 100);
-  // spotifyWorker('thesoundsofspotify', 50, 150);
-  // spotifyWorker('thesoundsofspotify', 2, 200);
+  getAuth().then((spotifyApi) => {
+    // spotifyWorker('thesoundsofspotify', 50, 850);
+    // spotifyWorker('thesoundsofspotify', 50, 900);
+    spotifyWorker('thesoundsofspotify', 50, 950);
+    // spotifyWorker('thesoundsofspotify', 50, 150);
+    // spotifyWorker('thesoundsofspotify', 2, 200);
+    // runExtraWorker();
+  })
+  .catch(err => console.log(err));
 
   // EXPERIMENTAL! (not tested)
   // Attemps to get all 9928 playlists from user 'thesoundsofspotify'
@@ -130,3 +215,17 @@ const runWorkers = () => {
 // WARNING! Hundreds of API calls, run with caution as call limit can be reached fast
 
 runWorkers();
+// runExtraWorker();
+// Object.keys(extraPlaylists).forEach((country) => {
+//   knex('playliststest')
+//   .where('playlist_name', `${country} : Metal & Rock`)
+//   .del()
+//   .then(data => console.log(data));
+// });
+
+// spotifyApi.getPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK')
+//   .then(function(data) {
+//     console.log('Some information about this playlist', data.body);
+//   }, function(err) {
+//     console.log('Something went wrong!', err);
+//   });

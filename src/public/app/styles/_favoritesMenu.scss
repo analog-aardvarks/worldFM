@@ -1,0 +1,305 @@
+.FavoritesMenu {
+  z-index: 4;
+  position: fixed;
+  top: 73px;
+  right: 0px;
+  width: 350px;
+  color: $mainWhite;
+  background-color: $blackGlassDark;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.FavoritesMenu::before {
+  min-height: 8px;
+  content: '';
+  background-color: $blackGlass;
+  width: 3000px;
+  position: absolute;
+  top: -8px;
+}
+
+.FavoritesMenu::after {
+  min-height: 8px;
+  content: '';
+  background-color: $blackGlass;
+  width: 3000px;
+  position: absolute;
+  bottom: -8px;
+}
+
+.FavoritesMenu__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.FavoritesMenu__allSongs {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.FavoritesMenu__top {
+  @include bg-gradient();
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  user-select: none;
+  min-height: 28px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+  margin-bottom: 10px;
+}
+
+.FavoritesMenu__indivdualSong {
+  min-width: 345px;
+  min-height: 75px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  img {
+    box-sizing: border-box;
+    margin-left: 15px;
+    max-width: 70px;
+    max-height: 70px;
+    cursor: pointer;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.FavoritesMenu__indivdualSong:hover {
+  background-color: $bgGreyMedium;
+}
+
+.FavoritesMenu__indivdualSong__songInfo {
+  padding-left: 15px;
+  min-width: 220px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.FavoritesMenu__SongName,
+.FavoritesMenu__SongArtist {
+  cursor: default;
+  user-select: none;
+  padding-right: 15px;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.FavoritesMenu__songName {
+  font-weight: bold;
+}
+
+.FavoritesMenu__indivdualSong__actions {
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.FavoritesMenu__sync {
+  @include bg-gradient();
+  margin-top: 10px;
+  user-select: none;
+  min-height: 28px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  span {
+    margin-right: 15px;
+  }
+}
+
+.switch {
+  position: relative;
+  width: 32px;
+  height: 22px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  cursor: pointer;
+  top: 5px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $mainWhite;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  top: 2px;
+  background-color: $bgGreyMedium;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: $spotifyGreen;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px $spotifyGreen;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+.slider.round {
+  border-radius: 18px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.FavoritesMenu__slider {
+  display: flex;
+  align-items: center;
+}
+
+.FavoritesMenu__hover {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+  left: -300px;
+  bottom: 35.5px;
+  min-width: 345px;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  opacity: 0;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.FavoritesMenu__hover:hover {
+  opacity: 1;
+}
+
+.FavoritesMenu__indivdualSong__actions {
+  position: relative;
+  left: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FavoritesMenu__indivdualSong__Lightbox {
+  min-width: 70px;
+  min-height: 70px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.FavoritesMenu__indivdualSong__play {
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.70);
+  border-radius: 2.5px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.FavoritesMenu__expand,
+.FavoritesMenu__close {
+  position: absolute;
+  top: 0px;
+  padding: 2.5px;
+  background-color: rgba(0,0,0,0.70);
+  border-radius: 2.5px;
+}
+.FavoritesMenu__close {
+  left: 10px;
+}
+
+.FavoritesMenu__expand {
+  left: 62px;
+}
+
+.FavoritesMenu__close:hover,
+.FavoritesMenu__expand:hover {
+  background-color: rgba(0,0,0,0.93);
+}
+
+.FavoritesMenu__indivdualSong--selected,
+.FavoritesMenu__indivdualSong:hover {
+  background-color: $bgGreyMedium;
+  img {
+    border: 2px solid $spotifyGreen;
+  }
+  .FavoritesMenu__songName {
+    color: $spotifyGreen;
+  }
+}
+
+.FavoritesMenu__songName--selected {
+  color: $spotifyGreen;
+}

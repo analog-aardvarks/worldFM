@@ -1,7 +1,5 @@
-/* Globe syles */
 .water {
-  /*fill: rgba(50,167,224,0.4);*/
-  fill: rgba(0,0,0,0.75)
+  fill: rgba(10,10,10,1)
 }
 .land {
   fill: #ccc;
@@ -9,7 +7,6 @@
   stroke-width: 0.7px;
 }
 .available {
-  /*fill: #3c763d;*/
   fill: rgb(30, 215, 96);
 }
 .available:hover {
@@ -29,7 +26,7 @@
   box-shadow: inset 1px 1px 2px #ddd8dc;
   display: none;
 }
-div.countryTooltip {
+.countryTooltip {
   position: absolute !important;
   display: none;
   pointer-events: none;
@@ -42,10 +39,105 @@ div.countryTooltip {
   font-family: sans-serif;
 }
 .globeContainer {
-  margin-top: 60px;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 30px;
-  background-image: url("http://wallpapercave.com/wp/xX2GRj6.gif");
+  align-items: center;
+  svg {
+    z-index: 3;
+  }
+}
+
+.page-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+canvas {
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  background-image: url('https://preview.ibb.co/daJ0YF/Artboard.png');
+}
+
+#particles-js {
+  display: block;
+  vertical-align: bottom;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+#particles-js .particles-js-canvas-el {
+  background-position: center;
+  background-size: cover;
+  width: 100vw!important;
+  height: 100vh!important;
+  z-index: -1;
+}
+
+i.icon.fa.fa-chevron-down.faa-pulse.animated {
+  font-size: 40px;
+  position: absolute;
+  bottom: 100px;
+  color: $mainfontColor;
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  50% {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+  }
+
+  100% {
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  50% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  100% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+}
+
+.faa-pulse.animated,
+.faa-pulse.animated-hover:hover,
+.faa-parent.animated-hover:hover > .faa-pulse {
+  -webkit-animation: pulse 2s linear infinite;
+  animation: pulse 2s linear infinite;
+}
+
+.faa-pulse.animated.faa-fast,
+.faa-pulse.animated-hover.faa-fast:hover,
+.faa-parent.animated-hover:hover > .faa-pulse.faa-fast {
+  -webkit-animation: pulse 1s linear infinite;
+  animation: pulse 1s linear infinite;
+}
+
+.faa-pulse.animated.faa-slow,
+.faa-pulse.animated-hover.faa-slow:hover,
+.faa-parent.animated-hover:hover > .faa-pulse.faa-slow {
+  -webkit-animation: pulse 3s linear infinite;
+  animation: pulse 3s linear infinite;
 }

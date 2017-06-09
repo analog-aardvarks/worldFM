@@ -1,4 +1,4 @@
-import availableCountries from '../constance/availableCountries';
+import availableCountries from '../constants/availableCountries';
 import store from '../index';
 import { setCurrentCountry } from '../actions';
 

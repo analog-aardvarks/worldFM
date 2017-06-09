@@ -1,0 +1,99 @@
+.Song {
+  background-size: cover;
+  color: $mainfontColor;
+  border: 3px solid $blackGlassDark;
+  cursor: default;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  cursor: default;
+  i {
+    cursor: pointer;
+  }
+}
+
+.Song:hover .Song__container {
+  opacity: 1;
+}
+
+.SongHover__play-button,
+.SongHover__add-que,
+.SongHover__expand,
+.SongHover__add-favorites {
+  opacity: 0;
+  position: absolute;
+}
+
+.Song__wrapper {
+  position: relative;
+  font-family: 'Roboto';
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.Song__wrapper:hover {
+  opacity: 1;
+  background-color: $blackGlassLighter;
+  border: 3px solid $spotifyGreen;
+  .Song__name {
+    color: $spotifyGreen;
+  }
+}
+
+.Song__wrapper:hover .SongHover__play-button,
+.Song__wrapper:hover .SongHover__add-que,
+.Song__wrapper:hover .SongHover__expand,
+.Song__wrapper:hover .SongHover__add-favorites  {
+  opacity: 0.85;
+}
+
+.Song__wrapper:hover .SongHover__play-button:hover,
+.Song__wrapper:hover .SongHover__add-que:hover,
+.Song__wrapper:hover .SongHover__expand:hover,
+.Song__wrapper:hover .SongHover__add-favorites:hover  {
+  opacity: 0.65;
+}
+
+.Song__container {
+  opacity: 0;
+  background-color: $blackGlass;
+  display: flex;
+  color: $mainfontColor;
+  padding: 5px 10px;
+  z-index: 5;
+}
+
+.Song__info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.Song__ranking {
+  font-family: 'Permanent Marker', cursive;
+  color: $mainfontColor;
+  font-size: 22px;
+  min-width: 40px;
+  padding-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Song__name,
+.Song__artist {
+  // font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 16px;
+  padding-left: 3px;
+}
+
+.Song__name {
+  font-weight: bold;
+}
+
+.isFav:hover {
+  color: $spotifyGreen;
+}

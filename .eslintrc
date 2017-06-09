@@ -7,8 +7,9 @@
       "consistent-return": 0,
       "no-console": 0,
       "jsx-a11y/media-has-caption": 0,
-      "no-unused-vars": 0,
+      "no-unused-vars": 1,
       "react/prop-types": 0,
+      "no-continue": 0,
     },
   "globals": {
     "window": true,
@@ -16,5 +17,6 @@
     "topojson": true,
     "queue": true,
     "fetch": true,
+    "document": true,
   }
 }

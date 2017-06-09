@@ -9,9 +9,8 @@ Devices.info = (req, res) => {
     url: 'https://api.spotify.com/v1/me/player/devices',
     headers: { Authorization: `Bearer ${req.user.accessToken}` },
   })
-
-    .then(response => res.send(response))
-    .catch(err => res.status(404).send(err));
+  .then(response => res.send(response))
+  .catch(err => res.status(404).send(err));
 };
 
 Devices.getDevices = profile =>
@@ -22,10 +21,9 @@ Devices.getDevices = profile =>
       headers: { Authorization: `Bearer ${profile.accessToken}` },
     })
     .then((response) => {
-      console.log('ACCESS TOKEN========= ', profile.accessToken);
-      profile.devices = JSON.parse(response).devices;
-      profile.activeDevice = profile.devices.filter(d => d.is_active)[0];
-      resolve(profile);
+      const devices = JSON.parse(response).devices;
+      // const activeDevice = devices.filter(d => d.is_active)[0];
+      resolve(devices);
     })
     .catch(err => reject(err));
   });

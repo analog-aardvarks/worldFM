@@ -7,18 +7,17 @@ const Playlist = require('./helpers/Playlist');
 const MapData = require('./helpers/MapData');
 const Player = require('./helpers/Player');
 const Devices = require('./helpers/Devices');
-const UserPlaylist = require('./helpers/UserPlaylist');
+const User = require('./helpers/User');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Auth
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 routes.get('/auth/spotify', passport.authenticate('spotify',
-  { scope: ['user-read-playback-state', 'user-modify-playback-state'] }));
+  { scope: ['playlist-modify-public', 'playlist-modify-private', 'user-read-playback-state', 'user-modify-playback-state', 'user-library-modify'] }));
 
 routes.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  // (req, res) => res.redirect('/loggedIn'));
   (req, res) => {
     res.cookie('auth', 'true');
     Devices.getDevices(req).then(res.redirect('/'));
@@ -34,6 +33,27 @@ routes.get('/loggedIn', checkAuth, (req, res) => {
     <a href="/auth/logout">Log out</a>
     <pre>${JSON.stringify(req.user, null, 4)}</pre>`);
 });
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// User
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+routes.get('/user/info', User.info);
+routes.get('/user/all', User.all);
+
+// TODO
+// are this being used?
+
+routes.put('/sync', User.toggleSync);
+
+routes.route('/favorites')
+  .get(User.getFavoriteTracks)
+  .put(User.addFavorite)
+  .delete(User.removeFavorite);
+
+routes.put('/favorites/deleteAll', User.removeAllFavorites);
+
+routes.get('/sync', User.toggleSync);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Tracks
@@ -75,6 +95,19 @@ routes.get('/playlist/info', Playlist.getPlaylistInfo);
 
 // Gets the number of available playlists stored in the database
 routes.get('/playlist/length', Playlist.getPlaylistLength);
+
+// Gets the names of available playlists stored in the database
+routes.get('/playlist/names', Playlist.getPlaylistNames);
+
+// Sync favorites with the user's spotify playlist
+routes.post('/playlist/sync', Playlist.sync);
+
+// Creates a new Spotify playlist for the user
+routes.post('/playlist/save', Playlist.save);
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Data
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Serve data to d3 for asnyc loading
 routes.get('/data/world-110m.json', MapData.getWorldJson);
@@ -130,9 +163,10 @@ routes.get('/devices', Devices.info);
 // http://localhost:8080/player/play?device=${device_id}&type=playlist&id={playlist_id}&user=${playlist_owner}&offset=10
 routes.put('/player/play', Player.play);
 
-// Start a User's Playback
-// Uses user's active device at time of login
+// Pause a User's Playback
 routes.get('/player/pause', Player.pause);
+
+// Seeks to specified possition of a User's Playback
 routes.get('/player/seek', Player.seek);
 
 // Set Volume For User's Playback
@@ -142,14 +176,5 @@ routes.get('/player/seek', Player.seek);
 // http://localhost:8080/player/info?device=${device_id}&volume=50
 // http://localhost:8080/player/info?device=${device_id}&volume=0
 routes.get('/player/volume', Player.volume);
-
-routes.get('/player/auth', Player.isAuth);
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// User Playlists
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// routes.get('/userplaylist/info', UserPlaylist.getInfo);
-// routes.get('/userplaylist/delete', UserPlaylist.removeFromPlaylist);
 
 module.exports = routes;

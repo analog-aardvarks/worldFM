@@ -1,70 +1,139 @@
 .TopMenu {
   display: flex;
-  width: 340px;
-  border-bottom: 1px white;
+  align-items: center;
+  justify-content: space-between;
+  color: $mainfontColor;
+  padding-left: 40px;
+  padding-right: 35px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  top: 0px;
+  left: 0px;
+  position: fixed;
+  height: 65px;
+  z-index: 20;
+  // @include bg-gradient();
+  width: 100%;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  // transition: 2s;
+  i{
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  }
+  img {
+    position: relative;
+    // top: 40px;
+    max-width: 155px;
+    // transition: 0.35s;
+    margin-left: -16px;
+  }
 }
 
 .Menu--logo {
-  font-family: 'Permanent Marker', cursive;
+  color: $mainfontColor;
+  font-family: $mainTitleFont;
   font-size: 24pt;
   margin: 0;
-  color: white;
 }
 
-.Menu--logo:hover {
-  color: white;
+.Hamburger--icon {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 18px;
+  margin-left: 18px;
+}
+
+.TopMenu__content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  // border-bottom: 1px $mainfontColor;
+}
+
+.TopMenu__dropdownOptions {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  font-size: 10pt;
+  margin-left: 4px;
+}
+
+.TopMenu--CountryDropdown,
+.TopMenu--GenreDropdown {
+  min-width: 200px;
+  max-width: 200px;
+  color: #171717;
+  margin-right: 10px;
+  margin-left: 6px;
+}
+.Select-menu-outer {
+  width: 200px;
+  height: 240px;
+  padding: 0px 10px;
+}
+.has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+  color: $spotifyGreen;
+  font-family: 'Lato';
+}
+.Select-control {
+  border-color: #171717;
+  color: $spotifyGreen;
+}
+
+.FavoritesMenu--toggle,
+.GlobeView--toggle,
+.TopMenu--login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  i {
+    font-size: 18pt;
+    margin-bottom: 2px;
+    text-decoration: none;
+    color: $mainfontColor;
+  }
+  span {
+    font-size: 8pt;
+    opacity: 0.6;
+    text-decoration: none;
+    color: $mainfontColor;
+    margin-top: 2.5px;
+  }
+  span:hover {
+    text-decoration: none;
+  }
+}
+
+.TopMenu__icon {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.TopMenu__icon:hover {
   opacity: 0.75;
+}
+
+.TopMenu__icon:active {
+  color: rgb(30, 215, 96);
+  opacity: 1;
+}
+
+.TopMenu--user {
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
 
-.Menu--logo:active {
-  color: rgb(30, 215, 96)
+.TopMenu--logout,
+.TopMenu--login {
+  text-decoration: none;
 }
 
-// width of dropdown
-.TopMenu--CountryDropdown {
-  width: 140px;
-}
-
-// selected value font
-.has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-  color: rgb(30, 215, 96);
-    font-family: 'Lato';
-}
-
-//border
-.Select-control {
-  border-color: #171717;
-}
-
-// selected view
-.Select-value {
-  // background: linear-gradient(#171717, #353535, #171717);;
-  // border: none;
-}
-
-.Select-option {
-	background-color: white;
-	color: #171717;
-	cursor: pointer;
-  font-family: 'Lato';
-	display: block;
-	&.is-selected {
-		background-color: rgb(30, 215, 96);
-		color: white;
-	}
-	&.is-focused {
-		background-color: rgb(30, 215, 96);
-		color: white;
-	}
-}
-
-
-.ScrollDown--button {
-  font-size: 18pt;
-  margin-left: 20px;
-}
-
-.FireIcon {
-  margin-left: 20px;
+.TopMenu--logout {
+  color: $mainColor;
 }

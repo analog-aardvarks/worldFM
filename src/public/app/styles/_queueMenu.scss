@@ -1,25 +1,162 @@
 .QueueMenu {
   z-index: 15;
-  padding: 20px;
   position: fixed;
-  top: 60px;
-  right: 0%;
-  width: 300px;
-  height: calc(100% - 124px);
-  font-family: 'Permanent Marker', cursive;
-  color: white;
-  background-color: rgba(0,0,0,0.75);
+  bottom: 73px;
+  width: 100%;
+  height: 152px;
+  background-color: $blackGlassDark;
+  color: rgb(230, 230, 230);
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
-.IndividualSong {
+.QueueMenu__topBar {
+  @include bg-gradient();
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  user-select: none;
+  height: 28px;
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  font-size: 14pt;
-  width: 260px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-  border-bottom: 1px;
-  border-bottom-style: solid;
-  border-color: #636343;
+  padding: 0 15px;
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.QueueMenu__songList {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 124px;
+}
+
+.QueueMenu__indivdualSong {
+  display: flex;
+  border-radius: 3px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  min-width: 78px;
+  min-height: 108px;
+  max-height: 108px;
+  img {
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    max-width: 70px;
+    max-height: 70px;
+  }
+  i {
+    cursor: pointer;
+  }
+  i:hover {
+    opacity: 0.75;
+  }
+  i:active {
+    color: $spotifyGreen;
+    opacity: 1;
+  }
+}
+
+.QueueMenu__indivdualSong--selected,
+.QueueMenu__indivdualSong:hover {
+  background-color: $bgGreyMedium;
+  img {
+    border: 2px solid $spotifyGreen;
+  }
+  .QueueMenu__songName {
+    color: $spotifyGreen;
+  }
+}
+
+.QueueMenu__songName--selected {
+  color: $spotifyGreen;
+}
+
+.QueueMenu__indivdualSong:hover {
+  background-color: $bgGreyMedium;
+}
+
+.QueueMenu__indivdualSong__songInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 30px;
+  span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 78px;
+    padding-left: 4px;
+  }
+}
+
+.QueueMenu__songName {
+  font-weight: bold;
+}
+
+.QueueMenu__hover {
+  min-width: 78px;
+  min-height: 108px;
+  position: absolute;
+  left: -39px;
+  top: -104px;
+  opacity: 0;
+}
+
+.QueueMenu__hover:hover {
+  opacity: 1;
+}
+
+.QueueMenu__expand,
+.QueueMenu__close {
+  position: absolute;
+  top: 0px;
+  padding: 2.5px;
+  background-color: rgba(0,0,0,0.70);
+  border-radius: 2.5px;
+}
+.QueueMenu__close {
+  left: 0px;
+}
+
+.QueueMenu__expand {
+  right: 0px;
+}
+
+.QueueMenu__close:hover,
+.QueueMenu__expand:hover {
+  background-color: rgba(0,0,0,0.93);
+}
+
+.QueueMenu__light {
+  height: 70px;
+  width: 70px;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.QueueMenu__actions {
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.70);
+  border-radius: 2.5px;
+  padding: 5px;
+  i {
+    position: relative;
+    top: 0px;
+    left: 0px;
+  }
 }

@@ -1,24 +1,28 @@
 // import * as d3 from 'd3';
 // import * as topojson from 'topojson-client';
 // import * as queue from 'd3-queue';
-import availableCountries from '../constance/availableCountries';
+import availableCountries from '../constants/availableCountries';
 import store from '../index';
 import { setCurrentCountry } from '../actions';
 // import activateGlobe from '../helpers/globeBehavior';
 
 
-const renderGlobe = (element, handleCountryClick) => {
-  const width = 600;
-  const height = 500;
+const renderGlobe = (element, startCoordinates) => {
+  const globe = {};
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const height = h < w ? h * 0.55 : w * 0.7;
+  const width = height;
   const sens = 0.25;
-  const globeSize = 200;
+  const globeSize = height / 2;
   let focused;
+  let interval = {};
 
   // Set projection
 
   const projection = d3.geo.orthographic()
     .scale(globeSize)
-    .rotate([0, 0])
+    .rotate(startCoordinates)
     .translate([width / 2, height / 2])
     .clipAngle(90);
 
@@ -28,7 +32,8 @@ const renderGlobe = (element, handleCountryClick) => {
   // SVG container
   const svg = d3.select(element).append('svg')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
+    .attr('class', 'globe');
 
   // Add water
   svg.append('path')
@@ -36,9 +41,6 @@ const renderGlobe = (element, handleCountryClick) => {
     .attr('class', 'water')
     .attr('d', path);
 
-  const countryTooltip = d3.select(element)
-    .append('div')
-    .attr('class', 'countryTooltip');
   const globeSelect = d3.select(element)
     .append('select')
     .attr('class', 'globeSelect')
@@ -67,11 +69,12 @@ const renderGlobe = (element, handleCountryClick) => {
       .data(countries)
       .enter().append('path')
       .attr('class', 'land')
+      .attr('data-tip', 'doot')
       .attr('d', path)
       .filter(d => availableCountries.includes(countryById[d.id]))
         .classed('available', true);
 
-      // Drag event
+    // Drag event
 
     svg.call(d3.behavior.drag()
       .origin(() => {
@@ -88,29 +91,14 @@ const renderGlobe = (element, handleCountryClick) => {
     // Mouse events
 
     d3.selectAll('.land')
-      .on('mouseover', (d) => {
-        countryTooltip.text(countryById[d.id])
-          .style('left', `${(d3.event.pageX + 7)} px`)
-          .style('top', `${(d3.event.pageY - 15)} px`)
-          .style('display', 'block')
-          .style('opacity', 1);
-      })
-      .on('mouseout', (d) => {
-        countryTooltip.style('opacity', 0)
-          .style('display', 'none');
-      })
-      .on('mousemove', (d) => {
-        countryTooltip.style('left', `${d3.event.pageX + 7} px`)
-          .style('top', `${d3.event.pageY - 15} px`);
-      })
+      .attr('data-tip', d => countryById[d.id])
       .on('click', (d) => {
-        console.log(countryById[d.id]);
         if (availableCountries.includes(countryById[d.id])) {
           store.dispatch(setCurrentCountry(countryById[d.id]));
         }
       });
 
-    // Country focus on option select
+    // TODO: Country focus on option select
 
     // globeSelect.on('change', () => {
     //   const rotate = projection.rotate();
@@ -139,50 +127,98 @@ const renderGlobe = (element, handleCountryClick) => {
     //   })();
     // });
 
-    // Configuration for the spinning effect
-
-    let time = Date.now();
-    let rotation = [0, 0];
+    // Configuration for rotation
+    let time;
+    let rotation;
     const velocity = [0.015, -0];
+    let isSpinning = true;
 
     function spinningGlobe() {
-      // d3.timer(function () {
-        // get current time
-        const dt = Date.now() - time;
+      const dt = Date.now() - time;
 
-        // get the new position from modified projection function
-        projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+      // console.log('tick')
 
-        // update cities position = redraw
-        svg.selectAll('path.land').attr('d', path);
-      // });
+      // get the new position
+      projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+
+      // update land positions
+      svg.selectAll('path.land').attr('d', path);
     }
 
-    let interval;
-    function startSpin() {
-      time = Date.now();
-      rotation = projection.rotate();
-      interval = setInterval(spinningGlobe, 20);
+    globe.startSpin = () => {
+      if (window.innerWidth > 580) {
+        time = Date.now();
+        rotation = projection.rotate();
+        interval.current = setInterval(spinningGlobe, 30);
+      }
     }
-    function stopSpin() {
-      clearInterval(interval);
+    globe.stopSpin = () => {
+      clearInterval(interval.current);
     }
-    // Globe rotation
-    // const globeSpin = setInterval(spinningGlobe, 20);
-    svg.on('mouseleave', startSpin)
-      .on('mouseover', stopSpin);
-    startSpin();
+    // Rotate!
+    svg.on('mouseleave', globe.startSpin)
+      .on('mouseover', globe.stopSpin);
+    globe.startSpin();
+
+    // //////////////////
+    // d3.time implementation
+    // //////////////////
+
+    // function spinningGlobe(t) {
+    //   if (isSpinning) {
+    //     // get the new position
+    //     projection.rotate([rotation[0] + (velocity[0] * t), rotation[1] + (velocity[1] * t)]);
+    //
+    //     // update land positions
+    //     svg.selectAll('path.land').attr('d', path);
+    //   }
+    // }
+    //
+    // globe.startSpin = () => {
+    //   rotation = projection.rotate();
+    //   d3.timer(spinningGlobe);
+    //   isSpinning = true;
+    // };
+    // globe.stopSpin = () => {
+    //   // timer.stop();
+    //   isSpinning = false;
+    // };
+    // // Rotate!
+    // svg.on('mouseleave', globe.startSpin)
+    //   .on('mouseover', globe.stopSpin);
+    // globe.startSpin();
+
+    // Zoom!
+    // const scale0 = (width - 1)  / Math.PI;
+    //
+    // const zoom = d3.behavior.zoom()
+    //   .translate([width / 2, height / 2])
+    //   .scale(scale0)
+    //   .scaleExtent([scale0, 8 * scale0])
+    //   .on('zoom', zoomed);
+    //
+    // svg.call(zoom)
+    //   .call(zoom.event);
+    //
+    // function zoomed() {
+    //   projection.translate(zoom.translate())
+    //   .scale(zoom.scale());
+    //   svg.selectAll('path')
+    //   .attr('d', path);
+    // }
 
     function country(cnt, sel) {
-      console.log('cnt in country: ', cnt)
+      console.log('cnt in country: ', cnt);
       console.log('sel.value: ', sel.value);
       for (let i = 0; i < cnt.length; i++) {
         if (cnt[i].id === sel.value) return cnt[i];
       }
     }
   }
-
-}
+  globe.svg = svg;
+  globe.projection = projection;
+  return globe;
+};
 
 
 export default renderGlobe;
