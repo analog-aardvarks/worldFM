@@ -91,6 +91,11 @@
   .Player__volume {
     margin-right: 2px;
   }
+  //Song
+  .Song__name,
+  .Song__artist {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 325px) {
@@ -113,6 +118,11 @@
   //Song
   .Song__name,
   .Song__artist {
-    font-size: 14px;
+    font-size: 13px;
+  }
+  .Song__ranking {
+    font-size: 22px;
+    min-width: 35px;
+    padding-right: 10px;
   }
 }
