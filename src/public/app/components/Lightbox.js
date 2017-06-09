@@ -127,15 +127,8 @@ class Lightbox extends React.Component {
                     this.prevImage();
                   }}
                 />
-                {console.log('TRACK AT RENDER: ', this.track)}
+                {/* {console.log('TRACK AT RENDER: ', this.track)} */}
                 <div className="Lightbox__contentFullAlbumArtButtons">
-                  <img
-                    className="Lightbox__contentFullAlbumArt"
-                    src={this.track.track_album_image}
-                    alt="Album Art"
-                    width={this.size}
-                    height={this.size}
-                  />
                   <div className="Lightbox__contentHover" style={{ width:this.size, height:this.size }}>
                     <div className="Lightbox__contentHoverButtons">
                       <i
@@ -167,6 +160,15 @@ class Lightbox extends React.Component {
                       </div>
                     </div>
                   </div>
+
+                  <img
+                    className="Lightbox__contentFullAlbumArt"
+                    src={this.track.track_album_image}
+                    alt="Album Art"
+                    width={this.size}
+                    height={this.size}
+                  />
+
                 </div>
                 <i
                   className="fa fa fa-chevron-right fa-2x fa-fw"

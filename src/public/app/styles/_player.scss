@@ -176,7 +176,7 @@ input[type="range"]::-ms-fill-upper {
 .Device__selector {
   min-height: 152px;
   position: absolute;
-  right: 14px;
+  right: 0px;
   bottom: 73px;
   background-color: rgba(0, 0, 0, 0.75);
   display: flex;
@@ -206,7 +206,7 @@ input[type="range"]::-ms-fill-upper {
   display: flex;
   margin: 5px 0;
   padding: 15px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
   span {

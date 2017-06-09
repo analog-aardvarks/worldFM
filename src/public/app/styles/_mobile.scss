@@ -84,7 +84,7 @@
       font-size: 22px;
     }
   }
-  // Player
+  //Player
   .Player__extraButtonsMobileContent {
     font-size: 13px;
   }
@@ -101,7 +101,7 @@
   .Player__extraButtonsMobileContent {
     font-size: 12px;
   }
-  // Top Menu
+  //Top Menu
   .TopMenu--CountryDropdown,
   .TopMenu--GenreDropdown {
     min-width: 130px;
@@ -109,5 +109,10 @@
   }
   .Select-menu-outer {
     width: 130px;
+  }
+  //Song
+  .Song__name,
+  .Song__artist {
+    font-size: 14px;
   }
 }
