@@ -9,8 +9,9 @@ const config = process.env.SPOTIFYID ? {
 } : require('../../config');
 console.log('config',config)
 
-const baseURL = process.env.BASEURL || 'http://localhost:8080';
-console.log('baseURL',baseURL)
+// const baseURL = process.env.BASEURL || 'http://localhost:5000';
+const baseURL = 'http://localhost:5000';
+console.log('baseURL',`${baseURL}/auth/spotify/callback`)
 
 passport.use(new SpotifyStrategy({
   clientID: config.clientID,

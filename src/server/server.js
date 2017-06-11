@@ -14,7 +14,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  secret: process.env.seshSecret,
+  secret: process.env.seshSecret || 'GianCarlo Lives',
   resave: false,
   saveUninitialized: false,
 }));
@@ -22,6 +22,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
+
+// console.log('secret', process.env)
 
 
 const port = process.env.PORT || 8080;
