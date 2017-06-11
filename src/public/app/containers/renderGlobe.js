@@ -5,6 +5,8 @@ import availableCountries from '../constants/availableCountries';
 import store from '../index';
 import { setCurrentCountry } from '../actions';
 // import activateGlobe from '../helpers/globeBehavior';
+import mapShapes from '../../assets/world-110';
+import tsv from '../../assets/world-110m-country-names';
 
 
 const renderGlobe = (element, startCoordinates) => {
@@ -46,14 +48,19 @@ const renderGlobe = (element, startCoordinates) => {
     .attr('class', 'globeSelect')
     .attr('name', 'countries');
 
-  queue()
-    .defer(d3.json, '../data/world-110m.json')
-    .defer(d3.tsv, '../data/world-110m-country-names.tsv')
-    .await(ready);
+  // queue()
+  //   .json(mapShapes)
+  //   .tsv(tsv)
+  //   .await(ready);
+
+  const world = JSON.parse(mapShapes);
+  const countryData = tsv;
+
+  ready(world, countryData)
 
   // Main Function
 
-  function ready(error, world, countryData) {
+  function ready(world, countryData) {
     const countryById = {};
     const countries = topojson.feature(world, world.objects.countries).features;
 
