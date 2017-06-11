@@ -51,6 +51,6 @@
     "style-loader": "^0.18.1",
     "sweet-scroll": "^2.2.1",
     "underscore": "^1.8.3",
-    "webpack": "^2.5.1",
+    "webpack": "^2.5.1"
   }
 }
