@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "main": "src/server/server.js",
   "scripts": {
-    "start": "webpack && node src/server/server.js"
+    "deploy": "webpack && node src/server/server.js"
   },
   "repository": {
     "type": "git",
