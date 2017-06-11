@@ -17,10 +17,11 @@ const renderGlobe = (element, startCoordinates) => {
   const globeSize = height / 2;
   let focused;
   let interval = {};
+  const projectionMode = window.innerWidth < 600 ? 'mercator' : 'orthographic';
 
   // Set projection
 
-  const projection = d3.geo.orthographic()
+  const projection = d3.geo[projectionMode]()
     .scale(globeSize)
     .rotate(startCoordinates)
     .translate([width / 2, height / 2])
