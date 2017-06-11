@@ -9,7 +9,7 @@ const config = {
 };
 console.log('config',config)
 
-console.log('baseURL',`${baseURL}/auth/spotify/callback`)
+console.log('baseURL',`${process.env.url}/auth/spotify/callback`)
 
 passport.use(new SpotifyStrategy({
   clientID: config.clientID,
