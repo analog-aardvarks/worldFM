@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 
-// const config = require('../../config');
 const routes = require('./routes');
 
 const app = express();
@@ -28,9 +27,6 @@ app.get('*.js', function (req, res, next) {
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
 
-// console.log('secret', process.env)
-
-
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 app.listen(port, () =>
   console.log(`Listening on port ${port}`));

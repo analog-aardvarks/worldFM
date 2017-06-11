@@ -7,9 +7,6 @@ const config = {
   clientID: process.env.spotifyClient,
   clientSecret: process.env.spotifySecret,
 };
-console.log('config',config)
-
-console.log('baseURL',`${process.env.url}/auth/spotify/callback`)
 
 passport.use(new SpotifyStrategy({
   clientID: config.clientID,
