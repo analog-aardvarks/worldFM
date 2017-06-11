@@ -7,10 +7,10 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host: process.env.db_host || 'worldfmdbinstance.c3vuf1p7s48h.us-east-2.rds.amazonaws.com',
-      user: process.env.db_username || 'worldfm',
-      password: process.env.db_password || 'aabbccdd',
-      database: process.env.db_name || 'worldfmdb',
+      host: process.env.databaseHost,
+      user: process.env.databaseUsername,
+      password: process.env.databasePassword,
+      database: process.env.databaseName,
     },
   },
 };
