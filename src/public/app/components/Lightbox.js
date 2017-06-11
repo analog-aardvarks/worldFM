@@ -149,7 +149,7 @@ class Lightbox extends React.Component {
                     onClick={(e) => e.stopPropagation()}
                     >
                     <div className="Lightbox__contentHoverButtons"
-                    style={{justifyContent: this.props.auth ? 'space-around' : 'center'}}>
+                    style={{justifyContent: this.props.auth ? 'space-between' : 'center'}}>
                       <i
                         className={`fa fa-${icon} fa-2x fa-fw`}
                         onClick={() => {
@@ -162,18 +162,18 @@ class Lightbox extends React.Component {
                           }
                         }}
                       />
-                      <div className="Lightbox__contentHoverRight">
+                      <div className="Lightbox__contentHoverRight" style={{ display: this.props.auth ? 'flex' : 'none' }}>
                         <i
                           className="fa fa-heart fa-2x fa-fw"
                           style={{ color: (this.props.favorites.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
-                          display: this.props.auth ? 'flex' : 'none',}}
+                          }}
                           data-tip="Add to favorites"
                           onClick={() => this.handleFavoritesClick(this.track)}
                         />
                         <i
                           className="fa fa-plus fa-2x fa-fw"
                           style={{ color: (this.props.spotifyPlayer.queue.some(track => track.track_id === this.track.track_id) ? "#1ed760" : "rgb(230, 230, 230)"),
-                          display: this.props.auth ? 'flex' : 'none', }}
+                           }}
                           data-tip="Add to queue"
                           onClick={this.addToQueue}
                         />
