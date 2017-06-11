@@ -7,8 +7,10 @@ const config = process.env.SPOTIFYID ? {
   clientID: process.env.SPOTIFYID,
   clientSecret: process.env.SPOTIFYSECRET,
 } : require('../../config');
+console.log('config',config)
 
 const baseURL = process.env.BASEURL || 'http://localhost:8080';
+console.log('baseURL',baseURL)
 
 passport.use(new SpotifyStrategy({
   clientID: config.clientID,

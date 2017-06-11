@@ -1,4 +1,4 @@
-const config = require('../../../config.js');
+// const config = require('../../../config.js');
 
 // Database is currently deployed, ask scrum master for credentials
 // If you want to make experimental changes or drop the database
@@ -7,10 +7,10 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host: config.db_host,
-      user: config.db_username,
-      password: config.db_password,
-      database: config.db_name,
+      host: process.env.db_host,
+      user: process.env.db_username,
+      password: process.env.db_password,
+      database: process.env.db_name,
     },
   },
 };
