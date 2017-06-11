@@ -5,7 +5,8 @@
   "main": "src/server/server.js",
   "scripts": {
     "start": "node src/server/server.js",
-    "watch": "webpack -d --w"
+    "watch": "webpack -d --w",
+    "deploy": "webpack && node src/server/server.js"
   },
   "repository": {
     "type": "git",
