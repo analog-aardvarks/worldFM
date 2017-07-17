@@ -162,11 +162,11 @@ class Player extends React.Component {
             nextIdx = idx;
           }
 
-          if (mode === 'queue' && !this.props.spotifyPlayer.shuffle) {
-            if (currentPlaylist.length === 0 || idx === currentPlaylist.length - 1) {
-              nextIdx = null;
-            }
-          }
+          // if (mode === 'queue' && !this.props.spotifyPlayer.shuffle) {
+          //   if (currentPlaylist.length === 0 || idx === currentPlaylist.length - 1) {
+          //     nextIdx = null;
+          //   }
+          // }
 
           if (mode === 'playlist' &&
           this.props.spotifyPlayer.currentTrack.track_id !== this.props.playlist[idx].track_id) {

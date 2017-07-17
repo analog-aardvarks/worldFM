@@ -4,7 +4,7 @@
   justify-content: space-between;
   color: $mainfontColor;
   padding-left: 40px;
-  padding-right: 40px;
+  padding-right: 35px;
   cursor: default;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -27,6 +27,7 @@
     // top: 40px;
     max-width: 155px;
     // transition: 0.35s;
+    margin-left: -16px;
   }
 }
 
