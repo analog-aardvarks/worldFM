@@ -93,6 +93,7 @@ const renderGlobe = (element, startCoordinates) => {
 
     d3.selectAll('.land')
       .attr('data-tip', d => countryById[d.id])
+      .attr('data-for', 'globe')
       .on('click', (d) => {
         if (availableCountries.includes(countryById[d.id])) {
           store.dispatch(setCurrentCountry(countryById[d.id]));

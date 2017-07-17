@@ -1,52 +1,44 @@
-# Project Name
+# WorldFM
 
-> Pithy project description
+React/Redux Web Application for discovering new music, powered by Spotify’s API
 
-## Team
+Featuring a fully functional audio player that allows the user to play tracks on any device with access to Spotify, you can even switch playback between devices on the go
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+Discover trending music from over 90 countries and 1500 musical genres
 
-## Table of Contents
+Love the music? Save your favorites and sync them with your Spotify account to listen at any time
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
+Easily navigate the website using our responsive, mobile-friendly user interface including a fully interactive 3D visualization of the earth
 
-## Usage
+Thanks to our web worker, new music is being added each week to our ever-growing library
 
-> Some usage instructions
+[Check it out!](http://www.worldfm.io/)
 
-## Requirements
+## Key Features
+- Search music by country or genre
+- Persistent favorites list
+- Sync with Spotify account
+- Queue
+- Full audio player
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+## Preview
+![Gif of application](src/public/assets/WorldFM.gif)
 
-## Development
+## Tech Stack
+- ReactJS / Redux
+- NodeJS / ExpressJS
+- MySQL
+- KnexJS
+- D3
+- ParticlesJS
+- Sass
+- Spotify API
 
-### Installing Dependencies
+### The WorldFM Team
+[Anthony Greenheck](https://github.com/anthonyemg) - Product Owner / Fullstack Developer
 
-From within the root directory:
+[Arturo Ruvalcaba](https://github.com/aruvham) - Scrum Master / Fullstack Developer
 
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
+[David Hamberlin](https://github.com/dhamberlin) - Fullstack Developer
 
-### Roadmap
-
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
-
-
-## Contributing
-
-See [CONTRIBUTING.md](_CONTRIBUTING.md) for contribution guidelines.
+[Pierry Etienne](https://github.com/petienne1) - Fullstack Developer
