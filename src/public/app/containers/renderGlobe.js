@@ -4,8 +4,7 @@
 import availableCountries from '../constants/availableCountries';
 import store from '../index';
 import { setCurrentCountry } from '../actions';
-// import activateGlobe from '../helpers/globeBehavior';
-
+import ReactTooltip from 'react-tooltip';
 
 const renderGlobe = (element, startCoordinates) => {
   const globe = {};
@@ -15,8 +14,6 @@ const renderGlobe = (element, startCoordinates) => {
   const width = height;
   const sens = 0.25;
   const globeSize = height / 2;
-  let focused;
-  let interval = {};
   const projectionMode = window.innerWidth < 600 ? 'mercator' : 'orthographic';
 
   // Set projection
@@ -86,7 +83,6 @@ const renderGlobe = (element, startCoordinates) => {
         const rotate = projection.rotate();
         projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
         svg.selectAll('path.land').attr('d', path);
-        svg.selectAll('.focused').classed('focused', focused = false);
       }));
 
     // Mouse events
@@ -100,123 +96,42 @@ const renderGlobe = (element, startCoordinates) => {
         }
       });
 
-    // TODO: Country focus on option select
-
-    // globeSelect.on('change', () => {
-    //   const rotate = projection.rotate();
-    //   const focusedCountry = country(countries, globeSelect);
-    //   console.log('focusedCountry: ', focusedCountry)
-    //   const p = d3.geo.centroid(focusedCountry);
-    //
-    //   svg.selectAll('.focused').classed('focused', focused = false);
-    //
-    // // Spin globe to selected country
-    //
-    //   (function transition() {
-    //     d3.transition()
-    //       .duration(2500)
-    //       .tween('rotate', () => {
-    //         const r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
-    //         return (t) => {
-    //           projection.rotate(r(t));
-    //           svg.selectAll('path').attr('d', path)
-    //           .classed('focused', (d, i) => {
-    //             console.log(focusedCountry)
-    //             return d.id === focusedCountry.id ? focused = d : false;
-    //           });
-    //         };
-    //       })
-    //   })();
-    // });
-
     // Configuration for rotation
     let time;
     let rotation;
     const velocity = [0.015, -0];
-    let isSpinning = true;
+    let isSpinning = false;
 
-    function spinningGlobe() {
-      const dt = Date.now() - time;
+    globe.interval = setInterval(() => {
+      if (store.getState().globeSpin) {
+        const dt = Date.now() - time;
 
-      // console.log('tick')
+        // get the new position
+        projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
 
-      // get the new position
-      projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
-
-      // update land positions
-      svg.selectAll('path.land').attr('d', path);
-    }
+        // update land positions
+        svg.selectAll('path.land').attr('d', path);
+      }
+    }, 50)
 
     globe.startSpin = () => {
       if (window.innerWidth > 580) {
         time = Date.now();
         rotation = projection.rotate();
-        interval.current = setInterval(spinningGlobe, 30);
+        store.dispatch({ type: 'START_SPIN' });
       }
     }
     globe.stopSpin = () => {
-      clearInterval(interval.current);
+      store.dispatch({ type: 'STOP_SPIN' });
     }
     // Rotate!
     svg.on('mouseleave', globe.startSpin)
       .on('mouseover', globe.stopSpin);
+
     globe.startSpin();
-
-    // //////////////////
-    // d3.time implementation
-    // //////////////////
-
-    // function spinningGlobe(t) {
-    //   if (isSpinning) {
-    //     // get the new position
-    //     projection.rotate([rotation[0] + (velocity[0] * t), rotation[1] + (velocity[1] * t)]);
-    //
-    //     // update land positions
-    //     svg.selectAll('path.land').attr('d', path);
-    //   }
-    // }
-    //
-    // globe.startSpin = () => {
-    //   rotation = projection.rotate();
-    //   d3.timer(spinningGlobe);
-    //   isSpinning = true;
-    // };
-    // globe.stopSpin = () => {
-    //   // timer.stop();
-    //   isSpinning = false;
-    // };
-    // // Rotate!
-    // svg.on('mouseleave', globe.startSpin)
-    //   .on('mouseover', globe.stopSpin);
-    // globe.startSpin();
-
-    // Zoom!
-    // const scale0 = (width - 1)  / Math.PI;
-    //
-    // const zoom = d3.behavior.zoom()
-    //   .translate([width / 2, height / 2])
-    //   .scale(scale0)
-    //   .scaleExtent([scale0, 8 * scale0])
-    //   .on('zoom', zoomed);
-    //
-    // svg.call(zoom)
-    //   .call(zoom.event);
-    //
-    // function zoomed() {
-    //   projection.translate(zoom.translate())
-    //   .scale(zoom.scale());
-    //   svg.selectAll('path')
-    //   .attr('d', path);
-    // }
-
-    function country(cnt, sel) {
-      console.log('cnt in country: ', cnt);
-      console.log('sel.value: ', sel.value);
-      for (let i = 0; i < cnt.length; i++) {
-        if (cnt[i].id === sel.value) return cnt[i];
-      }
-    }
+    ReactTooltip.rebuild();
   }
+
   globe.svg = svg;
   globe.projection = projection;
   return globe;
