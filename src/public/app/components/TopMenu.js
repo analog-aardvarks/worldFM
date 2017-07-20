@@ -54,8 +54,12 @@ const TopMenu = ({
   let height = window.innerHeight - 63;
 
   window.onscroll = () => {
-    if (window.pageYOffset >= height && showTopMenu === false) toggleTopMenu();
-    else if (window.pageYOffset < height && showTopMenu === true) toggleTopMenu();
+    if (window.pageYOffset >= height && showTopMenu === false) {
+      toggleTopMenu();
+    }
+    else if (window.pageYOffset < height && showTopMenu === true) {
+      toggleTopMenu();
+    }
   }
 
 /*

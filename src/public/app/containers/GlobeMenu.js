@@ -4,10 +4,12 @@ import renderGlobe from './renderGlobe';
 import particleConfig from '../../../../particlesjs-config.json';
 import SweetScroll from 'sweet-scroll';
 
-const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu }) => ({
+
+const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu, globeSpin }) => ({
   windowHeight,
   windowWidth,
   showTopMenu,
+  globeSpin,
 });
 
 class GlobeMenu extends Component {
@@ -20,34 +22,32 @@ class GlobeMenu extends Component {
   componentDidMount() {
     particlesJS('particles', particleConfig);
     this.globe = renderGlobe(this.container, [-100, 0]);
-    //code below forces window view to top before leaving
-    // window.onbeforeunload = function () {
-    //   window.scrollTo(0, 0);
-    // }
+
+    // stop spin when glob is off-screen, resume when on-screen
+    let height = window.innerHeight - 63
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset >= height && this.props.globeSpin) {
+        this.globe.stopSpin();
+      } else if (window.pageYOffset < height && !this.props.globeSpin) {
+        this.globe.startSpin();
+      }
+    })
   }
 
   componentWillReceiveProps(nextProps) {
+    // rerender globe is window size changes
     if (nextProps.windowHeight !== this.props.windowHeight
       || nextProps.windowWidth !== this.props.windowWidth) {
       d3.select('.globe').remove();
-      this.globe.stopSpin();
+      clearInterval(this.globe.interval);
       const rotation = this.globe.projection.rotate();
       this.globe = renderGlobe(this.container, rotation);
-    }
-
-    // Stop rotation when globe is out of view, resume when in view
-    if (!this.props.showTopMenu && nextProps.showTopMenu) {
-      this.globe.stopSpin();
-    } else if (this.props.showTopMenu && !nextProps.showTopMenu) {
-      this.globe.startSpin();
     }
   }
 
   scrollDown() {
     const sweetScroll = new SweetScroll();
-    console.log('scrolling down')
     const height = this.props.windowHeight - 62;
-    console.log([0, this.props.windowHeight - 62]);
     sweetScroll.to(height, 0);
   }
 

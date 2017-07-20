@@ -52,7 +52,6 @@ class Lightbox extends React.Component {
 
   handleKeyDown(e) {
     if (this.props.lightbox.show) {
-      console.log(e.code);
       switch (e.code) {
         case 'ArrowLeft':
           this.prevImage();
@@ -120,7 +119,6 @@ class Lightbox extends React.Component {
       this.track &&
       this.props.currentSong.src === this.track.track_preview_url &&
       this.props.currentSong.isPlaying) {
-      console.log('running')
       icon = 'pause';
     }
 
