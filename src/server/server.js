@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  secret: process.env.sessionSecret,
+  secret: process.env.sessionSecret || require('../../config.js').seshSecret,
   resave: false,
   saveUninitialized: false,
 }));
@@ -27,6 +27,6 @@ app.get('*.js', function (req, res, next) {
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 app.listen(port, () =>
   console.log(`Listening on port ${port}`));

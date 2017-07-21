@@ -38,15 +38,6 @@ function currentGenre(state = null, action) {
   }
 }
 
-// function currentTrend(state = 'Mix', action) {
-//   switch (action.type) {
-//     case 'SET_CURRENT_TREND':
-//       return action.trend;
-//     default:
-//       return state;
-//   }
-// }
-
 function windowWidth(state = window.innerWidth, action) {
   switch (action.type) {
     case 'WINDOW_RESIZE': return window.innerWidth;
@@ -280,13 +271,22 @@ function helperFuncs(state = [], action) {
   }
 }
 
+function globeSpin(state = true, action) {
+  switch (action.type) {
+    case 'START_SPIN':
+      return true;
+    case 'STOP_SPIN':
+      return false;
+    default: return state;
+  }
+}
+
 const reducer = combineReducers({
   activeDevice,
   sync,
   playlist,
   currentSong,
   currentCountry,
-  // currentTrend,
   windowWidth,
   windowHeight,
   showTrackInfo,
@@ -310,6 +310,7 @@ const reducer = combineReducers({
   lightbox,
   currentGenre,
   helperFuncs,
+  globeSpin,
 });
 
 export default reducer;

@@ -4,8 +4,8 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 const User = require('./helpers/User');
 const Devices = require('./helpers/Devices');
 const config = {
-  clientID: process.env.spotifyClient,
-  clientSecret: process.env.spotifySecret,
+  clientID: process.env.spotifyClient || require('../../config').clientID,
+  clientSecret: process.env.spotifySecret || require('../../config').clientSecret,
 };
 
 passport.use(new SpotifyStrategy({
