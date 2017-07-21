@@ -20,12 +20,17 @@ const App = () => (
     <Player />
     {/* <About /> */}
     <Lightbox />
-    {window.innerWidth > 580 ? <ReactTooltip
-      place="top"
-      type="light"
-      effect="solid"
-      delayShow={1125}
-    /> : null}
+    {window.innerWidth > 580 ?
+      <div>
+        <ReactTooltip
+          place="top"
+          type="light"
+          effect="solid"
+          delayShow={500}
+        />
+        <ReactTooltip id="globe" />
+      </div>
+    : null}
   </div>
 );
 

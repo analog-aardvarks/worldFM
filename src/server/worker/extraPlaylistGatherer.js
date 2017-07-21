@@ -1,6 +1,6 @@
 const request = require('request-promise-native');
 const knex = require('../db/db');
-const playlistData = require('./playlistData.js');
+const playlistData = require('../data/extraPlaylists.js');
 const playlistIndexData = require('./playlistIndexData.js');
 const playlistExceptions = require('./playlistExceptions.js');
 const config = require('../../../config');
@@ -9,7 +9,7 @@ const abbreviation = require('../data/abbreviation');
 
 const TRACK_DEBUG = true;
 const startingTime = Date.now();
-const owner = 'thesoundsofspotify';
+// const owner = 'thesoundsofspotify';
 const maxTracksPerPlaylist = 2000;
 
 const getAuth = () =>
@@ -65,8 +65,8 @@ const mapPlaylistToCountry = (tracks, playlist) => {
     country = availableCountries[i];
     // Start checking playlist names from several characters in
     // to avoid tagging CITY as Italy and COUNTRY as Colombia
-    if (playlist.name.substring(6).includes(country)
-      || playlist.name.substring(6).includes(abbreviation[country])) {
+    if (playlist.name.includes(country)
+      || playlist.name.includes(abbreviation[country])) {
       // Patch for India/Indiana
       if (country === 'India' && playlist.name.includes('Indiana')) continue;
       let addCount = 0;
@@ -108,12 +108,12 @@ const saveTrackInDatabase = track =>
 
 const saveTrackInDatabaseGenerator = track => () => saveTrackInDatabase(track);
 
-const getPlaylistTrackData = (id, offset, limit) =>
+const getPlaylistTrackData = (id, owner) =>
   new Promise((resolve, reject) => {
     getAuth()
     .then((token) => {
       const fields = 'items(track(album(type,name,id,images),artists(name,id),available_markets,duration_ms,name,id,preview_url,track_number,popularity))';
-      request(`https://api.spotify.com/v1/users/${owner}/playlists/${id}/tracks?fields=${fields}&limit=${limit}&offset=${offset}`,
+      request(`https://api.spotify.com/v1/users/${owner}/playlists/${id}/tracks?fields=${fields}&limit=100`,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(res => JSON.parse(res))
       .then(res => res.items)
@@ -146,14 +146,14 @@ const getPlaylistTrackData = (id, offset, limit) =>
     .catch(err => reject(err));
   });
 
-const getPlaylistTrackDataGenerator = (id, offset) => () => getPlaylistTrackData(id, offset, 100);
+const getPlaylistTrackDataGenerator = playlist => () => getPlaylistTrackData(playlist.id, playlist.owner);
 
 const getAllPlaylistTrackData = playlist =>
   new Promise((resolve, reject) => {
     const getPlaylistTrackDataPromises = [];
-    for (let i = 0; i < playlist.total; i += 100) {
-      getPlaylistTrackDataPromises.push(getPlaylistTrackDataGenerator(playlist.id, i));
-    }
+    // for (let i = 0; i < playlist.total; i += 100) {
+      getPlaylistTrackDataPromises.push(getPlaylistTrackDataGenerator(playlist));
+    // }
 
     const serial = funcs =>
       funcs.reduce((promise, func) =>
@@ -194,7 +194,14 @@ const getAndSavePlaylistGenerator = playlist => () => getAndSavePlaylist(playlis
 const getMultiplePlaylists = playlistBatch =>
   new Promise((resolve) => {
     const getAndSavePlaylistPromises = [];
-    playlistBatch.forEach((playlist) => {
+    const playlists = [];
+    playlistBatch.forEach((country) => {
+      country.urls.forEach((url) => {
+        const urlArr = url.split(':');
+        playlists.push({ name: country.name, owner: urlArr[2], id: urlArr[4] });
+      });
+    });
+    playlists.forEach((playlist) => {
       let save = true;
       playlistExceptions.forEach((exception) => {
         if (playlist.name.includes(exception)) {
@@ -210,7 +217,7 @@ const getMultiplePlaylists = playlistBatch =>
   });
 
 // GET Playlists
-getMultiplePlaylists(playlistData.splice(4650, 500))
+getMultiplePlaylists(playlistData)
 .then(() => knex.destroy()
   .then(() => {
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
