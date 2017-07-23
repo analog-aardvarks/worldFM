@@ -3,15 +3,17 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 
 const User = require('./helpers/User');
 const Devices = require('./helpers/Devices');
-const config = {
-  clientID: process.env.spotifyClient || require('../../config').clientID,
-  clientSecret: process.env.spotifySecret || require('../../config').clientSecret,
-};
+const config = process.env.SPOTIFYID ? {
+  clientID: process.env.SPOTIFYID,
+  clientSecret: process.env.SPOTIFYSECRET,
+} : require('../../config');
+
+const baseURL = process.env.BASEURL || 'http://localhost:8080';
 
 passport.use(new SpotifyStrategy({
   clientID: config.clientID,
   clientSecret: config.clientSecret,
-  callbackURL: `${process.env.url}/auth/spotify/callback`,
+  callbackURL: `${baseURL}/auth/spotify/callback`,
 },
   (accessToken, refreshToken, profile, done) => {
     profile.accessToken = accessToken;
