@@ -271,12 +271,18 @@ function helperFuncs(state = [], action) {
   }
 }
 
-function globeSpin(state = true, action) {
+function globeState(state = { spinning: false, dragged: false }, action) {
   switch (action.type) {
     case 'START_SPIN':
-      return true;
+      return { ...state, spinning: true };
     case 'STOP_SPIN':
-      return false;
+      return { ...state, spinning: false };
+    case 'DRAG_START': {
+      return { ...state, dragged: true };
+    }
+    case 'DRAG_END': {
+      return { ...state, dragged: false};
+    }
     default: return state;
   }
 }
@@ -310,7 +316,7 @@ const reducer = combineReducers({
   lightbox,
   currentGenre,
   helperFuncs,
-  globeSpin,
+  globeState,
 });
 
 export default reducer;

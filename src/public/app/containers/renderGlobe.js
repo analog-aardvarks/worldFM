@@ -79,11 +79,14 @@ const renderGlobe = (element, startCoordinates) => {
         const r = projection.rotate();
         return { x: r[0] / sens, y: -r[1] / sens };
       })
+      .on('dragstart', () => store.dispatch({ type: 'DRAG_START' }))
       .on('drag', () => {
         const rotate = projection.rotate();
         projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
         svg.selectAll('path.land').attr('d', path);
-      }));
+      })
+      .on('dragend', () => store.dispatch({ type: 'DRAG_END' }))
+    );
 
     // Mouse events
 
@@ -100,10 +103,10 @@ const renderGlobe = (element, startCoordinates) => {
     let time;
     let rotation;
     const velocity = [0.015, -0];
-    let isSpinning = false;
 
     globe.interval = setInterval(() => {
-      if (store.getState().globeSpin) {
+      const { spinning, dragged } = store.getstate().globe
+      if (spinning && !dragged) {
         const dt = Date.now() - time;
 
         // get the new position

@@ -23,7 +23,6 @@ coverage
 
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
-/src/public/app/
 /package-lock.json
 
 /src/server/worker/playlistData.js
