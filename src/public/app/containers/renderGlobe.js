@@ -44,19 +44,14 @@ const renderGlobe = (element, startCoordinates) => {
     .attr('class', 'globeSelect')
     .attr('name', 'countries');
 
-  // queue()
-  //   .json(mapShapes)
-  //   .tsv(tsv)
-  //   .await(ready);
-
-  const world = JSON.parse(mapShapes);
-  const countryData = tsv;
-
-  ready(world, countryData)
+  d3_queue.queue()
+    .defer(d3.json, '../data/world-110m.json')
+    .defer(d3.tsv, '../data/world-110m-country-names.tsv')
+    .await(ready);
 
   // Main Function
 
-  function ready(world, countryData) {
+  function ready(error, world, countryData) {
     const countryById = {};
     const countries = topojson.feature(world, world.objects.countries).features;
 
