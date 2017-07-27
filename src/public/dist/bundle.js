@@ -21108,7 +21108,7 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
 
   var globeSelect = d3.select(element).append('select').attr('class', 'globeSelect').attr('name', 'countries');
 
-  d3.queue().defer(d3.json, '../data/world-110m.json').defer(d3.tsv, '../data/world-110m-country-names.tsv').await(ready);
+  d3_queue.queue().defer(d3.json, '../data/world-110m.json').defer(d3.tsv, '../data/world-110m-country-names.tsv').await(ready);
 
   // Main Function
 

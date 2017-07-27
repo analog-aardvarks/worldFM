@@ -44,7 +44,7 @@ const renderGlobe = (element, startCoordinates) => {
     .attr('class', 'globeSelect')
     .attr('name', 'countries');
 
-  d3.queue()
+  d3_queue.queue()
     .defer(d3.json, '../data/world-110m.json')
     .defer(d3.tsv, '../data/world-110m-country-names.tsv')
     .await(ready);
