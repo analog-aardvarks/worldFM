@@ -105,8 +105,8 @@ const renderGlobe = (element, startCoordinates) => {
     const velocity = [0.015, -0];
 
     globe.interval = setInterval(() => {
-      const { spinning, dragged } = store.getState().globeState
-      if (spinning && !dragged) {
+      const { globeState } = store.getState()
+      if (globeState.spinning && !globeState.dragged) {
         const dt = Date.now() - time;
 
         // get the new position

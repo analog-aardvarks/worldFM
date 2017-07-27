@@ -21167,11 +21167,10 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
     var velocity = [0.015, -0];
 
     globe.interval = setInterval(function () {
-      var _store$getState$globe = _index2.default.getState().globe,
-          spinning = _store$getState$globe.spinning,
-          dragged = _store$getState$globe.dragged;
+      var _store$getState = _index2.default.getState(),
+          globeState = _store$getState.globeState;
 
-      if (spinning && !dragged) {
+      if (globeState.spinning && !globeState.dragged) {
         var dt = Date.now() - time;
 
         // get the new position
