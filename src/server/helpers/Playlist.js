@@ -165,6 +165,7 @@ Playlist.getPlaylist = (req, res) => {
   const genre = req.query.genre;
   if (genre === undefined) {
     getCountryPlaylist(country)
+    .then(data => removeAlbumDuplicates(data))
     .then(playlist => res.send(playlist))
     .catch((err) => {
       console.log(err);
