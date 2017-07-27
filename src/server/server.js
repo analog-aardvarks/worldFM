@@ -23,6 +23,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
 
 
-const port = process.env.port || 8080;
-app.listen(port, () =>
-  console.log(`Listening on port ${port}`));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () =>
+  console.log(`Listening on port ${PORT}`));
