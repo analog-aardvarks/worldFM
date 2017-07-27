@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  secret: process.env.seshSecret,
+  secret: process.env.sessionSecret,
   resave: false,
   saveUninitialized: false,
 }));

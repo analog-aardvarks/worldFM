@@ -5,10 +5,10 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host: process.env.db_host,
-      user: process.env.db_username,
-      password: process.env.db_password,
-      database: process.env.db_name,
+      host: process.env.databaseHost,
+      user: process.env.databaseUsername,
+      password: process.env.databasePassword,
+      database: process.env.databaseName,
     },
   },
 };
