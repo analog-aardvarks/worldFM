@@ -21062,9 +21062,149 @@ exports.default = Song;
 
 /***/ }),
 /* 136 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: SyntaxError: Unexpected token, expected ; (84:9)\n\n\u001b[0m \u001b[90m 82 | \u001b[39m      \u001b[33m.\u001b[39mon(\u001b[32m'dragstart'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 83 | \u001b[39m          store\u001b[33m.\u001b[39mdispatch({ type\u001b[33m:\u001b[39m \u001b[32m'STOP_SPIN'\u001b[39m }\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 84 | \u001b[39m        ))\n \u001b[90m    | \u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 85 | \u001b[39m      \u001b[33m.\u001b[39mon(\u001b[32m'drag'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 86 | \u001b[39m        \u001b[36mconst\u001b[39m rotate \u001b[33m=\u001b[39m projection\u001b[33m.\u001b[39mrotate()\u001b[33m;\u001b[39m\n \u001b[90m 87 | \u001b[39m        projection\u001b[33m.\u001b[39mrotate([d3\u001b[33m.\u001b[39mevent\u001b[33m.\u001b[39mx \u001b[33m*\u001b[39m sens\u001b[33m,\u001b[39m \u001b[33m-\u001b[39md3\u001b[33m.\u001b[39mevent\u001b[33m.\u001b[39my \u001b[33m*\u001b[39m sens\u001b[33m,\u001b[39m rotate[\u001b[35m2\u001b[39m]])\u001b[33m;\u001b[39m\u001b[0m\n");
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _availableCountries = __webpack_require__(42);
+
+var _availableCountries2 = _interopRequireDefault(_availableCountries);
+
+var _index = __webpack_require__(68);
+
+var _index2 = _interopRequireDefault(_index);
+
+var _actions = __webpack_require__(17);
+
+var _reactTooltip = __webpack_require__(109);
+
+var _reactTooltip2 = _interopRequireDefault(_reactTooltip);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import * as d3 from 'd3';
+// import * as topojson from 'topojson-client';
+// import * as queue from 'd3-queue';
+var renderGlobe = function renderGlobe(element, startCoordinates) {
+  var globe = {};
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  var height = h < w ? h * 0.55 : w * 0.7;
+  var width = height;
+  var sens = 0.25;
+  var globeSize = height / 2;
+  var projectionMode = window.innerWidth < 600 ? 'mercator' : 'orthographic';
+
+  // Set projection
+
+  var projection = d3.geo[projectionMode]().scale(globeSize).rotate(startCoordinates).translate([width / 2, height / 2]).clipAngle(90);
+
+  var path = d3.geo.path().projection(projection);
+
+  // SVG container
+  var svg = d3.select(element).append('svg').attr('width', width).attr('height', height).attr('class', 'globe');
+
+  // Add water
+  svg.append('path').datum({ type: 'Sphere' }).attr('class', 'water').attr('d', path);
+
+  var globeSelect = d3.select(element).append('select').attr('class', 'globeSelect').attr('name', 'countries');
+
+  d3_queue.queue().defer(d3.json, '../data/world-110m.json').defer(d3.tsv, '../data/world-110m-country-names.tsv').await(ready);
+
+  // Main Function
+
+  function ready(error, world, countryData) {
+    var countryById = {};
+    var countries = topojson.feature(world, world.objects.countries).features;
+
+    // Adding countries to select
+
+    countryData.forEach(function (d) {
+      countryById[d.id] = d.name;
+      var option = globeSelect.append('option');
+      option.text(d.name);
+      option.property('value', d.id);
+    });
+    world = svg.selectAll('path.land').data(countries).enter().append('path').attr('class', 'land').attr('data-tip', 'doot').attr('d', path).filter(function (d) {
+      return _availableCountries2.default.includes(countryById[d.id]);
+    }).classed('available', true);
+
+    // Drag event
+
+    svg.call(d3.behavior.drag().origin(function () {
+      var r = projection.rotate();
+      return { x: r[0] / sens, y: -r[1] / sens };
+    }).on('dragstart', function () {
+      _index2.default.dispatch({ type: 'STOP_SPIN' });
+    }).on('drag', function () {
+      var rotate = projection.rotate();
+      projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
+      svg.selectAll('path.land').attr('d', path);
+    }).on('dragend', function () {
+      return _index2.default.dispatch({ type: 'START_SPIN', rotation: projection.rotate() });
+    }));
+
+    // Mouse events
+
+    d3.selectAll('.land').attr('data-tip', function (d) {
+      return countryById[d.id];
+    }).attr('data-for', 'globe').on('click', function (d) {
+      if (_availableCountries2.default.includes(countryById[d.id])) {
+        _index2.default.dispatch((0, _actions.setCurrentCountry)(countryById[d.id]));
+      }
+    });
+
+    // Configuration for rotation
+    // let time;
+    // let rotation;
+    var velocity = [0.015, -0];
+
+    globe.interval = setInterval(function () {
+      var _store$getState = _index2.default.getState(),
+          globeState = _store$getState.globeState;
+
+      if (globeState.spinning && !globeState.dragged) {
+        var rotation = globeState.rotation,
+            time = globeState.time;
+
+        var dt = Date.now() - time;
+
+        // get the new position
+        projection.rotate([rotation[0] + velocity[0] * dt, rotation[1] + velocity[1] * dt]);
+
+        // update land positions
+        svg.selectAll('path.land').attr('d', path);
+      }
+    }, 50);
+
+    globe.startSpin = function () {
+      if (window.innerWidth > 580) {
+        // time = Date.now();
+        var rotation = projection.rotate();
+        _index2.default.dispatch({ type: 'START_SPIN', rotation: rotation });
+      }
+    };
+    globe.stopSpin = function () {
+      _index2.default.dispatch({ type: 'STOP_SPIN' });
+    };
+    // Rotate!
+    svg.on('mouseleave', globe.startSpin).on('mouseover', globe.stopSpin);
+
+    globe.startSpin();
+    _reactTooltip2.default.rebuild();
+  }
+
+  globe.svg = svg;
+  globe.projection = projection;
+  return globe;
+};
+
+exports.default = renderGlobe;
 
 /***/ }),
 /* 137 */

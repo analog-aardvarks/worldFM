@@ -80,14 +80,14 @@ const renderGlobe = (element, startCoordinates) => {
         return { x: r[0] / sens, y: -r[1] / sens };
       })
       .on('dragstart', () => {
-          store.dispatch({ type: 'STOP_SPIN' }
-        ))
+          store.dispatch({ type: 'STOP_SPIN' })
+        })
       .on('drag', () => {
         const rotate = projection.rotate();
         projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
         svg.selectAll('path.land').attr('d', path);
       })
-      .on('dragend', () => store.dispatch({ type: 'START_SPIN', projection.rotate() }))
+      .on('dragend', () => store.dispatch({ type: 'START_SPIN', rotation: projection.rotate() }))
     );
 
     // Mouse events
@@ -123,7 +123,7 @@ const renderGlobe = (element, startCoordinates) => {
     globe.startSpin = () => {
       if (window.innerWidth > 580) {
         // time = Date.now();
-        rotation = projection.rotate();
+        const rotation = projection.rotate();
         store.dispatch({ type: 'START_SPIN', rotation });
       }
     }
