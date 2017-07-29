@@ -17715,12 +17715,14 @@ function globeState() {
       return _extends({}, state, { spinning: true, rotation: action.rotation, time: Date.now() });
     case 'STOP_SPIN':
       return _extends({}, state, { spinning: false });
-    // case 'DRAG_START': {
-    //   return { ...state, dragged: true };
-    // }
-    // case 'DRAG_END': {
-    //   return { ...state, dragged: false};
-    // }
+    case 'DRAG_START':
+      {
+        return _extends({}, state, { dragged: true, spinning: false });
+      }
+    case 'DRAG_END':
+      {
+        return _extends({}, state, { dragged: false, spinning: true, rotation: action.rotation, time: Date.now() });
+      }
     default:
       return state;
   }
@@ -21140,13 +21142,13 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
       var r = projection.rotate();
       return { x: r[0] / sens, y: -r[1] / sens };
     }).on('dragstart', function () {
-      _index2.default.dispatch({ type: 'STOP_SPIN' });
+      _index2.default.dispatch({ type: 'DRAG_START' });
     }).on('drag', function () {
       var rotate = projection.rotate();
       projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
       svg.selectAll('path.land').attr('d', path);
     }).on('dragend', function () {
-      return _index2.default.dispatch({ type: 'START_SPIN', rotation: projection.rotate() });
+      return _index2.default.dispatch({ type: 'DRAG_END', rotation: projection.rotate() });
     }));
 
     // Mouse events

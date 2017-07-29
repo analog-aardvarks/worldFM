@@ -277,12 +277,12 @@ function globeState(state = { spinning: false, dragged: false, rotation: [0, 0],
       return { ...state, spinning: true, rotation: action.rotation, time: Date.now() };
     case 'STOP_SPIN':
       return { ...state, spinning: false };
-    // case 'DRAG_START': {
-    //   return { ...state, dragged: true };
-    // }
-    // case 'DRAG_END': {
-    //   return { ...state, dragged: false};
-    // }
+    case 'DRAG_START': {
+      return { ...state, dragged: true, spinning: false};
+    }
+    case 'DRAG_END': {
+      return { ...state, dragged: false, spinning: true, rotation: action.rotation, time: Date.now() };
+    }
     default: return state;
   }
 }
