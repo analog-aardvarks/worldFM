@@ -79,13 +79,15 @@ const renderGlobe = (element, startCoordinates) => {
         const r = projection.rotate();
         return { x: r[0] / sens, y: -r[1] / sens };
       })
-      .on('dragstart', () => store.dispatch({ type: 'DRAG_START' }))
+      .on('dragstart', () => {
+          store.dispatch({ type: 'STOP_SPIN' }
+        ))
       .on('drag', () => {
         const rotate = projection.rotate();
         projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
         svg.selectAll('path.land').attr('d', path);
       })
-      .on('dragend', () => store.dispatch({ type: 'DRAG_END' }))
+      .on('dragend', () => store.dispatch({ type: 'START_SPIN', projection.rotate() }))
     );
 
     // Mouse events
@@ -100,13 +102,14 @@ const renderGlobe = (element, startCoordinates) => {
       });
 
     // Configuration for rotation
-    let time;
-    let rotation;
+    // let time;
+    // let rotation;
     const velocity = [0.015, -0];
 
     globe.interval = setInterval(() => {
       const { globeState } = store.getState()
       if (globeState.spinning && !globeState.dragged) {
+        const { rotation, time } = globeState;
         const dt = Date.now() - time;
 
         // get the new position
@@ -119,9 +122,9 @@ const renderGlobe = (element, startCoordinates) => {
 
     globe.startSpin = () => {
       if (window.innerWidth > 580) {
-        time = Date.now();
+        // time = Date.now();
         rotation = projection.rotate();
-        store.dispatch({ type: 'START_SPIN' });
+        store.dispatch({ type: 'START_SPIN', rotation });
       }
     }
     globe.stopSpin = () => {

@@ -271,18 +271,18 @@ function helperFuncs(state = [], action) {
   }
 }
 
-function globeState(state = { spinning: false, dragged: false }, action) {
+function globeState(state = { spinning: false, dragged: false, rotation: [0, 0], time: Date.now() }, action) {
   switch (action.type) {
     case 'START_SPIN':
-      return { ...state, spinning: true };
+      return { ...state, spinning: true, rotation: action.rotation, time: Date.now() };
     case 'STOP_SPIN':
       return { ...state, spinning: false };
-    case 'DRAG_START': {
-      return { ...state, dragged: true };
-    }
-    case 'DRAG_END': {
-      return { ...state, dragged: false};
-    }
+    // case 'DRAG_START': {
+    //   return { ...state, dragged: true };
+    // }
+    // case 'DRAG_END': {
+    //   return { ...state, dragged: false};
+    // }
     default: return state;
   }
 }
