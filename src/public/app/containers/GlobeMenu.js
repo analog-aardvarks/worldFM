@@ -5,11 +5,11 @@ import particleConfig from '../../../../particlesjs-config.json';
 import SweetScroll from 'sweet-scroll';
 
 
-const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu, globeSpin }) => ({
+const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu, globeState }) => ({
   windowHeight,
   windowWidth,
   showTopMenu,
-  globeSpin,
+  globeState,
 });
 
 class GlobeMenu extends Component {
@@ -26,9 +26,9 @@ class GlobeMenu extends Component {
     // stop spin when glob is off-screen, resume when on-screen
     let height = window.innerHeight - 63
     window.addEventListener('scroll', () => {
-      if (window.pageYOffset >= height && this.props.globeSpin) {
+      if (window.pageYOffset >= height && this.props.globeState.spinning) {
         this.globe.stopSpin();
-      } else if (window.pageYOffset < height && !this.props.globeSpin) {
+      } else if (window.pageYOffset < height && !this.props.globeState.spinning) {
         this.globe.startSpin();
       }
     })

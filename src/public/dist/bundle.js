@@ -17706,15 +17706,23 @@ function helperFuncs() {
   }
 }
 
-function globeSpin() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+function globeState() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { spinning: false, dragged: false, rotation: [0, 0], time: Date.now() };
   var action = arguments[1];
 
   switch (action.type) {
     case 'START_SPIN':
-      return true;
+      return _extends({}, state, { spinning: true, rotation: action.rotation, time: Date.now() });
     case 'STOP_SPIN':
-      return false;
+      return _extends({}, state, { spinning: false });
+    case 'DRAG_START':
+      {
+        return _extends({}, state, { dragged: true, spinning: false });
+      }
+    case 'DRAG_END':
+      {
+        return _extends({}, state, { dragged: false, spinning: true, rotation: action.rotation, time: Date.now() });
+      }
     default:
       return state;
   }
@@ -17749,7 +17757,7 @@ var reducer = (0, _redux.combineReducers)({
   lightbox: lightbox,
   currentGenre: currentGenre,
   helperFuncs: helperFuncs,
-  globeSpin: globeSpin
+  globeState: globeState
 });
 
 exports.default = reducer;
@@ -19962,12 +19970,12 @@ var mapStateToProps = function mapStateToProps(_ref) {
   var windowHeight = _ref.windowHeight,
       windowWidth = _ref.windowWidth,
       showTopMenu = _ref.showTopMenu,
-      globeSpin = _ref.globeSpin;
+      globeState = _ref.globeState;
   return {
     windowHeight: windowHeight,
     windowWidth: windowWidth,
     showTopMenu: showTopMenu,
-    globeSpin: globeSpin
+    globeState: globeState
   };
 };
 
@@ -19994,9 +20002,9 @@ var GlobeMenu = function (_Component) {
       // stop spin when glob is off-screen, resume when on-screen
       var height = window.innerHeight - 63;
       window.addEventListener('scroll', function () {
-        if (window.pageYOffset >= height && _this2.props.globeSpin) {
+        if (window.pageYOffset >= height && _this2.props.globeState.spinning) {
           _this2.globe.stopSpin();
-        } else if (window.pageYOffset < height && !_this2.props.globeSpin) {
+        } else if (window.pageYOffset < height && !_this2.props.globeState.spinning) {
           _this2.globe.startSpin();
         }
       });
@@ -21092,7 +21100,7 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
   var width = height;
   var sens = 0.25;
   var globeSize = height / 2;
-  var projectionMode = window.innerWidth < 600 ? 'mercator' : 'orthographic';
+  var projectionMode = 'orthographic';
 
   // Set projection
 
@@ -21133,10 +21141,14 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
     svg.call(d3.behavior.drag().origin(function () {
       var r = projection.rotate();
       return { x: r[0] / sens, y: -r[1] / sens };
+    }).on('dragstart', function () {
+      _index2.default.dispatch({ type: 'DRAG_START' });
     }).on('drag', function () {
       var rotate = projection.rotate();
       projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
       svg.selectAll('path.land').attr('d', path);
+    }).on('dragend', function () {
+      return _index2.default.dispatch({ type: 'DRAG_END', rotation: projection.rotate() });
     }));
 
     // Mouse events
@@ -21150,13 +21162,18 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
     });
 
     // Configuration for rotation
-    var time = void 0;
-    var rotation = void 0;
+    // let time;
+    // let rotation;
     var velocity = [0.015, -0];
-    var isSpinning = false;
 
     globe.interval = setInterval(function () {
-      if (_index2.default.getState().globeSpin) {
+      var _store$getState = _index2.default.getState(),
+          globeState = _store$getState.globeState;
+
+      if (globeState.spinning && !globeState.dragged) {
+        var rotation = globeState.rotation,
+            time = globeState.time;
+
         var dt = Date.now() - time;
 
         // get the new position
@@ -21169,9 +21186,9 @@ var renderGlobe = function renderGlobe(element, startCoordinates) {
 
     globe.startSpin = function () {
       if (window.innerWidth > 580) {
-        time = Date.now();
-        rotation = projection.rotate();
-        _index2.default.dispatch({ type: 'START_SPIN' });
+        // time = Date.now();
+        var rotation = projection.rotate();
+        _index2.default.dispatch({ type: 'START_SPIN', rotation: rotation });
       }
     };
     globe.stopSpin = function () {

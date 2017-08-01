@@ -125,7 +125,6 @@ const activateGlobe = (error, world, countryData) => {
     clearInterval(interval);
   }
   // Globe rotation
-  // const globeSpin = setInterval(spinningGlobe, 20);
   svg.on('mouseleave', startSpin);
   svg.on('mouseover', stopSpin)
 

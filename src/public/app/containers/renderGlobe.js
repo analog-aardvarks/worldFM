@@ -14,7 +14,7 @@ const renderGlobe = (element, startCoordinates) => {
   const width = height;
   const sens = 0.25;
   const globeSize = height / 2;
-  const projectionMode = window.innerWidth < 600 ? 'mercator' : 'orthographic';
+  const projectionMode = 'orthographic';
 
   // Set projection
 
@@ -79,11 +79,16 @@ const renderGlobe = (element, startCoordinates) => {
         const r = projection.rotate();
         return { x: r[0] / sens, y: -r[1] / sens };
       })
+      .on('dragstart', () => {
+          store.dispatch({ type: 'DRAG_START' })
+        })
       .on('drag', () => {
         const rotate = projection.rotate();
         projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
         svg.selectAll('path.land').attr('d', path);
-      }));
+      })
+      .on('dragend', () => store.dispatch({ type: 'DRAG_END', rotation: projection.rotate() }))
+    );
 
     // Mouse events
 
@@ -97,13 +102,14 @@ const renderGlobe = (element, startCoordinates) => {
       });
 
     // Configuration for rotation
-    let time;
-    let rotation;
+    // let time;
+    // let rotation;
     const velocity = [0.015, -0];
-    let isSpinning = false;
 
     globe.interval = setInterval(() => {
-      if (store.getState().globeSpin) {
+      const { globeState } = store.getState()
+      if (globeState.spinning && !globeState.dragged) {
+        const { rotation, time } = globeState;
         const dt = Date.now() - time;
 
         // get the new position
@@ -116,9 +122,9 @@ const renderGlobe = (element, startCoordinates) => {
 
     globe.startSpin = () => {
       if (window.innerWidth > 580) {
-        time = Date.now();
-        rotation = projection.rotate();
-        store.dispatch({ type: 'START_SPIN' });
+        // time = Date.now();
+        const rotation = projection.rotate();
+        store.dispatch({ type: 'START_SPIN', rotation });
       }
     }
     globe.stopSpin = () => {
