@@ -12,7 +12,7 @@ Easily navigate the website using our responsive, mobile-friendly user interface
 
 Thanks to our web worker, new music is being added each week to our ever-growing library
 
-[Check it out!](http://www.worldfm.io/)
+[Check it out!](http://worldfm.herokuapp.com/)
 
 ## Key Features
 - Search music by country or genre
