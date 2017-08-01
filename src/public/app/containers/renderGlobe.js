@@ -14,7 +14,7 @@ const renderGlobe = (element, startCoordinates) => {
   const width = height;
   const sens = 0.25;
   const globeSize = height / 2;
-  const projectionMode = window.innerWidth < 600 ? 'mercator' : 'orthographic';
+  const projectionMode = 'orthographic';
 
   // Set projection
 
