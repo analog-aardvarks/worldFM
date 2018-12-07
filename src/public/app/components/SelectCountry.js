@@ -1,40 +1,45 @@
-import React, { Component } from 'react'
-import VirtualizedSelect from 'react-virtualized-select'
-import createFilterOptions from 'react-select-fast-filter-options';
+import React, { Component } from 'react';
+// import VirtualizedSelect from 'react-virtualized-select';
+import Select from 'react-select';
+// import createFilterOptions from 'react-select-fast-filter-options';
 import countries from '../constants/availableCountries';
-import SweetScroll from 'sweet-scroll';
+// import SweetScroll from 'sweet-scroll';
 
 class SelectCountry extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
+
+    this.options = countries.map(country => ({ label: country, value: country }));
   }
 
-  render () {
-    const options = countries.map(g => ({ value: g, label: g }));
-    const filterOptions = createFilterOptions({ options });
+  handleOnChange(newValue) {
+    console.log(newValue);
+    this.props.handleClearGenre();
+    this.props.handleSetCountry(newValue);
+  }
+
+  render() {
+    const { currentCountry } = this.props;
+    // const options = countries.map(country => ({ label: country, value: country }));
+    // const filterOptions = createFilterOptions({ options });
+
     return (
-      <VirtualizedSelect
-        className="TopMenu--CountryDropdown"
-        onChange={(selectValue) => {
-          this.props.handleSetCountry(selectValue);
-          this.props.handleClearGenre();
-          const sweetScroll = new SweetScroll();
-          console.log('scrolling down')
-          const height = this.props.windowHeight - 62;
-          console.log([0, this.props.windowHeight - 62]);
-          sweetScroll.to(height, 0);
-        }}
-        options={options}
-        filterOptions={filterOptions}
-        value={this.props.currentCountry}
-        simpleValue={true}
-        disabled={false}
+      // <VirtualizedSelect
+      //   className="TopMenu--CountryDropdown"
+      //   disabled={false}
+      //   filterOptions={filterOptions}
+      //   onChange={selectValue => this.handleOnChange(selectValue)}
+      //   options={options}
+      //   simpleValue
+      //   value={this.props.currentCountry}
+      // />
+      <Select
+        value={currentCountry}
+        onChange={newValue => this.handleOnChange(newValue)}
+        options={this.options}
       />
-    )
+    );
   }
 }
-
-// options:
-// multi={true}
 
 export default SelectCountry;
