@@ -1,5 +1,7 @@
-const config = require('../../../config.js');
+let config = {};
+try { config = require('./../../../config'); } catch { }
 
+console.log(config)
 module.exports = {
   development: {
     client: 'mysql',

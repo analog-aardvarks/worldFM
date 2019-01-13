@@ -4,11 +4,11 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
-
-const config = require('../../config');
 const routes = require('./routes');
-
 const app = express();
+
+let config = {};
+try { config = require('./../../config'); } catch { }
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
