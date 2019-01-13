@@ -14,7 +14,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  secret: config.seshSecret,
+  secret: process.env.seshSecret || config.seshSecret,
   resave: false,
   saveUninitialized: false,
 }));
@@ -24,6 +24,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
 
 
-const port = process.env.port || 8080;
+const port = process.env.port || config.port;
 app.listen(port, () =>
   console.log(`Listening on port ${port}`));
