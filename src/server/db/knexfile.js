@@ -1,4 +1,5 @@
-const config = require('../../../config.js');
+let config = {};
+try { config = require('./../../../config'); } catch { }
 
 module.exports = {
   development: {

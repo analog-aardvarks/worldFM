@@ -1,7 +1,9 @@
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
-const config = require('./../../config.js');
 const User = require('./helpers/User');
+
+let config = {};
+try { config = require('./../../config'); } catch { }
 
 const baseURL = process.env.baseUrl || config.baseUrl;
 
