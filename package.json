@@ -47,7 +47,8 @@
     "sass-loader": "^6.0.5",
     "style-loader": "^0.18.1",
     "sweet-scroll": "^2.2.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "webpack": "^2.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -60,7 +61,6 @@
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-react": "^7.0.1",
-    "webpack": "^2.5.1"
+    "eslint-plugin-react": "^7.0.1"
   }
 }
