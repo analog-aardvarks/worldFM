@@ -24,6 +24,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(routes);
 
 
-const port = process.env.port || config.port;
+const port = process.env.PORT || config.port;
 app.listen(port, () =>
   console.log(`Listening on port ${port}`));
