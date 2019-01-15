@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: `${__dirname}/src/public/app/index.js`,
@@ -7,7 +8,7 @@ module.exports = {
     filename: 'bundle.js',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
@@ -22,6 +23,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new CompressionPlugin({
+      test: /\.js$|\.css$|\.html$/,
+    }),
+  ],
   // plugins: [
   //   new webpack.optimize.UglifyJsPlugin(),
   //   new webpack.optimize.AggressiveMergingPlugin(),
