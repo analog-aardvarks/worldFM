@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-// import VirtualizedSelect from 'react-virtualized-select';
 import Select from 'react-select';
-// import createFilterOptions from 'react-select-fast-filter-options';
 import countries from '../constants/availableCountries';
-// import SweetScroll from 'sweet-scroll';
 
 class SelectCountry extends Component {
   constructor(props) {
@@ -12,30 +9,16 @@ class SelectCountry extends Component {
     this.options = countries.map(country => ({ label: country, value: country }));
   }
 
-  handleOnChange(newValue) {
-    console.log(newValue);
+  handleOnChange(option) {
     this.props.handleClearGenre();
-    this.props.handleSetCountry(newValue);
+    this.props.handleSetCountry(option.value);
   }
 
   render() {
-    const { currentCountry } = this.props;
-    // const options = countries.map(country => ({ label: country, value: country }));
-    // const filterOptions = createFilterOptions({ options });
-
     return (
-      // <VirtualizedSelect
-      //   className="TopMenu--CountryDropdown"
-      //   disabled={false}
-      //   filterOptions={filterOptions}
-      //   onChange={selectValue => this.handleOnChange(selectValue)}
-      //   options={options}
-      //   simpleValue
-      //   value={this.props.currentCountry}
-      // />
       <Select
-        value={currentCountry}
-        onChange={newValue => this.handleOnChange(newValue)}
+        className="TopMenu--CountryDropdown"
+        onChange={option => this.handleOnChange(option)}
         options={this.options}
       />
     );

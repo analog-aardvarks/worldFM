@@ -1,37 +1,69 @@
-import React from 'react';
-import ReactTooltip from 'react-tooltip';
-import Menu from '../containers/Menu';
-import Playlist from '../containers/Playlist';
-import HiddenPlayer from '../containers/HiddenPlayer';
-import Player from './Player';
+import React, { PureComponent } from 'react';
 import ConnectedGlobe from '../containers/GlobeMenu';
+import HiddenPlayer from '../containers/HiddenPlayer';
+import Landing from './Landing';
+import Menu from '../containers/Menu';
+import Player from './Player';
+import Playlist from '../containers/Playlist';
+import ReactTooltip from 'react-tooltip';
 import '../styles/main.scss';
-import About from './About';
+// import About from './About';
 import Lightbox from './Lightbox';
 
-const showGlobe = true;
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
 
-const App = () => (
-  <div>
-    <HiddenPlayer />
-    {showGlobe ? <ConnectedGlobe /> : null}
-    <Menu />
-    <Playlist />
-    <Player />
-    {/* <About /> */}
-    <Lightbox />
-    {window.innerWidth > 580 ?
-      <div>
-        <ReactTooltip
-          place="top"
-          type="light"
-          effect="solid"
-          delayShow={500}
-        />
-        <ReactTooltip id="globe" />
-      </div>
-    : null}
-  </div>
-);
+    this.state = {
+      displayLanding: true,
+    };
+
+    this.showGlobe = true;
+  }
+
+  handleToggleDisplayLanding() {
+    this.setState({ displayLanding: !this.state.displayLanding });
+  }
+
+  render() {
+    const { displayLanding } = this.state;
+
+    const app = displayLanding ?
+      (
+        <div>
+          <Landing
+            handleToggleDisplayLanding={() => this.handleToggleDisplayLanding()}
+          />
+        </div>
+      ) :
+      (
+        <div>
+
+          <HiddenPlayer />
+          {this.showGlobe ? <ConnectedGlobe /> : null}
+          <Menu />
+          <Playlist />
+          <Player />
+          <Lightbox />
+
+          {window.innerWidth > 580 ?
+            <div>
+              <ReactTooltip
+                place="top"
+                type="light"
+                effect="solid"
+                delayShow={500}
+              />
+              <ReactTooltip id="globe" />
+            </div> :
+            null
+          }
+
+        </div>
+      );
+
+    return app;
+  }
+}
 
 export default App;
