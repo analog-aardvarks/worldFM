@@ -20,7 +20,6 @@
   "homepage": "https://github.com/analog-aardvarks/thesis#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "css-loader": "^0.28.3",
     "d3": "^4.9.1",
     "d3-queue": "^3.0.7",
     "express": "^4.15.3",
@@ -28,9 +27,7 @@
     "knex": "^0.13.0",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
-    "node-fetch": "^1.6.3",
     "node-sass": "^4.5.3",
-    "npm": "^4.6.1",
     "passport": "^0.3.2",
     "passport-spotify": "^0.3.1",
     "react": "^15.5.4",
@@ -45,8 +42,6 @@
     "redux-burger-menu": "^0.2.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
-    "sass-loader": "^6.0.5",
-    "style-loader": "^0.18.1",
     "sweet-scroll": "^2.2.1",
     "underscore": "^1.8.3"
   },
@@ -58,11 +53,14 @@
     "babel-preset-stage-2": "^6.24.1",
     "compression-webpack-plugin": "^2.0.0",
     "concurrently": "^4.1.0",
+    "css-loader": "^0.28.3",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.18.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
   }
