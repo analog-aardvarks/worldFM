@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import VirtualizedSelect from 'react-virtualized-select'
-// import createFilterOptions from 'react-select-fast-filter-options';
 import Select from 'react-select';
 import genres from '../constants/availableGenres';
 
@@ -8,36 +6,19 @@ class SelectGenre extends Component {
   constructor(props) {
     super(props);
 
-    this.options = genres.map(g => ({ value: g, label: g }));
+    this.options = genres.map(genre => ({ value: genre, label: genre }));
   }
 
-  handleOnChange(newValue) {
-    console.log(newValue);
+  handleOnChange(option) {
     this.props.handleClearCountry();
-    this.props.handleSetGenre(newValue);
+    this.props.handleSetGenre(option.value);
   }
 
   render() {
-    const { currentGenre } = this.props;
-    // const options = genres.map(g => ({ value: g, label: g }));
-    // const filterOptions = createFilterOptions({ options });
-
     return (
-      // <VirtualizedSelect
-      //   className="TopMenu--GenreDropdown"
-      //   onChange={(selectValue) => {
-      //     this.props.handleSetGenre(selectValue);
-      //     this.props.handleClearCountry();
-      //   }}
-      //   options={options}
-      //   filterOptions={filterOptions}
-      //   value={this.props.currentGenre}
-      //   simpleValue={true}
-      //   disabled={false}
-      // />
       <Select
-        value={currentGenre}
-        onChange={newValue => this.handleOnChange(newValue)}
+        className="TopMenu--GenreDropdown"
+        onChange={option => this.handleOnChange(option)}
         options={this.options}
       />
     );
