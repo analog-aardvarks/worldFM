@@ -24,6 +24,18 @@ class App extends PureComponent {
     this.showGlobe = true;
   }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll(e) {
+    console.log('scrolllll')
+  }
+
   handleToggleDisplayLanding() {
     this.setState({ displayLanding: !this.state.displayLanding });
   }

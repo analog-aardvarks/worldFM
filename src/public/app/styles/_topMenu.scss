@@ -17,17 +17,23 @@
   z-index: 20;
   // @include bg-gradient();
   width: 100%;
-  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-  // transition: 2s;
-  i{
+  transition: all 2s;
+
+  i {
     text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   }
+
   img {
     position: relative;
     // top: 40px;
     max-width: 155px;
     // transition: 0.35s;
     margin-left: -16px;
+  }
+
+  &.solid {
+    background: linear-gradient(to bottom, #202020 0%, #282828 50%, #202020 100%);
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   }
 }
 

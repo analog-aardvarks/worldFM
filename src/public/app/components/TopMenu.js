@@ -59,19 +59,9 @@ const TopMenu = ({
     }
   };
 
-  /*
-  style={{
-    width: showTopMenu ? '160px' : '300px',
-    top: showTopMenu ? '0px' : '40px'}}
-  */
-
   return (
     <div
-      className="TopMenu"
-      style={{
-        background: showTopMenu ? 'linear-gradient(to bottom, #202020 0%, #282828 50%, #202020 100%)' : 'rgba(0, 0, 0, 0)',
-        boxShadow: showTopMenu ? '2px 4px 3px rgba(0, 0, 0, 0.3)' : '2px 4px 3px rgba(0, 0, 0, 0)',
-      }}
+      className={`TopMenu${showTopMenu ? ' solid' : ''}`}
     >
 
       <div className="Menu--logo">

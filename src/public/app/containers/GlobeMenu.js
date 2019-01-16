@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import renderGlobe from './renderGlobe';
 import SweetScroll from 'sweet-scroll';
@@ -11,11 +11,14 @@ const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu, globeSpin }) 
   globeSpin,
 });
 
-class GlobeMenu extends Component {
+class GlobeMenu extends PureComponent {
 
   constructor(props) {
     super(props);
     this.scrollDown = this.scrollDown.bind(this);
+    this.state = {
+      showGlobe: props.windowWidth > 800,
+    };
   }
 
   componentDidMount() {
@@ -50,7 +53,7 @@ class GlobeMenu extends Component {
   }
 
   render() {
-    return (
+    return this.state.showGlobe && (
       <div className="page-container">
         <div
           ref={(el) => { this.container = el; }}
