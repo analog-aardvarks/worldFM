@@ -1,5 +1,5 @@
 .water {
-  fill: rgba(10,10,10,1)
+  fill: #111;
 }
 .land {
   fill: #ccc;
@@ -45,6 +45,8 @@
   align-items: center;
   svg {
     z-index: 3;
+    // width: 50%;
+    // height: 50%;
   }
 }
 
