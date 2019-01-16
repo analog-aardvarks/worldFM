@@ -4,11 +4,9 @@ import renderGlobe from './renderGlobe';
 import SweetScroll from 'sweet-scroll';
 
 
-const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu, globeSpin }) => ({
+const mapStateToProps = ({ windowHeight, windowWidth }) => ({
   windowHeight,
   windowWidth,
-  showTopMenu,
-  globeSpin,
 });
 
 class GlobeMenu extends PureComponent {
@@ -23,22 +21,17 @@ class GlobeMenu extends PureComponent {
 
   componentDidMount() {
     this.globe = renderGlobe(this.container, [-100, 0]);
-
-    // stop spin when glob is off-screen, resume when on-screen
-    let height = window.innerHeight - 63;
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset >= height && this.props.globeSpin) {
-        this.globe.stopSpin();
-      } else if (window.pageYOffset < height && !this.props.globeSpin) {
-        this.globe.startSpin();
-      }
-    });
   }
 
   componentWillReceiveProps(nextProps) {
+    const showGlobe = nextProps.windowWidth > 800; // desktop
+    if (showGlobe !== this.state.showGlobe) {
+      this.setState({ showGlobe });
+    }
     // rerender globe is window size changes
-    if (nextProps.windowHeight !== this.props.windowHeight
-      || nextProps.windowWidth !== this.props.windowWidth) {
+    if (showGlobe &&
+      (nextProps.windowHeight !== this.props.windowHeight ||
+        nextProps.windowWidth !== this.props.windowWidth)) {
       d3.select('.globe').remove();
       clearInterval(this.globe.interval);
       const rotation = this.globe.projection.rotate();
