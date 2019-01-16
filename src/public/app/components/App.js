@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import ConnectedGlobe from '../containers/GlobeMenu';
 import HiddenPlayer from '../containers/HiddenPlayer';
 import Landing from './Landing';
@@ -9,6 +10,8 @@ import ReactTooltip from 'react-tooltip';
 import '../styles/main.scss';
 // import About from './About';
 import Lightbox from './Lightbox';
+import Particles from './Particles';
+
 
 class App extends PureComponent {
   constructor(props) {
@@ -27,10 +30,12 @@ class App extends PureComponent {
 
   render() {
     const { displayLanding } = this.state;
+    const { auth } = this.props;
 
-    const app = displayLanding ?
+    const app = displayLanding && !auth ?
       (
         <div>
+          <Particles />
           <Landing
             handleToggleDisplayLanding={() => this.handleToggleDisplayLanding()}
           />
@@ -38,7 +43,7 @@ class App extends PureComponent {
       ) :
       (
         <div>
-
+          <Particles />
           <HiddenPlayer />
           {this.showGlobe ? <ConnectedGlobe /> : null}
           <Menu />
@@ -56,8 +61,7 @@ class App extends PureComponent {
               />
               <ReactTooltip id="globe" />
             </div> :
-            null
-          }
+            null}
 
         </div>
       );
@@ -66,4 +70,8 @@ class App extends PureComponent {
   }
 }
 
-export default App;
+const mapStateToProps = ({ auth }) => ({
+  auth,
+});
+
+export default connect(mapStateToProps, null)(App);
