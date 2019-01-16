@@ -126,8 +126,8 @@ const activateGlobe = (error, world, countryData) => {
   }
   // Globe rotation
   // const globeSpin = setInterval(spinningGlobe, 20);
-  svg.on('mouseleave', startSpin);
-  svg.on('mouseover', stopSpin)
+  // svg.on('mouseleave', startSpin);
+  // svg.on('mouseover', stopSpin)
 
   function country(cnt, sel) {
     console.log('cnt in country: ', cnt)

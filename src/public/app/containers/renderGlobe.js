@@ -100,10 +100,9 @@ const renderGlobe = (element, startCoordinates) => {
     let time;
     let rotation;
     const velocity = [0.015, -0];
-    let isSpinning = false;
 
     globe.interval = setInterval(() => {
-      if (store.getState().globeSpin) {
+      if (store.getState().aboveFold) {
         const dt = Date.now() - time;
 
         // get the new position
@@ -114,21 +113,12 @@ const renderGlobe = (element, startCoordinates) => {
       }
     }, 50)
 
-    globe.startSpin = () => {
-      if (window.innerWidth > 580) {
-        time = Date.now();
-        rotation = projection.rotate();
-        store.dispatch({ type: 'START_SPIN' });
-      }
-    }
-    globe.stopSpin = () => {
-      store.dispatch({ type: 'STOP_SPIN' });
-    }
     // Rotate!
-    svg.on('mouseleave', globe.startSpin)
-      .on('mouseover', globe.stopSpin);
+    // svg.on('mouseleave', globe.startSpin)
+    //   .on('mouseover', globe.stopSpin);
 
-    globe.startSpin();
+    time = Date.now();
+    rotation = projection.rotate();
     ReactTooltip.rebuild();
   }
 

@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { throttle } from 'underscore'
+
 import ConnectedGlobe from '../containers/GlobeMenu';
 import HiddenPlayer from '../containers/HiddenPlayer';
 import Landing from './Landing';
@@ -18,8 +20,10 @@ class App extends PureComponent {
     super(props);
 
     this.state = {
-      displayLanding: true,
+      displayLanding: !true,
     };
+
+    this.handleScroll = throttle(this.handleScroll, 20);
 
     this.showGlobe = true;
   }
@@ -32,8 +36,12 @@ class App extends PureComponent {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleScroll(e) {
-    console.log('scrolllll')
+  handleScroll = (e) => {
+    const { windowHeight, dispatch } = this.props
+    const aboveFold = window.scrollY <= windowHeight - 65 // menu height === 65px
+    if (aboveFold !== this.props.aboveFold) {
+      dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold })
+    }
   }
 
   handleToggleDisplayLanding() {
@@ -82,8 +90,10 @@ class App extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ auth }) => ({
+const mapStateToProps = ({ auth, aboveFold, windowHeight }) => ({
   auth,
+  aboveFold,
+  windowHeight,
 });
 
 export default connect(mapStateToProps, null)(App);

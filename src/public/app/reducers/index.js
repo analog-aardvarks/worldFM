@@ -220,14 +220,6 @@ function favorites(state = [], action) {
   }
 }
 
-function showTopMenu(state = false, action) {
-  switch (action.type) {
-    case 'SHOW_TOP_MENU': return true;
-    case 'HIDE_TOP_MENU': return false;
-    default: return state;
-  }
-}
-
 function lightbox(state = {}, action) {
   switch (action.type) {
     case 'SET_LIGHTBOX':
@@ -271,13 +263,12 @@ function helperFuncs(state = [], action) {
   }
 }
 
-function globeSpin(state = true, action) {
+function aboveFold(state = true, action) {
   switch (action.type) {
-    case 'START_SPIN':
-      return true;
-    case 'STOP_SPIN':
-      return false;
-    default: return state;
+    case 'UPDATE_ABOVE_FOLD':
+      return action.value;
+    default:
+      return state;
   }
 }
 
@@ -306,11 +297,10 @@ const reducer = combineReducers({
   showPlayerMobileOptions,
   favorites,
   showAbout,
-  showTopMenu,
   lightbox,
   currentGenre,
   helperFuncs,
-  globeSpin,
+  aboveFold,
 });
 
 export default reducer;
