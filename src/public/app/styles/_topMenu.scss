@@ -15,9 +15,7 @@
   position: fixed;
   height: 65px;
   z-index: 20;
-  // @include bg-gradient();
   width: 100%;
-  transition: all 2s;
 
   i {
     text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
@@ -32,8 +30,8 @@
   }
 
   &:after {
+    @include bg-gradient();
     display: block;
-    background: linear-gradient(to bottom, #202020 0%, #282828 50%, #202020 100%);
     width: 100%;
     height: 100%;
     position: absolute;
