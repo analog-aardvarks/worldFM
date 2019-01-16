@@ -5,6 +5,8 @@
   height: 100vh;
   justify-content: center;
   width: 100vw;
+  position: absolute;
+  z-index: 1;
 
   &__greeting {
     align-items: center;
@@ -20,7 +22,7 @@
 
   &__subheader {
     color: white;
-    font-size: 30px;
+    font-size: 22px;
     margin: 20px 0px;
   }
 

@@ -20,6 +20,7 @@ class SelectCountry extends Component {
         className="TopMenu--CountryDropdown"
         onChange={option => this.handleOnChange(option)}
         options={this.options}
+        placeholder="Select a country.."
       />
     );
   }

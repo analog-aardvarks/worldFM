@@ -20,6 +20,7 @@ class SelectGenre extends Component {
         className="TopMenu--GenreDropdown"
         onChange={option => this.handleOnChange(option)}
         options={this.options}
+        placeholder="Select a genre.."
       />
     );
   }

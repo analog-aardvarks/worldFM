@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import renderGlobe from './renderGlobe';
-import particleConfig from '../../../../particlesjs-config.json';
 import SweetScroll from 'sweet-scroll';
 
 
@@ -20,18 +19,17 @@ class GlobeMenu extends Component {
   }
 
   componentDidMount() {
-    particlesJS('particles', particleConfig);
     this.globe = renderGlobe(this.container, [-100, 0]);
 
     // stop spin when glob is off-screen, resume when on-screen
-    let height = window.innerHeight - 63
+    let height = window.innerHeight - 63;
     window.addEventListener('scroll', () => {
       if (window.pageYOffset >= height && this.props.globeSpin) {
         this.globe.stopSpin();
       } else if (window.pageYOffset < height && !this.props.globeSpin) {
         this.globe.startSpin();
       }
-    })
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,14 +52,12 @@ class GlobeMenu extends Component {
   render() {
     return (
       <div className="page-container">
-        <div id="particles">
-          <div
-            ref={(el) => { this.container = el; }}
-            className="globeContainer"
-            style={{ height: (window.innerHeight - 64) }}
-          />
-        </div>
-          <i className="icon fa fa-chevron-down faa-pulse animated" onClick={this.scrollDown} style={{right: (window.innerWidth/2) - 22.5}} />
+        <div
+          ref={(el) => { this.container = el; }}
+          className="globeContainer"
+          style={{ height: (window.innerHeight - 64) }}
+        />
+        <i className="icon fa fa-chevron-down faa-pulse animated" onClick={this.scrollDown} style={{ right: (window.innerWidth / 2) - 22.5 }} />
       </div>
     );
   }
