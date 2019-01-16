@@ -57,6 +57,11 @@
     &__greeting {
       width: 70vw;
     }
+
+    &__subheader {
+      font-size: 18px;
+      margin: 10px 0px 22px 0px;
+    }
   }
 
   //Favorites Menu
@@ -161,6 +166,11 @@
 }
 
 @media (max-width: 400px) {
+  .landing {
+    &__subheader {
+      font-size: 13px;
+    }
+  }
   //Lightbox
   .Lightbox__contentArtButtons {
     i {
@@ -191,6 +201,11 @@
 }
 
 @media (max-width: 325px) {
+  .landing {
+    &__subheader {
+      font-size: 12px;
+    }
+  }
   //Player
   .Player__controls {
     width: 175px;

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import particleConfig from '../../../../particlesjs-config.json';
 
-class GlobeMenu extends PureComponent {
+class Particles extends PureComponent {
   componentDidMount() {
     particlesJS('particles', particleConfig);
   }
@@ -13,4 +13,4 @@ class GlobeMenu extends PureComponent {
   }
 }
 
-export default GlobeMenu;
+export default Particles;
