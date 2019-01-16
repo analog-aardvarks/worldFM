@@ -6,6 +6,9 @@ import store from '../index';
 import { setCurrentCountry } from '../actions';
 import ReactTooltip from 'react-tooltip';
 
+import topoJSON from '../../assets/topoJSON';
+import countryNames from '../../assets/countryNames';
+
 const renderGlobe = (element, startCoordinates) => {
   const globe = {};
   const w = window.innerWidth;
@@ -44,14 +47,11 @@ const renderGlobe = (element, startCoordinates) => {
     .attr('class', 'globeSelect')
     .attr('name', 'countries');
 
-  queue()
-    .defer(d3.json, '../data/world-110m.json')
-    .defer(d3.tsv, '../data/world-110m-country-names.tsv')
-    .await(ready);
+  ready(topoJSON, countryNames)
 
   // Main Function
 
-  function ready(error, world, countryData) {
+  function ready(world, countryData) {
     const countryById = {};
     const countries = topojson.feature(world, world.objects.countries).features;
 
@@ -101,7 +101,19 @@ const renderGlobe = (element, startCoordinates) => {
     let rotation;
     const velocity = [0.015, -0];
 
-    globe.interval = setInterval(() => {
+    // globe.interval = setInterval(() => {
+    //   if (store.getState().aboveFold) {
+    //     const dt = Date.now() - time;
+
+    //     // get the new position
+    //     projection.rotate([rotation[0] + (velocity[0] * dt), rotation[1] + (velocity[1] * dt)]);
+
+    //     // update land positions
+    //     svg.selectAll('path.land').attr('d', path);
+    //   }
+    // }, 50)
+
+    const animateGlobe = () => {
       if (store.getState().aboveFold) {
         const dt = Date.now() - time;
 
@@ -111,7 +123,9 @@ const renderGlobe = (element, startCoordinates) => {
         // update land positions
         svg.selectAll('path.land').attr('d', path);
       }
-    }, 50)
+      requestAnimationFrame(animateGlobe);
+    };
+    // window.requestAnimationFrame(animateGlobe);
 
     // Rotate!
     // svg.on('mouseleave', globe.startSpin)

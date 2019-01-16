@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import renderGlobe from './renderGlobe';
 import SweetScroll from 'sweet-scroll';
+
+import renderGlobe from './renderGlobe';
+import Globe from '../components/Globe';
 
 
 const mapStateToProps = ({ windowHeight, windowWidth }) => ({
@@ -29,31 +31,32 @@ class GlobeMenu extends PureComponent {
       this.setState({ showGlobe });
     }
     // rerender globe is window size changes
-    if (showGlobe &&
-      (nextProps.windowHeight !== this.props.windowHeight ||
-        nextProps.windowWidth !== this.props.windowWidth)) {
-      d3.select('.globe').remove();
-      clearInterval(this.globe.interval);
-      const rotation = this.globe.projection.rotate();
-      this.globe = renderGlobe(this.container, rotation);
-    }
+    // if (showGlobe &&
+    //   (nextProps.windowHeight !== this.props.windowHeight ||
+    //     nextProps.windowWidth !== this.props.windowWidth)) {
+    //   d3.select('.globe').remove();
+    //   clearInterval(this.globe.interval);
+    //   const rotation = this.globe.projection.rotate();
+    //   this.globe = renderGlobe(this.container, rotation);
+    // }
   }
 
-  scrollDown() {
-    const sweetScroll = new SweetScroll();
-    const height = this.props.windowHeight - 62;
+  scrollDown(e) {
+    const sweetScroll = new SweetScroll({ duration: 200 });
+    const height = this.props.windowHeight - 71;
     sweetScroll.to(height, 0);
   }
 
   render() {
     return this.state.showGlobe && (
       <div className="page-container">
-        <div
-          ref={(el) => { this.container = el; }}
-          className="globeContainer"
-          style={{ height: (window.innerHeight - 64) }}
+        <Globe />
+        <i
+          className="icon fa fa-chevron-down faa-pulse animated"
+          onClick={this.scrollDown}
+          style={{ right: (window.innerWidth / 2) - 22.5 }}
+          role="button"
         />
-        <i className="icon fa fa-chevron-down faa-pulse animated" onClick={this.scrollDown} style={{ right: (window.innerWidth / 2) - 22.5 }} />
       </div>
     );
   }
