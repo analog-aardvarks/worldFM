@@ -8,10 +8,8 @@ import Player from './Player';
 import Playlist from '../containers/Playlist';
 import ReactTooltip from 'react-tooltip';
 import '../styles/main.scss';
-// import About from './About';
 import Lightbox from './Lightbox';
-import Particles from './Particles';
-
+// import About from './About';
 
 class App extends PureComponent {
   constructor(props) {
@@ -34,16 +32,16 @@ class App extends PureComponent {
 
     const app = displayLanding && !auth ?
       (
-        <div>
-          <Particles />
+        <div className="stars">
+          <div className="twinkling" />
           <Landing
             handleToggleDisplayLanding={() => this.handleToggleDisplayLanding()}
           />
         </div>
       ) :
       (
-        <div>
-          <Particles />
+        <div className="stars">
+          <div className="twinkling" />
           <HiddenPlayer />
           {this.showGlobe ? <ConnectedGlobe /> : null}
           <Menu />
