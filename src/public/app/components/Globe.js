@@ -18,17 +18,13 @@ const globeConfig = {
 class Globe extends PureComponent {
   componentDidMount() {
     // Initiate spin, set event listeners
-    this.frameCount = 0
     this.setupGlobe();
     this.addEventListeners();
     if (this.props.rotate) {
       this.frameRequest = requestAnimationFrame(this.updateGlobe);
     }
     if (globeConfig.logFPS) {
-      this.interval = setInterval(() => {
-        console.log('FPS: ', this.frameCount)
-        this.frameCount = 0
-      }, 1000)
+      this.initFPSLogger()
     }
   }
 
@@ -38,6 +34,21 @@ class Globe extends PureComponent {
     this.svg.remove().exit()
     if (globeConfig.logFPS) {
       clearInterval(this.interval)
+    }
+  }
+
+  initFPSLogger = () => {
+    this.frameCount = 0
+    this.interval = setInterval(() => {
+      console.log('FPS: ', this.frameCount)
+      this.frameCount = 0
+    }, 1000)
+    if (!this.frameRequest) {
+      const tick = () => {
+        this.frameCount++
+        requestAnimationFrame(tick)
+      }
+      this.frameRequest = requestAnimationFrame(tick)
     }
   }
 
