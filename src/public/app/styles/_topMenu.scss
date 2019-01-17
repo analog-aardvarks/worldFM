@@ -1,32 +1,23 @@
 .TopMenu {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: $mainfontColor;
-  padding-left: 40px;
-  padding-right: 35px;
-  cursor: default;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
   user-select: none;
-  top: 0px;
+  align-items: center;
+  color: #e6e6e6;
+  cursor: default;
+  display: flex;
+  height: 65px;
+  justify-content: space-between;
   left: 0px;
   position: fixed;
   height: 65px;
   z-index: 20;
   width: 100%;
+  top: 0px;
 
   i {
     text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-  }
-
-  img {
-    position: relative;
-    // top: 40px;
-    max-width: 155px;
-    // transition: 0.35s;
-    margin-left: -16px;
   }
 
   &:after {
@@ -53,7 +44,13 @@
   color: $mainfontColor;
   font-family: $mainTitleFont;
   font-size: 24pt;
-  margin: 0;
+  margin-left: 40px;
+
+  img {
+    position: relative;
+    max-width: 155px;
+    margin-left: -16px;
+  }
 }
 
 .Hamburger--icon {
@@ -66,10 +63,10 @@
 }
 
 .TopMenu__content {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: flex-end;
-  // border-bottom: 1px $mainfontColor;
+  margin-right: 40px;
 }
 
 .TopMenu__dropdownOptions {

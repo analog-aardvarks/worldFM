@@ -79,21 +79,6 @@ canvas {
   background-image: url('https://preview.ibb.co/daJ0YF/Artboard.png');
 }
 
-#particles-js {
-  display: block;
-  vertical-align: bottom;
-  width: 100vw;
-  min-height: 100vh;
-}
-
-#particles-js .particles-js-canvas-el {
-  background-position: center;
-  background-size: cover;
-  width: 100vw!important;
-  height: 100vh!important;
-  z-index: -1;
-}
-
 i.icon.fa.fa-chevron-down.faa-pulse.animated {
   font-size: 40px;
   margin: 100px 0;

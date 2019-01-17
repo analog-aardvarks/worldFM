@@ -1,5 +1,8 @@
 .Playlist {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 65px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(8, 12.5vw);
+  grid-template-rows: repeat(10, 12.5vw);
+  margin-bottom: 0px;
+  width: 906px;
 }

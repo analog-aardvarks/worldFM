@@ -1,17 +1,22 @@
 .Song {
   background-size: cover;
   color: $mainfontColor;
-  border: 3px solid $blackGlassDark;
+  // border: 3px solid $blackGlassDark;
   cursor: default;
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   cursor: default;
+  background: #292929; // remov later
+
   i {
     cursor: pointer;
   }
 }
 
 .Song:hover .Song__container {
+  bottom: 0px;
   opacity: 1;
+  position: absolute;
+  width: 100%;
 }
 
 .SongHover__play-button,
@@ -19,22 +24,29 @@
 .SongHover__expand,
 .SongHover__add-favorites {
   opacity: 0;
-  position: absolute;
+  // position: absolute;
 }
 
 .Song__wrapper {
-  position: relative;
-  font-family: 'Roboto';
-  font-weight: 400;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  font-family: 'Roboto';
+  font-weight: 400;
+  height: 100%;
   justify-content: flex-end;
+  position: relative;
+  width: 100%;
 }
 
 .Song__wrapper:hover {
-  opacity: 1;
+  align-items: center;
   background-color: $blackGlassLighter;
   border: 3px solid $spotifyGreen;
+  display: flex;
+  justify-content: center;
+  opacity: 1;
+
   .Song__name {
     color: $spotifyGreen;
   }
@@ -59,7 +71,7 @@
   background-color: $blackGlass;
   display: flex;
   color: $mainfontColor;
-  padding: 5px 10px;
+  padding: 5px 0px;
   z-index: 5;
 }
 
@@ -82,7 +94,6 @@
 
 .Song__name,
 .Song__artist {
-  // font-weight: bold;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -96,4 +107,29 @@
 
 .isFav:hover {
   color: $spotifyGreen;
+}
+
+.SongHover__play-button {
+  font-size: 56px;
+  height: 57px;
+  width: 50px;
+}
+
+.SongHover__expand {
+  font-size: 30px;
+  left: 10px;
+  position: absolute;
+  top: 10px;
+  width: 30px;
+}
+
+.SongHover__addAndFavorites {
+  align-items: center;
+  display: flex;
+  height: 30px;
+  justify-content: space-between;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 70px;
 }

@@ -1,3 +1,17 @@
+@media (max-width: 1200px)  {
+  .Playlist {
+    grid-template-columns: repeat(5, 20vw);
+    grid-template-rows: repeat(16, 20vw);
+  }
+}
+
+@media (max-width: 900px)  {
+  .Playlist {
+    grid-template-columns: repeat(4, 25vw);
+    grid-template-rows: repeat(20, 25vw);
+  }
+}
+
 @media (max-width: 800px)  {
   .landing {
     &__greeting {
@@ -60,6 +74,13 @@
   }
 }
 
+@media (max-width: 750px)  {
+  .Playlist {
+    grid-template-columns: repeat(3, 33.33vw);
+    grid-template-rows: repeat(26, 33.33vw);
+  }
+}
+
 @media (max-width: 600px) {
   .landing {
     &__greeting {
@@ -109,9 +130,7 @@
     font-size: 24px;
   }
   .SongHover__play-button {
-    font-size: 64px;
-    left: 56px !important;
-    bottom: 70px !important;
+    font-size: 48px;
   }
   .Song__ranking {
     min-width: 35px;
@@ -198,9 +217,7 @@
     font-size: 13px;
   }
   .SongHover__play-button {
-    font-size: 58px;
-    left: 50px !important;
-    bottom: 62px !important;
+    font-size: 40px;
   }
   .Song__ranking {
     min-width: 33px;
