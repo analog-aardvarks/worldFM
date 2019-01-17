@@ -25,15 +25,6 @@ class GlobeMenu extends PureComponent {
     if (showGlobe !== this.state.showGlobe) {
       this.setState({ showGlobe });
     }
-    // rerender globe is window size changes
-    // if (showGlobe &&
-    //   (nextProps.windowHeight !== this.props.windowHeight ||
-    //     nextProps.windowWidth !== this.props.windowWidth)) {
-    //   d3.select('.globe').remove();
-    //   clearInterval(this.globe.interval);
-    //   const rotation = this.globe.projection.rotate();
-    //   this.globe = renderGlobe(this.container, rotation);
-    // }
   }
 
   scrollDown(e) {
@@ -49,7 +40,6 @@ class GlobeMenu extends PureComponent {
         <i
           className="icon fa fa-chevron-down faa-pulse animated"
           onClick={this.scrollDown}
-          style={{ right: (window.innerWidth / 2) - 22.5 }}
           role="button"
         />
       </div>

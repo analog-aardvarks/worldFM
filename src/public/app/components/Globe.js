@@ -9,8 +9,7 @@ import countriesByID from '../../assets/countriesByID';
 import countryShapeData from '../../assets/countryShapes';
 
 const globeConfig = {
-  width: 400,
-  height: 400,
+  diameter: 1000,
   dragSensitivity: 0.25,
   startingRotation: [60, 0]
 }
@@ -28,23 +27,21 @@ class Globe extends PureComponent {
   setupGlobe() {
     // initialize d3 code
     const {
-      width,
-      height,
+      diameter,
       startingRotation,
     } = globeConfig;
 
     // Set projection
     this.projection = d3.geoOrthographic()
-      .scale(height / 2)
+      .scale(diameter / 2)
       .rotate(startingRotation)
-      .translate([width / 2, height / 2])
+      .translate([diameter / 2, diameter / 2])
       .clipAngle(90);
 
     this.path = d3.geoPath().projection(this.projection)
 
     this.svg = d3.select(this.container).append('svg')
-      .attr('width', width)
-      .attr('height', height)
+      .attr('viewBox', `0 0 ${diameter} ${diameter}`)
       .attr('class', 'globe');
 
     // Add water
@@ -67,6 +64,8 @@ class Globe extends PureComponent {
       .enter().append('path')
       .attr('class', 'land')
       .attr('d', this.path)
+      .attr('data-tip', d => countriesByID[d.id])
+      .attr('data-for', 'globe')
       .filter(d => availableCountries.includes(countriesByID[d.id]))
         .classed('available', true);
   }
@@ -90,6 +89,13 @@ class Globe extends PureComponent {
         ]);
         this.svg.selectAll('path.land').attr('d', this.path)
       }));
+
+      this.svg.selectAll('path.land')
+        .on('click', (d) => {
+          if (availableCountries.includes(countriesByID[d.id])) {
+            this.props.dis
+          }
+        })
   }
 
   updateGlobe() {

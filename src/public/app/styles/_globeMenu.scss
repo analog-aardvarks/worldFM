@@ -3,7 +3,7 @@
 }
 .land {
   fill: #ccc;
-  stroke: rgba(0,0,0,0.75);
+  stroke: #111;
   stroke-width: 0.7px;
 }
 .available {
@@ -44,9 +44,12 @@
   justify-content: center;
   align-items: center;
   svg {
+    padding: 70px 15px 90px;
     z-index: 3;
-    // width: 50%;
-    // height: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    width: 80%;
+    height: 80%;
   }
 }
 
@@ -81,8 +84,9 @@ canvas {
 
 i.icon.fa.fa-chevron-down.faa-pulse.animated {
   font-size: 40px;
+  margin: 25px 0;
   position: absolute;
-  bottom: 100px;
+  bottom: 0;
   color: $mainfontColor;
 }
 
