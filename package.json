@@ -39,6 +39,7 @@
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
     "sweet-scroll": "^2.2.1",
+    "topojson-client": "^3.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

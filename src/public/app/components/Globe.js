@@ -1,22 +1,24 @@
 import React, { PureComponent } from 'react'
 import * as d3 from 'd3'
+import { feature } from 'topojson-client'
 
 // import renderGlobe from '../containers/renderGlobe'
 
-import topoJSON from '../../assets/topoJSON'
 import availableCountries from '../constants/availableCountries';
 import countriesByID from '../../assets/countriesByID';
+import countryShapeData from '../../assets/countryShapes';
 
 const globeConfig = {
   width: 400,
   height: 400,
-  sens: 0.25,
-  startingRotation: [0, -11]
+  dragSensitivity: 0.25,
+  startingRotation: [60, 0]
 }
 class Globe extends PureComponent {
   componentDidMount() {
     // Initiate spin, set event listeners
-    this.setupGlobe()
+    this.setupGlobe();
+    this.addEventListeners();
   }
 
   componentWillUnmount() {
@@ -28,20 +30,17 @@ class Globe extends PureComponent {
     const {
       width,
       height,
-      sens,
       startingRotation,
     } = globeConfig;
 
-    this.globe = {};
-
     // Set projection
-    const projection = d3.geoOrthographic()
+    this.projection = d3.geoOrthographic()
       .scale(height / 2)
       .rotate(startingRotation)
       .translate([width / 2, height / 2])
       .clipAngle(90);
 
-    const path = d3.geoPath().projection(projection)
+    this.path = d3.geoPath().projection(this.projection)
 
     this.svg = d3.select(this.container).append('svg')
       .attr('width', width)
@@ -52,7 +51,7 @@ class Globe extends PureComponent {
     this.svg.append('path')
       .datum({ type: 'Sphere' })
       .attr('class', 'water')
-      .attr('d', path);
+      .attr('d', this.path);
 
     // const globeSelect = d3.select(this.container)
     //   .append('select')
@@ -60,18 +59,37 @@ class Globe extends PureComponent {
     //   .attr('name', 'countries');
     // TODO add countries to select
 
-
     // Add land
-    const countries = topojson.feature(topoJSON, topoJSON.objects.countries).features;
+    const countryShapes = feature(countryShapeData, countryShapeData.objects.countries).features;
 
-
-    const land = this.svg.selectAll('path.land')
-      .data(countries)
+    this.svg.selectAll('path.land')
+      .data(countryShapes)
       .enter().append('path')
       .attr('class', 'land')
-      .attr('d', path)
+      .attr('d', this.path)
       .filter(d => availableCountries.includes(countriesByID[d.id]))
         .classed('available', true);
+  }
+
+  addEventListeners() {
+    const { dragSensitivity } = globeConfig;
+    this.svg.call(d3.drag()
+      .subject(() => {
+        const r = this.projection.rotate();
+        return {
+          x:r[0] / dragSensitivity,
+          y: -r[1]/ dragSensitivity
+        }
+      })
+      .on('drag', () => {
+        const r = this.projection.rotate();
+        this.projection.rotate([
+          d3.event.x * dragSensitivity,
+          -d3.event.y * dragSensitivity, 
+          r[2]
+        ]);
+        this.svg.selectAll('path.land').attr('d', this.path)
+      }));
   }
 
   updateGlobe() {

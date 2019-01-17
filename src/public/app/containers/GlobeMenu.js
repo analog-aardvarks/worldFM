@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import SweetScroll from 'sweet-scroll';
 
-import renderGlobe from './renderGlobe';
 import Globe from '../components/Globe';
 
 
@@ -19,10 +18,6 @@ class GlobeMenu extends PureComponent {
     this.state = {
       showGlobe: props.windowWidth > 800,
     };
-  }
-
-  componentDidMount() {
-    this.globe = renderGlobe(this.container, [-100, 0]);
   }
 
   componentWillReceiveProps(nextProps) {
