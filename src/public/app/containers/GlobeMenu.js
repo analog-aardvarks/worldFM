@@ -17,32 +17,23 @@ class GlobeMenu extends PureComponent {
   constructor(props) {
     super(props);
     this.scrollDown = this.scrollDown.bind(this);
-    this.state = {
-      showGlobe: props.windowWidth > 800,
-    };
     this.selectCountry = this.selectCountry.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const showGlobe = nextProps.windowWidth > 800; // desktop
-    if (showGlobe !== this.state.showGlobe) {
-      this.setState({ showGlobe });
-    }
-  }
 
   selectCountry(countryName) {
     this.props.dispatch(setCurrentCountry(countryName));
     this.scrollDown();
-  } 
+  }
 
-  scrollDown(e) {
-    const sweetScroll = new SweetScroll({ duration: 500 });
+  scrollDown() {
+    const sweetScroll = new SweetScroll();
     const height = this.props.windowHeight - 71;
     sweetScroll.to(height, 0);
   }
 
   render() {
-    return this.state.showGlobe && (
+    return this.props.windowWidth > 800 && (
       <div className="page-container">
         <Globe
           selectCountry={this.selectCountry}

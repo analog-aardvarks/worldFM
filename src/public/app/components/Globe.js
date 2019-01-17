@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 import * as d3 from 'd3'
 import { feature } from 'topojson-client'
 
-// import renderGlobe from '../containers/renderGlobe'
-
 import availableCountries from '../constants/availableCountries';
 import countriesByID from '../../assets/countriesByID';
 import countryShapeData from '../../assets/countryShapes';
@@ -12,12 +10,11 @@ const globeConfig = {
   diameter: 1000,
   dragSensitivity: 0.25,
   startingRotation: [60, 0],
-  velocity: [0.015, -0],
+  velocity: [0.015, 0],
   logFPS: false
 }
 class Globe extends PureComponent {
   componentDidMount() {
-    // Initiate spin, set event listeners
     this.setupGlobe();
     this.addEventListeners();
     if (this.props.rotate) {
@@ -29,7 +26,6 @@ class Globe extends PureComponent {
   }
 
   componentWillUnmount() {
-    // cleanup, remove listeners
     cancelAnimationFrame(this.frameRequest)
     this.svg.remove().exit()
     if (globeConfig.logFPS) {
@@ -38,6 +34,7 @@ class Globe extends PureComponent {
   }
 
   initFPSLogger = () => {
+    // Dev-helper to monitor current FPS, even when no globe spin
     this.frameCount = 0
     this.interval = setInterval(() => {
       console.log('FPS: ', this.frameCount)
@@ -123,6 +120,7 @@ class Globe extends PureComponent {
             this.svg.classed('is-dragging', true)
           })
           .on('end', () => {
+            this.lastFrame = Date.now()
             this.isDragging = false
             this.svg.classed('is-dragging', false)
           }));
