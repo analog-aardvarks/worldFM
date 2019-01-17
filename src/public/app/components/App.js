@@ -20,7 +20,7 @@ class App extends PureComponent {
     super(props);
 
     this.state = {
-      displayLanding: !true,
+      displayLanding: true,
     };
 
     this.handleScroll = throttle(this.handleScroll, 20);
