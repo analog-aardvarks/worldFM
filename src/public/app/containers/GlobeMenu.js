@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import SweetScroll from 'sweet-scroll';
 
 import Globe from '../components/Globe';
+import { setCurrentCountry } from '../actions';
 
 
-const mapStateToProps = ({ windowHeight, windowWidth }) => ({
+const mapStateToProps = ({ windowHeight, windowWidth, aboveFold }) => ({
   windowHeight,
   windowWidth,
+  aboveFold,
 });
 
 class GlobeMenu extends PureComponent {
@@ -18,6 +20,7 @@ class GlobeMenu extends PureComponent {
     this.state = {
       showGlobe: props.windowWidth > 800,
     };
+    this.selectCountry = this.selectCountry.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,8 +30,13 @@ class GlobeMenu extends PureComponent {
     }
   }
 
+  selectCountry(countryName) {
+    this.props.dispatch(setCurrentCountry(countryName));
+    this.scrollDown();
+  } 
+
   scrollDown(e) {
-    const sweetScroll = new SweetScroll({ duration: 200 });
+    const sweetScroll = new SweetScroll({ duration: 500 });
     const height = this.props.windowHeight - 71;
     sweetScroll.to(height, 0);
   }
@@ -36,7 +44,11 @@ class GlobeMenu extends PureComponent {
   render() {
     return this.state.showGlobe && (
       <div className="page-container">
-        <Globe />
+        <Globe
+          selectCountry={this.selectCountry}
+          aboveFold={this.props.aboveFold}
+          rotate={false}
+        />
         <i
           className="icon fa fa-chevron-down faa-pulse animated"
           onClick={this.scrollDown}
