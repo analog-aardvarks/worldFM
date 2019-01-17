@@ -23,7 +23,7 @@ class GlobeMenu extends PureComponent {
 
   selectCountry(countryName) {
     this.props.dispatch(setCurrentCountry(countryName));
-    this.scrollDown();
+    setTimeout(() => this.scrollDown, 100);
   }
 
   scrollDown() {

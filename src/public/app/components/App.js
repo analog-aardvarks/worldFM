@@ -36,7 +36,7 @@ class App extends PureComponent {
 
   handleScroll = (e) => {
     const { windowHeight, dispatch } = this.props
-    const aboveFold = window.scrollY < windowHeight - 71 // 65(menu height) + 6px margin
+    const aboveFold = window.scrollY < windowHeight - 100 // point at which down arrow goes above fold
     if (aboveFold !== this.props.aboveFold) {
       dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold })
     }
