@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { throttle } from 'underscore'
+
 import ConnectedGlobe from '../containers/GlobeMenu';
 import HiddenPlayer from '../containers/HiddenPlayer';
 import Landing from './Landing';
@@ -19,7 +21,25 @@ class App extends PureComponent {
       displayLanding: true,
     };
 
+    this.handleScroll = throttle(this.handleScroll, 20);
+
     this.showGlobe = true;
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = (e) => {
+    const { windowHeight, dispatch } = this.props
+    const aboveFold = window.scrollY < windowHeight - 100 // point at which down arrow goes above fold
+    if (aboveFold !== this.props.aboveFold) {
+      dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold })
+    }
   }
 
   handleToggleDisplayLanding() {
@@ -68,8 +88,10 @@ class App extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ auth }) => ({
+const mapStateToProps = ({ auth, aboveFold, windowHeight }) => ({
   auth,
+  aboveFold,
+  windowHeight,
 });
 
 export default connect(mapStateToProps, null)(App);

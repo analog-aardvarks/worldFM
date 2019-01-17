@@ -20,8 +20,7 @@
   "homepage": "https://github.com/analog-aardvarks/thesis#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "d3": "^4.9.1",
-    "d3-queue": "^3.0.7",
+    "d3": "^5.7.0",
     "express": "^4.15.3",
     "express-session": "^1.15.2",
     "knex": "^0.13.0",
@@ -40,6 +39,7 @@
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
     "sweet-scroll": "^2.2.1",
+    "topojson-client": "^3.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

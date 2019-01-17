@@ -7,7 +7,7 @@ import SelectCountry from './SelectCountry';
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  showTopMenu: state.showTopMenu,
+  aboveFold: state.aboveFold,
   showUserMenu: state.showUserMenu,
   showCountryDropdown: state.showCountryDropdown,
   currentCountry: state.currentCountry,
@@ -24,11 +24,17 @@ const mapDispatchToProps = dispatch => ({
   handleShowCountryDropdown: () => dispatch({ type: 'SHOW_COUNTRY_DROPDOWN' }),
 });
 
+const scrollUp = () => {
+  const sweetScroll = new SweetScroll();
+  sweetScroll.to(0, 0);
+};
+
 const TopMenu = ({
   // showUserMenu,
   // toggleSideMenu,
   // toggleUserMenu,
   auth,
+  aboveFold,
   currentCountry,
   currentGenre,
   handleClearCountry,
@@ -39,39 +45,13 @@ const TopMenu = ({
   handleShowCountryDropdown,
   showCountryDropdown,
   showFavoritesMenu,
-  showTopMenu,
   toggleFavoritesMenu,
-  toggleTopMenu,
   windowWidth,
   }) => {
-  const scrollUp = () => {
-    const sweetScroll = new SweetScroll();
-    sweetScroll.to(0, 0);
-  };
-
-  const height = window.innerHeight - 63;
-
-  window.onscroll = () => {
-    if (window.pageYOffset >= height && showTopMenu === false) {
-      toggleTopMenu();
-    } else if (window.pageYOffset < height && showTopMenu === true) {
-      toggleTopMenu();
-    }
-  };
-
-  /*
-  style={{
-    width: showTopMenu ? '160px' : '300px',
-    top: showTopMenu ? '0px' : '40px'}}
-  */
 
   return (
     <div
-      className="TopMenu"
-      style={{
-        background: showTopMenu ? 'linear-gradient(to bottom, #202020 0%, #282828 50%, #202020 100%)' : 'rgba(0, 0, 0, 0)',
-        boxShadow: showTopMenu ? '2px 4px 3px rgba(0, 0, 0, 0.3)' : '2px 4px 3px rgba(0, 0, 0, 0)',
-      }}
+      className={`TopMenu${!aboveFold ? ' solid' : ''}`}
     >
 
       <div className="Menu--logo">
@@ -152,34 +132,6 @@ const TopMenu = ({
             data-tip="Connect with Spotify"
           />
         </a>
-
-
-        {/* { auth ?
-          <div className="TopMenu--user">
-            <i
-              className="TopMenu--login fa fa fa-spotify fa-2x fa-fw"
-              style={{ color: auth ? 'rgb(30, 215, 96)' : 'rgb(230, 230, 230)' }}
-            />
-            <i className= {showUserMenu ? "fa fa fa-chevron-up fa-1x fa-fw TopMenu__icon" : "fa fa fa-chevron-down fa-1x fa-fw TopMenu__icon" } onClick={toggleUserMenu} />
-          </div> : null}
-
-        {
-
-          showUserMenu ?
-            <div className="TopMenu--userMenu" style={{ backgroundColor: showTopMenu ? '#080808' : 'rgba(0, 0, 0, 0)' }}>
-              <div onClick={toggleFavoritesMenu} className="TopMenu__icon">
-                <i className="fa fa fa-heart fa-lg fa-fw" />
-                <span>favorites</span>
-              </div>
-              <div className="TopMenu__icon">
-                <a href="/auth/spotify">
-                  <i className="fa fa fa-sign-out fa-lg fa-fw" />
-                  <span>logout</span>
-                </a>
-              </div>
-            </div>
-          : null } */}
-
       </div>
     </div>
   );

@@ -36,7 +36,6 @@ const mapStateToProps = state => ({
   showFavoritesMenu : state.showFavoritesMenu ,
   showQueueMenu: state.showQueueMenu,
   spotifyPlayer: state.spotifyPlayer,
-  showTopMenu: state.showTopMenu,
   showAvailableDevices: state.showAvailableDevices,
   showPlayerMobileOptions: state.showPlayerMobileOptions,
   sync: state.sync,
@@ -66,8 +65,6 @@ const mapDispatchToProps = dispatch => ({
   showFavoritesMenuEvent: () => dispatch({ type: 'SHOW_FAVORITES_MENU' }),
   hideFavoritesMenuEvent: () => dispatch({ type: 'HIDE_FAVORITES_MENU' }),
   removeTrackFromSpotifyQueue: track => dispatch(removeTrackFromSpotifyQueue(track)),
-  showTopMenuEvent: () => dispatch({ type: 'SHOW_TOP_MENU' }),
-  hideTopMenuEvent: () => dispatch({ type: 'HIDE_TOP_MENU' }),
   setSpotifySyncHandler: sync => dispatch({ type: 'SET_SPOTIFY_SYNC', sync }),
   addTrackToSpotifyQueue: track => dispatch(addTrackToSpotifyQueue(track)),
   handleExpandClick: (track, favorites) => dispatch(showLightbox(track, favorites)),
@@ -90,7 +87,6 @@ class Menu extends React.Component {
     this.toggleQueueMenu = this.toggleQueueMenu.bind(this);
     this.toggleAbout = this.toggleAbout.bind(this);
     this.removeTrackFromQueue = this.removeTrackFromQueue.bind(this);
-    this.toggleTopMenu = this.toggleTopMenu.bind(this);
     this.handleExpandClick = (track, favorites) => props.handleExpandClick(track, favorites).bind(this);
   }
 
@@ -201,20 +197,10 @@ class Menu extends React.Component {
     }
   }
 
-  toggleTopMenu() {
-    if (this.props.showTopMenu) {
-      this.props.hideTopMenuEvent()
-    }
-    else {
-      this.props.showTopMenuEvent();
-    }
-  }
-
   render() {
     return (
       <div>
         <TopMenu
-          toggleTopMenu={this.toggleTopMenu}
           toggleFavoritesMenu={this.toggleFavoritesMenu}
           toggleSideMenu={this.toggleSideMenu}
           toggleUserMenu={this.toggleUserMenu}
