@@ -1,14 +1,14 @@
 @media (max-width: 1200px)  {
   .Playlist {
-    grid-template-columns: repeat(5, 20vw);
-    grid-template-rows: repeat(16, 20vw);
+    grid-template-columns: repeat(5, calc(20vw - 3.3px));
+    grid-template-rows: repeat(40, calc(20vw - 3.3px));
   }
 }
 
 @media (max-width: 900px)  {
   .Playlist {
-    grid-template-columns: repeat(4, 25vw);
-    grid-template-rows: repeat(20, 25vw);
+    grid-template-columns: repeat(4, calc(25vw - 3.3px));
+    grid-template-rows: repeat(50, calc(25vw - 3.3px));
   }
 }
 
@@ -76,8 +76,8 @@
 
 @media (max-width: 750px)  {
   .Playlist {
-    grid-template-columns: repeat(3, 33.33vw);
-    grid-template-rows: repeat(26, 33.33vw);
+    grid-template-columns: repeat(3, calc(33.33vw - 3px));
+    grid-template-rows: repeat(67, calc(33.33vw - 3px));
   }
 }
 
