@@ -224,7 +224,7 @@ class Player extends React.Component {
   getUserInfo() {
     fetch('/user/info', { credentials: 'include' })
       .then((res) => {
-        if (res.status === 200) this.props.authUserHandler();
+        if (res.status === 200) this.props.authUserHandler(true);
         return res.json();
       })
       .then((res) => {

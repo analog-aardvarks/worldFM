@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { throttle } from 'underscore'
+import { throttle } from 'underscore';
 
 import ConnectedGlobe from '../containers/GlobeMenu';
 import HiddenPlayer from '../containers/HiddenPlayer';
@@ -11,7 +11,6 @@ import Playlist from '../containers/Playlist';
 import ReactTooltip from 'react-tooltip';
 import '../styles/main.scss';
 import Lightbox from './Lightbox';
-// import About from './About';
 
 class App extends PureComponent {
   constructor(props) {
@@ -22,23 +21,42 @@ class App extends PureComponent {
     };
 
     this.handleScroll = throttle(this.handleScroll, 20);
-
     this.showGlobe = true;
   }
 
+  componentWillMount() {
+    this.getUserInfo();
+  }
+
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', () => this.handleScroll);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', () => this.handleScroll);
   }
 
-  handleScroll = (e) => {
-    const { windowHeight, dispatch } = this.props
-    const aboveFold = window.scrollY < windowHeight - 100 // point at which down arrow goes above fold
+  getUserInfo() {
+    const { authUserHandler } = this.props;
+
+    fetch('/user/info', { credentials: 'include' })
+      .then((res) => {
+        if (res.status === 200) {
+          authUserHandler(true);
+          this.handleToggleDisplayLanding();
+        } else {
+          authUserHandler(false);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  handleScroll() {
+    const { updateAboveFold, windowHeight } = this.props;
+    const aboveFold = window.scrollY < windowHeight - 100;
+
     if (aboveFold !== this.props.aboveFold) {
-      dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold })
+      updateAboveFold(aboveFold);
     }
   }
 
@@ -50,16 +68,24 @@ class App extends PureComponent {
     const { displayLanding } = this.state;
     const { auth } = this.props;
 
-    const app = displayLanding && !auth ?
-      (
+    let app = (
+      <div className="stars">
+        <div className="twinkling" />
+      </div>
+    );
+
+    if (auth === false && displayLanding) {
+      app = (
         <div className="stars">
           <div className="twinkling" />
           <Landing
             handleToggleDisplayLanding={() => this.handleToggleDisplayLanding()}
           />
         </div>
-      ) :
-      (
+      );
+    }
+    if (!displayLanding) {
+      app = (
         <div className="stars">
           <div className="twinkling" />
           <HiddenPlayer />
@@ -83,6 +109,7 @@ class App extends PureComponent {
 
         </div>
       );
+    }
 
     return app;
   }
@@ -94,4 +121,9 @@ const mapStateToProps = ({ auth, aboveFold, windowHeight }) => ({
   windowHeight,
 });
 
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToProps = dispatch => ({
+  authUserHandler: bool => dispatch({ type: 'AUTHENTICATE_USER', payload: bool }),
+  updateAboveFold: aboveFold => dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
