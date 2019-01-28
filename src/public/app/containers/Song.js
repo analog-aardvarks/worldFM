@@ -225,7 +225,6 @@ class Song extends React.Component {
         style={{
           backgroundImage: `url(${track.track_album_image})`,
           backgroundSize: 'cover',
-          border: icon === 'play' ? '' : '3px solid #1ed760',
         }}
       >
         <div

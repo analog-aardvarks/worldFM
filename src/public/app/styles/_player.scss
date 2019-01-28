@@ -1,16 +1,17 @@
 .Player {
-  color: rgb(230, 230, 230);
+  @include bg-gradient();
+  align-items: center;
   border: 20px;
   bottom: 0px;
-  height: 65px;
-  position: fixed;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  color: rgb(230, 230, 230);
+  display: flex;
+  height: 65px;
+  justify-content: center;
+  position: fixed;
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-  @include bg-gradient();
+  width: 100%;
+  z-index: 15;
 }
 
 .CurrentSong {
@@ -129,9 +130,10 @@
 }
 
 .Player__seeker {
-  position: absolute;
-  bottom: 65px;
+  bottom: 63px;
   left: 0px;
+  position: absolute;
+  width: 100%;
 }
 /*Chrome*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -247,9 +249,16 @@ input[type="range"]::-ms-fill-upper {
   justify-content: center;
   align-items: center;
   max-width: 70px;
+
   i {
     cursor: pointer;
     margin-right: 10px;
+  }
+
+  .Player__volumeGauge {
+    input {
+      width: 100%;
+    }
   }
 }
 

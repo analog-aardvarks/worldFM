@@ -1,14 +1,20 @@
 @media (max-width: 1200px)  {
   .Playlist {
     grid-template-columns: repeat(5, calc(20vw - 3.3px));
-    grid-template-rows: repeat(40, calc(20vw - 3.3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(20vw - 3.3px);
   }
 }
 
 @media (max-width: 900px)  {
   .Playlist {
     grid-template-columns: repeat(4, calc(25vw - 3.3px));
-    grid-template-rows: repeat(50, calc(25vw - 3.3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(25vw - 3.3px);
   }
 }
 
@@ -78,6 +84,10 @@
   .Playlist {
     grid-template-columns: repeat(3, calc(33.33vw - 3px));
     grid-template-rows: repeat(67, calc(33.33vw - 3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(33.33vw - 3px);
   }
 }
 

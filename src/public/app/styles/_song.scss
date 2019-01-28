@@ -24,7 +24,6 @@
 .SongHover__expand,
 .SongHover__add-favorites {
   opacity: 0;
-  // position: absolute;
 }
 
 .Song__wrapper {
@@ -37,6 +36,7 @@
   justify-content: flex-end;
   position: relative;
   width: 100%;
+  min-height: calc(12.5vw - 3.5px);
 }
 
 .Song__wrapper:hover {
