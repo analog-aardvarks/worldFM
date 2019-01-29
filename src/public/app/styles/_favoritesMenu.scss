@@ -1,5 +1,5 @@
 .FavoritesMenu {
-  z-index: 4;
+  z-index: 100;
   position: fixed;
   top: 73px;
   right: 0px;
@@ -8,15 +8,6 @@
   background-color: $blackGlassDark;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-}
-
-.FavoritesMenu::before {
-  min-height: 8px;
-  content: '';
-  background-color: $blackGlass;
-  width: 3000px;
-  position: absolute;
-  top: -8px;
 }
 
 .FavoritesMenu::after {
@@ -50,14 +41,16 @@
 
 .FavoritesMenu__top {
   @include bg-gradient();
-  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-  user-select: none;
-  min-height: 28px;
-  width: 100%;
-  display: flex;
   align-items: center;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: flex;
   justify-content: space-between;
+  min-height: 28px;
   padding: 0 15px;
+  user-select: none;
+  width: 100%;
+
   i {
     cursor: pointer;
   }
@@ -79,6 +72,7 @@
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 10px;
+
   img {
     box-sizing: border-box;
     margin-left: 15px;
@@ -138,15 +132,17 @@
 
 .FavoritesMenu__sync {
   @include bg-gradient();
-  margin-top: 10px;
-  user-select: none;
-  min-height: 28px;
-  width: 100%;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 15px;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  min-height: 28px;
+  padding: 0 15px;
+  user-select: none;
+  width: 100%;
+
   span {
     margin-right: 15px;
   }
@@ -215,8 +211,8 @@ input:checked + .slider:before {
 .FavoritesMenu__hover {
   position: relative;
   background-color: rgba(0, 0, 0, 0);
-  left: -300px;
-  bottom: 35.5px;
+  left: -315px;
+  bottom: 34.5px;
   min-width: 345px;
   min-height: 70px;
   display: flex;
@@ -261,8 +257,8 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   background-color: rgba(0,0,0,0.70);
-  border-radius: 2.5px;
-  padding: 5px;
+  border-radius: 5px;
+  padding: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -270,11 +266,11 @@ input:checked + .slider:before {
 
 .FavoritesMenu__expand,
 .FavoritesMenu__close {
+  border-radius: 4px;
+  padding: 2px;
   position: absolute;
   top: 0px;
-  padding: 2.5px;
   background-color: rgba(0,0,0,0.70);
-  border-radius: 2.5px;
 }
 .FavoritesMenu__close {
   left: 10px;

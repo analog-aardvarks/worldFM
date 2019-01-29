@@ -34,7 +34,6 @@ const mapStateToProps = state => ({
   currentCountry: state.currentCountry,
   currentSong: state.currentSong,
   activeDevice: state.activeDevice,
-  windowWidth: state.windowWidth,
   helperFuncs: state.helperFuncs,
   favorites: state.favorites,
 });
@@ -563,10 +562,8 @@ class Player extends React.Component {
   return (
       <div
         className="Player"
-        style={{
-          width: this.props.windowWidth,
-          display: this.props.auth ? 'flex' : 'none'
-        }}>
+        style={{ display: this.props.auth ? 'flex' : 'none' }}
+      >
 
         <input
           defaultValue="0"
@@ -575,8 +572,6 @@ class Player extends React.Component {
           onMouseUp={e => this.handleSeekerChange(e)}
           ref={(el) => { this.$seekerInput = el; }}
           type="range"
-          width={this.props.windowWidth}
-          style={{width: this.props.windowWidth}}
           min="0"
           max={this.props.spotifyPlayer.currentTrack ? this.props.spotifyPlayer.currentTrack.track_length : 100}
           step="250"
@@ -732,11 +727,12 @@ class Player extends React.Component {
           data-tip="Options"
         />
         { this.props.showPlayerMobileOptions ?
-        <div className="Player__extraButtonsMobile" style={{ width: this.props.windowWidth }}>
+        <div className="Player__extraButtonsMobile">
 
           <div className="Player__extraButtonsMobileTop">
-          <i className="fa fa fa-times fa-fw"
-              style={{opacity:0}}
+          <i
+            className="fa fa fa-times fa-fw"
+            style={{ opacity:0 }}
           />
             <div>Options</div>
             <i className="fa fa fa-times fa-fw"
@@ -792,7 +788,7 @@ class Player extends React.Component {
         : null }
 
         {this.props.showAvailableDevices &&
-        <div className="Device__selector" style={{ minWidth: this.props.windowWidth < 580 ? this.props.windowWidth : 350 }}>
+        <div className="Device__selector">
           <div className="Device__selector__top">
             <i
               className="fa fa-refresh fa-fw"
@@ -800,8 +796,9 @@ class Player extends React.Component {
               data-tip="Refresh available devices"
             />
             <div className="Player__devicesTitle">Devices</div>
-            <i className="fa fa fa-times fa-fw"
-                onClick={this.toggleAvailableDevices}
+            <i 
+              className="fa fa fa-times fa-fw"
+              onClick={this.toggleAvailableDevices}
             />
           </div>
           {this.props.availableDevices.map((device, idx) => (
