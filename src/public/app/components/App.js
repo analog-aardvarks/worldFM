@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { throttle } from 'underscore';
+
 import ConnectedGlobe from '../containers/GlobeMenu';
 import HiddenPlayer from '../containers/HiddenPlayer';
 import Landing from './Landing';
@@ -7,7 +10,6 @@ import Player from './Player';
 import Playlist from '../containers/Playlist';
 import ReactTooltip from 'react-tooltip';
 import '../styles/main.scss';
-// import About from './About';
 import Lightbox from './Lightbox';
 
 class App extends PureComponent {
@@ -18,7 +20,44 @@ class App extends PureComponent {
       displayLanding: true,
     };
 
+    this.handleScroll = throttle(this.handleScroll, 20);
     this.showGlobe = true;
+  }
+
+  componentWillMount() {
+    this.getUserInfo();
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', () => this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', () => this.handleScroll);
+  }
+
+  getUserInfo() {
+    const { authUserHandler } = this.props;
+
+    fetch('/user/info', { credentials: 'include' })
+      .then((res) => {
+        if (res.status === 200) {
+          authUserHandler(true);
+          this.handleToggleDisplayLanding();
+        } else {
+          authUserHandler(false);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  handleScroll() {
+    const { updateAboveFold, windowHeight } = this.props;
+    const aboveFold = window.scrollY < windowHeight - 100;
+
+    if (aboveFold !== this.props.aboveFold) {
+      updateAboveFold(aboveFold);
+    }
   }
 
   handleToggleDisplayLanding() {
@@ -27,18 +66,28 @@ class App extends PureComponent {
 
   render() {
     const { displayLanding } = this.state;
+    const { auth } = this.props;
 
-    const app = displayLanding ?
-      (
-        <div>
+    let app = (
+      <div className="stars">
+        <div className="twinkling" />
+      </div>
+    );
+
+    if (auth === false && displayLanding) {
+      app = (
+        <div className="stars">
+          <div className="twinkling" />
           <Landing
             handleToggleDisplayLanding={() => this.handleToggleDisplayLanding()}
           />
         </div>
-      ) :
-      (
-        <div>
-
+      );
+    }
+    if (!displayLanding) {
+      app = (
+        <div className="stars">
+          <div className="twinkling" />
           <HiddenPlayer />
           {this.showGlobe ? <ConnectedGlobe /> : null}
           <Menu />
@@ -56,14 +105,25 @@ class App extends PureComponent {
               />
               <ReactTooltip id="globe" />
             </div> :
-            null
-          }
+            null}
 
         </div>
       );
+    }
 
     return app;
   }
 }
 
-export default App;
+const mapStateToProps = ({ auth, aboveFold, windowHeight }) => ({
+  auth,
+  aboveFold,
+  windowHeight,
+});
+
+const mapDispatchToProps = dispatch => ({
+  authUserHandler: bool => dispatch({ type: 'AUTHENTICATE_USER', payload: bool }),
+  updateAboveFold: aboveFold => dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

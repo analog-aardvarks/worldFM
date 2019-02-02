@@ -25,6 +25,7 @@ body {
   background-color: $mainColor;
   overflow-x: hidden;
   cursor: default;
+  margin: 0px;
 }
 
 .absclear {
@@ -43,5 +44,6 @@ body {
 @import "about";
 @import "lightbox";
 @import "song";
+@import "stars";
 
 @import "mobile";

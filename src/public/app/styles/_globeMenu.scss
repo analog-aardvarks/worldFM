@@ -1,17 +1,17 @@
 .water {
-  fill: rgba(10,10,10,1)
+  fill: #111;
 }
 .land {
   fill: #ccc;
-  stroke: rgba(0,0,0,0.75);
-  stroke-width: 0.7px;
+  stroke: #111;
+  stroke-width: .5px;
 }
 .available {
   fill: rgb(30, 215, 96);
+  cursor: pointer;
 }
 .available:hover {
   fill: #3c763d;
-  stroke-width: 1px;
 }
 .focused {
   fill: rgb(30, 215, 96);
@@ -42,9 +42,26 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   svg {
+    // padding to prevent overlap with header/playbar
+    // padding: 93px 15px 168px;
+    margin-top: 93px;
     z-index: 3;
+    max-width: 100%;
+    max-height: calc(100% - 261px);
+    width: 90vw;
+    height: 90vw;
+    
+
+    &.is-dragging path {
+        cursor: -webkit-grabbing;
+      }
+    path {
+      cursor: -webkit-grab;
+    }
+    .available {
+      cursor: pointer;
+    }
   }
 }
 
@@ -62,25 +79,11 @@ canvas {
   background-image: url('https://preview.ibb.co/daJ0YF/Artboard.png');
 }
 
-#particles-js {
-  display: block;
-  vertical-align: bottom;
-  width: 100vw;
-  min-height: 100vh;
-}
-
-#particles-js .particles-js-canvas-el {
-  background-position: center;
-  background-size: cover;
-  width: 100vw!important;
-  height: 100vh!important;
-  z-index: -1;
-}
-
 i.icon.fa.fa-chevron-down.faa-pulse.animated {
   font-size: 40px;
+  margin: 100px 0;
   position: absolute;
-  bottom: 100px;
+  bottom: 0;
   color: $mainfontColor;
 }
 

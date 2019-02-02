@@ -1,3 +1,27 @@
+@media (max-width: 1200px)  {
+  .Playlist {
+    grid-template-columns: repeat(5, calc(20vw - 3.3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(20vw - 3.3px);
+  }
+}
+
+@media (max-width: 900px)  {
+  .Playlist {
+    grid-template-columns: repeat(4, calc(25vw - 3.3px));
+  }
+
+  .CurrentSongInfo {
+    display: none;
+  }
+
+  .Song__wrapper {
+    min-height: calc(25vw - 3.3px);
+  }
+}
+
 @media (max-width: 800px)  {
   .landing {
     &__greeting {
@@ -16,19 +40,12 @@
     }
   }
 
-  //Current Song
-  .CurrentSong {
-    min-width: 200px;
-    max-width: 200px;
-    left: 15px;
-  }
-  //Lightbox
   .Lightbox__contentArtButtons {
     i {
       font-size: 42px;
     }
   }
-  //Player
+
   .Player__extraButtons {
     display: none;
   }
@@ -42,13 +59,27 @@
     position: fixed;
     opacity: 0.6;
   }
-  //Top Menu
+
   .TopMenu__dropdownOptions {
     margin-left: 6px;
   }
   .TopMenu {
     padding-left: 25px;
     padding-right: 20px;
+    
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 750px)  {
+  .Playlist {
+    grid-template-columns: repeat(3, calc(33.33vw - 3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(33.33vw - 3px);
   }
 }
 
@@ -57,22 +88,27 @@
     &__greeting {
       width: 70vw;
     }
+
+    &__subheader {
+      font-size: 18px;
+      margin: 10px 0px 22px 0px;
+    }
   }
 
-  //Favorites Menu
+  .Device__selector {
+    width: 100%;
+  }
+
   .FavoritesMenu {
     width: 100%;
   }
-  //Lightbox
+
   .Lightbox__contentArtButtons {
     i {
       font-size: 26px;
     }
   }
-  //Player
-  .CurrentSongInfo {
-    display: none;
-  }
+
   .CurrentSong {
     min-width: 50px;
     max-width: 50px;
@@ -85,7 +121,7 @@
     margin-right: 15px;
     margin-left: 8px;
   }
-  //Song
+
   .Song__name,
   .Song__artist {
     font-size: 15px;
@@ -96,16 +132,14 @@
     font-size: 24px;
   }
   .SongHover__play-button {
-    font-size: 64px;
-    left: 56px !important;
-    bottom: 70px !important;
+    font-size: 48px;
   }
   .Song__ranking {
     min-width: 35px;
     padding-right: 0px;
     font-size: 23px;
   }
-  //Top Menu
+
   .Menu--logo {
     display: none;
   }
@@ -148,7 +182,6 @@
     }
   }
 
-  //Player
   .CurrentSong {
     left: 10px;
     img {
@@ -161,28 +194,31 @@
 }
 
 @media (max-width: 400px) {
-  //Lightbox
+  .landing {
+    &__subheader {
+      font-size: 13px;
+    }
+  }
+
   .Lightbox__contentArtButtons {
     i {
       font-size: 22px;
     }
   }
-  //Player
+
   .Player__extraButtonsMobileContent {
     font-size: 13px;
   }
   .Player__volume {
     margin-right: 2px;
   }
-  //Song
+
   .Song__name,
   .Song__artist {
     font-size: 13px;
   }
   .SongHover__play-button {
-    font-size: 58px;
-    left: 50px !important;
-    bottom: 62px !important;
+    font-size: 40px;
   }
   .Song__ranking {
     min-width: 33px;
@@ -191,14 +227,19 @@
 }
 
 @media (max-width: 325px) {
-  //Player
+  .landing {
+    &__subheader {
+      font-size: 12px;
+    }
+  }
+
   .Player__controls {
     width: 175px;
   }
   .Player__extraButtonsMobileContent {
     font-size: 12px;
   }
-  //Top Menu
+
   .TopMenu--CountryDropdown,
   .TopMenu--GenreDropdown {
     min-width: 130px;
@@ -207,7 +248,7 @@
   .Select-menu-outer {
     width: 130px;
   }
-  //Song
+
   .Song__name,
   .Song__artist {
     font-size: 13px;

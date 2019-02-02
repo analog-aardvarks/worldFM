@@ -1,67 +1,50 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import renderGlobe from './renderGlobe';
-import particleConfig from '../../../../particlesjs-config.json';
 import SweetScroll from 'sweet-scroll';
 
+import Globe from '../components/Globe';
+import { setCurrentCountry } from '../actions';
 
-const mapStateToProps = ({ windowHeight, windowWidth, showTopMenu, globeSpin }) => ({
+
+const mapStateToProps = ({ windowHeight, windowWidth, aboveFold }) => ({
   windowHeight,
   windowWidth,
-  showTopMenu,
-  globeSpin,
+  aboveFold,
 });
 
-class GlobeMenu extends Component {
+class GlobeMenu extends PureComponent {
 
   constructor(props) {
     super(props);
     this.scrollDown = this.scrollDown.bind(this);
+    this.selectCountry = this.selectCountry.bind(this);
   }
 
-  componentDidMount() {
-    particlesJS('particles', particleConfig);
-    this.globe = renderGlobe(this.container, [-100, 0]);
 
-    // stop spin when glob is off-screen, resume when on-screen
-    let height = window.innerHeight - 63
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset >= height && this.props.globeSpin) {
-        this.globe.stopSpin();
-      } else if (window.pageYOffset < height && !this.props.globeSpin) {
-        this.globe.startSpin();
-      }
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // rerender globe is window size changes
-    if (nextProps.windowHeight !== this.props.windowHeight
-      || nextProps.windowWidth !== this.props.windowWidth) {
-      d3.select('.globe').remove();
-      clearInterval(this.globe.interval);
-      const rotation = this.globe.projection.rotate();
-      this.globe = renderGlobe(this.container, rotation);
-    }
+  selectCountry(countryName) {
+    this.props.dispatch(setCurrentCountry(countryName));
+    setTimeout(() => this.scrollDown, 100);
   }
 
   scrollDown() {
     const sweetScroll = new SweetScroll();
-    const height = this.props.windowHeight - 62;
+    const height = this.props.windowHeight - 71;
     sweetScroll.to(height, 0);
   }
 
   render() {
-    return (
+    return this.props.windowWidth > 800 && (
       <div className="page-container">
-        <div id="particles">
-          <div
-            ref={(el) => { this.container = el; }}
-            className="globeContainer"
-            style={{ height: (window.innerHeight - 64) }}
-          />
-        </div>
-          <i className="icon fa fa-chevron-down faa-pulse animated" onClick={this.scrollDown} style={{right: (window.innerWidth/2) - 22.5}} />
+        <Globe
+          selectCountry={this.selectCountry}
+          aboveFold={this.props.aboveFold}
+          rotate={false}
+        />
+        <i
+          className="icon fa fa-chevron-down faa-pulse animated"
+          onClick={this.scrollDown}
+          role="button"
+        />
       </div>
     );
   }
