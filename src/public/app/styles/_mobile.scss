@@ -1,14 +1,24 @@
 @media (max-width: 1200px)  {
   .Playlist {
-    grid-template-columns: repeat(5, 20vw);
-    grid-template-rows: repeat(16, 20vw);
+    grid-template-columns: repeat(5, calc(20vw - 3.3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(20vw - 3.3px);
   }
 }
 
 @media (max-width: 900px)  {
   .Playlist {
-    grid-template-columns: repeat(4, 25vw);
-    grid-template-rows: repeat(20, 25vw);
+    grid-template-columns: repeat(4, calc(25vw - 3.3px));
+  }
+
+  .CurrentSongInfo {
+    display: none;
+  }
+
+  .Song__wrapper {
+    min-height: calc(25vw - 3.3px);
   }
 }
 
@@ -30,19 +40,12 @@
     }
   }
 
-  //Current Song
-  .CurrentSong {
-    min-width: 200px;
-    max-width: 200px;
-    left: 15px;
-  }
-  //Lightbox
   .Lightbox__contentArtButtons {
     i {
       font-size: 42px;
     }
   }
-  //Player
+
   .Player__extraButtons {
     display: none;
   }
@@ -56,7 +59,7 @@
     position: fixed;
     opacity: 0.6;
   }
-  //Top Menu
+
   .TopMenu__dropdownOptions {
     margin-left: 6px;
   }
@@ -68,16 +71,15 @@
       opacity: 1;
     }
   }
-  .Playlist {
-    top: 65px; // TopMenu height
-    position: relative;
-  }
 }
 
 @media (max-width: 750px)  {
   .Playlist {
-    grid-template-columns: repeat(3, 33.33vw);
-    grid-template-rows: repeat(26, 33.33vw);
+    grid-template-columns: repeat(3, calc(33.33vw - 3px));
+  }
+
+  .Song__wrapper {
+    min-height: calc(33.33vw - 3px);
   }
 }
 
@@ -93,20 +95,20 @@
     }
   }
 
-  //Favorites Menu
+  .Device__selector {
+    width: 100%;
+  }
+
   .FavoritesMenu {
     width: 100%;
   }
-  //Lightbox
+
   .Lightbox__contentArtButtons {
     i {
       font-size: 26px;
     }
   }
-  //Player
-  .CurrentSongInfo {
-    display: none;
-  }
+
   .CurrentSong {
     min-width: 50px;
     max-width: 50px;
@@ -119,7 +121,7 @@
     margin-right: 15px;
     margin-left: 8px;
   }
-  //Song
+
   .Song__name,
   .Song__artist {
     font-size: 15px;
@@ -137,7 +139,7 @@
     padding-right: 0px;
     font-size: 23px;
   }
-  //Top Menu
+
   .Menu--logo {
     display: none;
   }
@@ -180,7 +182,6 @@
     }
   }
 
-  //Player
   .CurrentSong {
     left: 10px;
     img {
@@ -198,20 +199,20 @@
       font-size: 13px;
     }
   }
-  //Lightbox
+
   .Lightbox__contentArtButtons {
     i {
       font-size: 22px;
     }
   }
-  //Player
+
   .Player__extraButtonsMobileContent {
     font-size: 13px;
   }
   .Player__volume {
     margin-right: 2px;
   }
-  //Song
+
   .Song__name,
   .Song__artist {
     font-size: 13px;
@@ -231,14 +232,14 @@
       font-size: 12px;
     }
   }
-  //Player
+
   .Player__controls {
     width: 175px;
   }
   .Player__extraButtonsMobileContent {
     font-size: 12px;
   }
-  //Top Menu
+
   .TopMenu--CountryDropdown,
   .TopMenu--GenreDropdown {
     min-width: 130px;
@@ -247,7 +248,7 @@
   .Select-menu-outer {
     width: 130px;
   }
-  //Song
+
   .Song__name,
   .Song__artist {
     font-size: 13px;

@@ -205,9 +205,9 @@ function spotifyPlayer(state = {
   }
 }
 
-function auth(state = false, action) {
+function auth(state = null, action) {
   switch (action.type) {
-    case 'AUTHENTICATE_USER': return true;
+    case 'AUTHENTICATE_USER': return action.payload;
     default: return state;
   }
 }

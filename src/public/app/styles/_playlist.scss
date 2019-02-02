@@ -1,8 +1,6 @@
 .Playlist {
   display: grid;
   gap: 4px;
-  grid-template-columns: repeat(8, 12.5vw);
-  grid-template-rows: repeat(10, 12.5vw);
-  margin-bottom: 0px;
-  width: 906px;
+  grid-template-columns: repeat(8, calc(12.5vw - 3.5px));
+  margin-bottom: 73px;
 }

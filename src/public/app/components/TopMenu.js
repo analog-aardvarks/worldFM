@@ -50,9 +50,7 @@ const TopMenu = ({
   }) => {
 
   return (
-    <div
-      className={`TopMenu${!aboveFold ? ' solid' : ''}`}
-    >
+    <div className="TopMenu">
 
       <div className="Menu--logo">
         <img src="../../assets/worldfmlogo.svg" />

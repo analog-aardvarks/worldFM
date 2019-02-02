@@ -17,7 +17,6 @@ const Playlist = props => (
   </div>
 );
 
-
 const mapStateToProps = state => ({
   auth: state.auth,
   playlist: state.playlist,
