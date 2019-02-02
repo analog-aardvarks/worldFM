@@ -265,8 +265,17 @@ function helperFuncs(state = [], action) {
 
 function aboveFold(state = true, action) {
   switch (action.type) {
-    case 'UPDATE_ABOVE_FOLD':
-      return action.value;
+    case 'UPDATE_SCROLLY':
+      return action.aboveFold;
+    default:
+      return state;
+  }
+}
+
+function scrollY(state = 0, action) {
+  switch (action.type) {
+    case 'UPDATE_SCROLLY':
+      return action.scrollY;
     default:
       return state;
   }
@@ -301,6 +310,7 @@ const reducer = combineReducers({
   currentGenre,
   helperFuncs,
   aboveFold,
+  scrollY,
 });
 
 export default reducer;

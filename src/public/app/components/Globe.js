@@ -7,7 +7,7 @@ import countriesByID from '../../assets/countriesByID';
 import countryShapeData from '../../assets/countryShapes';
 
 const globeConfig = {
-  diameter: 1000,
+  diameter: 600,
   dragSensitivity: 0.25,
   startingRotation: [60, 0],
   velocity: [0.015, 0],

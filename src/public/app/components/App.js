@@ -36,10 +36,9 @@ class App extends PureComponent {
 
   handleScroll = (e) => {
     const { windowHeight, dispatch } = this.props
-    const aboveFold = window.scrollY < windowHeight - 100 // point at which down arrow goes above fold
-    if (aboveFold !== this.props.aboveFold) {
-      dispatch({ type: 'UPDATE_ABOVE_FOLD', value: aboveFold })
-    }
+    const { scrollY } = window
+    const aboveFold = scrollY < windowHeight - 100 // point at which down arrow goes above fold
+    dispatch({ type: 'UPDATE_SCROLLY', scrollY, aboveFold })
   }
 
   handleToggleDisplayLanding() {
@@ -50,7 +49,7 @@ class App extends PureComponent {
     const { displayLanding } = this.state;
     const { auth } = this.props;
 
-    const app = displayLanding && !auth ?
+    const app = false && displayLanding && !auth ?
       (
         <div className="stars">
           <div className="twinkling" />
