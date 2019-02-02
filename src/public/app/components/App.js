@@ -21,7 +21,6 @@ class App extends PureComponent {
     };
 
     this.handleScroll = throttle(this.handleScroll, 20);
-    this.showGlobe = true;
   }
 
   componentWillMount() {
@@ -70,14 +69,14 @@ class App extends PureComponent {
 
     let app = (
       <div className="stars">
-        <div className="twinkling" />
+        {/* <div className="twinkling" /> */}
       </div>
     );
 
     if (auth === false && displayLanding) {
       app = (
         <div className="stars">
-          <div className="twinkling" />
+          {/* <div className="twinkling" /> */}
           <Landing
             handleToggleDisplayLanding={() => this.handleToggleDisplayLanding()}
           />
@@ -87,9 +86,9 @@ class App extends PureComponent {
     if (!displayLanding) {
       app = (
         <div className="stars">
-          <div className="twinkling" />
+          {/* <div className="twinkling" /> */}
           <HiddenPlayer />
-          {this.showGlobe ? <ConnectedGlobe /> : null}
+          <ConnectedGlobe />
           <Menu />
           <Playlist />
           <Player />
