@@ -22,7 +22,7 @@ Thanks to our web worker, new music is being added each week to our ever-growing
 - Full audio player
 
 ## Preview
-![Gif of application](src/public/assets/worldfmlogo.svg)
+![Gif of application](src/public/assets/worldfmlogoreadme.svg)
 
 ## Tech Stack
 - ReactJS / Redux
