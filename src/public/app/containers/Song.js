@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
+
 import {
   addTrackToSpotifyQueue,
   setFavorites,
@@ -10,6 +11,8 @@ import {
   setSpotifyPlayerInterval,
   showLightbox,
 } from '../actions';
+
+import LazyImage from '../components/LazyImage';
 
 class Song extends React.Component {
   constructor(props) {
@@ -220,13 +223,12 @@ class Song extends React.Component {
     }
 
     return (
-      <div
-        className="Song"
-        style={{
-          backgroundImage: `url(${track.track_album_image})`,
-          backgroundSize: 'cover',
-        }}
-      >
+      <div className="Song" >
+        <LazyImage
+          className="Song__image"
+          alt={`Album art for ${track.track_name}`}
+          src={track.track_album_image}
+        />
         <div
           className="Song__wrapper"
           style={{

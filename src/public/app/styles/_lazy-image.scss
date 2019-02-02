@@ -1,0 +1,29 @@
+.lazy-image {
+  opacity: 0;
+  transition: opacity .5s ease-in;
+
+  &.is-loaded {
+    opacity: 1;
+  }
+}
+
+.lazy-image__placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    font-size: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-animation: pulse 1s linear infinite;
+    animation: pulse 1s linear infinite;
+
+    transition: opacity .5s ease-in;
+
+    &.is-loaded {
+      opacity: 0;
+    }
+}

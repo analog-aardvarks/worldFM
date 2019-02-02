@@ -6,6 +6,7 @@
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
   cursor: default;
   background: #292929; // remov later
+  position: relative;
 
   i {
     cursor: pointer;
@@ -50,6 +51,12 @@
   .Song__name {
     color: $spotifyGreen;
   }
+}
+
+.Song__image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
 .Song__wrapper:hover .SongHover__play-button,

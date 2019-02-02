@@ -31,6 +31,7 @@
     "passport-spotify": "^0.3.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-lazyload": "^2.5.0",
     "react-redux": "^5.0.5",
     "react-select": "^2.1.2",
     "react-tooltip": "^3.3.0",
