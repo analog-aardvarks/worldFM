@@ -33,7 +33,7 @@ class GlobeMenu extends PureComponent {
   }
 
   render() {
-    return this.props.windowWidth > 800 && (
+    return (
       <div className="page-container">
         <Globe
           selectCountry={this.selectCountry}
