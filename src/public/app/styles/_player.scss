@@ -193,14 +193,16 @@ input[type="range"]::-ms-fill-upper {
 
 .Device__selector__top {
   @include bg-gradient();
-  user-select: none;
-  width: 100%;
-  height: 28px;
-  display: flex;
   align-items: center;
+  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: flex;
+  height: 28px;
   justify-content: space-between;
   padding: 0 15px;
-  box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  user-select: none;
+  width: 100%;
+
   i {
     cursor: pointer;
   }
