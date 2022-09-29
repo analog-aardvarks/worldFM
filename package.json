@@ -20,7 +20,7 @@
   "homepage": "https://github.com/analog-aardvarks/thesis#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "d3": "^5.7.0",
+    "d3": "^7.6.1",
     "express": "^4.15.3",
     "express-session": "^1.15.2",
     "knex": "^0.13.0",
